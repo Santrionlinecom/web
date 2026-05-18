@@ -1,6 +1,18 @@
 <script lang="ts">
+	type ChatMessage = {
+		role: 'assistant' | 'user';
+		content: string;
+	};
+
 	let question = $state('');
-	let showSignupModal = $state(false);
+	let isChatLoading = $state(false);
+	let showUpgradeModal = $state(false);
+	let chatMessages = $state<ChatMessage[]>([
+		{
+			role: 'assistant',
+			content: 'Assalamualaikum. Silakan pilih contoh pertanyaan atau ketik sendiri.'
+		}
+	]);
 
 	const examples = [
 		'Hukum investasi saham?',
@@ -90,17 +102,55 @@
 		}
 	];
 
-	function askForSignup(nextQuestion = question.trim()) {
-		if (nextQuestion) {
-			question = nextQuestion;
+	async function sendQuestion(nextQuestion = question.trim()) {
+		const message = nextQuestion.trim();
+
+		if (!message || isChatLoading) {
+			return;
 		}
 
-		showSignupModal = true;
+		question = '';
+		isChatLoading = true;
+		chatMessages = [...chatMessages, { role: 'user', content: message }];
+
+		try {
+			const response = await fetch('/api/chat', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ message })
+			});
+
+			const data = (await response.json().catch(() => ({}))) as {
+				reply?: string;
+				message?: string;
+			};
+
+			if (response.status === 429) {
+				showUpgradeModal = true;
+				chatMessages = [
+					...chatMessages,
+					{ role: 'assistant', content: data.message ?? 'Daftar gratis untuk chat tanpa batas.' }
+				];
+				return;
+			}
+
+			if (!response.ok || !data.reply) {
+				throw new Error(data.message ?? 'Chat request failed');
+			}
+
+			chatMessages = [...chatMessages, { role: 'assistant', content: data.reply }];
+		} catch {
+			chatMessages = [...chatMessages, { role: 'assistant', content: 'Maaf, coba lagi sebentar' }];
+		} finally {
+			isChatLoading = false;
+		}
 	}
 
 	function handleSubmit(event: SubmitEvent) {
 		event.preventDefault();
-		askForSignup();
+		void sendQuestion();
 	}
 </script>
 
@@ -180,8 +230,28 @@
 				</div>
 
 				<div class="space-y-4 py-5">
-					<div class="max-w-[82%] rounded-lg rounded-tl-sm bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
-						Assalamualaikum. Silakan pilih contoh pertanyaan atau ketik sendiri.
+					<div class="max-h-[420px] space-y-3 overflow-y-auto pr-1" aria-live="polite">
+						{#each chatMessages as message}
+							<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+								<p
+									class={`max-w-[86%] whitespace-pre-line rounded-lg px-4 py-3 text-sm leading-6 ${
+										message.role === 'user'
+											? 'rounded-tr-sm bg-emerald-600 text-white'
+											: 'rounded-tl-sm bg-slate-100 text-slate-700 dark:bg-white/8 dark:text-slate-200'
+									}`}
+								>
+									{message.content}
+								</p>
+							</div>
+						{/each}
+
+						{#if isChatLoading}
+							<div class="flex justify-start">
+								<p class="max-w-[86%] rounded-lg rounded-tl-sm bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
+									KangSantri sedang menjawab...
+								</p>
+							</div>
+						{/if}
 					</div>
 
 					<div class="grid gap-3">
@@ -189,7 +259,8 @@
 							<button
 								type="button"
 								class="rounded-lg border border-slate-200 bg-stone-50 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:border-emerald-400 dark:hover:bg-emerald-400/10"
-								onclick={() => askForSignup(example)}
+								disabled={isChatLoading}
+								onclick={() => void sendQuestion(example)}
 							>
 								{example}
 							</button>
@@ -207,6 +278,7 @@
 					/>
 					<button
 						type="submit"
+						disabled={isChatLoading || !question.trim()}
 						class="rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
 					>
 						Kirim
@@ -335,33 +407,31 @@
 	</div>
 </footer>
 
-{#if showSignupModal}
+{#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-5 backdrop-blur-sm" role="presentation">
 		<div
 			class="w-full max-w-md rounded-lg bg-white p-6 text-slate-950 shadow-2xl dark:bg-slate-900 dark:text-white"
 			role="dialog"
 			aria-modal="true"
-			aria-labelledby="signup-title"
+			aria-labelledby="upgrade-title"
 		>
 			<div class="flex items-start justify-between gap-4">
 				<div>
 					<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">KangSantri AI</p>
-					<h2 id="signup-title" class="mt-2 text-2xl font-black">Daftar gratis untuk dapat jawaban AI</h2>
+					<h2 id="upgrade-title" class="mt-2 text-2xl font-black">Daftar gratis untuk chat tanpa batas</h2>
 				</div>
 				<button
 					type="button"
 					class="grid size-9 place-items-center rounded-full border border-slate-200 text-slate-500 transition hover:border-slate-400 hover:text-slate-900 dark:border-white/10 dark:text-slate-300 dark:hover:text-white"
 					aria-label="Tutup modal"
-					onclick={() => (showSignupModal = false)}
+					onclick={() => (showUpgradeModal = false)}
 				>
 					×
 				</button>
 			</div>
-			{#if question}
-				<p class="mt-5 rounded-lg bg-stone-100 p-4 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
-					Pertanyaanmu: <span class="font-semibold">{question}</span>
-				</p>
-			{/if}
+			<p class="mt-5 rounded-lg bg-stone-100 p-4 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
+				Kuota 5 pertanyaan gratis sudah habis. Buat akun gratis untuk melanjutkan chat KangSantri.
+			</p>
 			<div class="mt-6 flex flex-col gap-3 sm:flex-row">
 				<a
 					class="inline-flex flex-1 items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
