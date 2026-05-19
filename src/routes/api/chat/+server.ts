@@ -22,13 +22,22 @@ type GroqChatResponse = {
 	};
 };
 
+type RuntimeEnv = {
+	GROQ_API_KEY?: string;
+};
+
 function getCurrentCount(value: string | undefined) {
 	const count = Number.parseInt(value ?? '0', 10);
 	return Number.isFinite(count) && count > 0 ? count : 0;
 }
 
-export const POST: RequestHandler = async ({ request, cookies, fetch }) => {
-	const apiKey = env.GROQ_API_KEY?.trim();
+function getGroqApiKey(platform: App.Platform | undefined) {
+	const runtimeEnv = platform?.env as RuntimeEnv | undefined;
+	return runtimeEnv?.GROQ_API_KEY?.trim() || env.GROQ_API_KEY?.trim();
+}
+
+export const POST: RequestHandler = async ({ request, cookies, fetch, platform }) => {
+	const apiKey = getGroqApiKey(platform);
 
 	if (!apiKey) {
 		return json({ message: 'GROQ_API_KEY belum dikonfigurasi.' }, { status: 500 });
