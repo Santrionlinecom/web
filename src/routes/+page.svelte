@@ -1,4 +1,6 @@
 <script lang="ts">
+	import logo from '$lib/assets/logo.png';
+
 	type ChatMessage = {
 		role: 'assistant' | 'user';
 		content: string;
@@ -166,7 +168,7 @@
 	<header class="sticky top-0 z-40 border-b border-slate-900/5 bg-stone-50/90 px-5 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/90 sm:px-8 lg:px-12">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<a class="flex items-center gap-3" href="/" aria-label="SantriOnline beranda">
-				<span class="grid size-10 place-items-center rounded-lg bg-emerald-600 text-sm font-black text-white shadow-sm">SO</span>
+				<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-lg object-cover shadow-sm" />
 				<span class="text-base font-black text-slate-950 dark:text-white">SantriOnline</span>
 			</a>
 
@@ -394,7 +396,7 @@
 <footer class="border-t border-slate-200 bg-white px-5 py-8 text-slate-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300 sm:px-8 lg:px-12">
 	<div class="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
 		<a class="flex items-center gap-3 font-black text-slate-950 dark:text-white" href="/">
-			<span class="grid size-9 place-items-center rounded-lg bg-emerald-600 text-sm text-white">SO</span>
+			<img src={logo} alt="Logo SantriOnline" class="size-9 rounded-lg object-cover" />
 			SantriOnline
 		</a>
 		<nav class="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Navigasi footer">
