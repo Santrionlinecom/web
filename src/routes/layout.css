@@ -54,6 +54,22 @@ a {
 	}
 }
 
+@keyframes drawer-in {
+	from {
+		opacity: 0.85;
+		transform: translateX(-100%);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
+	}
+}
+
+.mobile-drawer {
+	animation: drawer-in 180ms ease-out;
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	@supports (animation-timeline: view()) {
 		.fade-in {
@@ -61,6 +77,12 @@ a {
 			animation-range: entry 8% cover 28%;
 			animation-timeline: view();
 		}
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.mobile-drawer {
+		animation: none;
 	}
 }
 

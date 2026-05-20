@@ -9,12 +9,12 @@
 	let question = $state('');
 	let isChatLoading = $state(false);
 	let showUpgradeModal = $state(false);
-	let chatMessages = $state<ChatMessage[]>([
-		{
-			role: 'assistant',
-			content: 'Assalamualaikum. Silakan pilih contoh pertanyaan atau ketik sendiri.'
-		}
-	]);
+	let showMobileSidebar = $state(false);
+	let chatMessages = $state<ChatMessage[]>([]);
+
+	const appLoginUrl = 'https://app.santrionline.com/login';
+	const appRegisterUrl = 'https://app.santrionline.com/register';
+	const groupWaUrl = 'https://app.santrionline.com/r/groupwa';
 
 	const examples = [
 		'Hukum investasi saham?',
@@ -22,42 +22,57 @@
 		'Cara shalat jamak qashar?'
 	];
 
+	const menuItems = [
+		{ href: '#fitur', label: 'Fitur' },
+		{ href: '#harga', label: 'Harga' },
+		{ href: '#kitab', label: 'Kitab' },
+		{ href: '/blog', label: 'Blog' }
+	];
+
+	const drawerItems = [
+		{ href: '#chat', label: 'Obrolan Baru', marker: '01' },
+		{ href: '#fitur', label: 'Fitur Santri Online', marker: '02' },
+		{ href: '#harga', label: 'Harga Paket', marker: '03' },
+		{ href: '#kitab', label: 'Kitab Digital', marker: '04' },
+		{ href: '/blog', label: 'Blog', marker: '05' }
+	];
+
 	const features = [
 		{
 			id: 'ai',
-			icon: '🤖',
-			title: 'KangSantri AI',
-			description: 'Chat AI Islami Aswaja untuk bertanya, belajar, dan menyusun jawaban dakwah.'
+			marker: 'AI',
+			title: 'Santri Online AI',
+			description: 'Chat AI Islami berbasis Aswaja untuk belajar, bertanya, dan menyusun jawaban dakwah.'
 		},
 		{
 			id: 'kitab',
-			icon: '📚',
+			marker: 'KT',
 			title: 'Kitab Digital',
-			description: 'Akses 7.000+ kitab klasik untuk rujukan santri, ustaz, dan pesantren.'
+			description: 'Akses ribuan kitab klasik untuk rujukan santri, ustaz, dan pesantren.'
 		},
 		{
 			id: 'dakwah',
-			icon: '🎤',
+			marker: 'DK',
 			title: 'Tools Dakwah',
-			description: 'Generator khutbah, kultum, MC, dan materi kajian yang mudah disesuaikan.'
+			description: 'Bantu susun khutbah, kultum, MC, dan materi kajian dengan struktur yang rapi.'
 		},
 		{
 			id: 'bahtsul',
-			icon: '🔍',
+			marker: 'BM',
 			title: 'Bahtsul Masail',
-			description: 'Diskusi hukum Islam berbasis rujukan kitab, konteks masalah, dan adab ilmiah.'
+			description: 'Diskusi hukum Islam dengan pendekatan rujukan kitab, konteks masalah, dan adab ilmiah.'
 		},
 		{
 			id: 'custom-ai',
-			icon: '🕌',
+			marker: 'CA',
 			title: 'CustomAI',
-			description: 'Buat AI persona pesantrenmu untuk menjawab sesuai karakter lembaga.'
+			description: 'Bangun AI persona untuk pesantren, komunitas, atau lembaga dakwah digital.'
 		},
 		{
 			id: 'harga-terjangkau',
-			icon: '💰',
+			marker: 'RP',
 			title: 'Harga Terjangkau',
-			description: 'Mulai Rp25.000/bulan untuk akses kitab, coin, dan fitur dakwah lanjutan.'
+			description: 'Mulai dari paket gratis sampai paket lembaga dengan coin dan fitur yang lebih besar.'
 		}
 	];
 
@@ -65,8 +80,8 @@
 		{
 			name: 'Gratis',
 			price: 'Rp0',
-			description: 'Cocok untuk mencoba AI Islami dan pertanyaan harian.',
-			perks: ['5 pertanyaan gratis', '20 pesan/hari', '3 kitab pilihan']
+			description: 'Untuk mencoba chat Islami tanpa kartu kredit.',
+			perks: ['5 pertanyaan pertama', '20 pesan per hari', '3 kitab pilihan']
 		},
 		{
 			name: 'Santri Plus',
@@ -79,28 +94,28 @@
 			name: 'Kiai Digital',
 			price: 'Rp100K',
 			description: 'Untuk pesantren, majelis, dan lembaga dakwah digital.',
-			perks: ['15.000 coin', 'CustomAI', 'Prioritas pengembangan persona']
+			perks: ['15.000 coin', 'CustomAI', 'Dukungan persona pesantren']
 		}
 	];
 
 	const testimonials = [
 		{
-			avatar: 'U',
+			avatar: 'UA',
 			name: 'Ustaz Ahmad',
 			city: 'Jombang',
-			quote: 'Placeholder testimoni: membantu menyiapkan bahan kultum dengan rujukan yang lebih rapi.'
+			quote: 'Membantu menyiapkan bahan kultum dengan rujukan yang lebih rapi.'
 		},
 		{
-			avatar: 'S',
+			avatar: 'SR',
 			name: 'Siti Rahmah',
 			city: 'Bandung',
-			quote: 'Placeholder testimoni: enak dipakai untuk belajar kitab dan bertanya ulang sampai paham.'
+			quote: 'Enak dipakai untuk belajar kitab dan bertanya ulang sampai paham.'
 		},
 		{
-			avatar: 'M',
+			avatar: 'MF',
 			name: 'Muhammad Fikri',
 			city: 'Makassar',
-			quote: 'Placeholder testimoni: fitur chat-nya praktis untuk santri yang butuh jawaban cepat.'
+			quote: 'Praktis untuk santri yang butuh jawaban cepat sebelum diskusi dengan guru.'
 		}
 	];
 
@@ -144,7 +159,10 @@
 
 			chatMessages = [...chatMessages, { role: 'assistant', content: data.reply }];
 		} catch {
-			chatMessages = [...chatMessages, { role: 'assistant', content: 'Maaf, coba lagi sebentar' }];
+			chatMessages = [
+				...chatMessages,
+				{ role: 'assistant', content: 'Maaf, coba lagi sebentar.' }
+			];
 		} finally {
 			isChatLoading = false;
 		}
@@ -154,155 +172,281 @@
 		event.preventDefault();
 		void sendQuestion();
 	}
+
+	function closeMobileSidebar() {
+		showMobileSidebar = false;
+	}
 </script>
 
 <svelte:head>
-	<title>SantriOnline - Tanya Apa Saja tentang Islam</title>
+	<title>Santri Online - Tanya Apa Saja tentang Islam</title>
 	<meta
 		name="description"
-		content="AI Islami berbasis Aswaja dan 4 Mazhab. Coba gratis 5 pertanyaan, akses kitab digital, tools dakwah, dan CustomAI pesantren."
+		content="Santri Online adalah AI Islami berbasis Aswaja dan 4 Mazhab. Coba gratis 5 pertanyaan, akses kitab digital, tools dakwah, dan CustomAI pesantren."
 	/>
 </svelte:head>
 
-<main class="min-h-screen bg-stone-50 text-slate-950 dark:bg-slate-950 dark:text-white">
-	<header class="sticky top-0 z-40 border-b border-slate-900/5 bg-stone-50/90 px-5 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/90 sm:px-8 lg:px-12">
+<main class="min-h-screen bg-[#f7f7f4] text-slate-950 dark:bg-slate-950 dark:text-white">
+	<header
+		class="sticky top-0 z-40 border-b border-slate-200/80 bg-[#f7f7f4]/92 px-4 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/92 sm:px-6 lg:px-10"
+	>
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
-			<a class="flex items-center gap-3" href="/" aria-label="SantriOnline beranda">
-				<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-lg object-cover shadow-sm" />
-				<span class="text-base font-black text-slate-950 dark:text-white">SantriOnline</span>
-			</a>
+			<div class="flex min-w-0 items-center gap-3">
+				<button
+					type="button"
+					class="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-emerald-500 hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 md:hidden"
+					aria-label="Buka menu"
+					aria-expanded={showMobileSidebar}
+					onclick={() => (showMobileSidebar = true)}
+				>
+					<span class="block h-4 w-5 border-y-2 border-current"></span>
+				</button>
 
-			<div class="hidden items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
-				<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href="#fitur">Fitur</a>
-				<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href="#harga">Harga</a>
-				<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href="#kitab">Kitab</a>
-				<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href="/blog">Blog</a>
+				<a class="flex min-w-0 items-center gap-3" href="/" aria-label="Santri Online beranda">
+					<img src={logo} alt="Logo Santri Online" class="size-10 rounded-xl object-cover shadow-sm" />
+					<span class="truncate text-base font-black tracking-normal sm:text-lg">Santri Online</span>
+				</a>
 			</div>
 
-			<div class="flex items-center gap-2">
+			<div class="hidden items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
+				{#each menuItems as item}
+					<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href={item.href}>
+						{item.label}
+					</a>
+				{/each}
+			</div>
+
+			<div class="hidden items-center gap-2 md:flex">
 				<a
-					class="hidden rounded-full border border-slate-300 px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-white/20 dark:text-slate-200 dark:hover:border-emerald-400 dark:hover:text-emerald-300 sm:inline-flex"
-					href="https://app.santrionline.com/login"
+					class="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-white/15 dark:bg-white/5 dark:text-slate-200"
+					href={appLoginUrl}
 					>Masuk</a
 				>
 				<a
-					class="inline-flex rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
-					href="https://app.santrionline.com/register"
+					class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+					href={appRegisterUrl}
 					>Daftar Gratis</a
 				>
 			</div>
 		</nav>
 	</header>
 
-	<section class="px-5 pb-16 pt-10 sm:px-8 sm:pb-20 sm:pt-14 lg:px-12 lg:pb-24">
-		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
-			<div class="fade-in">
-				<p class="inline-flex rounded-full border border-emerald-600/15 bg-emerald-600/10 px-4 py-2 text-sm font-bold text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200">
-					AI Islami berbasis Aswaja & 4 Mazhab
+	{#if showMobileSidebar}
+		<div class="fixed inset-0 z-50 md:hidden">
+			<button
+				type="button"
+				class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]"
+				aria-label="Tutup menu"
+				onclick={closeMobileSidebar}
+			></button>
+			<aside
+				class="mobile-drawer relative flex h-full w-[84%] max-w-[340px] flex-col border-r border-slate-200 bg-[#f7f7f4] px-5 py-5 shadow-2xl dark:border-white/10 dark:bg-slate-950"
+				aria-label="Menu mobile"
+			>
+				<div class="flex items-center justify-between gap-3">
+					<a class="flex min-w-0 items-center gap-3" href="/" onclick={closeMobileSidebar}>
+						<img src={logo} alt="Logo Santri Online" class="size-11 rounded-xl object-cover" />
+						<div class="min-w-0">
+							<p class="truncate text-base font-black">Santri Online</p>
+							<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">AI Islami Aswaja</p>
+						</div>
+					</a>
+					<button
+						type="button"
+						class="grid size-9 shrink-0 place-items-center rounded-full border border-slate-200 bg-white text-xl leading-none text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
+						aria-label="Tutup menu"
+						onclick={closeMobileSidebar}
+					>
+						&times;
+					</button>
+				</div>
+
+				<a
+					class="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-3 text-sm font-black text-white shadow-lg shadow-emerald-900/10"
+					href="#chat"
+					onclick={closeMobileSidebar}
+					>Mulai Obrolan Baru</a
+				>
+
+				<nav class="mt-6 grid gap-2" aria-label="Navigasi mobile">
+					{#each drawerItems as item}
+						<a
+							class="group flex items-center gap-3 rounded-xl px-2 py-3 text-sm font-bold text-slate-700 transition hover:bg-white hover:text-emerald-700 dark:text-slate-200 dark:hover:bg-white/5 dark:hover:text-emerald-300"
+							href={item.href}
+							onclick={closeMobileSidebar}
+						>
+							<span
+								class="grid size-9 place-items-center rounded-lg border border-slate-200 bg-white text-xs font-black text-slate-500 group-hover:border-emerald-200 group-hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-400"
+								>{item.marker}</span
+							>
+							{item.label}
+						</a>
+					{/each}
+				</nav>
+
+				<div class="mt-auto border-t border-slate-200 pt-5 dark:border-white/10">
+					<a
+						class="flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-black text-white shadow-sm dark:bg-white dark:text-slate-950"
+						href={groupWaUrl}
+					>
+						Gabung Grup WA
+					</a>
+					<p class="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
+						Gunakan 5 pertanyaan gratis dulu. Login dan daftar akan muncul setelah kuota habis.
+					</p>
+				</div>
+			</aside>
+		</div>
+	{/if}
+
+	<section id="chat" class="px-4 pb-10 pt-5 sm:px-6 lg:px-10 lg:py-14">
+		<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
+			<div class="hidden lg:block">
+				<p
+					class="inline-flex rounded-full border border-emerald-600/15 bg-emerald-600/10 px-4 py-2 text-sm font-bold text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200"
+				>
+					AI Islami berbasis Aswaja dan 4 Mazhab
 				</p>
-				<h1 class="mt-6 max-w-3xl text-5xl font-black leading-[1.02] tracking-normal text-slate-950 dark:text-white sm:text-6xl lg:text-7xl">
+				<h1 class="mt-6 max-w-3xl text-6xl font-black leading-[1.02] tracking-normal xl:text-7xl">
 					Tanya Apa Saja tentang Islam
 				</h1>
-				<p class="mt-6 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">
-					AI Islami berbasis Aswaja & 4 Mazhab — gratis 5 pertanyaan
+				<p class="mt-6 max-w-2xl text-xl leading-8 text-slate-600 dark:text-slate-300">
+					Santri Online membantu menjawab pertanyaan harian, belajar kitab, dan menyusun bahan
+					dakwah dengan bahasa Indonesia yang mudah dipahami.
 				</p>
-				<div class="mt-7 flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
-					<span class="flex -space-x-2" aria-hidden="true">
-						<span class="grid size-8 place-items-center rounded-full border-2 border-stone-50 bg-emerald-100 text-xs text-emerald-800 dark:border-slate-950">S</span>
-						<span class="grid size-8 place-items-center rounded-full border-2 border-stone-50 bg-amber-100 text-xs text-amber-800 dark:border-slate-950">U</span>
-						<span class="grid size-8 place-items-center rounded-full border-2 border-stone-50 bg-slate-200 text-xs text-slate-700 dark:border-slate-950">K</span>
+				<div class="mt-8 flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
+					<span class="grid size-9 place-items-center rounded-full bg-emerald-100 text-xs font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
+						10K
 					</span>
 					Sudah dipakai 10.000+ santri Indonesia
 				</div>
 			</div>
 
 			<section
-				class="fade-in rounded-lg border border-slate-200 bg-white p-4 shadow-2xl shadow-emerald-950/10 dark:border-white/10 dark:bg-slate-900 dark:shadow-black/30 sm:p-5"
-				aria-label="Demo chat SantriOnline"
+				class="flex min-h-[calc(100dvh-116px)] flex-col rounded-[24px] border border-slate-200 bg-white shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-slate-900 md:min-h-[680px]"
+				aria-label="Chat demo Santri Online"
 			>
-				<div class="flex items-center justify-between border-b border-slate-100 pb-4 dark:border-white/10">
-					<div class="flex items-center gap-3">
-						<span class="grid size-10 place-items-center rounded-full bg-emerald-100 text-xl dark:bg-emerald-500/15">🤖</span>
-						<div>
-							<h2 class="text-base font-black">KangSantri AI</h2>
-							<p class="text-sm text-slate-500 dark:text-slate-400">Online untuk 5 pertanyaan gratis</p>
+				<div class="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-white/10 sm:px-5">
+					<div class="flex min-w-0 items-center gap-3">
+						<img src={logo} alt="" class="size-9 rounded-xl object-cover" />
+						<div class="min-w-0">
+							<h1 class="truncate text-sm font-black sm:text-base">Santri Online</h1>
+							<p class="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
+								Gratis 5 pertanyaan pertama
+							</p>
 						</div>
 					</div>
-					<span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">Gratis</span>
+					<a
+						class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-800 transition hover:border-emerald-500 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200"
+						href={groupWaUrl}
+						>Grup WA</a
+					>
 				</div>
 
-				<div class="space-y-4 py-5">
-					<div class="max-h-[420px] space-y-3 overflow-y-auto pr-1" aria-live="polite">
-						{#each chatMessages as message}
-							<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+				<div class="flex flex-1 flex-col overflow-hidden">
+					<div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6" aria-live="polite">
+						{#if chatMessages.length === 0}
+							<div class="mx-auto flex min-h-[360px] max-w-2xl flex-col items-center justify-center text-center">
 								<p
-									class={`max-w-[86%] whitespace-pre-line rounded-lg px-4 py-3 text-sm leading-6 ${
-										message.role === 'user'
-											? 'rounded-tr-sm bg-emerald-600 text-white'
-											: 'rounded-tl-sm bg-slate-100 text-slate-700 dark:bg-white/8 dark:text-slate-200'
-									}`}
+									class="bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-500 bg-clip-text text-5xl font-medium tracking-normal text-transparent sm:text-6xl"
 								>
-									{message.content}
+									Halo, Tamu
 								</p>
+								<p class="mt-5 text-lg font-medium leading-8 text-slate-600 dark:text-slate-300">
+									Ada yang bisa Santri Online bantu hari ini?
+								</p>
+								<div class="mt-8 grid w-full gap-3 sm:grid-cols-3">
+									{#each examples as example}
+										<button
+											type="button"
+											class="rounded-2xl border border-slate-200 bg-[#f7f7f4] px-4 py-4 text-left text-sm font-semibold leading-6 text-slate-700 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
+											disabled={isChatLoading}
+											onclick={() => void sendQuestion(example)}
+										>
+											{example}
+										</button>
+									{/each}
+								</div>
 							</div>
-						{/each}
+						{:else}
+							<div class="mx-auto max-w-3xl space-y-5">
+								{#each chatMessages as message}
+									<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+										<div
+											class={`max-w-[88%] whitespace-pre-line rounded-3xl px-4 py-3 text-sm leading-7 shadow-sm sm:text-base ${
+												message.role === 'user'
+													? 'rounded-br-md bg-emerald-600 text-white'
+													: 'rounded-bl-md border border-slate-200 bg-[#f7f7f4] text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-100'
+											}`}
+										>
+											{message.content}
+										</div>
+									</div>
+								{/each}
 
-						{#if isChatLoading}
-							<div class="flex justify-start">
-								<p class="max-w-[86%] rounded-lg rounded-tl-sm bg-slate-100 px-4 py-3 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
-									KangSantri sedang menjawab...
-								</p>
+								{#if isChatLoading}
+									<div class="flex justify-start">
+										<div
+											class="rounded-3xl rounded-bl-md border border-slate-200 bg-[#f7f7f4] px-4 py-3 text-sm leading-7 text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-100 sm:text-base"
+										>
+											Santri Online sedang menjawab...
+										</div>
+									</div>
+								{/if}
 							</div>
 						{/if}
 					</div>
 
-					<div class="grid gap-3">
-						{#each examples as example}
+					<div class="border-t border-slate-100 bg-white/95 px-4 py-4 dark:border-white/10 dark:bg-slate-900/95 sm:px-6">
+						<form
+							class="mx-auto flex max-w-3xl items-center gap-2 rounded-3xl border border-slate-200 bg-[#f7f7f4] p-2 shadow-sm focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 dark:border-white/10 dark:bg-slate-950"
+							onsubmit={handleSubmit}
+						>
+							<label class="sr-only" for="question">Ketik pertanyaanmu</label>
+							<input
+								id="question"
+								class="min-w-0 flex-1 bg-transparent px-3 py-2 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:text-white"
+								bind:value={question}
+								placeholder="Ketik pertanyaanmu..."
+								autocomplete="off"
+							/>
 							<button
-								type="button"
-								class="rounded-lg border border-slate-200 bg-stone-50 px-4 py-3 text-left text-sm font-semibold text-slate-700 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:border-emerald-400 dark:hover:bg-emerald-400/10"
-								disabled={isChatLoading}
-								onclick={() => void sendQuestion(example)}
+								type="submit"
+								disabled={isChatLoading || !question.trim()}
+								class="grid size-11 shrink-0 place-items-center rounded-full bg-emerald-600 text-base font-black text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-700 dark:disabled:text-slate-400"
+								aria-label="Kirim pertanyaan"
 							>
-								{example}
+								<span aria-hidden="true">&uarr;</span>
 							</button>
-						{/each}
+						</form>
+						<p class="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-slate-500 dark:text-slate-400">
+							Jawaban AI perlu tetap dikaji dengan guru atau rujukan yang terpercaya.
+						</p>
 					</div>
 				</div>
-
-				<form class="flex gap-2 border-t border-slate-100 pt-4 dark:border-white/10" onsubmit={handleSubmit}>
-					<label class="sr-only" for="question">Ketik pertanyaanmu</label>
-					<input
-						id="question"
-						class="min-w-0 flex-1 rounded-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/15 dark:border-white/10 dark:bg-slate-950 dark:text-white"
-						bind:value={question}
-						placeholder="Ketik pertanyaanmu..."
-					/>
-					<button
-						type="submit"
-						disabled={isChatLoading || !question.trim()}
-						class="rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
-					>
-						Kirim
-					</button>
-				</form>
 			</section>
 		</div>
 	</section>
 
-	<section id="fitur" class="px-5 py-16 sm:px-8 lg:px-12">
+	<section id="fitur" class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="fade-in max-w-2xl">
 				<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Fitur</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">Semua kebutuhan santri digital dalam satu platform.</h2>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
+					Semua kebutuhan santri digital dalam satu platform.
+				</h2>
 			</div>
-			<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+			<div class="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				{#each features as feature}
 					<article
 						id={feature.id}
-						class="fade-in rounded-lg border border-slate-200 bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-950/10 dark:border-white/10 dark:bg-white/[0.04]"
+						class="fade-in rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-950/10 dark:border-white/10 dark:bg-white/[0.04]"
 					>
-						<div class="text-3xl" aria-hidden="true">{feature.icon}</div>
+						<div
+							class="grid size-11 place-items-center rounded-xl bg-emerald-50 text-sm font-black text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
+						>
+							{feature.marker}
+						</div>
 						<h3 class="mt-5 text-xl font-extrabold">{feature.title}</h3>
 						<p class="mt-3 leading-7 text-slate-600 dark:text-slate-300">{feature.description}</p>
 					</article>
@@ -311,20 +455,22 @@
 		</div>
 	</section>
 
-	<section id="harga" class="bg-white px-5 py-16 dark:bg-slate-900 sm:px-8 lg:px-12">
+	<section id="harga" class="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="fade-in max-w-2xl">
 				<p class="text-sm font-bold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300">Harga</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">Mulai gratis, upgrade saat kebutuhan bertambah.</h2>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
+					Mulai gratis, upgrade saat kebutuhan bertambah.
+				</h2>
 			</div>
 
-			<div class="mt-10 grid gap-4 lg:grid-cols-3">
+			<div class="mt-9 grid gap-4 lg:grid-cols-3">
 				{#each plans as plan}
 					<article
-						class={`fade-in rounded-lg border p-6 shadow-sm ${
+						class={`fade-in rounded-2xl border p-6 shadow-sm ${
 							plan.highlight
-								? 'border-emerald-600 bg-emerald-950 text-white shadow-emerald-950/15'
-								: 'border-slate-200 bg-stone-50 dark:border-white/10 dark:bg-white/[0.04]'
+								? 'border-emerald-600 bg-slate-950 text-white shadow-emerald-950/15 dark:bg-emerald-950'
+								: 'border-slate-200 bg-[#f7f7f4] dark:border-white/10 dark:bg-white/[0.04]'
 						}`}
 					>
 						{#if plan.highlight}
@@ -340,7 +486,7 @@
 						<ul class="mt-6 space-y-3">
 							{#each plan.perks as perk}
 								<li class="flex gap-3">
-									<span class={plan.highlight ? 'text-amber-300' : 'text-emerald-600'} aria-hidden="true">✓</span>
+									<span class={plan.highlight ? 'text-amber-300' : 'text-emerald-600'} aria-hidden="true">&check;</span>
 									<span>{perk}</span>
 								</li>
 							{/each}
@@ -351,18 +497,22 @@
 		</div>
 	</section>
 
-	<section class="px-5 py-16 sm:px-8 lg:px-12">
+	<section class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="fade-in max-w-2xl">
 				<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Testimoni</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">Dipakai untuk belajar, mengajar, dan berdakwah.</h2>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
+					Dipakai untuk belajar, mengajar, dan berdakwah.
+				</h2>
 			</div>
 
-			<div class="mt-10 grid gap-4 md:grid-cols-3">
+			<div class="mt-9 grid gap-4 md:grid-cols-3">
 				{#each testimonials as testimonial}
-					<article class="fade-in rounded-lg border border-slate-200 bg-white p-6 shadow-sm dark:border-white/10 dark:bg-white/[0.04]">
+					<article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.04]">
 						<div class="flex items-center gap-3">
-							<span class="grid size-12 place-items-center rounded-full bg-emerald-100 text-sm font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
+							<span
+								class="grid size-12 place-items-center rounded-full bg-emerald-100 text-sm font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200"
+							>
 								{testimonial.avatar}
 							</span>
 							<div>
@@ -370,7 +520,7 @@
 								<p class="text-sm text-slate-500 dark:text-slate-400">{testimonial.city}</p>
 							</div>
 						</div>
-						<p class="mt-4 text-amber-500" aria-label="Rating 5 dari 5">★★★★★</p>
+						<p class="mt-4 text-sm font-black text-amber-500" aria-label="Rating 5 dari 5">5/5</p>
 						<p class="mt-4 leading-7 text-slate-600 dark:text-slate-300">"{testimonial.quote}"</p>
 					</article>
 				{/each}
@@ -378,49 +528,55 @@
 		</div>
 	</section>
 
-	<section class="px-5 pb-16 sm:px-8 lg:px-12">
-		<div class="fade-in mx-auto max-w-7xl rounded-lg bg-slate-950 px-6 py-12 text-center text-white shadow-2xl shadow-emerald-950/15 dark:bg-emerald-950 sm:px-10">
-			<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-300">Tanpa ribet</p>
+	<section class="px-4 pb-14 sm:px-6 lg:px-10 lg:pb-20">
+		<div class="fade-in mx-auto max-w-7xl rounded-3xl bg-slate-950 px-6 py-10 text-center text-white shadow-2xl shadow-emerald-950/15 dark:bg-emerald-950 sm:px-10 sm:py-14">
+			<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-300">Tanpa kartu kredit</p>
 			<h2 class="mx-auto mt-3 max-w-4xl text-3xl font-black tracking-normal sm:text-5xl">
-				Mulai Gratis Sekarang — 5 Pertanyaan Tanpa Kartu Kredit
+				Mulai Gratis Sekarang, 5 Pertanyaan Pertama untuk Tamu
 			</h2>
 			<a
 				class="mt-8 inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3 text-base font-black text-emerald-950 transition hover:bg-emerald-400 focus:outline-none focus:ring-4 focus:ring-emerald-300/40"
-				href="https://app.santrionline.com/register"
-				>Daftar Gratis</a
+				href="#chat"
+				>Mulai Chat</a
 			>
 		</div>
 	</section>
 </main>
 
-<footer class="border-t border-slate-200 bg-white px-5 py-8 text-slate-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300 sm:px-8 lg:px-12">
+<footer
+	class="border-t border-slate-200 bg-white px-4 py-8 text-slate-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300 sm:px-6 lg:px-10"
+>
 	<div class="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
 		<a class="flex items-center gap-3 font-black text-slate-950 dark:text-white" href="/">
-			<img src={logo} alt="Logo SantriOnline" class="size-9 rounded-lg object-cover" />
-			SantriOnline
+			<img src={logo} alt="Logo Santri Online" class="size-9 rounded-lg object-cover" />
+			Santri Online
 		</a>
 		<nav class="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Navigasi footer">
-			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href="#fitur">Fitur</a>
-			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href="#harga">Harga</a>
-			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href="#kitab">Kitab</a>
-			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href="/blog">Blog</a>
+			{#each menuItems as item}
+				<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href={item.href}>{item.label}</a>
+			{/each}
+			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href={groupWaUrl}>Grup WA</a>
 		</nav>
-		<p class="text-sm">Copyright 2026 SantriOnline</p>
+		<p class="text-sm">Copyright 2026 Santri Online</p>
 	</div>
 </footer>
 
 {#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-5 backdrop-blur-sm" role="presentation">
 		<div
-			class="w-full max-w-md rounded-lg bg-white p-6 text-slate-950 shadow-2xl dark:bg-slate-900 dark:text-white"
+			class="w-full max-w-md rounded-3xl bg-white p-6 text-slate-950 shadow-2xl dark:bg-slate-900 dark:text-white"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="upgrade-title"
 		>
 			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">KangSantri AI</p>
-					<h2 id="upgrade-title" class="mt-2 text-2xl font-black">Daftar gratis untuk chat tanpa batas</h2>
+					<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
+						Santri Online
+					</p>
+					<h2 id="upgrade-title" class="mt-2 text-2xl font-black">
+						Daftar gratis untuk chat tanpa batas
+					</h2>
 				</div>
 				<button
 					type="button"
@@ -428,21 +584,21 @@
 					aria-label="Tutup modal"
 					onclick={() => (showUpgradeModal = false)}
 				>
-					×
+					&times;
 				</button>
 			</div>
-			<p class="mt-5 rounded-lg bg-stone-100 p-4 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
-				Kuota 5 pertanyaan gratis sudah habis. Buat akun gratis untuk melanjutkan chat KangSantri.
+			<p class="mt-5 rounded-2xl bg-[#f7f7f4] p-4 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
+				Kuota 5 pertanyaan gratis sudah habis. Silakan daftar atau masuk untuk melanjutkan chat.
 			</p>
 			<div class="mt-6 flex flex-col gap-3 sm:flex-row">
 				<a
 					class="inline-flex flex-1 items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
-					href="https://app.santrionline.com/register"
+					href={appRegisterUrl}
 					>Daftar Gratis</a
 				>
 				<a
 					class="inline-flex flex-1 items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-black text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-white/15 dark:text-slate-200"
-					href="https://app.santrionline.com/login"
+					href={appLoginUrl}
 					>Masuk</a
 				>
 			</div>

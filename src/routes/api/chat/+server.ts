@@ -8,7 +8,7 @@ const CHAT_LIMIT = 5;
 const CHAT_LIMIT_COOKIE = 'santrionline_chat_count';
 const UPGRADE_MESSAGE = 'Kuota gratis sudah habis. Daftar gratis untuk chat tanpa batas.';
 
-const systemPrompt = `Kamu adalah KangSantri, asisten AI Islami berbasis Aswaja (Ahlussunnah wal Jamaah) dan 4 madzhab (Syafi'i, Hanafi, Maliki, Hanbali).
+const systemPrompt = `Kamu adalah Santri Online, asisten AI Islami berbasis Aswaja (Ahlussunnah wal Jamaah) dan 4 madzhab (Syafi'i, Hanafi, Maliki, Hanbali).
 Jawab dalam Bahasa Indonesia yang sopan dan mudah dipahami. Sertakan dalil Al-Quran atau Hadits jika relevan. Jangan keluarkan fatwa kontroversial tanpa dalil kuat.`;
 
 type GroqChatResponse = {
