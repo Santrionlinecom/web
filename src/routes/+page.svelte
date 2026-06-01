@@ -25,6 +25,7 @@
 	const menuItems = [
 		{ href: '#fitur', label: 'Fitur' },
 		{ href: '#harga', label: 'Harga' },
+		{ href: '/jasa', label: 'Jasa' },
 		{ href: '#kitab', label: 'Kitab' },
 		{ href: '/blog', label: 'Blog' }
 	];
@@ -33,8 +34,9 @@
 		{ href: '#chat', label: 'Obrolan Baru', marker: '01' },
 		{ href: '#fitur', label: 'Fitur Santri Online', marker: '02' },
 		{ href: '#harga', label: 'Harga Paket', marker: '03' },
-		{ href: '#kitab', label: 'Kitab Digital', marker: '04' },
-		{ href: '/blog', label: 'Blog', marker: '05' }
+		{ href: '/jasa', label: 'Jasa Website', marker: '04' },
+		{ href: '#kitab', label: 'Kitab Digital', marker: '05' },
+		{ href: '/blog', label: 'Blog', marker: '06' }
 	];
 
 	const features = [
