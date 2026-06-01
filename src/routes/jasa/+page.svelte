@@ -16,7 +16,7 @@
 	let activeFaq = $state(0);
 
 	const whatsappUrl =
-		'https://wa.me/6281234567890?text=Halo%2C%20saya%20ingin%20konsultasi%20jasa%20website%20SantriOnline';
+		'https://wa.me/6287854545274?text=Halo%2C%20saya%20ingin%20konsultasi%20jasa%20website%20SantriOnline';
 	const orderUrl = '/order';
 
 	const trustSignals = [
