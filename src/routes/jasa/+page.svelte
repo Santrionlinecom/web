@@ -414,7 +414,7 @@
 			>
 				Hubungi via WhatsApp
 			</a>
-			<p class="mt-5 text-sm text-white/60">Atau email ke: hello@santrionline.com</p>
+			<p class="mt-5 text-sm text-white/60">Atau email ke: masyogik@santrionline.com</p>
 		</div>
 	</section>
 </main>
