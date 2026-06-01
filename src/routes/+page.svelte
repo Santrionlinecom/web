@@ -12,10 +12,27 @@
 	let showMobileSidebar = $state(false);
 	let chatMessages = $state<ChatMessage[]>([]);
 
-	const appLoginUrl = 'https://app.santrionline.com/login';
-	const appRegisterUrl = 'https://app.santrionline.com/register';
-	const groupWaUrl = 'https://app.santrionline.com/r/groupwa';
 	const appBaseUrl = 'https://app.santrionline.com';
+	const appLoginUrl = `${appBaseUrl}/login`;
+	const appRegisterUrl = `${appBaseUrl}/register`;
+	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
+
+	const menuItems = [
+		{ href: '#produk', label: 'Produk' },
+		{ href: '#app', label: 'App' },
+		{ href: '#fitur', label: 'Fitur' },
+		{ href: '#harga', label: 'Harga' },
+		{ href: '/jasa', label: 'Jasa Website' }
+	];
+
+	const drawerItems = [
+		{ href: '#chat', label: 'Coba AI Chat', marker: '01' },
+		{ href: '#produk', label: 'Produk Utama', marker: '02' },
+		{ href: '#app', label: 'Ekosistem App', marker: '03' },
+		{ href: '#fitur', label: 'Fitur', marker: '04' },
+		{ href: '#harga', label: 'Harga', marker: '05' },
+		{ href: '/jasa', label: 'Jasa Website', marker: '06' }
+	];
 
 	const examples = [
 		'Hukum investasi saham?',
@@ -23,160 +40,133 @@
 		'Cara shalat jamak qashar?'
 	];
 
-	const menuItems = [
-		{ href: '#fitur', label: 'Fitur' },
-		{ href: '#ekosistem', label: 'App' },
-		{ href: '#harga', label: 'Harga' },
-		{ href: '/jasa', label: 'Jasa' },
-		{ href: '#kitab', label: 'Kitab' },
-		{ href: '/blog', label: 'Blog' }
-	];
-
-	const drawerItems = [
-		{ href: '#chat', label: 'Obrolan Baru', marker: '01' },
-		{ href: '#fitur', label: 'Fitur Santri Online', marker: '02' },
-		{ href: '#ekosistem', label: 'Ekosistem App', marker: '03' },
-		{ href: '#harga', label: 'Harga Paket', marker: '04' },
-		{ href: '/jasa', label: 'Jasa Website', marker: '05' },
-		{ href: '#kitab', label: 'Kitab Digital', marker: '06' },
-		{ href: '/blog', label: 'Blog', marker: '07' }
-	];
-
-	const appIntegrationCategories = [
+	const productPillars = [
 		{
-			marker: 'TP',
-			title: 'TPQ & Lembaga',
-			description: 'Kelola lembaga, data santri, dan pendaftaran TPQ.',
+			title: 'AI Chat Islami',
+			description: 'Bertanya, belajar, dan menyusun materi dakwah dengan bahasa Indonesia yang mudah dipahami.',
+			href: '#chat',
+			marker: 'AI'
+		},
+		{
+			title: 'Kitab dan Belajar',
+			description: 'Akses rujukan kitab, mushaf, materi belajar, dan konten Islam dari aplikasi utama.',
+			href: `${appBaseUrl}/kitab`,
+			marker: 'KT'
+		},
+		{
+			title: 'Manajemen Lembaga',
+			description: 'Kelola TPQ, data santri, pendaftaran, dan dashboard lembaga dalam satu ekosistem.',
+			href: `${appBaseUrl}/dashboard`,
+			marker: 'TP'
+		}
+	];
+
+	const appModules = [
+		{
+			title: 'Akun',
+			description: 'Masuk, daftar, dan kelola profil SantriOnline.',
+			links: [
+				{ label: 'Masuk', href: `${appBaseUrl}/auth` },
+				{ label: 'Daftar', href: appRegisterUrl },
+				{ label: 'Profil', href: `${appBaseUrl}/akun` }
+			]
+		},
+		{
+			title: 'TPQ dan Lembaga',
+			description: 'Pendaftaran TPQ, data santri, dan dashboard lembaga.',
 			links: [
 				{ label: 'TPQ', href: `${appBaseUrl}/tpq` },
 				{ label: 'Daftarkan TPQ', href: `${appBaseUrl}/tpq/daftar` },
-				{ label: 'Dashboard Lembaga', href: `${appBaseUrl}/dashboard` },
-				{ label: 'Kelola Santri', href: `${appBaseUrl}/dashboard/kelola-santri` }
+				{ label: 'Dashboard', href: `${appBaseUrl}/dashboard` }
 			]
 		},
 		{
-			marker: 'BK',
-			title: 'Belajar & Kitab',
-			description: 'Akses kitab, mushaf, materi belajar, dan kalender.',
+			title: 'Kitab Digital',
+			description: 'Kitab, mushaf, kalender, dan materi belajar.',
 			links: [
-				{ label: 'Perpustakaan Kitab', href: `${appBaseUrl}/kitab` },
+				{ label: 'Kitab', href: `${appBaseUrl}/kitab` },
 				{ label: "Mushaf Al-Qur'an", href: `${appBaseUrl}/kitab/quran` },
-				{ label: 'Belajar Santri', href: `${appBaseUrl}/belajar` },
-				{ label: 'Kalender Hijriyah', href: `${appBaseUrl}/kalender` }
+				{ label: 'Belajar', href: `${appBaseUrl}/belajar` }
 			]
 		},
 		{
-			marker: 'BC',
-			title: 'Buku, Coin & Store',
-			description: 'Baca buku, kelola coin, dan jelajahi produk digital.',
-			links: [
-				{ label: 'Buku Digital', href: `${appBaseUrl}/buku` },
-				{ label: 'Rak Buku Saya', href: `${appBaseUrl}/buku/saya` },
-				{ label: 'Studio Penulis', href: `${appBaseUrl}/buku/studio` },
-				{ label: 'Saldo Coin', href: `${appBaseUrl}/coins` },
-				{ label: 'Topup Coin', href: `${appBaseUrl}/coins/topup` },
-				{ label: 'Digital Store', href: `${appBaseUrl}/digital-store` }
-			]
-		},
-		{
-			marker: 'KI',
 			title: 'Konten Islam',
-			description: 'Baca referensi tokoh, sejarah, dan konten Islam.',
+			description: 'Artikel, tokoh, sejarah, dan referensi keislaman.',
 			links: [
-				{ label: 'Blog/Konten', href: `${appBaseUrl}/blog` },
-				{ label: 'Tokoh Islam', href: `${appBaseUrl}/tokoh` },
-				{ label: 'Nabi', href: `${appBaseUrl}/nabi` },
-				{ label: 'Sahabat', href: `${appBaseUrl}/sahabat` },
-				{ label: 'Ulama', href: `${appBaseUrl}/ulama` },
-				{ label: 'Dinasti Islam', href: `${appBaseUrl}/dinasti` },
-				{ label: 'Ormas Islam', href: `${appBaseUrl}/ormas` }
+				{ label: 'Blog', href: `${appBaseUrl}/blog` },
+				{ label: 'Tokoh', href: `${appBaseUrl}/tokoh` },
+				{ label: 'Ulama', href: `${appBaseUrl}/ulama` }
 			]
 		},
 		{
-			marker: 'AK',
-			title: 'Akses Akun',
-			description: 'Masuk, daftar, dan kelola profil akun SantriOnline.',
+			title: 'Buku dan Store',
+			description: 'Buku digital, studio penulis, coin, dan produk digital.',
 			links: [
-				{ label: 'Masuk', href: `${appBaseUrl}/auth` },
-				{ label: 'Daftar', href: `${appBaseUrl}/register` },
-				{ label: 'Profil Akun', href: `${appBaseUrl}/akun` }
+				{ label: 'Buku', href: `${appBaseUrl}/buku` },
+				{ label: 'Coin', href: `${appBaseUrl}/coins` },
+				{ label: 'Store', href: `${appBaseUrl}/digital-store` }
+			]
+		},
+		{
+			title: 'Website Profesional',
+			description: 'Layanan website untuk UMKM, pesantren, klinik, dan lembaga.',
+			links: [
+				{ label: 'Lihat Jasa', href: '/jasa' },
+				{ label: 'Paket Website', href: '/jasa#pricing' },
+				{ label: 'Order', href: '/order' }
 			]
 		}
 	];
 
 	const features = [
 		{
-			id: 'ai',
-			marker: 'AI',
-			title: 'Santri Online AI',
-			description: 'Chat AI Islami berbasis Aswaja untuk belajar, bertanya, dan menyusun jawaban dakwah.'
+			title: 'Jawaban Terstruktur',
+			description: 'Respons disusun agar mudah dipahami, bisa ditelaah ulang, dan tetap nyaman dibaca.'
 		},
 		{
-			id: 'kitab',
-			marker: 'KT',
-			title: 'Kitab Digital',
-			description: 'Akses ribuan kitab klasik untuk rujukan santri, ustaz, dan pesantren.'
+			title: 'Rujukan Belajar',
+			description: 'Arahkan proses belajar ke kitab, mushaf, materi, dan konten yang tersedia di aplikasi.'
 		},
 		{
-			id: 'dakwah',
-			marker: 'DK',
-			title: 'Tools Dakwah',
-			description: 'Bantu susun khutbah, kultum, MC, dan materi kajian dengan struktur yang rapi.'
+			title: 'Alur Lembaga',
+			description: 'TPQ dan lembaga dapat diarahkan ke pendaftaran, dashboard, dan pengelolaan data.'
 		},
 		{
-			id: 'bahtsul',
-			marker: 'BM',
-			title: 'Bahtsul Masail',
-			description: 'Diskusi hukum Islam dengan pendekatan rujukan kitab, konteks masalah, dan adab ilmiah.'
+			title: 'Akses Akun Terpadu',
+			description: 'Pengguna bisa melanjutkan dari website publik ke akun SantriOnline App.'
 		},
 		{
-			id: 'custom-ai',
-			marker: 'CA',
-			title: 'CustomAI',
-			description: 'Bangun AI persona untuk pesantren, komunitas, atau lembaga dakwah digital.'
+			title: 'Dukungan Dakwah',
+			description: 'Bantu menyusun bahan kultum, khutbah, MC, dan materi kajian dengan struktur rapi.'
 		},
 		{
-			id: 'harga-terjangkau',
-			marker: 'RP',
-			title: 'Harga Terjangkau',
-			description: 'Mulai dari paket gratis sampai paket lembaga dengan coin dan fitur yang lebih besar.'
+			title: 'Ekosistem Bertahap',
+			description: 'Mulai dari chat, lanjut ke kitab, buku digital, coin, dan layanan website.'
 		}
 	];
 
 	const plans = [
 		{
-			name: 'Gratis',
+			name: 'Tamu',
 			price: 'Rp0',
-			description: 'Untuk mencoba chat Islami tanpa kartu kredit.',
-			perks: ['5 pertanyaan pertama', '20 pesan per hari', '3 kitab pilihan']
+			description: 'Untuk mencoba AI Chat SantriOnline sebelum membuat akun.',
+			perks: ['5 pertanyaan pertama', 'Contoh pertanyaan siap pakai', 'Akses dari halaman utama'],
+			href: '#chat'
 		},
 		{
 			name: 'Santri Plus',
 			price: 'Rp25K',
-			description: 'Untuk santri aktif yang butuh akses kitab dan coin lebih besar.',
-			perks: ['3.000 coin', 'Semua kitab digital', 'Riwayat chat tersimpan'],
+			description: 'Untuk pengguna aktif yang membutuhkan akses belajar dan coin lebih besar.',
+			perks: ['3.000 coin', 'Kitab digital', 'Riwayat chat tersimpan'],
+			href: appRegisterUrl,
 			highlight: true
-		}
-	];
-
-	const testimonials = [
-		{
-			avatar: 'UA',
-			name: 'Ustaz Ahmad',
-			city: 'Jombang',
-			quote: 'Membantu menyiapkan bahan kultum dengan rujukan yang lebih rapi.'
 		},
 		{
-			avatar: 'SR',
-			name: 'Siti Rahmah',
-			city: 'Bandung',
-			quote: 'Enak dipakai untuk belajar kitab dan bertanya ulang sampai paham.'
-		},
-		{
-			avatar: 'MF',
-			name: 'Muhammad Fikri',
-			city: 'Makassar',
-			quote: 'Praktis untuk santri yang butuh jawaban cepat sebelum diskusi dengan guru.'
+			name: 'Lembaga',
+			price: 'Custom',
+			description: 'Untuk TPQ, pesantren, komunitas, dan lembaga yang membutuhkan pengelolaan lebih lengkap.',
+			perks: ['Dashboard lembaga', 'Pendaftaran santri', 'Dukungan implementasi'],
+			href: `${appBaseUrl}/tpq/daftar`
 		}
 	];
 
@@ -209,7 +199,7 @@
 				showUpgradeModal = true;
 				chatMessages = [
 					...chatMessages,
-					{ role: 'assistant', content: data.message ?? 'Daftar gratis untuk chat tanpa batas.' }
+					{ role: 'assistant', content: data.message ?? 'Daftar untuk melanjutkan chat tanpa batas.' }
 				];
 				return;
 			}
@@ -240,22 +230,25 @@
 </script>
 
 <svelte:head>
-	<title>Santri Online - Tanya Apa Saja tentang Islam</title>
+	<title>SantriOnline | AI Islami, Kitab Digital, dan Ekosistem Lembaga</title>
 	<meta
 		name="description"
-		content="Santri Online adalah AI Islami berbasis Aswaja dan 4 Mazhab. Coba gratis 5 pertanyaan, akses kitab digital, tools dakwah, dan CustomAI pesantren."
+		content="SantriOnline menghubungkan AI Chat Islami, kitab digital, TPQ, konten Islam, buku digital, dan layanan website profesional dalam satu ekosistem."
+	/>
+	<meta property="og:title" content="SantriOnline | AI Islami dan Ekosistem Digital Santri" />
+	<meta
+		property="og:description"
+		content="Coba AI Chat Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, buku, coin, konten Islam, dan akun terpadu."
 	/>
 </svelte:head>
 
-<main class="min-h-screen bg-[#f7f7f4] text-slate-950 dark:bg-slate-950 dark:text-white">
-	<header
-		class="sticky top-0 z-40 border-b border-slate-200/80 bg-[#f7f7f4]/92 px-4 backdrop-blur-xl dark:border-white/10 dark:bg-slate-950/92 sm:px-6 lg:px-10"
-	>
+<main class="min-h-screen bg-[#f6f7f3] text-[#16251c]">
+	<header class="sticky top-0 z-40 border-b border-[#dfe7de] bg-[#f6f7f3]/92 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<div class="flex min-w-0 items-center gap-3">
 				<button
 					type="button"
-					class="grid size-10 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:border-emerald-500 hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 md:hidden"
+					class="grid size-10 shrink-0 place-items-center rounded-lg border border-[#d7e1d6] bg-white text-[#506557] shadow-sm transition hover:border-[#1a5c38] hover:text-[#1a5c38] md:hidden"
 					aria-label="Buka menu"
 					aria-expanded={showMobileSidebar}
 					onclick={() => (showMobileSidebar = true)}
@@ -263,31 +256,31 @@
 					<span class="block h-4 w-5 border-y-2 border-current"></span>
 				</button>
 
-				<a class="flex min-w-0 items-center gap-3" href="/" aria-label="Santri Online beranda">
-					<img src={logo} alt="Logo Santri Online" class="size-10 rounded-xl object-cover shadow-sm" />
-					<span class="truncate text-base font-black tracking-normal sm:text-lg">Santri Online</span>
+				<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
+					<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-lg object-cover shadow-sm" />
+					<span class="truncate text-base font-black tracking-normal sm:text-lg">SantriOnline</span>
 				</a>
 			</div>
 
-			<div class="hidden items-center gap-8 text-sm font-semibold text-slate-600 dark:text-slate-300 md:flex">
+			<div class="hidden items-center gap-7 text-sm font-bold text-[#52685a] md:flex">
 				{#each menuItems as item}
-					<a class="transition hover:text-emerald-700 dark:hover:text-emerald-300" href={item.href}>
-						{item.label}
-					</a>
+					<a class="transition hover:text-[#1a5c38]" href={item.href}>{item.label}</a>
 				{/each}
 			</div>
 
 			<div class="hidden items-center gap-2 md:flex">
 				<a
-					class="rounded-full border border-slate-300 bg-white px-4 py-2 text-sm font-bold text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-white/15 dark:bg-white/5 dark:text-slate-200"
+					class="rounded-full border border-[#cbd8cd] bg-white px-4 py-2 text-sm font-extrabold text-[#425448] transition hover:border-[#1a5c38] hover:text-[#1a5c38]"
 					href={appLoginUrl}
-					>Masuk</a
 				>
+					Masuk
+				</a>
 				<a
-					class="rounded-full bg-emerald-600 px-4 py-2 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+					class="rounded-full bg-[#1a5c38] px-4 py-2 text-sm font-extrabold text-white shadow-sm transition hover:bg-[#13462a] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/20"
 					href={appRegisterUrl}
-					>Daftar Gratis</a
 				>
+					Buka App
+				</a>
 			</div>
 		</nav>
 	</header>
@@ -296,25 +289,25 @@
 		<div class="fixed inset-0 z-50 md:hidden">
 			<button
 				type="button"
-				class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]"
+				class="absolute inset-0 bg-[#102016]/50 backdrop-blur-[2px]"
 				aria-label="Tutup menu"
 				onclick={closeMobileSidebar}
 			></button>
 			<aside
-				class="mobile-drawer relative flex h-full w-[84%] max-w-[340px] flex-col border-r border-slate-200 bg-[#f7f7f4] px-5 py-5 shadow-2xl dark:border-white/10 dark:bg-slate-950"
+				class="mobile-drawer relative flex h-full w-[84%] max-w-[340px] flex-col border-r border-[#d7e1d6] bg-[#f6f7f3] px-5 py-5 shadow-2xl"
 				aria-label="Menu mobile"
 			>
 				<div class="flex items-center justify-between gap-3">
 					<a class="flex min-w-0 items-center gap-3" href="/" onclick={closeMobileSidebar}>
-						<img src={logo} alt="Logo Santri Online" class="size-11 rounded-xl object-cover" />
+						<img src={logo} alt="Logo SantriOnline" class="size-11 rounded-lg object-cover" />
 						<div class="min-w-0">
-							<p class="truncate text-base font-black">Santri Online</p>
-							<p class="text-xs font-semibold text-slate-500 dark:text-slate-400">AI Islami Aswaja</p>
+							<p class="truncate text-base font-black">SantriOnline</p>
+							<p class="text-xs font-semibold text-[#6b7b70]">AI Islami dan ekosistem santri</p>
 						</div>
 					</a>
 					<button
 						type="button"
-						class="grid size-9 shrink-0 place-items-center rounded-full border border-slate-200 bg-white text-xl leading-none text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
+						class="grid size-9 shrink-0 place-items-center rounded-full border border-[#d7e1d6] bg-white text-xl leading-none text-[#52685a]"
 						aria-label="Tutup menu"
 						onclick={closeMobileSidebar}
 					>
@@ -323,227 +316,253 @@
 				</div>
 
 				<a
-					class="mt-6 inline-flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-3 text-sm font-black text-white shadow-lg shadow-emerald-900/10"
-					href="#chat"
+					class="mt-6 inline-flex items-center justify-center rounded-lg bg-[#1a5c38] px-4 py-3 text-sm font-black text-white shadow-lg shadow-[#1a5c38]/10"
+					href={appBaseUrl}
 					onclick={closeMobileSidebar}
-					>Mulai Obrolan Baru</a
 				>
+					Buka app.santrionline.com
+				</a>
 
 				<nav class="mt-6 grid gap-2" aria-label="Navigasi mobile">
 					{#each drawerItems as item}
 						<a
-							class="group flex items-center gap-3 rounded-xl px-2 py-3 text-sm font-bold text-slate-700 transition hover:bg-white hover:text-emerald-700 dark:text-slate-200 dark:hover:bg-white/5 dark:hover:text-emerald-300"
+							class="group flex items-center gap-3 rounded-lg px-2 py-3 text-sm font-bold text-[#425448] transition hover:bg-white hover:text-[#1a5c38]"
 							href={item.href}
 							onclick={closeMobileSidebar}
 						>
-							<span
-								class="grid size-9 place-items-center rounded-lg border border-slate-200 bg-white text-xs font-black text-slate-500 group-hover:border-emerald-200 group-hover:text-emerald-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-400"
-								>{item.marker}</span
-							>
+							<span class="grid size-9 place-items-center rounded-lg border border-[#d7e1d6] bg-white text-xs font-black text-[#6b7b70] group-hover:border-[#1a5c38] group-hover:text-[#1a5c38]">
+								{item.marker}
+							</span>
 							{item.label}
 						</a>
 					{/each}
 				</nav>
 
-				<div class="mt-auto border-t border-slate-200 pt-5 dark:border-white/10">
+				<div class="mt-auto border-t border-[#d7e1d6] pt-5">
 					<a
-						class="flex items-center justify-center rounded-xl bg-slate-900 px-4 py-3 text-sm font-black text-white shadow-sm dark:bg-white dark:text-slate-950"
+						class="flex items-center justify-center rounded-lg bg-[#16251c] px-4 py-3 text-sm font-black text-white shadow-sm"
 						href={groupWaUrl}
 					>
-						Gabung Grup WA
+						Gabung Grup WhatsApp
 					</a>
-					<p class="mt-4 text-sm leading-6 text-slate-600 dark:text-slate-300">
-						Gunakan 5 pertanyaan gratis dulu. Login dan daftar akan muncul setelah kuota habis.
-					</p>
 				</div>
 			</aside>
 		</div>
 	{/if}
 
-	<section id="chat" class="px-4 pb-10 pt-5 sm:px-6 lg:px-10 lg:py-14">
-		<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
-			<div class="hidden lg:block">
-				<p
-					class="inline-flex rounded-full border border-emerald-600/15 bg-emerald-600/10 px-4 py-2 text-sm font-bold text-emerald-800 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200"
-				>
-					AI Islami berbasis Aswaja dan 4 Mazhab
+	<section class="relative overflow-hidden px-4 py-12 sm:px-6 lg:px-10 lg:py-20">
+		<div class="absolute inset-x-0 top-0 h-[560px] bg-gradient-to-br from-[#e8f3ed] via-[#f6f7f3] to-[#f5ebcc]"></div>
+		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
+			<div class="max-w-3xl">
+				<p class="inline-flex rounded-full border border-[#c9a84c]/35 bg-white/70 px-4 py-2 text-sm font-extrabold text-[#755f20] shadow-sm">
+					Terpadu dengan app.santrionline.com
 				</p>
-				<h1 class="mt-6 max-w-3xl text-6xl font-black leading-[1.02] tracking-normal xl:text-7xl">
-					Tanya Apa Saja tentang Islam
+				<h1 class="mt-6 text-4xl font-black leading-tight tracking-normal text-[#102016] sm:text-6xl lg:text-7xl">
+					AI Islami dan Ekosistem Digital untuk Santri, Ustaz, dan Lembaga
 				</h1>
-				<p class="mt-6 max-w-2xl text-xl leading-8 text-slate-600 dark:text-slate-300">
-					Santri Online membantu menjawab pertanyaan harian, belajar kitab, dan menyusun bahan
-					dakwah dengan bahasa Indonesia yang mudah dipahami.
+				<p class="mt-6 max-w-2xl text-lg leading-8 text-[#52685a] sm:text-xl">
+					Mulai dari tanya jawab Islami, lanjut ke kitab digital, TPQ, buku, coin, konten Islam, dan
+					layanan website profesional dalam satu jalur yang saling terhubung.
 				</p>
-				<div class="mt-8 flex items-center gap-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
-					<span class="grid size-9 place-items-center rounded-full bg-emerald-100 text-xs font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200">
-						10K
-					</span>
-					Sudah dipakai 10.000+ santri Indonesia
+				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
+					<a
+						class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-7 py-3 text-base font-extrabold text-white shadow-lg shadow-[#1a5c38]/15 transition hover:bg-[#13462a] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/20"
+						href={appBaseUrl}
+					>
+						Buka SantriOnline App
+					</a>
+					<a
+						class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] bg-white px-7 py-3 text-base font-extrabold text-[#1a5c38] shadow-sm transition hover:border-[#1a5c38]"
+						href="#chat"
+					>
+						Coba AI Chat
+					</a>
+				</div>
+				<div class="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
+					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
+						<p class="text-sm font-black text-[#1a5c38]">AI Chat</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Tanya jawab Islami harian.</p>
+					</div>
+					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
+						<p class="text-sm font-black text-[#1a5c38]">Kitab Digital</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Rujukan belajar terpadu.</p>
+					</div>
+					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
+						<p class="text-sm font-black text-[#1a5c38]">TPQ</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Pendaftaran dan dashboard.</p>
+					</div>
 				</div>
 			</div>
 
-			<section
-				class="flex min-h-[calc(100dvh-116px)] flex-col rounded-[24px] border border-slate-200 bg-white shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-slate-900 md:min-h-[680px]"
-				aria-label="Chat demo Santri Online"
-			>
-				<div class="flex items-center justify-between border-b border-slate-100 px-4 py-3 dark:border-white/10 sm:px-5">
-					<div class="flex min-w-0 items-center gap-3">
-						<img src={logo} alt="" class="size-9 rounded-xl object-cover" />
-						<div class="min-w-0">
-							<h1 class="truncate text-sm font-black sm:text-base">Santri Online</h1>
-							<p class="truncate text-xs font-semibold text-slate-500 dark:text-slate-400">
-								Gratis 5 pertanyaan pertama
+			<div class="relative" id="chat">
+				<div class="absolute -inset-4 rounded-[32px] bg-[#1a5c38]/10 blur-2xl"></div>
+				<section
+					class="relative flex min-h-[620px] flex-col overflow-hidden rounded-[24px] border border-[#d7e1d6] bg-white shadow-2xl shadow-[#1a5c38]/10"
+					aria-label="Chat demo SantriOnline"
+				>
+					<div class="flex items-center justify-between border-b border-[#e4ece5] px-4 py-3 sm:px-5">
+						<div class="flex min-w-0 items-center gap-3">
+							<img src={logo} alt="" class="size-9 rounded-lg object-cover" />
+							<div class="min-w-0">
+								<h2 class="truncate text-sm font-black sm:text-base">SantriOnline AI</h2>
+								<p class="truncate text-xs font-semibold text-[#6b7b70]">
+									Tamu mendapat 5 pertanyaan pertama
+								</p>
+							</div>
+						</div>
+						<a
+							class="rounded-full border border-[#c9a84c]/45 bg-[#fbf6e6] px-3 py-1.5 text-xs font-black text-[#755f20] transition hover:border-[#c9a84c]"
+							href={groupWaUrl}
+						>
+							Grup WA
+						</a>
+					</div>
+
+					<div class="flex flex-1 flex-col overflow-hidden">
+						<div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6" aria-live="polite">
+							{#if chatMessages.length === 0}
+								<div class="mx-auto flex min-h-[350px] max-w-2xl flex-col justify-center">
+									<p class="text-center text-4xl font-black tracking-normal text-[#102016] sm:text-5xl">
+										Apa yang ingin Anda tanyakan?
+									</p>
+									<p class="mx-auto mt-4 max-w-lg text-center leading-7 text-[#52685a]">
+										Coba pertanyaan singkat, lalu lanjutkan pengalaman penuh melalui akun SantriOnline App.
+									</p>
+									<div class="mt-8 grid gap-3 sm:grid-cols-3">
+										{#each examples as example}
+											<button
+												type="button"
+												class="rounded-lg border border-[#d7e1d6] bg-[#f6f7f3] px-4 py-4 text-left text-sm font-semibold leading-6 text-[#425448] transition hover:border-[#1a5c38] hover:bg-[#e8f3ed] hover:text-[#1a5c38] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/10"
+												disabled={isChatLoading}
+												onclick={() => void sendQuestion(example)}
+											>
+												{example}
+											</button>
+										{/each}
+									</div>
+								</div>
+							{:else}
+								<div class="mx-auto max-w-3xl space-y-5">
+									{#each chatMessages as message}
+										<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+											<div
+												class={`max-w-[88%] whitespace-pre-line rounded-3xl px-4 py-3 text-sm leading-7 shadow-sm sm:text-base ${
+													message.role === 'user'
+														? 'rounded-br-md bg-[#1a5c38] text-white'
+														: 'rounded-bl-md border border-[#d7e1d6] bg-[#f6f7f3] text-[#425448]'
+												}`}
+											>
+												{message.content}
+											</div>
+										</div>
+									{/each}
+
+									{#if isChatLoading}
+										<div class="flex justify-start">
+											<div class="rounded-3xl rounded-bl-md border border-[#d7e1d6] bg-[#f6f7f3] px-4 py-3 text-sm leading-7 text-[#425448] shadow-sm sm:text-base">
+												SantriOnline sedang menjawab...
+											</div>
+										</div>
+									{/if}
+								</div>
+							{/if}
+						</div>
+
+						<div class="border-t border-[#e4ece5] bg-white/95 px-4 py-4 sm:px-6">
+							<form
+								class="mx-auto flex max-w-3xl items-center gap-2 rounded-3xl border border-[#d7e1d6] bg-[#f6f7f3] p-2 shadow-sm focus-within:border-[#1a5c38] focus-within:ring-4 focus-within:ring-[#1a5c38]/10"
+								onsubmit={handleSubmit}
+							>
+								<label class="sr-only" for="question">Ketik pertanyaan</label>
+								<input
+									id="question"
+									class="min-w-0 flex-1 bg-transparent px-3 py-2 text-base text-[#16251c] outline-none placeholder:text-[#8b998f]"
+									bind:value={question}
+									placeholder="Ketik pertanyaan..."
+									autocomplete="off"
+								/>
+								<button
+									type="submit"
+									disabled={isChatLoading || !question.trim()}
+									class="grid size-11 shrink-0 place-items-center rounded-full bg-[#1a5c38] text-base font-black text-white transition hover:bg-[#13462a] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/20 disabled:cursor-not-allowed disabled:bg-[#c8d1ca] disabled:text-[#6b7b70]"
+									aria-label="Kirim pertanyaan"
+								>
+									<span aria-hidden="true">&uarr;</span>
+								</button>
+							</form>
+							<p class="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-[#6b7b70]">
+								Jawaban AI perlu tetap dikaji dengan guru atau rujukan yang terpercaya.
 							</p>
 						</div>
 					</div>
-					<a
-						class="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-800 transition hover:border-emerald-500 dark:border-emerald-400/20 dark:bg-emerald-400/10 dark:text-emerald-200"
-						href={groupWaUrl}
-						>Grup WA</a
-					>
-				</div>
-
-				<div class="flex flex-1 flex-col overflow-hidden">
-					<div class="flex-1 overflow-y-auto px-4 py-6 sm:px-6" aria-live="polite">
-						{#if chatMessages.length === 0}
-							<div class="mx-auto flex min-h-[360px] max-w-2xl flex-col items-center justify-center text-center">
-								<p
-									class="bg-gradient-to-r from-emerald-600 via-teal-500 to-indigo-500 bg-clip-text text-5xl font-medium tracking-normal text-transparent sm:text-6xl"
-								>
-									Halo, Tamu
-								</p>
-								<p class="mt-5 text-lg font-medium leading-8 text-slate-600 dark:text-slate-300">
-									Ada yang bisa Santri Online bantu hari ini?
-								</p>
-								<div class="mt-8 grid w-full gap-3 sm:grid-cols-3">
-									{#each examples as example}
-										<button
-											type="button"
-											class="rounded-2xl border border-slate-200 bg-[#f7f7f4] px-4 py-4 text-left text-sm font-semibold leading-6 text-slate-700 transition hover:border-emerald-500 hover:bg-emerald-50 hover:text-emerald-800 focus:outline-none focus:ring-4 focus:ring-emerald-500/15 dark:border-white/10 dark:bg-white/5 dark:text-slate-200"
-											disabled={isChatLoading}
-											onclick={() => void sendQuestion(example)}
-										>
-											{example}
-										</button>
-									{/each}
-								</div>
-							</div>
-						{:else}
-							<div class="mx-auto max-w-3xl space-y-5">
-								{#each chatMessages as message}
-									<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-										<div
-											class={`max-w-[88%] whitespace-pre-line rounded-3xl px-4 py-3 text-sm leading-7 shadow-sm sm:text-base ${
-												message.role === 'user'
-													? 'rounded-br-md bg-emerald-600 text-white'
-													: 'rounded-bl-md border border-slate-200 bg-[#f7f7f4] text-slate-700 dark:border-white/10 dark:bg-white/5 dark:text-slate-100'
-											}`}
-										>
-											{message.content}
-										</div>
-									</div>
-								{/each}
-
-								{#if isChatLoading}
-									<div class="flex justify-start">
-										<div
-											class="rounded-3xl rounded-bl-md border border-slate-200 bg-[#f7f7f4] px-4 py-3 text-sm leading-7 text-slate-700 shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-slate-100 sm:text-base"
-										>
-											Santri Online sedang menjawab...
-										</div>
-									</div>
-								{/if}
-							</div>
-						{/if}
-					</div>
-
-					<div class="border-t border-slate-100 bg-white/95 px-4 py-4 dark:border-white/10 dark:bg-slate-900/95 sm:px-6">
-						<form
-							class="mx-auto flex max-w-3xl items-center gap-2 rounded-3xl border border-slate-200 bg-[#f7f7f4] p-2 shadow-sm focus-within:border-emerald-500 focus-within:ring-4 focus-within:ring-emerald-500/10 dark:border-white/10 dark:bg-slate-950"
-							onsubmit={handleSubmit}
-						>
-							<label class="sr-only" for="question">Ketik pertanyaanmu</label>
-							<input
-								id="question"
-								class="min-w-0 flex-1 bg-transparent px-3 py-2 text-base text-slate-900 outline-none placeholder:text-slate-400 dark:text-white"
-								bind:value={question}
-								placeholder="Ketik pertanyaanmu..."
-								autocomplete="off"
-							/>
-							<button
-								type="submit"
-								disabled={isChatLoading || !question.trim()}
-								class="grid size-11 shrink-0 place-items-center rounded-full bg-emerald-600 text-base font-black text-white transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:bg-slate-300 disabled:text-slate-500 dark:disabled:bg-slate-700 dark:disabled:text-slate-400"
-								aria-label="Kirim pertanyaan"
-							>
-								<span aria-hidden="true">&uarr;</span>
-							</button>
-						</form>
-						<p class="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-slate-500 dark:text-slate-400">
-							Jawaban AI perlu tetap dikaji dengan guru atau rujukan yang terpercaya.
-						</p>
-					</div>
-				</div>
-			</section>
+				</section>
+			</div>
 		</div>
 	</section>
 
-	<section id="ekosistem" class="px-4 py-10 sm:px-6 lg:px-10 lg:py-14">
+	<section id="produk" class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
-			<div
-				class="fade-in rounded-[24px] border border-slate-200 bg-white p-5 shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-slate-900 sm:p-6 lg:p-8"
-			>
-				<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-					<div class="max-w-3xl">
-						<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
-							SantriOnline App
-						</p>
-						<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
-							Masuk ke Ekosistem SantriOnline
-						</h2>
-						<p class="mt-4 max-w-2xl leading-7 text-slate-600 dark:text-slate-300">
-							Lanjutkan dari Tanya Chat AI ke fitur lengkap untuk TPQ, kitab, buku digital,
-							coin, konten Islam, dan akun SantriOnline.
-						</p>
-					</div>
-					<div class="flex flex-col gap-3 sm:flex-row lg:shrink-0">
+			<div class="max-w-3xl">
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Produk Utama</p>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+					Satu pintu untuk belajar, berdakwah, dan mengelola lembaga.
+				</h2>
+			</div>
+
+			<div class="mt-10 grid gap-4 md:grid-cols-3">
+				{#each productPillars as pillar}
+					<a
+						class="group rounded-lg border border-[#d7e1d6] bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-[#c9a84c] hover:shadow-xl hover:shadow-[#1a5c38]/10"
+						href={pillar.href}
+					>
+						<span class="grid size-12 place-items-center rounded-full bg-[#e8f3ed] text-sm font-black text-[#1a5c38]">
+							{pillar.marker}
+						</span>
+						<h3 class="mt-5 text-xl font-black group-hover:text-[#1a5c38]">{pillar.title}</h3>
+						<p class="mt-3 leading-7 text-[#52685a]">{pillar.description}</p>
+					</a>
+				{/each}
+			</div>
+		</div>
+	</section>
+
+	<section id="app" class="bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
+		<div class="mx-auto max-w-7xl">
+			<div class="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+				<div>
+					<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">App Integration</p>
+					<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+						Terhubung langsung ke app.santrionline.com
+					</h2>
+					<p class="mt-5 text-lg leading-8 text-[#52685a]">
+						Halaman publik ini menjadi pintu masuk. Aktivitas lanjutan diarahkan ke aplikasi utama agar
+						pengguna bisa masuk, daftar, membaca kitab, mengelola TPQ, membeli coin, atau membuka konten Islam.
+					</p>
+					<div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
 						<a
-							class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+							class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-6 py-3 text-sm font-black text-white transition hover:bg-[#13462a]"
 							href={appBaseUrl}
-							>Buka Aplikasi SantriOnline</a
 						>
+							Buka App
+						</a>
 						<a
-							class="inline-flex items-center justify-center rounded-full border border-amber-400 bg-amber-50 px-6 py-3 text-sm font-black text-amber-950 transition hover:border-amber-500 hover:bg-amber-100 dark:border-amber-300/30 dark:bg-amber-300/10 dark:text-amber-100"
+							class="inline-flex items-center justify-center rounded-full border border-[#c9a84c] bg-[#fbf6e6] px-6 py-3 text-sm font-black text-[#755f20] transition hover:bg-[#f4e8bf]"
 							href={`${appBaseUrl}/tpq/daftar`}
-							>Daftarkan TPQ</a
 						>
+							Daftarkan TPQ
+						</a>
 					</div>
 				</div>
 
-				<div class="mt-8 flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-5">
-					{#each appIntegrationCategories as category}
-						<article
-							class="fade-in flex min-h-[260px] min-w-[280px] flex-col rounded-2xl border border-slate-200 bg-[#f7f7f4] p-5 transition hover:-translate-y-1 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-lg hover:shadow-emerald-950/10 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-emerald-400/10 md:min-w-0"
-						>
-							<div class="flex items-start gap-3">
-								<span
-									class="grid size-11 shrink-0 place-items-center rounded-xl bg-emerald-100 text-sm font-black text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
-								>
-									{category.marker}
-								</span>
-								<div class="min-w-0">
-									<h3 class="text-lg font-black">{category.title}</h3>
-									<p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-										{category.description}
-									</p>
-								</div>
-							</div>
-
-							<div class="mt-5 flex flex-wrap gap-2">
-								{#each category.links as link}
+				<div class="grid gap-4 sm:grid-cols-2">
+					{#each appModules as module}
+						<article class="rounded-lg border border-[#d7e1d6] bg-[#f6f7f3] p-5">
+							<h3 class="text-lg font-black">{module.title}</h3>
+							<p class="mt-2 min-h-12 text-sm leading-6 text-[#52685a]">{module.description}</p>
+							<div class="mt-4 flex flex-wrap gap-2">
+								{#each module.links as link}
 									<a
-										class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:text-emerald-300"
+										class="rounded-full border border-[#d7e1d6] bg-white px-3 py-1.5 text-xs font-bold text-[#425448] transition hover:border-[#1a5c38] hover:text-[#1a5c38]"
 										href={link.href}
 									>
 										{link.label}
@@ -559,67 +578,74 @@
 
 	<section id="fitur" class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
-			<div class="fade-in max-w-2xl">
-				<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Fitur</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
-					Semua kebutuhan santri digital dalam satu platform.
+			<div class="max-w-3xl">
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Fitur</p>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+					Dibangun untuk pengalaman yang utuh, bukan halaman yang berdiri sendiri.
 				</h2>
 			</div>
-			<div class="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-				{#each features as feature}
-					<article
-						id={feature.id}
-						class="fade-in rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-emerald-300 hover:shadow-xl hover:shadow-emerald-950/10 dark:border-white/10 dark:bg-white/[0.04]"
-					>
-						<div
-							class="grid size-11 place-items-center rounded-xl bg-emerald-50 text-sm font-black text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
-						>
-							{feature.marker}
-						</div>
-						<h3 class="mt-5 text-xl font-extrabold">{feature.title}</h3>
-						<p class="mt-3 leading-7 text-slate-600 dark:text-slate-300">{feature.description}</p>
+			<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+				{#each features as feature, index}
+					<article class="rounded-lg border border-[#d7e1d6] bg-white p-5 shadow-sm">
+						<span class="grid size-10 place-items-center rounded-full bg-[#e8f3ed] text-sm font-black text-[#1a5c38]">
+							{String(index + 1).padStart(2, '0')}
+						</span>
+						<h3 class="mt-5 text-xl font-black">{feature.title}</h3>
+						<p class="mt-3 leading-7 text-[#52685a]">{feature.description}</p>
 					</article>
 				{/each}
 			</div>
 		</div>
 	</section>
 
-	<section id="harga" class="bg-white px-4 py-14 dark:bg-slate-900 sm:px-6 lg:px-10 lg:py-20">
+	<section id="harga" class="bg-[#102016] px-4 py-14 text-white sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
-			<div class="fade-in max-w-2xl">
-				<p class="text-sm font-bold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300">Harga</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
-					Mulai gratis, upgrade saat kebutuhan bertambah.
+			<div class="max-w-3xl">
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#f2d982]">Harga</p>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+					Mulai dari akses tamu, lanjutkan ke akun sesuai kebutuhan.
 				</h2>
 			</div>
 
-			<div class="mt-9 grid gap-4 lg:grid-cols-3">
+			<div class="mt-10 grid gap-4 lg:grid-cols-3">
 				{#each plans as plan}
 					<article
-						class={`fade-in rounded-2xl border p-6 shadow-sm ${
+						class={`rounded-lg border p-6 shadow-sm ${
 							plan.highlight
-								? 'border-emerald-600 bg-slate-950 text-white shadow-emerald-950/15 dark:bg-emerald-950'
-								: 'border-slate-200 bg-[#f7f7f4] dark:border-white/10 dark:bg-white/[0.04]'
+								? 'border-[#c9a84c] bg-white text-[#16251c]'
+								: 'border-white/10 bg-white/10 text-white'
 						}`}
 					>
 						{#if plan.highlight}
-							<p class="mb-4 inline-flex rounded-full bg-amber-500 px-3 py-1 text-xs font-extrabold text-amber-950">
-								Paling populer
+							<p class="mb-4 inline-flex rounded-full bg-[#c9a84c] px-3 py-1 text-xs font-extrabold text-[#102016]">
+								Populer
 							</p>
 						{/if}
 						<h3 class="text-xl font-black">{plan.name}</h3>
-						<p class="mt-4 text-4xl font-black">{plan.price}</p>
-						<p class={`mt-3 min-h-16 leading-7 ${plan.highlight ? 'text-emerald-50/80' : 'text-slate-600 dark:text-slate-300'}`}>
+						<p class={`mt-4 text-4xl font-black ${plan.highlight ? 'text-[#1a5c38]' : 'text-[#f2d982]'}`}>
+							{plan.price}
+						</p>
+						<p class={`mt-3 min-h-20 leading-7 ${plan.highlight ? 'text-[#52685a]' : 'text-white/72'}`}>
 							{plan.description}
 						</p>
 						<ul class="mt-6 space-y-3">
 							{#each plan.perks as perk}
 								<li class="flex gap-3">
-									<span class={plan.highlight ? 'text-amber-300' : 'text-emerald-600'} aria-hidden="true">&check;</span>
+									<span class={plan.highlight ? 'text-[#1a5c38]' : 'text-[#f2d982]'} aria-hidden="true">&check;</span>
 									<span>{perk}</span>
 								</li>
 							{/each}
 						</ul>
+						<a
+							class={`mt-7 inline-flex w-full items-center justify-center rounded-full px-5 py-3 text-sm font-black transition ${
+								plan.highlight
+									? 'bg-[#1a5c38] text-white hover:bg-[#13462a]'
+									: 'bg-white text-[#102016] hover:bg-[#f2d982]'
+							}`}
+							href={plan.href}
+						>
+							Pilih Paket
+						</a>
 					</article>
 				{/each}
 			</div>
@@ -627,109 +653,92 @@
 	</section>
 
 	<section class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
-		<div class="mx-auto max-w-7xl">
-			<div class="fade-in max-w-2xl">
-				<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">Testimoni</p>
-				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
-					Dipakai untuk belajar, mengajar, dan berdakwah.
+		<div class="mx-auto grid max-w-7xl gap-8 rounded-[24px] border border-[#d7e1d6] bg-white p-6 shadow-xl shadow-[#1a5c38]/10 lg:grid-cols-[1fr_auto] lg:items-center lg:p-10">
+			<div>
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Langkah Berikutnya</p>
+				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
+					Lanjutkan dari website publik ke SantriOnline App.
 				</h2>
+				<p class="mt-4 max-w-2xl leading-7 text-[#52685a]">
+					Buat akun untuk menyimpan riwayat, mengakses fitur lanjutan, dan mengelola kebutuhan belajar
+					atau lembaga dari aplikasi utama.
+				</p>
 			</div>
-
-			<div class="mt-9 grid gap-4 md:grid-cols-3">
-				{#each testimonials as testimonial}
-					<article class="fade-in rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-white/10 dark:bg-white/[0.04]">
-						<div class="flex items-center gap-3">
-							<span
-								class="grid size-12 place-items-center rounded-full bg-emerald-100 text-sm font-black text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-200"
-							>
-								{testimonial.avatar}
-							</span>
-							<div>
-								<h3 class="font-black">{testimonial.name}</h3>
-								<p class="text-sm text-slate-500 dark:text-slate-400">{testimonial.city}</p>
-							</div>
-						</div>
-						<p class="mt-4 text-sm font-black text-amber-500" aria-label="Rating 5 dari 5">5/5</p>
-						<p class="mt-4 leading-7 text-slate-600 dark:text-slate-300">"{testimonial.quote}"</p>
-					</article>
-				{/each}
+			<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
+				<a
+					class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-7 py-3 text-base font-black text-white transition hover:bg-[#13462a]"
+					href={appRegisterUrl}
+				>
+					Daftar Akun
+				</a>
+				<a
+					class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] px-7 py-3 text-base font-black text-[#1a5c38] transition hover:border-[#1a5c38]"
+					href="/jasa"
+				>
+					Lihat Jasa Website
+				</a>
 			</div>
-		</div>
-	</section>
-
-	<section class="px-4 pb-14 sm:px-6 lg:px-10 lg:pb-20">
-		<div class="fade-in mx-auto max-w-7xl rounded-3xl bg-slate-950 px-6 py-10 text-center text-white shadow-2xl shadow-emerald-950/15 dark:bg-emerald-950 sm:px-10 sm:py-14">
-			<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-300">Tanpa kartu kredit</p>
-			<h2 class="mx-auto mt-3 max-w-4xl text-3xl font-black tracking-normal sm:text-5xl">
-				Mulai Gratis Sekarang, 5 Pertanyaan Pertama untuk Tamu
-			</h2>
-			<a
-				class="mt-8 inline-flex items-center justify-center rounded-full bg-emerald-500 px-7 py-3 text-base font-black text-emerald-950 transition hover:bg-emerald-400 focus:outline-none focus:ring-4 focus:ring-emerald-300/40"
-				href="#chat"
-				>Mulai Chat</a
-			>
 		</div>
 	</section>
 </main>
 
-<footer
-	class="border-t border-slate-200 bg-white px-4 py-8 text-slate-600 dark:border-white/10 dark:bg-slate-950 dark:text-slate-300 sm:px-6 lg:px-10"
->
+<footer class="border-t border-[#d7e1d6] bg-white px-4 py-8 text-[#52685a] sm:px-6 lg:px-10">
 	<div class="mx-auto flex max-w-7xl flex-col gap-5 md:flex-row md:items-center md:justify-between">
-		<a class="flex items-center gap-3 font-black text-slate-950 dark:text-white" href="/">
-			<img src={logo} alt="Logo Santri Online" class="size-9 rounded-lg object-cover" />
-			Santri Online
+		<a class="flex items-center gap-3 font-black text-[#16251c]" href="/">
+			<img src={logo} alt="Logo SantriOnline" class="size-9 rounded-lg object-cover" />
+			SantriOnline
 		</a>
 		<nav class="flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Navigasi footer">
 			{#each menuItems as item}
-				<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href={item.href}>{item.label}</a>
+				<a class="hover:text-[#1a5c38]" href={item.href}>{item.label}</a>
 			{/each}
-			<a class="hover:text-emerald-700 dark:hover:text-emerald-300" href={groupWaUrl}>Grup WA</a>
+			<a class="hover:text-[#1a5c38]" href={appBaseUrl}>App</a>
+			<a class="hover:text-[#1a5c38]" href={groupWaUrl}>Grup WA</a>
 		</nav>
-		<p class="text-sm">Copyright 2026 Santri Online</p>
+		<p class="text-sm">Copyright 2026 SantriOnline</p>
 	</div>
 </footer>
 
 {#if showUpgradeModal}
-	<div class="fixed inset-0 z-50 grid place-items-center bg-slate-950/55 px-5 backdrop-blur-sm" role="presentation">
+	<div class="fixed inset-0 z-50 grid place-items-center bg-[#102016]/60 px-5 backdrop-blur-sm" role="presentation">
 		<div
-			class="w-full max-w-md rounded-3xl bg-white p-6 text-slate-950 shadow-2xl dark:bg-slate-900 dark:text-white"
+			class="w-full max-w-md rounded-[24px] bg-white p-6 text-[#16251c] shadow-2xl"
 			role="dialog"
 			aria-modal="true"
 			aria-labelledby="upgrade-title"
 		>
 			<div class="flex items-start justify-between gap-4">
 				<div>
-					<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
-						Santri Online
-					</p>
+					<p class="text-sm font-bold uppercase tracking-[0.14em] text-[#1a5c38]">SantriOnline App</p>
 					<h2 id="upgrade-title" class="mt-2 text-2xl font-black">
-						Daftar gratis untuk chat tanpa batas
+						Daftar akun untuk melanjutkan chat
 					</h2>
 				</div>
 				<button
 					type="button"
-					class="grid size-9 place-items-center rounded-full border border-slate-200 text-slate-500 transition hover:border-slate-400 hover:text-slate-900 dark:border-white/10 dark:text-slate-300 dark:hover:text-white"
+					class="grid size-9 place-items-center rounded-full border border-[#d7e1d6] text-[#6b7b70] transition hover:border-[#1a5c38] hover:text-[#1a5c38]"
 					aria-label="Tutup modal"
 					onclick={() => (showUpgradeModal = false)}
 				>
 					&times;
 				</button>
 			</div>
-			<p class="mt-5 rounded-2xl bg-[#f7f7f4] p-4 text-sm leading-6 text-slate-700 dark:bg-white/8 dark:text-slate-200">
-				Kuota 5 pertanyaan gratis sudah habis. Silakan daftar atau masuk untuk melanjutkan chat.
+			<p class="mt-5 rounded-lg bg-[#f6f7f3] p-4 text-sm leading-6 text-[#425448]">
+				Kuota pertanyaan tamu sudah habis. Silakan daftar atau masuk ke SantriOnline App untuk melanjutkan.
 			</p>
 			<div class="mt-6 flex flex-col gap-3 sm:flex-row">
 				<a
-					class="inline-flex flex-1 items-center justify-center rounded-full bg-emerald-600 px-5 py-3 text-sm font-black text-white transition hover:bg-emerald-700"
+					class="inline-flex flex-1 items-center justify-center rounded-full bg-[#1a5c38] px-5 py-3 text-sm font-black text-white transition hover:bg-[#13462a]"
 					href={appRegisterUrl}
-					>Daftar Gratis</a
 				>
+					Daftar
+				</a>
 				<a
-					class="inline-flex flex-1 items-center justify-center rounded-full border border-slate-300 px-5 py-3 text-sm font-black text-slate-700 transition hover:border-emerald-600 hover:text-emerald-700 dark:border-white/15 dark:text-slate-200"
+					class="inline-flex flex-1 items-center justify-center rounded-full border border-[#cbd8cd] px-5 py-3 text-sm font-black text-[#425448] transition hover:border-[#1a5c38] hover:text-[#1a5c38]"
 					href={appLoginUrl}
-					>Masuk</a
 				>
+					Masuk
+				</a>
 			</div>
 		</div>
 	</div>
