@@ -15,6 +15,7 @@
 	const appLoginUrl = 'https://app.santrionline.com/login';
 	const appRegisterUrl = 'https://app.santrionline.com/register';
 	const groupWaUrl = 'https://app.santrionline.com/r/groupwa';
+	const appBaseUrl = 'https://app.santrionline.com';
 
 	const examples = [
 		'Hukum investasi saham?',
@@ -24,6 +25,7 @@
 
 	const menuItems = [
 		{ href: '#fitur', label: 'Fitur' },
+		{ href: '#ekosistem', label: 'App' },
 		{ href: '#harga', label: 'Harga' },
 		{ href: '/jasa', label: 'Jasa' },
 		{ href: '#kitab', label: 'Kitab' },
@@ -33,10 +35,73 @@
 	const drawerItems = [
 		{ href: '#chat', label: 'Obrolan Baru', marker: '01' },
 		{ href: '#fitur', label: 'Fitur Santri Online', marker: '02' },
-		{ href: '#harga', label: 'Harga Paket', marker: '03' },
-		{ href: '/jasa', label: 'Jasa Website', marker: '04' },
-		{ href: '#kitab', label: 'Kitab Digital', marker: '05' },
-		{ href: '/blog', label: 'Blog', marker: '06' }
+		{ href: '#ekosistem', label: 'Ekosistem App', marker: '03' },
+		{ href: '#harga', label: 'Harga Paket', marker: '04' },
+		{ href: '/jasa', label: 'Jasa Website', marker: '05' },
+		{ href: '#kitab', label: 'Kitab Digital', marker: '06' },
+		{ href: '/blog', label: 'Blog', marker: '07' }
+	];
+
+	const appIntegrationCategories = [
+		{
+			marker: 'TP',
+			title: 'TPQ & Lembaga',
+			description: 'Kelola lembaga, data santri, dan pendaftaran TPQ.',
+			links: [
+				{ label: 'TPQ', href: `${appBaseUrl}/tpq` },
+				{ label: 'Daftarkan TPQ', href: `${appBaseUrl}/tpq/daftar` },
+				{ label: 'Dashboard Lembaga', href: `${appBaseUrl}/dashboard` },
+				{ label: 'Kelola Santri', href: `${appBaseUrl}/dashboard/kelola-santri` }
+			]
+		},
+		{
+			marker: 'BK',
+			title: 'Belajar & Kitab',
+			description: 'Akses kitab, mushaf, materi belajar, dan kalender.',
+			links: [
+				{ label: 'Perpustakaan Kitab', href: `${appBaseUrl}/kitab` },
+				{ label: "Mushaf Al-Qur'an", href: `${appBaseUrl}/kitab/quran` },
+				{ label: 'Belajar Santri', href: `${appBaseUrl}/belajar` },
+				{ label: 'Kalender Hijriyah', href: `${appBaseUrl}/kalender` }
+			]
+		},
+		{
+			marker: 'BC',
+			title: 'Buku, Coin & Store',
+			description: 'Baca buku, kelola coin, dan jelajahi produk digital.',
+			links: [
+				{ label: 'Buku Digital', href: `${appBaseUrl}/buku` },
+				{ label: 'Rak Buku Saya', href: `${appBaseUrl}/buku/saya` },
+				{ label: 'Studio Penulis', href: `${appBaseUrl}/buku/studio` },
+				{ label: 'Saldo Coin', href: `${appBaseUrl}/coins` },
+				{ label: 'Topup Coin', href: `${appBaseUrl}/coins/topup` },
+				{ label: 'Digital Store', href: `${appBaseUrl}/digital-store` }
+			]
+		},
+		{
+			marker: 'KI',
+			title: 'Konten Islam',
+			description: 'Baca referensi tokoh, sejarah, dan konten Islam.',
+			links: [
+				{ label: 'Blog/Konten', href: `${appBaseUrl}/blog` },
+				{ label: 'Tokoh Islam', href: `${appBaseUrl}/tokoh` },
+				{ label: 'Nabi', href: `${appBaseUrl}/nabi` },
+				{ label: 'Sahabat', href: `${appBaseUrl}/sahabat` },
+				{ label: 'Ulama', href: `${appBaseUrl}/ulama` },
+				{ label: 'Dinasti Islam', href: `${appBaseUrl}/dinasti` },
+				{ label: 'Ormas Islam', href: `${appBaseUrl}/ormas` }
+			]
+		},
+		{
+			marker: 'AK',
+			title: 'Akses Akun',
+			description: 'Masuk, daftar, dan kelola profil akun SantriOnline.',
+			links: [
+				{ label: 'Masuk', href: `${appBaseUrl}/auth` },
+				{ label: 'Daftar', href: `${appBaseUrl}/register` },
+				{ label: 'Profil Akun', href: `${appBaseUrl}/akun` }
+			]
+		}
 	];
 
 	const features = [
@@ -427,6 +492,74 @@
 					</div>
 				</div>
 			</section>
+		</div>
+	</section>
+
+	<section id="ekosistem" class="px-4 py-10 sm:px-6 lg:px-10 lg:py-14">
+		<div class="mx-auto max-w-7xl">
+			<div
+				class="fade-in rounded-[24px] border border-slate-200 bg-white p-5 shadow-xl shadow-emerald-950/5 dark:border-white/10 dark:bg-slate-900 sm:p-6 lg:p-8"
+			>
+				<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+					<div class="max-w-3xl">
+						<p class="text-sm font-bold uppercase tracking-[0.14em] text-emerald-700 dark:text-emerald-300">
+							SantriOnline App
+						</p>
+						<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-4xl">
+							Masuk ke Ekosistem SantriOnline
+						</h2>
+						<p class="mt-4 max-w-2xl leading-7 text-slate-600 dark:text-slate-300">
+							Lanjutkan dari Tanya Chat AI ke fitur lengkap untuk TPQ, kitab, buku digital,
+							coin, konten Islam, dan akun SantriOnline.
+						</p>
+					</div>
+					<div class="flex flex-col gap-3 sm:flex-row lg:shrink-0">
+						<a
+							class="inline-flex items-center justify-center rounded-full bg-emerald-600 px-6 py-3 text-sm font-black text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-500/20"
+							href={appBaseUrl}
+							>Buka Aplikasi SantriOnline</a
+						>
+						<a
+							class="inline-flex items-center justify-center rounded-full border border-amber-400 bg-amber-50 px-6 py-3 text-sm font-black text-amber-950 transition hover:border-amber-500 hover:bg-amber-100 dark:border-amber-300/30 dark:bg-amber-300/10 dark:text-amber-100"
+							href={`${appBaseUrl}/tpq/daftar`}
+							>Daftarkan TPQ</a
+						>
+					</div>
+				</div>
+
+				<div class="mt-8 flex gap-4 overflow-x-auto pb-2 md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-5">
+					{#each appIntegrationCategories as category}
+						<article
+							class="fade-in flex min-h-[260px] min-w-[280px] flex-col rounded-2xl border border-slate-200 bg-[#f7f7f4] p-5 transition hover:-translate-y-1 hover:border-emerald-300 hover:bg-emerald-50 hover:shadow-lg hover:shadow-emerald-950/10 dark:border-white/10 dark:bg-white/[0.04] dark:hover:bg-emerald-400/10 md:min-w-0"
+						>
+							<div class="flex items-start gap-3">
+								<span
+									class="grid size-11 shrink-0 place-items-center rounded-xl bg-emerald-100 text-sm font-black text-emerald-800 dark:bg-emerald-400/10 dark:text-emerald-200"
+								>
+									{category.marker}
+								</span>
+								<div class="min-w-0">
+									<h3 class="text-lg font-black">{category.title}</h3>
+									<p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
+										{category.description}
+									</p>
+								</div>
+							</div>
+
+							<div class="mt-5 flex flex-wrap gap-2">
+								{#each category.links as link}
+									<a
+										class="rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 transition hover:border-emerald-500 hover:text-emerald-700 dark:border-white/10 dark:bg-slate-950 dark:text-slate-200 dark:hover:text-emerald-300"
+										href={link.href}
+									>
+										{link.label}
+									</a>
+								{/each}
+							</div>
+						</article>
+					{/each}
+				</div>
+			</div>
 		</div>
 	</section>
 
