@@ -156,12 +156,6 @@
 			description: 'Untuk santri aktif yang butuh akses kitab dan coin lebih besar.',
 			perks: ['3.000 coin', 'Semua kitab digital', 'Riwayat chat tersimpan'],
 			highlight: true
-		},
-		{
-			name: 'Kiai Digital',
-			price: 'Rp100K',
-			description: 'Untuk pesantren, majelis, dan lembaga dakwah digital.',
-			perks: ['15.000 coin', 'CustomAI', 'Dukungan persona pesantren']
 		}
 	];
 
