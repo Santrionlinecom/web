@@ -7,6 +7,20 @@
 	],
 	"pages_build_output_dir": ".svelte-kit/cloudflare",
 	"vars": {
-		
-	}
+		"PUBLIC_MIDTRANS_CLIENT_KEY": "",
+		"PUBLIC_MIDTRANS_MODE": "sandbox"
+	},
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "santrionline-web-db",
+			"migrations_dir": "migrations"
+		}
+	]
+
+	// Secrets yang harus diset manual:
+	// wrangler secret put MIDTRANS_SERVER_KEY
+	// wrangler secret put TELEGRAM_BOT_TOKEN
+	// wrangler secret put TELEGRAM_CHAT_ID
+	// wrangler secret put INVOICE_ADMIN_SECRET
 }
