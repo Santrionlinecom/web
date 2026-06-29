@@ -35,9 +35,9 @@
 	];
 
 	const examples = [
-		'Hukum investasi saham?',
-		'Bacaan qunut subuh lengkap?',
-		'Cara shalat jamak qashar?'
+		'Bagaimana agar anak suka shalat tanpa dipaksa?',
+		'Pelajaran aqidah dasar apa untuk remaja?',
+		'Cara membagi waktu antara sekolah, ngaji, dan gadget?'
 	];
 
 	const productPillars = [
@@ -46,6 +46,12 @@
 			description: 'Bertanya, belajar, dan menyusun materi dakwah dengan bahasa Indonesia yang mudah dipahami.',
 			href: '#chat',
 			marker: 'AI'
+		},
+		{
+			title: 'Jalur Belajar Bertahap',
+			description: 'Dari pertanyaan sederhana, lanjut ke kitab, materi, dan pembiasaan belajar yang lebih terarah.',
+			href: '#app',
+			marker: 'JL'
 		},
 		{
 			title: 'Kitab dan Belajar',
@@ -124,6 +130,10 @@
 			description: 'Respons disusun agar mudah dipahami, bisa ditelaah ulang, dan tetap nyaman dibaca.'
 		},
 		{
+			title: 'Penguatan Aqidah dan Adab',
+			description: 'Bukan hanya menjawab pertanyaan, tetapi mengarahkan pengguna pada aqidah Aswaja, adab, dan kebiasaan baik.'
+		},
+		{
 			title: 'Rujukan Belajar',
 			description: 'Arahkan proses belajar ke kitab, mushaf, materi, dan konten yang tersedia di aplikasi.'
 		},
@@ -143,6 +153,12 @@
 			title: 'Ekosistem Bertahap',
 			description: 'Mulai dari chat, lanjut ke kitab, buku digital, coin, dan layanan website.'
 		}
+	];
+
+	const trustBadges = [
+		'Aswaja-oriented',
+		'Terpadu dengan app.santrionline.com',
+		'Belajar + pembinaan + lembaga'
 	];
 
 	const plans = [
@@ -230,15 +246,15 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline | AI Islami, Kitab Digital, dan Ekosistem Lembaga</title>
+	<title>SantriOnline | AI Islami, Kitab Digital, dan Pembinaan Generasi Muslim</title>
 	<meta
 		name="description"
-		content="SantriOnline menghubungkan AI Chat Islami, kitab digital, TPQ, konten Islam, buku digital, dan layanan website profesional dalam satu ekosistem."
+		content="SantriOnline menghubungkan AI Chat Islami, kitab digital, TPQ, konten Islam, dan pembinaan generasi muslim yang kuat aqidah, adab, ilmu, dan skill dalam satu ekosistem."
 	/>
-	<meta property="og:title" content="SantriOnline | AI Islami dan Ekosistem Digital Santri" />
+	<meta property="og:title" content="SantriOnline | AI Islami dan Pembinaan Generasi Muslim" />
 	<meta
 		property="og:description"
-		content="Coba AI Chat Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, buku, coin, konten Islam, dan akun terpadu."
+		content="Coba AI Chat Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, materi belajar, dan ekosistem pembinaan generasi muslim."
 	/>
 </svelte:head>
 
@@ -358,38 +374,46 @@
 					Terpadu dengan app.santrionline.com
 				</p>
 				<h1 class="mt-6 text-4xl font-black leading-tight tracking-normal text-[#102016] sm:text-6xl lg:text-7xl">
-					AI Islami dan Ekosistem Digital untuk Santri, Ustaz, dan Lembaga
+					AI Islami untuk Membangun Generasi Muslim yang Berilmu, Beradab, dan Siap Bersaing
 				</h1>
 				<p class="mt-6 max-w-2xl text-lg leading-8 text-[#52685a] sm:text-xl">
-					Mulai dari tanya jawab Islami, lanjut ke kitab digital, TPQ, buku, coin, konten Islam, dan
-					layanan website profesional dalam satu jalur yang saling terhubung.
+					Mulai dari tanya jawab Islami, lanjut ke kitab digital, TPQ, materi belajar, dan pembinaan
+					kebiasaan baik agar anak, santri, dan keluarga muslim bertumbuh dengan aqidah, adab, ilmu,
+					dan skill yang kuat.
 				</p>
+				<div class="mt-8 flex flex-wrap gap-2">
+					{#each trustBadges as badge}
+						<span class="rounded-full border border-[#d7e1d6] bg-white/80 px-3 py-1.5 text-xs font-extrabold text-[#52685a] shadow-sm">
+							{badge}
+						</span>
+					{/each}
+				</div>
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
 					<a
 						class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-7 py-3 text-base font-extrabold text-white shadow-lg shadow-[#1a5c38]/15 transition hover:bg-[#13462a] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/20"
-						href={appBaseUrl}
+						href={appRegisterUrl}
 					>
-						Buka SantriOnline App
+						Coba Gratis Sekarang
 					</a>
 					<a
 						class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] bg-white px-7 py-3 text-base font-extrabold text-[#1a5c38] shadow-sm transition hover:border-[#1a5c38]"
 						href="#chat"
 					>
-						Coba AI Chat
+						Lihat Demo AI Chat
 					</a>
 				</div>
 				<div class="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
 						<p class="text-sm font-black text-[#1a5c38]">AI Chat</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Tanya jawab Islami harian.</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Tanya jawab Islami harian yang lebih terarah.</p>
 					</div>
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
 						<p class="text-sm font-black text-[#1a5c38]">Kitab Digital</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Rujukan belajar terpadu.</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Rujukan belajar dan penguatan ilmu.</p>
 					</div>
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
-						<p class="text-sm font-black text-[#1a5c38]">TPQ</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Pendaftaran dan dashboard.</p>
+						<p class="text-sm font-black text-[#1a5c38]">Pembinaan</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Habit, adab, dan pertumbuhan bertahap.</p>
 					</div>
 				</div>
 			</div>
@@ -505,7 +529,7 @@
 			<div class="max-w-3xl">
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Produk Utama</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Satu pintu untuk belajar, berdakwah, dan mengelola lembaga.
+					Satu pintu untuk belajar, bertumbuh, dan membina generasi muslim.
 				</h2>
 			</div>
 
@@ -536,7 +560,8 @@
 					</h2>
 					<p class="mt-5 text-lg leading-8 text-[#52685a]">
 						Halaman publik ini menjadi pintu masuk. Aktivitas lanjutan diarahkan ke aplikasi utama agar
-						pengguna bisa masuk, daftar, membaca kitab, mengelola TPQ, membeli coin, atau membuka konten Islam.
+						pengguna bisa masuk, daftar, membaca kitab, belajar lebih terstruktur, mengelola TPQ, dan bertumbuh
+						dalam ekosistem muslim yang sehat.
 					</p>
 					<div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
 						<a
@@ -581,7 +606,7 @@
 			<div class="max-w-3xl">
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Fitur</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Dibangun untuk pengalaman yang utuh, bukan halaman yang berdiri sendiri.
+					Dibangun untuk pengalaman yang utuh, bukan sekadar landing page biasa.
 				</h2>
 			</div>
 			<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -603,7 +628,7 @@
 			<div class="max-w-3xl">
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#f2d982]">Harga</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Mulai dari akses tamu, lanjutkan ke akun sesuai kebutuhan.
+					Mulai dari akses tamu, lalu lanjut ke pembelajaran dan pembinaan yang lebih dalam.
 				</h2>
 			</div>
 
@@ -657,11 +682,11 @@
 			<div>
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Langkah Berikutnya</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Lanjutkan dari website publik ke SantriOnline App.
+					Lanjutkan dari website publik ke SantriOnline App yang lebih lengkap.
 				</h2>
 				<p class="mt-4 max-w-2xl leading-7 text-[#52685a]">
-					Buat akun untuk menyimpan riwayat, mengakses fitur lanjutan, dan mengelola kebutuhan belajar
-					atau lembaga dari aplikasi utama.
+					Buat akun untuk menyimpan riwayat, mengakses fitur lanjutan, dan membangun proses belajar yang
+					lebih konsisten untuk diri sendiri, keluarga, atau lembaga.
 				</p>
 			</div>
 			<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
