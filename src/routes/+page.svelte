@@ -26,7 +26,7 @@
 	];
 
 	const drawerItems = [
-		{ href: '#chat', label: 'Coba AI Chat', marker: '01' },
+		{ href: '#chat', label: 'Coba Asisten Belajar', marker: '01' },
 		{ href: '#produk', label: 'Produk Utama', marker: '02' },
 		{ href: '#app', label: 'Ekosistem App', marker: '03' },
 		{ href: '#fitur', label: 'Fitur', marker: '04' },
@@ -42,8 +42,8 @@
 
 	const productPillars = [
 		{
-			title: 'AI Chat Islami',
-			description: 'Bertanya, belajar, dan menyusun materi dakwah dengan bahasa Indonesia yang mudah dipahami.',
+			title: 'Asisten Belajar Islami',
+			description: 'Bertanya tentang adab, motivasi belajar, dan pembiasaan baik dengan batas aman: bukan pengganti ustadz atau fatwa.',
 			href: '#chat',
 			marker: 'AI'
 		},
@@ -165,7 +165,7 @@
 		{
 			name: 'Tamu',
 			price: 'Rp0',
-			description: 'Untuk mencoba AI Chat SantriOnline sebelum membuat akun.',
+			description: 'Untuk mencoba Asisten Belajar SantriOnline sebelum membuat akun.',
 			perks: ['5 pertanyaan pertama', 'Contoh pertanyaan siap pakai', 'Akses dari halaman utama'],
 			href: '#chat'
 		},
@@ -246,15 +246,15 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline | AI Islami, Kitab Digital, dan Pembinaan Generasi Muslim</title>
+	<title>SantriOnline | Asisten Belajar Islami, Kitab Digital, dan Pembinaan Generasi Muslim</title>
 	<meta
 		name="description"
-		content="SantriOnline menghubungkan AI Chat Islami, kitab digital, TPQ, konten Islam, dan pembinaan generasi muslim yang kuat aqidah, adab, ilmu, dan skill dalam satu ekosistem."
+		content="SantriOnline menghubungkan asisten belajar Islami, kitab digital, TPQ, konten Islam, dan pembinaan generasi muslim yang kuat aqidah, adab, ilmu, dan skill dalam satu ekosistem."
 	/>
-	<meta property="og:title" content="SantriOnline | AI Islami dan Pembinaan Generasi Muslim" />
+	<meta property="og:title" content="SantriOnline | Asisten Belajar Islami dan Pembinaan Generasi Muslim" />
 	<meta
 		property="og:description"
-		content="Coba AI Chat Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, materi belajar, dan ekosistem pembinaan generasi muslim."
+		content="Coba asisten belajar Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, materi belajar, dan ekosistem pembinaan generasi muslim."
 	/>
 </svelte:head>
 
@@ -318,7 +318,7 @@
 						<img src={logo} alt="Logo SantriOnline" class="size-11 rounded-lg object-cover" />
 						<div class="min-w-0">
 							<p class="truncate text-base font-black">SantriOnline</p>
-							<p class="text-xs font-semibold text-[#6b7b70]">AI Islami dan ekosistem santri</p>
+							<p class="text-xs font-semibold text-[#6b7b70]">Asisten belajar dan ekosistem santri</p>
 						</div>
 					</a>
 					<button
@@ -374,7 +374,7 @@
 					Terpadu dengan app.santrionline.com
 				</p>
 				<h1 class="mt-6 text-4xl font-black leading-tight tracking-normal text-[#102016] sm:text-6xl lg:text-7xl">
-					AI Islami untuk Membangun Generasi Muslim yang Berilmu, Beradab, dan Siap Bersaing
+					Asisten Belajar Islami untuk Membangun Generasi Muslim yang Berilmu, Beradab, dan Siap Bersaing
 				</h1>
 				<p class="mt-6 max-w-2xl text-lg leading-8 text-[#52685a] sm:text-xl">
 					Mulai dari tanya jawab Islami, lanjut ke kitab digital, TPQ, materi belajar, dan pembinaan
@@ -399,12 +399,12 @@
 						class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] bg-white px-7 py-3 text-base font-extrabold text-[#1a5c38] shadow-sm transition hover:border-[#1a5c38]"
 						href="#chat"
 					>
-						Lihat Demo AI Chat
+						Lihat Demo Asisten
 					</a>
 				</div>
 				<div class="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
-						<p class="text-sm font-black text-[#1a5c38]">AI Chat</p>
+						<p class="text-sm font-black text-[#1a5c38]">Asisten Belajar</p>
 						<p class="mt-1 text-sm leading-6 text-[#52685a]">Tanya jawab Islami harian yang lebih terarah.</p>
 					</div>
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
@@ -515,7 +515,7 @@
 								</button>
 							</form>
 							<p class="mx-auto mt-3 max-w-3xl text-center text-xs leading-5 text-[#6b7b70]">
-								Jawaban AI perlu tetap dikaji dengan guru atau rujukan yang terpercaya.
+								Asisten ini bukan ustadz atau mufti. Pertanyaan hukum Islam, madzhab, ayat, dan hadits perlu rujukan kitab terverifikasi serta guru yang terpercaya.
 							</p>
 						</div>
 					</div>
