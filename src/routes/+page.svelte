@@ -18,55 +18,58 @@
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
 	const menuItems = [
-		{ href: '#produk', label: 'Produk' },
-		{ href: '#app', label: 'App' },
-		{ href: '#fitur', label: 'Fitur' },
-		{ href: '#harga', label: 'Harga' },
-		{ href: '/jasa', label: 'Jasa Website' }
+		{ href: '/', label: 'Beranda' },
+		{ href: '#santri', label: 'Santri' },
+		{ href: '#kelas', label: 'Kelas' },
+		{ href: '#riwayat', label: 'Riwayat' }
 	];
 
 	const drawerItems = [
-		{ href: '#chat', label: 'Coba Asisten Belajar', marker: '01' },
-		{ href: '#produk', label: 'Produk Utama', marker: '02' },
-		{ href: '#app', label: 'Ekosistem App', marker: '03' },
-		{ href: '#fitur', label: 'Fitur', marker: '04' },
-		{ href: '#harga', label: 'Harga', marker: '05' },
-		{ href: '/jasa', label: 'Jasa Website', marker: '06' }
+		{ href: '/', label: 'Beranda', marker: '01' },
+		{ href: '#santri', label: 'Makna Santri', marker: '02' },
+		{ href: '#kelas', label: 'Kelas Belajar', marker: '03' },
+		{ href: '#riwayat', label: 'Riwayat Amal', marker: '04' }
+	];
+
+	const mobileNavItems = [
+		{ href: '/', label: 'Beranda', icon: '⌂' },
+		{ href: '#santri', label: 'Santri', icon: '☘' },
+		{ href: '#kelas', label: 'Kelas', icon: '▣' },
+		{ href: '#riwayat', label: 'Riwayat', icon: '◷' }
 	];
 
 	const examples = [
-		'Bagaimana agar anak suka shalat tanpa dipaksa?',
-		'Pelajaran aqidah dasar apa untuk remaja?',
-		'Cara membagi waktu antara sekolah, ngaji, dan gadget?'
+		'Bagaimana cara mengenali ulama yang lurus dan beradab?',
+		'Apa makna mengikuti صراط المستقيم dalam hidup santri?',
+		'Bagaimana memakai hati dan akal saat memilih guru?'
 	];
 
 	const productPillars = [
 		{
-			title: 'Asisten Belajar Islami',
-			description: 'Bertanya tentang adab, motivasi belajar, dan pembiasaan baik dengan batas aman: bukan pengganti ustadz atau fatwa.',
-			href: '#chat',
-			marker: 'AI'
+			title: 'Santri yang Terhubung',
+			description: 'Online bukan sekadar internet, tetapi hati dan akal yang tetap tersambung pada صراط المستقيم.',
+			href: '#santri',
+			marker: 'ON'
 		},
 		{
-			title: 'Jalur Belajar Bertahap',
-			description: 'Dari pertanyaan sederhana, lanjut ke kitab, materi, dan pembiasaan belajar yang lebih terarah.',
-			href: '#app',
-			marker: 'JL'
+			title: 'Ikut Ulama Pewaris Nabi',
+			description: 'Belajar mengenali ulama yang lurus: berilmu, beradab, menjaga umat, dan tidak menjual agama untuk hawa nafsu.',
+			href: '#kelas',
+			marker: 'UL'
 		},
 		{
-			title: 'Kitab dan Belajar',
-			description: 'Akses rujukan kitab, mushaf, materi belajar, dan konten Islam dari aplikasi utama.',
-			href: `${appBaseUrl}/kitab`,
-			marker: 'KT'
+			title: 'Hati dan Akal yang Hidup',
+			description: 'Santri dilatih merasakan kebenaran dengan hati yang bersih dan menimbangnya dengan akal yang sehat.',
+			href: '#fitur',
+			marker: 'HA'
 		},
 		{
-			title: 'Manajemen Lembaga',
-			description: 'Kelola TPQ, data santri, pendaftaran, dan dashboard lembaga dalam satu ekosistem.',
-			href: `${appBaseUrl}/dashboard`,
-			marker: 'TP'
+			title: 'Riwayat Amal dan Belajar',
+			description: 'Belajar, bertanya, membaca, dan memperbaiki diri dicatat sebagai perjalanan santri menuju adab dan istiqamah.',
+			href: '#riwayat',
+			marker: 'RA'
 		}
 	];
-
 	const appModules = [
 		{
 			title: 'Akun',
@@ -82,7 +85,7 @@
 			description: 'Pendaftaran TPQ, data santri, dan dashboard lembaga.',
 			links: [
 				{ label: 'TPQ', href: `${appBaseUrl}/tpq` },
-				{ label: 'Daftarkan TPQ', href: `${appBaseUrl}/tpq/daftar` },
+				{ label: 'Buka Kelas', href: `${appBaseUrl}/tpq/daftar` },
 				{ label: 'Dashboard', href: `${appBaseUrl}/dashboard` }
 			]
 		},
@@ -112,80 +115,65 @@
 				{ label: 'Coin', href: `${appBaseUrl}/coins` },
 				{ label: 'Store', href: `${appBaseUrl}/digital-store` }
 			]
-		},
-		{
-			title: 'Website Profesional',
-			description: 'Layanan website untuk UMKM, pesantren, klinik, dan lembaga.',
-			links: [
-				{ label: 'Lihat Jasa', href: '/jasa' },
-				{ label: 'Paket Website', href: '/jasa#pricing' },
-				{ label: 'Order', href: '/order' }
-			]
 		}
 	];
 
 	const features = [
 		{
-			title: 'Jawaban Terstruktur',
-			description: 'Respons disusun agar mudah dipahami, bisa ditelaah ulang, dan tetap nyaman dibaca.'
+			title: 'Makna Santri Online',
+			description: 'Santri yang online adalah santri yang tersambung pada jalur lurus: Al-Qur’an, Sunnah, ulama pewaris Nabi, dan adab.'
 		},
 		{
-			title: 'Penguatan Aqidah dan Adab',
-			description: 'Bukan hanya menjawab pertanyaan, tetapi mengarahkan pengguna pada aqidah Aswaja, adab, dan kebiasaan baik.'
+			title: 'Mengenali Ulama yang Lurus',
+			description: 'Bukan hanya populer, tetapi tampak dari ilmu, akhlak, sanad, kehati-hatian, dan keberpihakan pada maslahat umat.'
 		},
 		{
-			title: 'Rujukan Belajar',
-			description: 'Arahkan proses belajar ke kitab, mushaf, materi, dan konten yang tersedia di aplikasi.'
+			title: 'Hati yang Merasakan',
+			description: 'Hati dilatih bersih agar peka terhadap kebenaran, adab, kejujuran, dan cahaya ilmu.'
 		},
 		{
-			title: 'Alur Lembaga',
-			description: 'TPQ dan lembaga dapat diarahkan ke pendaftaran, dashboard, dan pengelolaan data.'
+			title: 'Akal yang Berpikir',
+			description: 'Akal dipakai untuk menimbang dalil, nasihat guru, sejarah ulama, dan dampak sebuah pilihan.'
 		},
 		{
-			title: 'Akses Akun Terpadu',
-			description: 'Pengguna bisa melanjutkan dari website publik ke akun SantriOnline App.'
+			title: 'Kelas Bertahap',
+			description: 'Belajar dimulai dari aqidah, adab, ibadah, sirah, kitab dasar, lalu skill hidup yang bermanfaat.'
 		},
 		{
-			title: 'Dukungan Dakwah',
-			description: 'Bantu menyusun bahan kultum, khutbah, MC, dan materi kajian dengan struktur rapi.'
-		},
-		{
-			title: 'Ekosistem Bertahap',
-			description: 'Mulai dari chat, lanjut ke kitab, buku digital, coin, dan layanan website.'
+			title: 'Riwayat Pertumbuhan',
+			description: 'Santri diarahkan punya jejak belajar dan amal agar tidak terseret scrolling tanpa arah.'
 		}
 	];
-
 	const trustBadges = [
-		'Aswaja-oriented',
-		'Terpadu dengan app.santrionline.com',
-		'Belajar + pembinaan + lembaga'
+		'صراط المستقيم',
+		'Ikut ulama pewaris Nabi',
+		'Hati + akal + adab'
 	];
 
 	const plans = [
 		{
-			name: 'Tamu',
-			price: 'Rp0',
-			description: 'Untuk mencoba Asisten Belajar SantriOnline sebelum membuat akun.',
-			perks: ['5 pertanyaan pertama', 'Contoh pertanyaan siap pakai', 'Akses dari halaman utama'],
-			href: '#chat'
+			name: 'Beranda',
+			price: 'Mulai',
+			description: 'Masuk dari halaman utama untuk memahami arah SantriOnline sebagai jalan pembinaan, bukan sekadar aplikasi.',
+			perks: ['Makna Santri Online', 'Arah Aswaja', 'Pintu ke aplikasi'],
+			href: '/'
 		},
 		{
-			name: 'Santri Plus',
-			price: 'Rp25K',
-			description: 'Untuk pengguna aktif yang membutuhkan akses belajar dan coin lebih besar.',
-			perks: ['3.000 coin', 'Kitab digital', 'Riwayat chat tersimpan'],
-			href: appRegisterUrl,
+			name: 'Kelas',
+			price: 'Belajar',
+			description: 'Lanjut ke kelas dan materi agar belajar tidak acak, tetapi bertahap dari adab, aqidah, ibadah, dan kitab.',
+			perks: ['Kelas belajar', 'Kitab digital', 'Mushaf dan materi'],
+			href: `${appBaseUrl}/belajar`,
 			highlight: true
 		},
 		{
-			name: 'Lembaga',
-			price: 'Custom',
-			description: 'Untuk TPQ, pesantren, komunitas, dan lembaga yang membutuhkan pengelolaan lebih lengkap.',
-			perks: ['Dashboard lembaga', 'Pendaftaran santri', 'Dukungan implementasi'],
-			href: `${appBaseUrl}/tpq/daftar`
+			name: 'Riwayat',
+			price: 'Istiqamah',
+			description: 'Simpan jejak tanya jawab, bacaan, kelas, dan pembiasaan agar perjalanan santri bisa dievaluasi.',
+			perks: ['Riwayat belajar', 'Catatan progres', 'Akun santri'],
+			href: `${appBaseUrl}/akun`
 		}
 	];
-
 	async function sendQuestion(nextQuestion = question.trim()) {
 		const message = nextQuestion.trim();
 
@@ -246,15 +234,15 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline | Asisten Belajar Islami, Kitab Digital, dan Pembinaan Generasi Muslim</title>
+	<title>SantriOnline | Santri On Line di صراط المستقيم</title>
 	<meta
 		name="description"
-		content="SantriOnline menghubungkan asisten belajar Islami, kitab digital, TPQ, konten Islam, dan pembinaan generasi muslim yang kuat aqidah, adab, ilmu, dan skill dalam satu ekosistem."
+		content="SantriOnline adalah jalan santri on line di صراط المستقيم: ikut para ulama yang lurus sebagai pewaris Nabi dengan hati, akal, ilmu, dan adab."
 	/>
-	<meta property="og:title" content="SantriOnline | Asisten Belajar Islami dan Pembinaan Generasi Muslim" />
+	<meta property="og:title" content="SantriOnline | Santri On Line di صراط المستقيم" />
 	<meta
 		property="og:description"
-		content="Coba asisten belajar Islami dan lanjutkan ke app.santrionline.com untuk kitab digital, TPQ, materi belajar, dan ekosistem pembinaan generasi muslim."
+		content="SantriOnline mengajak santri mengikuti ulama yang lurus sebagai pewaris Nabi, memakai hati dan akal untuk berjalan di صراط المستقيم."
 	/>
 </svelte:head>
 
@@ -371,15 +359,13 @@
 		<div class="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.94fr_1.06fr] lg:items-center">
 			<div class="max-w-3xl">
 				<p class="inline-flex rounded-full border border-[#c9a84c]/35 bg-white/70 px-4 py-2 text-sm font-extrabold text-[#755f20] shadow-sm">
-					Terpadu dengan app.santrionline.com
+					Santri On Line · صراط المستقيم
 				</p>
 				<h1 class="mt-6 text-4xl font-black leading-tight tracking-normal text-[#102016] sm:text-6xl lg:text-7xl">
-					Asisten Belajar Islami untuk Membangun Generasi Muslim yang Berilmu, Beradab, dan Siap Bersaing
+					SantriOnline: Santri yang On Line di Jalan Lurus Para Ulama Pewaris Nabi
 				</h1>
 				<p class="mt-6 max-w-2xl text-lg leading-8 text-[#52685a] sm:text-xl">
-					Mulai dari tanya jawab Islami, lanjut ke kitab digital, TPQ, materi belajar, dan pembinaan
-					kebiasaan baik agar anak, santri, dan keluarga muslim bertumbuh dengan aqidah, adab, ilmu,
-					dan skill yang kuat.
+					Online di sini bukan sekadar tersambung internet. SantriOnline bermakna santri yang tersambung kepada para ulama yang lurus sebagai pewaris Nabi; memakai hati dan akal untuk berpikir, merasakan, lalu memilih jalan صراط المستقيم.
 				</p>
 				<div class="mt-8 flex flex-wrap gap-2">
 					{#each trustBadges as badge}
@@ -393,27 +379,27 @@
 						class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-7 py-3 text-base font-extrabold text-white shadow-lg shadow-[#1a5c38]/15 transition hover:bg-[#13462a] focus:outline-none focus:ring-4 focus:ring-[#1a5c38]/20"
 						href={appRegisterUrl}
 					>
-						Coba Gratis Sekarang
+						Mulai Jadi Santri
 					</a>
 					<a
 						class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] bg-white px-7 py-3 text-base font-extrabold text-[#1a5c38] shadow-sm transition hover:border-[#1a5c38]"
 						href="#chat"
 					>
-						Lihat Demo Asisten
+						Tanya SantriOnline
 					</a>
 				</div>
 				<div class="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
-						<p class="text-sm font-black text-[#1a5c38]">Asisten Belajar</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Tanya jawab Islami harian yang lebih terarah.</p>
+						<p class="text-sm font-black text-[#1a5c38]">Santri</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Identitas belajar, adab, dan istiqamah.</p>
 					</div>
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
-						<p class="text-sm font-black text-[#1a5c38]">Kitab Digital</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Rujukan belajar dan penguatan ilmu.</p>
+						<p class="text-sm font-black text-[#1a5c38]">Ulama Lurus</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Mengikuti pewaris Nabi dengan adab.</p>
 					</div>
 					<div class="rounded-lg border border-[#d7e1d6] bg-white/80 p-4 shadow-sm">
-						<p class="text-sm font-black text-[#1a5c38]">Pembinaan</p>
-						<p class="mt-1 text-sm leading-6 text-[#52685a]">Habit, adab, dan pertumbuhan bertahap.</p>
+						<p class="text-sm font-black text-[#1a5c38]">On Line</p>
+						<p class="mt-1 text-sm leading-6 text-[#52685a]">Terhubung ke صراط المستقيم.</p>
 					</div>
 				</div>
 			</div>
@@ -524,12 +510,12 @@
 		</div>
 	</section>
 
-	<section id="produk" class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
+	<section id="santri" class="px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="max-w-3xl">
-				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Produk Utama</p>
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Makna Utama</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Satu pintu untuk belajar, bertumbuh, dan membina generasi muslim.
+					Santri pada umumnya: mencari ilmu, menjaga adab, mengikuti guru yang lurus, dan berjalan menuju Allah.
 				</h2>
 			</div>
 
@@ -550,18 +536,16 @@
 		</div>
 	</section>
 
-	<section id="app" class="bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
+	<section id="kelas" class="bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-8 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
 				<div>
-					<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">App Integration</p>
+					<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Kelas dan Jalur Belajar</p>
 					<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-						Terhubung langsung ke app.santrionline.com
+						Belajar bertahap: dari hati, akal, kitab, sampai amal
 					</h2>
 					<p class="mt-5 text-lg leading-8 text-[#52685a]">
-						Halaman publik ini menjadi pintu masuk. Aktivitas lanjutan diarahkan ke aplikasi utama agar
-						pengguna bisa masuk, daftar, membaca kitab, belajar lebih terstruktur, mengelola TPQ, dan bertumbuh
-						dalam ekosistem muslim yang sehat.
+						Halaman publik ini menjadi pengingat arah. Aktivitas lanjutan diarahkan ke aplikasi utama agar santri bisa mengikuti kelas, membaca kitab, menyimpan riwayat, dan membangun kebiasaan baik secara bertahap.
 					</p>
 					<div class="mt-7 flex flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row">
 						<a
@@ -572,9 +556,9 @@
 						</a>
 						<a
 							class="inline-flex items-center justify-center rounded-full border border-[#c9a84c] bg-[#fbf6e6] px-6 py-3 text-sm font-black text-[#755f20] transition hover:bg-[#f4e8bf]"
-							href={`${appBaseUrl}/tpq/daftar`}
+							href={`${appBaseUrl}/belajar`}
 						>
-							Daftarkan TPQ
+							Buka Kelas
 						</a>
 					</div>
 				</div>
@@ -606,7 +590,7 @@
 			<div class="max-w-3xl">
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Fitur</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Dibangun untuk pengalaman yang utuh, bukan sekadar landing page biasa.
+					Dibangun agar santri tidak sekadar online, tetapi tersambung ke ilmu, adab, dan jalan lurus.
 				</h2>
 			</div>
 			<div class="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -623,12 +607,12 @@
 		</div>
 	</section>
 
-	<section id="harga" class="bg-[#102016] px-4 py-14 text-white sm:px-6 lg:px-10 lg:py-20">
+	<section id="riwayat" class="bg-[#102016] px-4 py-14 text-white sm:px-6 lg:px-10 lg:py-20">
 		<div class="mx-auto max-w-7xl">
 			<div class="max-w-3xl">
-				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#f2d982]">Harga</p>
+				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#f2d982]">Riwayat</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Mulai dari akses tamu, lalu lanjut ke pembelajaran dan pembinaan yang lebih dalam.
+					Jejak belajar santri: dari beranda, masuk kelas, lalu menjaga riwayat amal dan ilmu agar tetap istiqamah.
 				</h2>
 			</div>
 
@@ -669,7 +653,7 @@
 							}`}
 							href={plan.href}
 						>
-							Pilih Paket
+							Buka
 						</a>
 					</article>
 				{/each}
@@ -682,25 +666,18 @@
 			<div>
 				<p class="text-sm font-black uppercase tracking-[0.14em] text-[#c9a84c]">Langkah Berikutnya</p>
 				<h2 class="mt-3 text-3xl font-black tracking-normal sm:text-5xl">
-					Lanjutkan dari website publik ke SantriOnline App yang lebih lengkap.
+					Lanjutkan dari beranda menuju kelas dan riwayat belajar yang lebih terarah.
 				</h2>
 				<p class="mt-4 max-w-2xl leading-7 text-[#52685a]">
-					Buat akun untuk menyimpan riwayat, mengakses fitur lanjutan, dan membangun proses belajar yang
-					lebih konsisten untuk diri sendiri, keluarga, atau lembaga.
+					Buat akun untuk menyimpan riwayat, masuk kelas, membaca kitab, dan menjaga proses belajar agar tidak hilang ditelan scrolling.
 				</p>
 			</div>
 			<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
 				<a
 					class="inline-flex items-center justify-center rounded-full bg-[#1a5c38] px-7 py-3 text-base font-black text-white transition hover:bg-[#13462a]"
-					href={appRegisterUrl}
+					href={`${appBaseUrl}/akun`}
 				>
-					Daftar Akun
-				</a>
-				<a
-					class="inline-flex items-center justify-center rounded-full border border-[#cbd8cd] px-7 py-3 text-base font-black text-[#1a5c38] transition hover:border-[#1a5c38]"
-					href="/jasa"
-				>
-					Lihat Jasa Website
+					Buka Riwayat
 				</a>
 			</div>
 		</div>
@@ -723,6 +700,25 @@
 		<p class="text-sm">Copyright 2026 SantriOnline</p>
 	</div>
 </footer>
+
+
+<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-[#d7e1d6] bg-white/95 px-4 py-2 shadow-[0_-18px_45px_rgba(16,32,22,0.12)] backdrop-blur-xl md:hidden" aria-label="Menu bawah mobile">
+	<div class="mx-auto grid max-w-md grid-cols-5 items-center gap-2">
+		{#each mobileNavItems.slice(0, 2) as item}
+			<a class="grid place-items-center gap-1 rounded-2xl px-2 py-1.5 text-[11px] font-black text-[#52685a]" href={item.href}>
+				<span class="text-lg leading-none">{item.icon}</span>
+				<span>{item.label}</span>
+			</a>
+		{/each}
+		<a class="-mt-8 grid size-16 place-items-center rounded-full border-[6px] border-white bg-[#1a5c38] text-3xl font-black leading-none text-white shadow-xl shadow-[#1a5c38]/25" href={appRegisterUrl} aria-label="Tambah perjalanan santri">+</a>
+		{#each mobileNavItems.slice(2) as item}
+			<a class="grid place-items-center gap-1 rounded-2xl px-2 py-1.5 text-[11px] font-black text-[#52685a]" href={item.href}>
+				<span class="text-lg leading-none">{item.icon}</span>
+				<span>{item.label}</span>
+			</a>
+		{/each}
+	</div>
+</nav>
 
 {#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-[#102016]/60 px-5 backdrop-blur-sm" role="presentation">
