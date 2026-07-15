@@ -28,7 +28,7 @@ export const load: PageServerLoad = async ({ params, platform }) => {
 	const db = getRuntimeEnv(platform).DB;
 
 	if (!db) {
-		throw error(500, 'Binding D1 DB belum dikonfigurasi.');
+		throw error(500, 'Layanan tagihan sedang tidak tersedia. Silakan coba lagi nanti.');
 	}
 
 	const invoiceRow = await db

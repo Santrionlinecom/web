@@ -203,13 +203,13 @@ async function createMidtransSnapToken({
 
 export const POST: RequestHandler = async ({ request, platform, fetch }) => {
 	if (!requireAdmin(request, platform)) {
-		return json({ message: 'Unauthorized' }, { status: 401 });
+		return json({ message: 'Akses ditolak.' }, { status: 401 });
 	}
 
 	const db = getDatabase(platform);
 
 	if (!db) {
-		return json({ message: 'Binding D1 DB belum dikonfigurasi.' }, { status: 500 });
+		return json({ message: 'Layanan tagihan sedang tidak tersedia. Silakan coba lagi nanti.' }, { status: 500 });
 	}
 
 	let body: CreateInvoiceBody;
@@ -217,7 +217,7 @@ export const POST: RequestHandler = async ({ request, platform, fetch }) => {
 	try {
 		body = (await request.json()) as CreateInvoiceBody;
 	} catch {
-		return json({ message: 'Body JSON tidak valid.' }, { status: 400 });
+		return json({ message: 'Data invoice belum lengkap atau tidak valid.' }, { status: 400 });
 	}
 
 	const namaKlien = readText(body.nama_klien);
@@ -300,13 +300,13 @@ export const POST: RequestHandler = async ({ request, platform, fetch }) => {
 
 export const GET: RequestHandler = async ({ request, platform }) => {
 	if (!requireAdmin(request, platform)) {
-		return json({ message: 'Unauthorized' }, { status: 401 });
+		return json({ message: 'Akses ditolak.' }, { status: 401 });
 	}
 
 	const db = getDatabase(platform);
 
 	if (!db) {
-		return json({ message: 'Binding D1 DB belum dikonfigurasi.' }, { status: 500 });
+		return json({ message: 'Layanan tagihan sedang tidak tersedia. Silakan coba lagi nanti.' }, { status: 500 });
 	}
 
 	const result = await db

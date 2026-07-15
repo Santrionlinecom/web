@@ -27,7 +27,7 @@
 	const appShortcuts = [
 		{
 			label: 'Mulai Belajar',
-			description: 'Aqidah, adab, ibadah, sirah, dan skill secara bertahap.',
+			description: 'Aqidah, adab, ibadah, sirah, dan keterampilan secara bertahap.',
 			href: `${appBaseUrl}/belajar`,
 			marker: '01',
 			accent: 'emerald'
@@ -72,8 +72,8 @@
 			marker: 'IL'
 		},
 		{
-			title: 'Skill dunia nyata',
-			description: 'Literasi digital, AI, komunikasi, menulis, dan problem solving untuk masa depan.',
+			title: 'Keterampilan dunia nyata',
+			description: 'Literasi digital, penggunaan AI secara bijak, komunikasi, menulis, dan pemecahan masalah.',
 			marker: 'SK'
 		},
 		{
@@ -82,8 +82,8 @@
 			marker: 'KO'
 		},
 		{
-			title: 'Habit yang terukur',
-			description: 'Misi, progres, streak, dan rapor pertumbuhan agar ilmu berubah menjadi amal.',
+			title: 'Kebiasaan yang terukur',
+			description: 'Misi, perkembangan, konsistensi, dan rapor pertumbuhan agar ilmu berubah menjadi amal.',
 			marker: 'HA'
 		}
 	];
@@ -101,7 +101,7 @@
 			name: 'Untuk Orang Tua & Mentor',
 			description: 'Mendampingi pertumbuhan ilmu, adab, hafalan, serta kebiasaan baik secara terarah.',
 			links: [
-				{ label: 'Masuk Dashboard', href: `${appBaseUrl}/dashboard` },
+				{ label: 'Pantau Perkembangan', href: `${appBaseUrl}/dashboard` },
 				{ label: 'Lihat Fitur', href: `${appBaseUrl}/fitur` }
 			]
 		},
@@ -162,15 +162,15 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline — Aqidah, Adab, Ilmu, dan Skill Generasi Muslim</title>
+	<title>SantriOnline — Aqidah, Adab, Ilmu, dan Keterampilan Generasi Muslim</title>
 	<meta
 		name="description"
-		content="SantriOnline adalah ekosistem pembinaan generasi muslim yang menghubungkan aqidah Aswaja, adab, amal, ilmu, skill, komunitas, dan habit dalam satu perjalanan belajar."
+		content="SantriOnline adalah ekosistem pembinaan generasi muslim yang menghubungkan aqidah Aswaja, adab, amal, ilmu, keterampilan, komunitas, dan kebiasaan dalam satu perjalanan belajar."
 	/>
 	<meta property="og:title" content="SantriOnline — Tumbuh dalam Ilmu, Adab, dan Amal" />
 	<meta
 		property="og:description"
-		content="Mulai perjalanan santri digital melalui kelas, kitab, habit, komunitas, dan pendampingan di app.santrionline.com."
+		content="Mulai perjalanan santri digital melalui kelas, kitab, kebiasaan, komunitas, dan pendampingan di app.santrionline.com."
 	/>
 	<link rel="canonical" href="https://santrionline.com/" />
 </svelte:head>
@@ -216,7 +216,7 @@
 				{/each}
 				<div class="mt-2 grid grid-cols-2 gap-2">
 					<a class="rounded-full border border-black/10 bg-white px-4 py-3 text-center text-sm font-bold" href={appLoginUrl}>Masuk</a>
-					<a class="rounded-full bg-[#12663e] px-4 py-3 text-center text-sm font-bold text-white" href={appBaseUrl}>Buka App ↗</a>
+					<a class="rounded-full bg-[#12663e] px-4 py-3 text-center text-sm font-bold text-white" href={appBaseUrl}>Buka Aplikasi ↗</a>
 				</div>
 			</nav>
 		{/if}
@@ -234,7 +234,7 @@
 					Tumbuh dalam <span class="text-[#12663e]">ilmu</span>, kokoh dalam aqidah, indah dalam adab.
 				</h1>
 				<p class="mt-7 max-w-2xl text-lg leading-8 text-[#52635a] sm:text-xl">
-					SantriOnline menghubungkan pembelajaran, kitab, habit, komunitas, dan pendampingan agar generasi muslim tidak hanya tahu—tetapi tumbuh, beramal, dan siap menghadapi dunia nyata.
+					SantriOnline menghubungkan pembelajaran, kitab, kebiasaan, komunitas, dan pendampingan agar generasi muslim tidak hanya tahu—tetapi tumbuh, beramal, dan siap menghadapi dunia nyata.
 				</p>
 
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -248,7 +248,7 @@
 
 				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-[#5d6d64]">
 					<span class="flex items-center gap-2"><span class="text-[#20925b]">✓</span> Aqidah Aswaja</span>
-					<span class="flex items-center gap-2"><span class="text-[#20925b]">✓</span> Cloudflare-native</span>
+					<span class="flex items-center gap-2"><span class="text-[#20925b]">✓</span> Ringan dan mudah diakses</span>
 					<span class="flex items-center gap-2"><span class="text-[#20925b]">✓</span> Untuk santri & lembaga</span>
 				</div>
 			</div>
@@ -260,7 +260,7 @@
 						<div class="flex items-center gap-3">
 							<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
 							<div>
-								<p class="text-sm font-extrabold">SantriOnline App</p>
+								<p class="text-sm font-extrabold">Aplikasi SantriOnline</p>
 								<p class="text-xs text-[#718078]">Satu akun untuk perjalanan tumbuh</p>
 							</div>
 						</div>
@@ -291,8 +291,8 @@
 								<p class="mt-1 text-xs leading-5 text-[#718078]">Rujukan terarah</p>
 							</a>
 							<a class="rounded-2xl border border-black/[0.06] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#12663e]/30 hover:shadow-md" href={`${appBaseUrl}/beranda`}>
-								<span class="grid size-9 place-items-center rounded-xl bg-[#e5f5eb] text-sm font-black text-[#12663e]">HB</span>
-								<p class="mt-4 text-sm font-extrabold">Habit Harian</p>
+								<span class="grid size-9 place-items-center rounded-xl bg-[#e5f5eb] text-sm font-black text-[#12663e]">KB</span>
+								<p class="mt-4 text-sm font-extrabold">Kebiasaan Harian</p>
 								<p class="mt-1 text-xs leading-5 text-[#718078]">Jaga konsistensi</p>
 							</a>
 							<a class="rounded-2xl border border-black/[0.06] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#c29832]/30 hover:shadow-md" href={`${appBaseUrl}/dashboard`}>
@@ -338,7 +338,7 @@
 				<div class="bg-[#fbfcfa] p-7 sm:p-8">
 					<p class="text-xs font-bold uppercase tracking-[0.15em] text-[#12663e]">03 · Daya Saing</p>
 					<h3 class="mt-5 text-xl font-extrabold">Berilmu dan kompeten</h3>
-					<p class="mt-3 leading-7 text-[#607067]">Agama menjadi kompas untuk menguasai teknologi, komunikasi, dan skill masa depan.</p>
+					<p class="mt-3 leading-7 text-[#607067]">Agama menjadi kompas untuk menguasai teknologi, komunikasi, dan keterampilan masa depan.</p>
 				</div>
 			</div>
 		</div>
@@ -349,7 +349,7 @@
 			<div class="mx-auto max-w-3xl text-center">
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-[#a87f25]">Satu Ekosistem, Dua Pintu</p>
 				<h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] sm:text-5xl">Kenali visinya di sini. Jalani pembinaannya di aplikasi.</h2>
-				<p class="mt-5 text-lg leading-8 text-[#5d6d64]">santrionline.com adalah halaman publik. Semua aktivitas personal, kelas, kitab, habit, dan dashboard terhubung langsung ke app.santrionline.com.</p>
+				<p class="mt-5 text-lg leading-8 text-[#5d6d64]">santrionline.com adalah halaman publik. Aktivitas belajar, kelas, kitab, kebiasaan, dan pemantauan perkembangan tersedia di app.santrionline.com.</p>
 			</div>
 
 			<div class="mt-12 grid gap-6 lg:grid-cols-[0.88fr_auto_1.12fr] lg:items-stretch">
@@ -375,9 +375,9 @@
 					<p class="relative mt-3 leading-7 text-white/70">Masuk dengan satu akun untuk belajar, membaca, beramal, serta melihat perkembangan.</p>
 					<ul class="relative mt-6 grid gap-3 text-sm font-semibold sm:grid-cols-2">
 						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Kelas & kitab</li>
-						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Habit & progres</li>
+						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Kebiasaan & perkembangan</li>
 						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Komunitas</li>
-						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Dashboard lembaga</li>
+						<li class="flex gap-3"><span class="text-[#e1c56a]">✓</span> Ruang pantau lembaga</li>
 					</ul>
 					<a class="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-[#102a1d] transition hover:bg-[#e6f6ec]" href={appBaseUrl}>Masuk ke Aplikasi <span aria-hidden="true">↗</span></a>
 				</article>
@@ -404,7 +404,7 @@
 				<div class="lg:sticky lg:top-24">
 					<p class="text-xs font-bold uppercase tracking-[0.18em] text-[#a87f25]">Formula Pembinaan</p>
 					<h2 class="mt-4 text-3xl font-extrabold tracking-[-0.04em] sm:text-5xl">Dari keyakinan hingga kompetensi.</h2>
-					<p class="mt-5 text-lg leading-8 text-[#5d6d64]">Setiap bagian saling menguatkan. Skill tanpa adab kehilangan arah; ilmu tanpa amal kehilangan daya.</p>
+					<p class="mt-5 text-lg leading-8 text-[#5d6d64]">Setiap bagian saling menguatkan. Keterampilan tanpa adab kehilangan arah; ilmu tanpa amal kehilangan daya.</p>
 					<a class="mt-7 inline-flex items-center gap-2 rounded-full bg-[#12663e] px-6 py-3 text-sm font-bold text-white" href={`${appBaseUrl}/belajar`}>Jelajahi Jalur Belajar <span>→</span></a>
 				</div>
 
@@ -518,7 +518,7 @@
 	<div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
 		<div>
 			<a class="inline-flex items-center gap-3 font-extrabold text-[#102219]" href="/"><img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" /> SantriOnline</a>
-			<p class="mt-4 max-w-lg text-sm leading-6">Mesin pembentuk identitas, adab, aqidah, amal, ilmu, dan skill generasi muslim.</p>
+			<p class="mt-4 max-w-lg text-sm leading-6">Mesin pembentuk identitas, adab, aqidah, amal, ilmu, dan keterampilan generasi muslim.</p>
 		</div>
 		<div class="md:text-right">
 			<nav class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold md:justify-end" aria-label="Navigasi footer">
@@ -526,7 +526,7 @@
 				<a class="hover:text-[#12663e]" href="#ekosistem">Ekosistem</a>
 				<a class="hover:text-[#12663e]" href={`${appBaseUrl}/blog`}>Artikel</a>
 				<a class="hover:text-[#12663e]" href={groupWaUrl}>Komunitas</a>
-				<a class="hover:text-[#12663e]" href={appBaseUrl}>Buka App ↗</a>
+				<a class="hover:text-[#12663e]" href={appBaseUrl}>Buka Aplikasi ↗</a>
 			</nav>
 			<p class="mt-4 text-xs">© 2026 SantriOnline · Pendem, Batu, Jawa Timur</p>
 		</div>
@@ -545,7 +545,7 @@
 	<div class="fixed inset-0 z-50 grid place-items-center bg-[#102a1d]/65 px-5 backdrop-blur-sm" role="presentation">
 		<div class="w-full max-w-md rounded-[28px] bg-white p-6 text-[#102219] shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
 			<div class="flex items-start justify-between gap-4">
-				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-[#12663e]">SantriOnline App</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
+				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-[#12663e]">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
 				<button type="button" class="grid size-9 place-items-center rounded-full border border-black/10 text-xl text-[#6a786f]" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
 			</div>
 			<p class="mt-5 rounded-2xl bg-[#eef6f1] p-4 text-sm leading-6 text-[#40564a]">Kuota pertanyaan tamu sudah selesai. Buat akun untuk pengalaman belajar dan riwayat yang lebih lengkap.</p>

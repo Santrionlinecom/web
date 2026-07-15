@@ -67,7 +67,7 @@
 		}
 
 		if (!data.midtrans.clientKey || !invoice.midtrans_snap_token) {
-			snapError = 'Konfigurasi pembayaran belum lengkap.';
+			snapError = 'Layanan pembayaran sedang tidak tersedia. Silakan hubungi SantriOnline.';
 			return;
 		}
 
@@ -87,7 +87,7 @@
 			snapReady = true;
 		};
 		script.onerror = () => {
-			snapError = 'Gagal memuat Midtrans Snap.';
+			snapError = 'Layanan pembayaran gagal dimuat. Silakan muat ulang halaman.';
 		};
 
 		if (!existingScript) {
@@ -103,7 +103,7 @@
 		const snap = (window as SnapWindow).snap;
 
 		if (!snap) {
-			snapError = 'Midtrans Snap belum siap.';
+			snapError = 'Layanan pembayaran belum siap. Silakan tunggu sebentar atau muat ulang halaman.';
 			return;
 		}
 
@@ -118,8 +118,8 @@
 </script>
 
 <svelte:head>
-	<title>Invoice {invoice.kode} | SantriOnline</title>
-	<meta name="description" content={`Invoice ${invoice.kode} untuk ${invoice.nama_klien}.`} />
+	<title>Tagihan {invoice.kode} | SantriOnline</title>
+	<meta name="description" content={`Tagihan ${invoice.kode} untuk ${invoice.nama_klien}.`} />
 </svelte:head>
 
 <main class="min-h-screen bg-[#f5f7f2] px-4 py-6 text-[#17251d] sm:px-6 lg:px-10 lg:py-10">
@@ -132,7 +132,7 @@
 		<section class="mt-6 overflow-hidden rounded-lg border border-[#d7e1d6] bg-white shadow-xl shadow-[#1a5c38]/8">
 			<div class="grid gap-6 border-b border-[#e3ebe4] bg-[#102016] px-5 py-6 text-white sm:px-8 lg:grid-cols-[1fr_auto] lg:items-start">
 				<div>
-					<p class="text-sm font-bold uppercase text-[#f2d982]">Invoice</p>
+					<p class="text-sm font-bold uppercase text-[#f2d982]">Tagihan</p>
 					<h1 class="mt-2 break-words text-3xl font-black tracking-normal sm:text-4xl">{invoice.kode}</h1>
 					<p class="mt-3 max-w-2xl text-sm leading-6 text-white/72">{invoice.deskripsi}</p>
 				</div>
@@ -141,14 +141,14 @@
 						{getStatusLabel(invoice.status)}
 					</span>
 					<p class="mt-4 text-sm text-white/70">Tanggal: {createdDate}</p>
-					<p class="mt-1 text-sm text-white/70">Due date: {dueDate}</p>
+					<p class="mt-1 text-sm text-white/70">Batas pembayaran: {dueDate}</p>
 				</div>
 			</div>
 
 			<div class="grid gap-6 px-5 py-6 sm:px-8 lg:grid-cols-2">
 				<div class="rounded-lg border border-[#e3ebe4] bg-[#f8faf7] p-5">
 					<p class="text-xs font-black uppercase text-[#6b7b70]">Dari</p>
-					<h2 class="mt-2 text-lg font-black">SantriOnline Dev</h2>
+					<h2 class="mt-2 text-lg font-black">SantriOnline Digital</h2>
 					<p class="mt-2 leading-7 text-[#52685a]">
 						Yogik Pratama<br />
 						Batu, Jawa Timur

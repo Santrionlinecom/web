@@ -92,7 +92,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform }
 	const chatConfig = getChatConfig(platform);
 
 	if (!chatConfig.apiKey) {
-		return json({ message: 'Layanan AI belum dikonfigurasi.' }, { status: 500 });
+		return json({ message: 'Asisten sedang tidak tersedia. Silakan coba lagi nanti.' }, { status: 500 });
 	}
 
 	const currentCount = getCurrentCount(cookies.get(CHAT_LIMIT_COOKIE));
@@ -106,7 +106,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform }
 	try {
 		body = await request.json();
 	} catch {
-		return json({ message: 'Format request tidak valid.' }, { status: 400 });
+		return json({ message: 'Pesan belum dapat diproses. Silakan periksa lalu kirim kembali.' }, { status: 400 });
 	}
 
 	const message = typeof (body as { message?: unknown }).message === 'string'
