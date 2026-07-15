@@ -175,7 +175,7 @@
 	<link rel="canonical" href="https://santrionline.com/" />
 </svelte:head>
 
-<main class="min-h-screen overflow-hidden bg-[#fbfcfa] text-[#102219]">
+<main class="min-h-screen bg-[#fbfcfa] text-[#102219]">
 	<header class="sticky top-0 z-40 border-b border-black/[0.06] bg-[#fbfcfa]/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
@@ -200,7 +200,8 @@
 			<button
 				type="button"
 				class="grid size-10 place-items-center rounded-full border border-black/10 bg-white text-[#263d31] md:hidden"
-				aria-label="Buka menu"
+				aria-label={showMobileMenu ? 'Tutup menu' : 'Buka menu'}
+				aria-controls="mobile-navigation"
 				aria-expanded={showMobileMenu}
 				onclick={() => (showMobileMenu = !showMobileMenu)}
 			>
@@ -209,7 +210,7 @@
 		</nav>
 
 		{#if showMobileMenu}
-			<nav class="mx-auto grid max-w-7xl gap-1 border-t border-black/[0.06] py-4 md:hidden" aria-label="Navigasi mobile">
+			<nav id="mobile-navigation" class="mx-auto grid max-w-7xl gap-1 border-t border-black/[0.06] py-4 md:hidden" aria-label="Navigasi mobile">
 				{#each navigation as item}
 					<a class="rounded-xl px-3 py-3 text-sm font-bold text-[#41564b] hover:bg-[#eef7f1]" href={item.href} onclick={() => (showMobileMenu = false)}>{item.label}</a>
 				{/each}
@@ -311,7 +312,7 @@
 		</div>
 	</section>
 
-	<section id="arah" class="border-y border-black/[0.05] bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="arah" class="scroll-mt-20 border-y border-black/[0.05] bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
 				<div>
@@ -343,7 +344,7 @@
 		</div>
 	</section>
 
-	<section id="ekosistem" class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="ekosistem" class="scroll-mt-20 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="mx-auto max-w-3xl text-center">
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-[#a87f25]">Satu Ekosistem, Dua Pintu</p>
@@ -397,7 +398,7 @@
 		</div>
 	</section>
 
-	<section id="jalur" class="border-y border-black/[0.05] bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="jalur" class="scroll-mt-20 border-y border-black/[0.05] bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
 				<div class="lg:sticky lg:top-24">
@@ -443,7 +444,7 @@
 		</div>
 	</section>
 
-	<section id="tanya" class="bg-[#eef6f1] px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="tanya" class="scroll-mt-20 bg-[#eef6f1] px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-[#a87f25]">Coba SantriOnline AI</p>
@@ -456,7 +457,7 @@
 				</div>
 			</div>
 
-			<div class="overflow-hidden rounded-[28px] border border-black/[0.07] bg-white shadow-[0_24px_70px_rgba(23,70,45,0.12)]" aria-label="Chat demo SantriOnline">
+			<div class="overflow-hidden rounded-[28px] border border-black/[0.07] bg-white shadow-[0_24px_70px_rgba(23,70,45,0.12)]" role="region" aria-label="Chat demo SantriOnline">
 				<div class="flex items-center justify-between border-b border-black/[0.06] px-5 py-4">
 					<div class="flex items-center gap-3">
 						<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
