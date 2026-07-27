@@ -43,6 +43,7 @@ test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () =>
 	assert.doesNotMatch(invoiceLoader, /SELECT \*/);
 	assert.match(invoiceLoader, /email_klien: maskEmail\(invoiceRow\.email_klien\)/);
 	assert.match(invoiceLoader, /whatsapp_klien: maskWhatsapp\(invoiceRow\.whatsapp_klien\)/);
+	assert.match(invoiceLoader, /\^INV-\\d\{6\}-\[A-Z0-9\]\{26\}\$/);
 	assert.match(invoiceDomain, /crypto\.getRandomValues\(randomBytes\)/);
 	assert.match(invoiceDomain, /new Uint8Array\(26\)/);
 	assert.doesNotMatch(invoiceDomain, /Math\.random\(\)/);

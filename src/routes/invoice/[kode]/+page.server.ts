@@ -71,6 +71,10 @@ export const load: PageServerLoad = async ({ params, platform, setHeaders }) => 
 		'referrer-policy': 'no-referrer'
 	});
 
+	if (!/^INV-\d{6}-[A-Z0-9]{26}$/.test(params.kode)) {
+		throw error(404, 'Invoice tidak ditemukan.');
+	}
+
 	const db = getRuntimeEnv(platform).DB;
 
 	if (!db) {
