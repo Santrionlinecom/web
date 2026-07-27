@@ -11,10 +11,13 @@
 	let showUpgradeModal = $state(false);
 	let showMobileMenu = $state(false);
 	let chatMessages = $state<ChatMessage[]>([]);
+	let upgradeDialog = $state<HTMLDivElement>();
+	let upgradeCloseButton = $state<HTMLButtonElement>();
 
 	const appBaseUrl = 'https://app.santrionline.com';
 	const appLoginUrl = `${appBaseUrl}/login`;
 	const appRegisterUrl = `${appBaseUrl}/register`;
+	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
 	const navigation = [
@@ -256,6 +259,40 @@
 		event.preventDefault();
 		void sendQuestion();
 	}
+
+	$effect(() => {
+		if (!showUpgradeModal || typeof document === 'undefined') return;
+		const previouslyFocused = document.activeElement as HTMLElement | null;
+		requestAnimationFrame(() => upgradeCloseButton?.focus());
+		return () => previouslyFocused?.focus();
+	});
+
+	function handleModalKeydown(event: KeyboardEvent) {
+		if (!showUpgradeModal) return;
+		if (event.key === 'Escape') {
+			showUpgradeModal = false;
+			return;
+		}
+		if (event.key !== 'Tab' || !upgradeDialog) return;
+
+		const focusable = Array.from(
+			upgradeDialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
+		);
+		if (focusable.length === 0) {
+			event.preventDefault();
+			return;
+		}
+
+		const first = focusable[0];
+		const last = focusable[focusable.length - 1];
+		if (event.shiftKey && document.activeElement === first) {
+			event.preventDefault();
+			last.focus();
+		} else if (!event.shiftKey && document.activeElement === last) {
+			event.preventDefault();
+			first.focus();
+		}
+	}
 </script>
 
 <svelte:head>
@@ -281,14 +318,17 @@
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:alt" content="SantriOnline — Pembinaan generasi muslim dan lembaga Islam Indonesia" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="SantriOnline — Platform Pembinaan Santri & Lembaga Islam Indonesia" />
-	<meta name="twitter:description" content="Hubungkan pembinaan, data santri, kitab, kebiasaan, dan perkembangan lembaga dalam satu ekosistem." />
+	<meta name="twitter:title" content="SantriOnline — Membina Santri Indonesia" />
+	<meta name="twitter:description" content="Platform pembinaan dan pengelolaan santri untuk lembaga Islam di seluruh Indonesia." />
 	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
+	<meta name="twitter:image:alt" content="SantriOnline — Membina Santri Indonesia yang beradab dan berdaya saing" />
 	<link rel="canonical" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="id-ID" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="x-default" href="https://santrionline.com/" />
 	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
+
+<svelte:window onkeydown={handleModalKeydown} />
 
 <main class="min-h-screen bg-so-cream text-so-ink antialiased">
 	<header class="sticky top-0 z-40 border-b border-so-border/80 bg-so-cream/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
@@ -353,7 +393,7 @@
 				</p>
 
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
-					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-so-green-3" href={appRegisterUrl}>
+					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-so-green-3" href={appInstitutionUrl}>
 						Daftarkan Lembaga <span aria-hidden="true">→</span>
 					</a>
 					<a class="inline-flex items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition hover:border-so-green/40 hover:text-so-green" href="#ekosistem">
@@ -405,7 +445,7 @@
 								<p class="mt-4 text-sm font-extrabold">Buka Kitab</p>
 								<p class="mt-1 text-xs leading-5 text-so-muted">Rujukan terarah</p>
 							</a>
-							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={`${appBaseUrl}/beranda`}>
+							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={`${appBaseUrl}/habit`}>
 								<span class="grid size-9 place-items-center rounded-xl bg-so-cream text-sm font-black text-so-green">KB</span>
 								<p class="mt-4 text-sm font-extrabold">Kebiasaan Harian</p>
 								<p class="mt-1 text-xs leading-5 text-so-muted">Jaga konsistensi</p>
@@ -568,7 +608,7 @@
 					<p class="mt-5 text-lg leading-8 text-white/70">Setiap lembaga memiliki karakter dan kebutuhan berbeda. SantriOnline menyediakan satu fondasi yang dapat digunakan bertahap—mulai dari merapikan data hingga menguatkan pembinaan santri.</p>
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
-					<a class="inline-flex items-center justify-center rounded-full bg-so-gold px-6 py-3.5 text-sm font-bold text-so-green-3" href={appRegisterUrl}>Mulai Daftar Lembaga <span class="ml-2" aria-hidden="true">→</span></a>
+					<a class="inline-flex items-center justify-center rounded-full bg-so-gold px-6 py-3.5 text-sm font-bold text-so-green-3" href={appInstitutionUrl}>Mulai Daftar Lembaga <span class="ml-2" aria-hidden="true">→</span></a>
 					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10" href={`${appBaseUrl}/fitur`}>Lihat Fitur Aplikasi</a>
 				</div>
 			</div>
@@ -672,7 +712,7 @@
 					<p class="mt-5 max-w-2xl text-lg leading-8 text-white/70">Mulai dari kebutuhan paling penting, gunakan secara bertahap, dan bangun lingkungan yang menjaga aqidah, adab, ilmu, amal, serta keterampilan santri.</p>
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-gold px-7 py-3.5 text-base font-bold text-so-green-3" href={appRegisterUrl}>Daftarkan Lembaga <span>→</span></a>
+					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-gold px-7 py-3.5 text-base font-bold text-so-green-3" href={appInstitutionUrl}>Daftarkan Lembaga <span>→</span></a>
 					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-7 py-3.5 text-base font-bold text-white hover:bg-white/10" href={appLoginUrl}>Saya Sudah Punya Akun</a>
 				</div>
 			</div>
@@ -680,7 +720,7 @@
 	</section>
 </main>
 
-<footer class="border-t border-so-border/80 bg-white px-4 py-10 text-so-muted sm:px-6 lg:px-10">
+<footer class="border-t border-so-border/80 bg-white px-4 pb-28 pt-10 text-so-muted sm:px-6 sm:pb-10 lg:px-10">
 	<div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
 		<div>
 			<a class="inline-flex items-center gap-3 font-display font-bold text-so-green" href="/"><img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" /> SantriOnline</a>
@@ -709,10 +749,10 @@
 
 {#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-so-green-3/65 px-5 backdrop-blur-sm" role="presentation">
-		<div class="w-full max-w-md rounded-[28px] bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
+		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-[28px] bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
 			<div class="flex items-start justify-between gap-4">
 				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
-				<button type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
+				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
 			</div>
 			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah selesai. Buat akun untuk pengalaman belajar dan riwayat yang lebih lengkap.</p>
 			<div class="mt-6 grid grid-cols-2 gap-3">
