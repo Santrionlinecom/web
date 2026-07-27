@@ -37,10 +37,12 @@ const INVOICE_CODE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 export function generateKodeInvoice(date = new Date()): string {
 	const year = date.getFullYear();
 	const month = String(date.getMonth() + 1).padStart(2, '0');
+	const randomBytes = new Uint8Array(26);
+	crypto.getRandomValues(randomBytes);
 	let suffix = '';
 
-	for (let index = 0; index < 4; index += 1) {
-		const randomIndex = Math.floor(Math.random() * INVOICE_CODE_CHARS.length);
+	for (const byte of randomBytes) {
+		const randomIndex = byte % INVOICE_CODE_CHARS.length;
 		suffix += INVOICE_CODE_CHARS[randomIndex];
 	}
 

@@ -20,7 +20,8 @@
 	const navigation = [
 		{ href: '#arah', label: 'Arah' },
 		{ href: '#ekosistem', label: 'Ekosistem' },
-		{ href: '#jalur', label: 'Jalur Belajar' },
+		{ href: '#lembaga', label: 'Untuk Lembaga' },
+		{ href: '#jalur', label: 'Pembinaan' },
 		{ href: '#tanya', label: 'Tanya AI' }
 	];
 
@@ -115,6 +116,102 @@
 		}
 	];
 
+	const institutionTypes = [
+		{
+			name: 'TPQ & TPA',
+			description: 'Kelola santri, kelas, setoran, hafalan, rapor, dan komunikasi pendamping dalam satu alur.',
+			href: `${appBaseUrl}/tpq`,
+			marker: 'TP'
+		},
+		{
+			name: 'Pondok Pesantren',
+			description: 'Bangun profil lembaga dan hubungkan pembinaan, akademik, data santri, serta layanan digital pondok.',
+			href: `${appBaseUrl}/pondok/daftar`,
+			marker: 'PP'
+		},
+		{
+			name: 'Rumah Tahfidz',
+			description: 'Dukung setoran, murojaah, perkembangan hafalan, ujian, dan pendampingan santri secara bertahap.',
+			href: `${appBaseUrl}/lembaga/tambah`,
+			marker: 'RT'
+		},
+		{
+			name: 'Masjid & Musholla',
+			description: 'Satukan kegiatan belajar, data jamaah dan santri, agenda, serta administrasi pembinaan umat.',
+			href: `${appBaseUrl}/lembaga/tambah`,
+			marker: 'MM'
+		}
+	];
+
+	const institutionBenefits = [
+		'Data santri dan lembaga lebih rapi',
+		'Pembinaan aqidah, adab, amal, ilmu, dan skill terhubung',
+		'Perkembangan santri dapat dipantau bertahap',
+		'Satu akun untuk guru, pendamping, orang tua, dan pengelola',
+		'Tetap ringan untuk lembaga yang baru memulai digitalisasi',
+		'Siap menghubungkan lembaga dari berbagai daerah di Indonesia'
+	];
+
+	const faqs = [
+		{
+			question: 'Apa itu SantriOnline?',
+			answer: 'SantriOnline adalah ekosistem pembinaan generasi muslim dan platform digital lembaga yang menghubungkan aqidah Aswaja, adab, amal, ilmu, keterampilan, kebiasaan, komunitas, serta pengelolaan santri.'
+		},
+		{
+			question: 'Lembaga apa saja yang dapat menggunakan SantriOnline?',
+			answer: 'SantriOnline dirancang untuk TPQ, TPA, pondok pesantren, rumah tahfidz, masjid, musholla, madrasah, dan komunitas pembinaan Islam dari berbagai daerah di Indonesia.'
+		},
+		{
+			question: 'Bagaimana lembaga mulai menggunakan aplikasi?',
+			answer: 'Pengelola dapat membuat akun di app.santrionline.com, mendaftarkan lembaga, lalu menyiapkan data dan ruang pembinaan sesuai kebutuhan lembaganya.'
+		},
+		{
+			question: 'Apakah SantriOnline hanya untuk administrasi lembaga?',
+			answer: 'Tidak. Administrasi adalah pendukung. Arah utamanya adalah membantu lembaga membentuk santri yang kuat aqidahnya, beradab, terbiasa beramal, hidup ilmunya, dan memiliki keterampilan masa depan.'
+		}
+	];
+
+	const structuredData = {
+		'@context': 'https://schema.org',
+		'@graph': [
+			{
+				'@type': 'Organization',
+				'@id': 'https://santrionline.com/#organization',
+				name: 'SantriOnline',
+				url: 'https://santrionline.com/',
+				logo: 'https://santrionline.com/logo-santrionline.png',
+				description: 'Ekosistem pembinaan generasi muslim dan platform digital untuk lembaga yang memiliki santri di Indonesia.',
+				areaServed: { '@type': 'Country', name: 'Indonesia' },
+				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz']
+			},
+			{
+				'@type': 'WebSite',
+				'@id': 'https://santrionline.com/#website',
+				url: 'https://santrionline.com/',
+				name: 'SantriOnline',
+				inLanguage: 'id-ID',
+				publisher: { '@id': 'https://santrionline.com/#organization' }
+			},
+			{
+				'@type': 'SoftwareApplication',
+				name: 'SantriOnline App',
+				url: 'https://app.santrionline.com/',
+				applicationCategory: 'EducationalApplication',
+				operatingSystem: 'Web',
+				inLanguage: 'id-ID',
+				description: 'Aplikasi pembinaan dan pengelolaan santri untuk TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam.'
+			},
+			{
+				'@type': 'FAQPage',
+				mainEntity: faqs.map((faq) => ({
+					'@type': 'Question',
+					name: faq.question,
+					acceptedAnswer: { '@type': 'Answer', text: faq.answer }
+				}))
+			}
+		]
+	};
+
 	const examples = [
 		'Bagaimana cara mengenali ulama yang lurus dan beradab?',
 		'Apa makna mengikuti صراط المستقيم dalam hidup santri?',
@@ -162,17 +259,35 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline — Aqidah, Adab, Ilmu, dan Keterampilan Generasi Muslim</title>
+	<title>SantriOnline | Platform Pembinaan Santri Indonesia</title>
 	<meta
 		name="description"
-		content="SantriOnline adalah ekosistem pembinaan generasi muslim yang menghubungkan aqidah Aswaja, adab, amal, ilmu, keterampilan, komunitas, dan kebiasaan dalam satu perjalanan belajar."
+		content="Platform pembinaan dan pengelolaan santri untuk TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam di seluruh Indonesia."
 	/>
-	<meta property="og:title" content="SantriOnline — Tumbuh dalam Ilmu, Adab, dan Amal" />
+	<meta name="keywords" content="SantriOnline, aplikasi santri, aplikasi TPQ, manajemen pondok pesantren, rumah tahfidz, platform pendidikan Islam, pembinaan santri, lembaga Islam Indonesia, aqidah Aswaja" />
+	<meta name="author" content="SantriOnline" />
+	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:site_name" content="SantriOnline" />
+	<meta property="og:url" content="https://santrionline.com/" />
+	<meta property="og:title" content="SantriOnline — Platform Pembinaan Santri & Lembaga Islam Indonesia" />
 	<meta
 		property="og:description"
-		content="Mulai perjalanan santri digital melalui kelas, kitab, kebiasaan, komunitas, dan pendampingan di app.santrionline.com."
+		content="Satu ekosistem untuk membantu lembaga di seluruh Indonesia membina santri yang kuat aqidahnya, beradab, berilmu, disiplin, dan siap menghadapi masa depan."
 	/>
+	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta property="og:image:alt" content="SantriOnline — Pembinaan generasi muslim dan lembaga Islam Indonesia" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<meta name="twitter:title" content="SantriOnline — Platform Pembinaan Santri & Lembaga Islam Indonesia" />
+	<meta name="twitter:description" content="Hubungkan pembinaan, data santri, kitab, kebiasaan, dan perkembangan lembaga dalam satu ekosistem." />
+	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
 	<link rel="canonical" href="https://santrionline.com/" />
+	<link rel="alternate" hreflang="id-ID" href="https://santrionline.com/" />
+	<link rel="alternate" hreflang="x-default" href="https://santrionline.com/" />
+	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 
 <main class="min-h-screen bg-so-cream text-so-ink antialiased">
@@ -228,18 +343,18 @@
 			<div class="max-w-3xl">
 				<p class="inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
 					<span class="size-2 rounded-full bg-so-green-2"></span>
-					Ekosistem Pembinaan Generasi Muslim
+					Menghubungkan Lembaga & Santri Indonesia
 				</p>
 				<h1 class="font-display mt-7 max-w-[16ch] text-[2.55rem] font-bold leading-[1.05] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
-					Tumbuh dalam <span class="text-so-green-2">ilmu</span>, kokoh dalam aqidah, indah dalam adab.
+					Satu ekosistem untuk membina <span class="text-so-green-2">santri Indonesia</span> yang beradab dan berdaya saing.
 				</h1>
 				<p class="mt-7 max-w-2xl text-lg leading-8 text-so-muted sm:text-xl">
-					SantriOnline menghubungkan pembelajaran, kitab, kebiasaan, komunitas, dan pendampingan agar generasi muslim tidak hanya tahu—tetapi tumbuh, beramal, dan siap menghadapi dunia nyata.
+					SantriOnline membantu TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam menghubungkan pembinaan, data santri, guru, orang tua, serta perkembangan dalam satu perjalanan yang terarah.
 				</p>
 
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
 					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-so-green-3" href={appRegisterUrl}>
-						Mulai Perjalanan Santri <span aria-hidden="true">→</span>
+						Daftarkan Lembaga <span aria-hidden="true">→</span>
 					</a>
 					<a class="inline-flex items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition hover:border-so-green/40 hover:text-so-green" href="#ekosistem">
 						Lihat Ekosistem
@@ -249,7 +364,7 @@
 				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-so-muted">
 					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Aqidah Aswaja</span>
 					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Ringan dan mudah diakses</span>
-					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Untuk santri & lembaga</span>
+					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Untuk lembaga di seluruh Indonesia</span>
 				</div>
 			</div>
 
@@ -444,6 +559,39 @@
 		</div>
 	</section>
 
+	<section id="lembaga" class="scroll-mt-20 border-y border-so-border/70 bg-so-green-3 px-4 py-16 text-white sm:px-6 lg:px-10 lg:py-24">
+		<div class="mx-auto max-w-7xl">
+			<div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
+				<div class="max-w-3xl">
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Jaringan Lembaga Indonesia</p>
+					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Dari lembaga lokal, tumbuh menjadi gerakan pembinaan nasional.</h2>
+					<p class="mt-5 text-lg leading-8 text-white/70">Setiap lembaga memiliki karakter dan kebutuhan berbeda. SantriOnline menyediakan satu fondasi yang dapat digunakan bertahap—mulai dari merapikan data hingga menguatkan pembinaan santri.</p>
+				</div>
+				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
+					<a class="inline-flex items-center justify-center rounded-full bg-so-gold px-6 py-3.5 text-sm font-bold text-so-green-3" href={appRegisterUrl}>Mulai Daftar Lembaga <span class="ml-2" aria-hidden="true">→</span></a>
+					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10" href={`${appBaseUrl}/fitur`}>Lihat Fitur Aplikasi</a>
+				</div>
+			</div>
+
+			<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{#each institutionTypes as institution}
+					<a class="group rounded-3xl border border-white/15 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-so-gold/50 hover:bg-white/10" href={institution.href}>
+						<span class="grid size-11 place-items-center rounded-xl bg-so-gold-2 text-xs font-black text-so-green-3">{institution.marker}</span>
+						<h3 class="mt-5 text-xl font-extrabold">{institution.name}</h3>
+						<p class="mt-3 text-sm leading-7 text-white/65">{institution.description}</p>
+						<span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-so-gold-2">Jelajahi <span class="transition group-hover:translate-x-1">→</span></span>
+					</a>
+				{/each}
+			</div>
+
+			<div class="mt-6 grid gap-3 rounded-3xl border border-white/15 bg-white/5 p-6 sm:grid-cols-2 lg:grid-cols-3 sm:p-8">
+				{#each institutionBenefits as benefit}
+					<p class="flex gap-3 text-sm font-semibold leading-6 text-white/80"><span class="text-so-gold-2">✓</span><span>{benefit}</span></p>
+				{/each}
+			</div>
+		</div>
+	</section>
+
 	<section id="tanya" class="scroll-mt-20 bg-so-cream px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
@@ -495,18 +643,36 @@
 		</div>
 	</section>
 
+	<section class="border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24" aria-labelledby="faq-title">
+		<div class="mx-auto max-w-5xl">
+			<div class="mx-auto max-w-3xl text-center">
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Pertanyaan Umum</p>
+				<h2 id="faq-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Mulai mengenal SantriOnline.</h2>
+				<p class="mt-5 text-lg leading-8 text-so-muted">Jawaban singkat untuk santri, orang tua, guru, dan pengelola lembaga yang ingin bergabung.</p>
+			</div>
+			<div class="mt-10 grid gap-4 sm:grid-cols-2">
+				{#each faqs as faq}
+					<article class="rounded-2xl border border-so-border/80 bg-so-cream p-6 sm:p-7">
+						<h3 class="text-lg font-extrabold leading-7 text-so-green">{faq.question}</h3>
+						<p class="mt-3 text-sm leading-7 text-so-muted">{faq.answer}</p>
+					</article>
+				{/each}
+			</div>
+		</div>
+	</section>
+
 	<section class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
 			<div class="absolute -right-20 -top-20 size-72 rounded-full bg-so-green-2/25 blur-3xl"></div>
 			<div class="absolute -bottom-28 left-1/3 size-64 rounded-full bg-so-gold/15 blur-3xl"></div>
 			<div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
 				<div class="max-w-3xl">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Mulai Hari Ini</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Jadilah santri digital yang punya arah, adab, dan misi.</h2>
-					<p class="mt-5 max-w-2xl text-lg leading-8 text-white/70">Buat akun, pilih jalur belajar, lalu mulai satu langkah kecil yang bisa dijaga setiap hari.</p>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Tumbuh Bersama Indonesia</p>
+					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Hubungkan lembaga Anda dengan masa depan pembinaan santri.</h2>
+					<p class="mt-5 max-w-2xl text-lg leading-8 text-white/70">Mulai dari kebutuhan paling penting, gunakan secara bertahap, dan bangun lingkungan yang menjaga aqidah, adab, ilmu, amal, serta keterampilan santri.</p>
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-gold px-7 py-3.5 text-base font-bold text-so-green-3" href={appRegisterUrl}>Daftar Sekarang <span>→</span></a>
+					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-gold px-7 py-3.5 text-base font-bold text-so-green-3" href={appRegisterUrl}>Daftarkan Lembaga <span>→</span></a>
 					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-7 py-3.5 text-base font-bold text-white hover:bg-white/10" href={appLoginUrl}>Saya Sudah Punya Akun</a>
 				</div>
 			</div>

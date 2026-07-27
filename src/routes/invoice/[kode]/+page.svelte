@@ -119,7 +119,9 @@
 
 <svelte:head>
 	<title>Tagihan {invoice.kode} | SantriOnline</title>
-	<meta name="description" content={`Tagihan ${invoice.kode} untuk ${invoice.nama_klien}.`} />
+	<meta name="description" content="Tagihan digital SantriOnline." />
+	<meta name="robots" content="noindex, nofollow, noarchive" />
+	<meta name="referrer" content="no-referrer" />
 </svelte:head>
 
 <main class="min-h-screen bg-[#f5f7f2] px-4 py-6 text-[#17251d] sm:px-6 lg:px-10 lg:py-10">
@@ -159,8 +161,8 @@
 					<p class="text-xs font-black uppercase text-[#6b7b70]">Kepada</p>
 					<h2 class="mt-2 text-lg font-black">{invoice.nama_klien}</h2>
 					<div class="mt-2 space-y-1 leading-7 text-[#52685a]">
-						<p>{invoice.email_klien ?? '-'}</p>
-						<p>{invoice.whatsapp_klien ?? '-'}</p>
+						<p>{invoice.email_klien}</p>
+						<p>{invoice.whatsapp_klien}</p>
 					</div>
 				</div>
 			</div>
