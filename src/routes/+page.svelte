@@ -15,7 +15,7 @@
 	let upgradeCloseButton = $state<HTMLButtonElement>();
 
 	const appBaseUrl = 'https://app.santrionline.com';
-	const appLoginUrl = `${appBaseUrl}/login`;
+	const appLoginUrl = `${appBaseUrl}/auth`;
 	const appRegisterUrl = `${appBaseUrl}/register`;
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
@@ -33,28 +33,28 @@
 			label: 'Mulai Belajar',
 			description: 'Aqidah, adab, ibadah, sirah, dan keterampilan secara bertahap.',
 			href: `${appBaseUrl}/belajar`,
-			marker: '01',
+			icon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25',
 			accent: 'emerald'
 		},
 		{
 			label: 'Baca Kitab',
 			description: 'Kitab digital dan rujukan yang disusun agar mudah dipelajari.',
 			href: `${appBaseUrl}/kitab`,
-			marker: '02',
+			icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6',
 			accent: 'gold'
 		},
 		{
 			label: 'Kelola TPQ',
 			description: 'Data santri, kelas, hafalan, rapor, dan pendampingan lembaga.',
 			href: `${appBaseUrl}/tpq`,
-			marker: '03',
+			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01',
 			accent: 'emerald'
 		},
 		{
 			label: 'Lihat Perjalanan',
 			description: 'Pantau progres dan lanjutkan aktivitas penting dari akun santri.',
 			href: `${appBaseUrl}/beranda`,
-			marker: '04',
+			icon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18',
 			accent: 'gold'
 		}
 	];
@@ -63,32 +63,37 @@
 		{
 			title: 'Aqidah yang kuat',
 			description: 'Mengenal Allah, Rasulullah ﷺ, dan aqidah Aswaja secara ringan, sadar, dan bertahap.',
-			marker: 'AQ'
+			icon: 'M12 3 5 6v5c0 4.6 2.9 8.2 7 10 4.1-1.8 7-5.4 7-10V6l-7-3Zm-3 9 2 2 4-4'
 		},
 		{
 			title: 'Adab menjadi kebiasaan',
 			description: 'Adab kepada Allah, orang tua, guru, sesama, serta disiplin di ruang digital.',
-			marker: 'AD'
+			icon: 'M12 20.5S4.5 16.2 4.5 10.3A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.9c0 5.9-7.5 10.2-7.5 10.2Z'
+		},
+		{
+			title: 'Amal yang nyata',
+			description: 'Ilmu diwujudkan melalui ibadah, amanah, disiplin, dan manfaat kecil yang dijaga setiap hari.',
+			icon: 'M9 12.5 11 14.5 15.5 9M12 3 5 6v5c0 4.6 2.9 8.2 7 10 4.1-1.8 7-5.4 7-10V6l-7-3Z'
 		},
 		{
 			title: 'Ilmu yang hidup',
 			description: 'Sirah, fiqih praktis, kitab, dan kisah ulama yang dekat dengan kehidupan sehari-hari.',
-			marker: 'IL'
+			icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z'
 		},
 		{
 			title: 'Keterampilan dunia nyata',
 			description: 'Literasi digital, penggunaan AI secara bijak, komunikasi, menulis, dan pemecahan masalah.',
-			marker: 'SK'
+			icon: 'm12 3 1.2 3.8L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2L12 3Zm6 10 .8 2.2L21 16l-2.2.8L18 19l-.8-2.2L15 16l2.2-.8L18 13ZM6 14l.9 2.6L9.5 17l-2.6.9L6 20.5l-.9-2.6L2.5 17l2.6-.4L6 14Z'
 		},
 		{
 			title: 'Komunitas pembinaan',
 			description: 'Santri, orang tua, mentor, dan lembaga tumbuh dalam lingkungan yang saling menjaga.',
-			marker: 'KO'
+			icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6'
 		},
 		{
 			title: 'Kebiasaan yang terukur',
 			description: 'Misi, perkembangan, konsistensi, dan rapor pertumbuhan agar ilmu berubah menjadi amal.',
-			marker: 'HA'
+			icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-3.5-9 2.3 2.3 4.9-5'
 		}
 	];
 
@@ -124,26 +129,33 @@
 			name: 'TPQ & TPA',
 			description: 'Kelola santri, kelas, setoran, hafalan, rapor, dan komunikasi pendamping dalam satu alur.',
 			href: `${appBaseUrl}/tpq`,
-			marker: 'TP'
+			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01'
 		},
 		{
 			name: 'Pondok Pesantren',
 			description: 'Bangun profil lembaga dan hubungkan pembinaan, akademik, data santri, serta layanan digital pondok.',
 			href: `${appBaseUrl}/pondok/daftar`,
-			marker: 'PP'
+			icon: 'M3 20h18M5 20V8l7-5 7 5v12M9 20v-5h6v5M8 10h.01M12 10h.01M16 10h.01'
 		},
 		{
 			name: 'Rumah Tahfidz',
 			description: 'Dukung setoran, murojaah, perkembangan hafalan, ujian, dan pendampingan santri secara bertahap.',
 			href: `${appBaseUrl}/lembaga/tambah`,
-			marker: 'RT'
+			icon: 'M12 3 4 9v11h16V9l-8-6Zm-3 17v-6h6v6m-7-9h8'
 		},
 		{
 			name: 'Masjid & Musholla',
 			description: 'Satukan kegiatan belajar, data jamaah dan santri, agenda, serta administrasi pembinaan umat.',
 			href: `${appBaseUrl}/lembaga/tambah`,
-			marker: 'MM'
+			icon: 'M3 20h18M6 20v-9h12v9M9 11V8.5a3 3 0 0 1 6 0V11m-3-8v2M9 15h.01M15 15h.01'
 		}
+	];
+
+	const appPreviewItems = [
+		{ label: 'Lanjut Belajar', note: 'Materi bertahap', href: `${appBaseUrl}/belajar`, icon: appShortcuts[0].icon, tone: 'emerald' },
+		{ label: 'Buka Kitab', note: 'Rujukan terarah', href: `${appBaseUrl}/kitab`, icon: appShortcuts[1].icon, tone: 'gold' },
+		{ label: 'Kebiasaan Harian', note: 'Jaga konsistensi', href: `${appBaseUrl}/habit`, icon: pillars[6].icon, tone: 'emerald' },
+		{ label: 'Lihat Progres', note: 'Pantau pertumbuhan', href: `${appBaseUrl}/dashboard`, icon: appShortcuts[3].icon, tone: 'violet' }
 	];
 
 	const institutionBenefits = [
@@ -360,7 +372,11 @@
 				aria-expanded={showMobileMenu}
 				onclick={() => (showMobileMenu = !showMobileMenu)}
 			>
-				<span class="text-xl leading-none">{showMobileMenu ? '×' : '☰'}</span>
+				{#if showMobileMenu}
+					<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" /></svg>
+				{:else}
+					<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" /></svg>
+				{/if}
 			</button>
 		</nav>
 
@@ -380,16 +396,16 @@
 	<section class="relative px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-10 lg:pb-24 lg:pt-24">
 		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[720px] bg-[radial-gradient(circle_at_16%_15%,rgb(45 106 79 / 0.16),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201 168 76 / 0.14),transparent_27%)]"></div>
 		<div class="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
-			<div class="max-w-3xl">
+			<div class="hero-copy max-w-3xl rounded-[30px] border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
 				<p class="inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
 					<span class="size-2 rounded-full bg-so-green-2"></span>
-					Menghubungkan Lembaga & Santri Indonesia
+					Sistem Pembinaan Generasi Muslim
 				</p>
-				<h1 class="font-display mt-7 max-w-[16ch] text-[2.55rem] font-bold leading-[1.05] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
-					Satu ekosistem untuk membina <span class="text-so-green-2">santri Indonesia</span> yang beradab dan berdaya saing.
+				<h1 class="font-display mt-7 max-w-[18ch] text-[clamp(2.35rem,10vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
+					Pembinaan santri lebih terarah. <span class="text-so-green-2">Lembaga lebih tertata.</span>
 				</h1>
 				<p class="mt-7 max-w-2xl text-lg leading-8 text-so-muted sm:text-xl">
-					SantriOnline membantu TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam menghubungkan pembinaan, data santri, guru, orang tua, serta perkembangan dalam satu perjalanan yang terarah.
+					Satukan data santri, kelas, hafalan, perkembangan, serta pembiasaan aqidah, adab, amal, ilmu, keterampilan, komunitas, dan kebiasaan baik untuk TPQ, pesantren, rumah tahfidz, masjid, serta musholla.
 				</p>
 
 				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -397,7 +413,7 @@
 						Daftarkan Lembaga <span aria-hidden="true">→</span>
 					</a>
 					<a class="inline-flex items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition hover:border-so-green/40 hover:text-so-green" href="#ekosistem">
-						Lihat Ekosistem
+						Lihat Cara Kerjanya
 					</a>
 				</div>
 
@@ -435,26 +451,15 @@
 						</div>
 
 						<div class="mt-4 grid grid-cols-2 gap-3">
-							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={`${appBaseUrl}/belajar`}>
-								<span class="grid size-9 place-items-center rounded-xl bg-so-cream text-sm font-black text-so-green">IL</span>
-								<p class="mt-4 text-sm font-extrabold">Lanjut Belajar</p>
-								<p class="mt-1 text-xs leading-5 text-so-muted">Materi bertahap</p>
-							</a>
-							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-gold/30 hover:shadow-md" href={`${appBaseUrl}/kitab`}>
-								<span class="grid size-9 place-items-center rounded-xl bg-so-gold-2 text-sm font-black text-so-green-3">KT</span>
-								<p class="mt-4 text-sm font-extrabold">Buka Kitab</p>
-								<p class="mt-1 text-xs leading-5 text-so-muted">Rujukan terarah</p>
-							</a>
-							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={`${appBaseUrl}/habit`}>
-								<span class="grid size-9 place-items-center rounded-xl bg-so-cream text-sm font-black text-so-green">KB</span>
-								<p class="mt-4 text-sm font-extrabold">Kebiasaan Harian</p>
-								<p class="mt-1 text-xs leading-5 text-so-muted">Jaga konsistensi</p>
-							</a>
-							<a class="rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-gold/30 hover:shadow-md" href={`${appBaseUrl}/dashboard`}>
-								<span class="grid size-9 place-items-center rounded-xl bg-so-gold-2 text-sm font-black text-so-green-3">PR</span>
-								<p class="mt-4 text-sm font-extrabold">Lihat Progres</p>
-								<p class="mt-1 text-xs leading-5 text-so-muted">Pantau pertumbuhan</p>
-							</a>
+							{#each appPreviewItems as item}
+								<a class="group rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={item.href}>
+									<span class={`icon-badge ${item.tone === 'gold' ? 'icon-badge-gold' : item.tone === 'cyan' ? 'icon-badge-cyan' : item.tone === 'violet' ? 'icon-badge-violet' : 'icon-badge-emerald'}`}>
+										<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={item.icon} stroke-linecap="round" stroke-linejoin="round" /></svg>
+									</span>
+									<p class="mt-4 text-sm font-extrabold">{item.label}</p>
+									<p class="mt-1 text-xs leading-5 text-so-muted">{item.note}</p>
+								</a>
+							{/each}
 						</div>
 					</div>
 
@@ -542,7 +547,7 @@
 				{#each appShortcuts as shortcut}
 					<a class="group rounded-2xl border border-so-border/80 bg-white p-5 transition hover:-translate-y-1 hover:border-so-green/25 hover:shadow-lg" href={shortcut.href}>
 						<div class="flex items-center justify-between">
-							<span class={`grid size-10 place-items-center rounded-xl text-xs font-black ${shortcut.accent === 'gold' ? 'bg-so-gold-2 text-so-green-3' : 'bg-so-cream text-so-green'}`}>{shortcut.marker}</span>
+							<span class={`icon-badge ${shortcut.accent === 'gold' ? 'icon-badge-gold' : 'icon-badge-emerald'}`}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={shortcut.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 							<span class="text-so-muted transition group-hover:translate-x-1 group-hover:text-so-green">→</span>
 						</div>
 						<h3 class="mt-5 font-extrabold">{shortcut.label}</h3>
@@ -566,7 +571,7 @@
 				<div class="grid gap-4 sm:grid-cols-2">
 					{#each pillars as pillar}
 						<article class="rounded-2xl border border-so-border/80 bg-so-cream p-6 transition hover:border-so-green/20 hover:bg-so-cream">
-							<span class="grid size-11 place-items-center rounded-xl bg-so-cream text-xs font-black text-so-green">{pillar.marker}</span>
+							<span class="icon-badge icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={pillar.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 							<h3 class="mt-5 text-xl font-extrabold tracking-[-0.02em]">{pillar.title}</h3>
 							<p class="mt-3 leading-7 text-so-muted">{pillar.description}</p>
 						</article>
@@ -616,7 +621,7 @@
 			<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{#each institutionTypes as institution}
 					<a class="group rounded-3xl border border-white/15 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-so-gold/50 hover:bg-white/10" href={institution.href}>
-						<span class="grid size-11 place-items-center rounded-xl bg-so-gold-2 text-xs font-black text-so-green-3">{institution.marker}</span>
+						<span class="icon-badge icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={institution.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 						<h3 class="mt-5 text-xl font-extrabold">{institution.name}</h3>
 						<p class="mt-3 text-sm leading-7 text-white/65">{institution.description}</p>
 						<span class="mt-5 inline-flex items-center gap-2 text-sm font-bold text-so-gold-2">Jelajahi <span class="transition group-hover:translate-x-1">→</span></span>
@@ -741,9 +746,9 @@
 
 <nav class="fixed inset-x-0 bottom-0 z-40 border-t border-so-border bg-white/95 p-2 shadow-soft backdrop-blur-xl md:hidden" aria-label="Akses cepat aplikasi">
 	<div class="mx-auto grid max-w-md grid-cols-[1fr_1.25fr_1fr] gap-2">
-		<a class="grid place-items-center rounded-2xl px-3 py-2 text-[11px] font-bold text-so-muted" href={appLoginUrl}><span class="text-base">◎</span><span>Masuk</span></a>
-		<a class="grid place-items-center rounded-2xl bg-so-green px-3 py-2 text-[11px] font-bold text-white shadow-md" href={appBaseUrl}><span class="text-base">↗</span><span>Buka Aplikasi</span></a>
-		<a class="grid place-items-center rounded-2xl px-3 py-2 text-[11px] font-bold text-so-muted" href={`${appBaseUrl}/belajar`}><span class="text-base">◫</span><span>Belajar</span></a>
+		<a class="mobile-action" href={appLoginUrl} aria-label="Masuk ke akun SantriOnline"><span class="mobile-action-icon icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Masuk</span></a>
+		<a class="mobile-action mobile-action-primary" href={appBaseUrl} aria-label="Buka aplikasi SantriOnline"><span class="mobile-action-icon bg-gradient-to-br from-emerald-400 to-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 4h6v6m0-6L10 14M5 7v12h12v-5" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buka Aplikasi</span></a>
+		<a class="mobile-action" href={`${appBaseUrl}/belajar`} aria-label="Buka ruang belajar SantriOnline"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d={appShortcuts[0].icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Belajar</span></a>
 	</div>
 </nav>
 

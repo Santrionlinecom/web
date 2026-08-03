@@ -21,7 +21,7 @@ test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => 
 	assert.match(source, /const appInstitutionUrl = `\$\{appBaseUrl\}\/lembaga\/tambah`/);
 	assert.match(source, /name="twitter:image:alt"/);
 	assert.match(source, /href=\{appInstitutionUrl\}>Daftarkan Lembaga/);
-	assert.match(source, /href=\{`\$\{appBaseUrl\}\/habit`\}/);
+	assert.match(source, /href: `\$\{appBaseUrl\}\/habit`/);
 });
 
 test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () => {
