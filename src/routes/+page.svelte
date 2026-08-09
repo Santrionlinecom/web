@@ -21,6 +21,7 @@
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
 	const navigation = [
+		{ href: '#santri-online', label: 'Apa Itu Santri Online' },
 		{ href: '#arah', label: 'Arah' },
 		{ href: '#ekosistem', label: 'Ekosistem' },
 		{ href: '#lembaga', label: 'Untuk Lembaga' },
@@ -468,6 +469,20 @@
 						<span aria-hidden="true">→</span>
 					</a>
 				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="santri-online" class="scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20" aria-labelledby="santri-online-title">
+		<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
+			<div>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Mengenal SantriOnline</p>
+				<h2 id="santri-online-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Santri adalah semangat belajar sepanjang hayat.</h2>
+			</div>
+			<div class="rounded-[28px] border border-so-border bg-so-cream p-6 sm:p-8">
+				<p class="text-lg leading-8 text-so-ink">Dalam semangat SantriOnline, siapa saja dapat terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi digital.</p>
+				<p class="mt-4 leading-7 text-so-muted"><strong class="text-so-green">Teknologi bukan pengganti ulama, guru, atau pesantren.</strong> Ia adalah jembatan agar jarak, usia, pekerjaan, dan keadaan hidup tidak memutus hubungan seseorang dengan ilmu.</p>
+				<a href="/literasi/apa-itu-santri-online" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-6 py-3 font-bold text-white hover:bg-so-green-3">Baca: Apa Itu Santri Online? <span class="ml-2">→</span></a>
 			</div>
 		</div>
 	</section>
