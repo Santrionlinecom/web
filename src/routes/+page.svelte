@@ -397,7 +397,7 @@
 	<section class="relative px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-10 lg:pb-24 lg:pt-24">
 		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[720px] bg-[radial-gradient(circle_at_16%_15%,rgb(45 106 79 / 0.16),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201 168 76 / 0.14),transparent_27%)]"></div>
 		<div class="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
-			<div class="hero-copy max-w-3xl rounded-[30px] border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
+			<div class="hero-copy max-w-3xl rounded-3xl border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
 				<p class="inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
 					<span class="size-2 rounded-full bg-so-green-2"></span>
 					Sistem Pembinaan Generasi Muslim
@@ -426,8 +426,8 @@
 			</div>
 
 			<div class="relative lg:pl-4">
-				<div class="absolute -inset-5 rounded-[40px] bg-gradient-to-br from-so-green-2/15 to-so-gold/15 blur-2xl"></div>
-				<div class="relative overflow-hidden rounded-[28px] border border-so-border bg-so-surface shadow-soft">
+				<div class="absolute -inset-5 rounded-3xl bg-gradient-to-br from-so-green-2/15 to-so-gold/15 blur-2xl"></div>
+				<div class="relative overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft">
 					<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
 						<div class="flex items-center gap-3">
 							<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
@@ -476,10 +476,10 @@
 	<section id="santri-online" class="scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20" aria-labelledby="santri-online-title">
 		<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
 			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Mengenal SantriOnline</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Mengenal SantriOnline</p>
 				<h2 id="santri-online-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Santri adalah semangat belajar sepanjang hayat.</h2>
 			</div>
-			<div class="rounded-[28px] border border-so-border bg-so-cream p-6 sm:p-8">
+			<div class="rounded-3xl border border-so-border bg-so-cream p-6 sm:p-8">
 				<p class="text-lg leading-8 text-so-ink">Dalam semangat SantriOnline, siapa saja dapat terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi digital.</p>
 				<p class="mt-4 leading-7 text-so-muted"><strong class="text-so-green">Teknologi bukan pengganti ulama, guru, atau pesantren.</strong> Ia adalah jembatan agar jarak, usia, pekerjaan, dan keadaan hidup tidak memutus hubungan seseorang dengan ilmu.</p>
 				<a href="/literasi/apa-itu-santri-online" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-6 py-3 font-bold text-white hover:bg-so-green-3">Baca: Apa Itu Santri Online? <span class="ml-2">→</span></a>
@@ -491,7 +491,7 @@
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Arah SantriOnline</p>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Arah SantriOnline</p>
 					<h2 class="font-display mt-4 text-3xl font-bold leading-tight tracking-[-0.03em] sm:text-5xl text-so-green">Bukan sekadar konten. Ini perjalanan pembentukan diri.</h2>
 				</div>
 				<p class="max-w-2xl text-lg leading-8 text-so-muted lg:justify-self-end">
@@ -522,7 +522,7 @@
 	<section id="ekosistem" class="scroll-mt-20 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Satu Ekosistem, Dua Pintu</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Satu Ekosistem, Dua Pintu</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Kenali visinya di sini. Jalani pembinaannya di aplikasi.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">santrionline.com adalah halaman publik. Aktivitas belajar, kelas, kitab, kebiasaan, dan pemantauan perkembangan tersedia di app.santrionline.com.</p>
 			</div>
@@ -577,7 +577,7 @@
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
 				<div class="lg:sticky lg:top-24">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Formula Pembinaan</p>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Formula Pembinaan</p>
 					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Dari keyakinan hingga kompetensi.</h2>
 					<p class="mt-5 text-lg leading-8 text-so-muted">Setiap bagian saling menguatkan. Keterampilan tanpa adab kehilangan arah; ilmu tanpa amal kehilangan daya.</p>
 					<a class="mt-7 inline-flex items-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white" href={`${appBaseUrl}/belajar`}>Jelajahi Jalur Belajar <span>→</span></a>
@@ -599,7 +599,7 @@
 	<section class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="max-w-3xl">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Tumbuh Bersama</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Tumbuh Bersama</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Satu ekosistem untuk santri, pendamping, dan lembaga.</h2>
 			</div>
 			<div class="mt-12 grid gap-5 lg:grid-cols-3">
@@ -655,7 +655,7 @@
 	<section id="tanya" class="scroll-mt-20 bg-so-cream px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Coba SantriOnline AI</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Coba SantriOnline AI</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Mulai dari satu pertanyaan yang baik.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">Gunakan asisten publik untuk orientasi awal. Untuk pengalaman lengkap dan riwayat percakapan, lanjutkan di aplikasi.</p>
 				<div class="mt-7 flex flex-wrap gap-2">
@@ -665,7 +665,7 @@
 				</div>
 			</div>
 
-			<div class="overflow-hidden rounded-[28px] border border-so-border bg-so-surface shadow-soft" role="region" aria-label="Chat demo SantriOnline">
+			<div class="overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft" role="region" aria-label="Chat demo SantriOnline">
 				<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
 					<div class="flex items-center gap-3">
 						<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
@@ -706,7 +706,7 @@
 	<section class="border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24" aria-labelledby="faq-title">
 		<div class="mx-auto max-w-5xl">
 			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Pertanyaan Umum</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Pertanyaan Umum</p>
 				<h2 id="faq-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Mulai mengenal SantriOnline.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">Jawaban singkat untuk santri, orang tua, guru, dan pengelola lembaga yang ingin bergabung.</p>
 			</div>
@@ -722,7 +722,7 @@
 	</section>
 
 	<section class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
-		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
+		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
 			<div class="absolute -right-20 -top-20 size-72 rounded-full bg-so-green-2/25 blur-3xl"></div>
 			<div class="absolute -bottom-28 left-1/3 size-64 rounded-full bg-so-gold/15 blur-3xl"></div>
 			<div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -769,7 +769,7 @@
 
 {#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-so-green-3/65 px-5 backdrop-blur-sm" role="presentation">
-		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-[28px] bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
+		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-3xl bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
 			<div class="flex items-start justify-between gap-4">
 				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
 				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
