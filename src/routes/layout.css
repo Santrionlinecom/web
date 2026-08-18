@@ -203,6 +203,96 @@ a {
 	animation: drawer-in 180ms ease-out;
 }
 
+/* ——— Sistem motion (selaras app) ———
+   Prinsip: satu momen signature per halaman, sisanya tenang.
+   Hanya transform + opacity supaya tidak memicu layout shift. */
+
+@keyframes so-enter {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes so-enter-scale {
+	from {
+		opacity: 0;
+		transform: translateY(12px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes so-dot-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.55;
+		transform: scale(0.72);
+	}
+}
+
+.hero-stagger {
+	opacity: 0;
+	animation: so-enter 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-stagger-1 { animation-delay: 0ms; }
+.hero-stagger-2 { animation-delay: 80ms; }
+.hero-stagger-3 { animation-delay: 160ms; }
+.hero-stagger-4 { animation-delay: 240ms; }
+.hero-stagger-5 { animation-delay: 320ms; }
+
+/* Kotak aplikasi: bintang halaman, masuk terakhir dengan skala halus. */
+.hero-showcase {
+	opacity: 0;
+	animation: so-enter-scale 460ms cubic-bezier(0.16, 1, 0.3, 1) 400ms forwards;
+}
+
+/* Scroll reveal per SECTION. Kelas .js-reveal dipasang lewat JS setelah
+   IntersectionObserver dipastikan ada, sehingga tanpa JS konten tetap terlihat. */
+.js-reveal .so-reveal {
+	opacity: 0;
+	transform: translateY(16px);
+}
+
+.so-reveal {
+	transition:
+		opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+		transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.so-reveal-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* Indikator AI mengetik — satu-satunya loop selain titik badge. */
+.so-typing span {
+	display: inline-block;
+	height: 0.45rem;
+	width: 0.45rem;
+	border-radius: 9999px;
+	background: var(--color-so-gold);
+	animation: so-dot-pulse 1200ms ease-in-out infinite;
+}
+
+.so-typing span:nth-child(2) { animation-delay: 160ms; }
+.so-typing span:nth-child(3) { animation-delay: 320ms; }
+
+.so-badge-dot {
+	animation: so-dot-pulse 1800ms ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	@supports (animation-timeline: view()) {
 		.fade-in {
@@ -220,5 +310,25 @@ a {
 
 	html {
 		scroll-behavior: auto;
+	}
+
+	/* Semua motion mati total: konten tampil langsung tanpa gerak. */
+	.hero-stagger,
+	.hero-showcase {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	.js-reveal .so-reveal,
+	.so-reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.so-typing span,
+	.so-badge-dot {
+		animation: none;
 	}
 }
