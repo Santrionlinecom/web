@@ -194,10 +194,19 @@
 				'@type': 'Organization',
 				'@id': 'https://santrionline.com/#organization',
 				name: 'SantriOnline',
+				alternateName: ['Santri Online', 'Santri Online Indonesia'],
 				url: 'https://santrionline.com/',
 				logo: 'https://santrionline.com/logo-santrionline.png',
 				description: 'Ekosistem pembinaan generasi muslim dan platform digital untuk lembaga yang memiliki santri di Indonesia.',
 				areaServed: { '@type': 'Country', name: 'Indonesia' },
+				address: { '@type': 'PostalAddress', addressLocality: 'Batu', addressRegion: 'Jawa Timur', addressCountry: 'ID' },
+				sameAs: [
+					'https://app.santrionline.com/',
+					'https://masyogik.santrionline.com/',
+					'https://www.tiktok.com/@santrionline.com',
+					'https://www.instagram.com/idsantrionline',
+					'https://www.youtube.com/@websantri'
+				],
 				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz']
 			},
 			{
@@ -205,6 +214,7 @@
 				'@id': 'https://santrionline.com/#website',
 				url: 'https://santrionline.com/',
 				name: 'SantriOnline',
+				alternateName: 'Santri Online',
 				inLanguage: 'id-ID',
 				publisher: { '@id': 'https://santrionline.com/#organization' }
 			},
@@ -373,6 +383,10 @@
 	<link rel="canonical" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="id-ID" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="x-default" href="https://santrionline.com/" />
+	<!-- GEO: bahasa dan wilayah sasaran dinyatakan tegas, tidak ditebak mesin. -->
+	<meta name="language" content="id-ID" />
+	<meta name="geo.region" content="ID" />
+	<meta name="geo.placename" content="Indonesia" />
 	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 
@@ -830,7 +844,11 @@
 			</div>
 		</div>
 
-		<p class="mt-8 text-xs md:text-right">© 2026 SantriOnline · Pendem, Batu, Jawa Timur</p>
+		<p class="mt-8 text-xs md:text-right">
+			© 2026 SantriOnline · Pendem, Batu, Jawa Timur ·
+			<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a> ·
+			<a class="hover:text-so-green" href="https://masyogik.santrionline.com/" rel="noopener">Jasa Web oleh Mas Yogik</a>
+		</p>
 	</div>
 </footer>
 
