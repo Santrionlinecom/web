@@ -9,7 +9,7 @@ import { json, type RequestHandler } from '@sveltejs/kit';
 
 const GONE_BODY = {
 	message:
-		'Webhook pembayaran di santrionline.com sudah dinonaktifkan permanen. Konfigurasi notifikasi Midtrans mengarah ke app.santrionline.com.'
+		'Layanan notifikasi pembayaran di alamat ini sudah dinonaktifkan permanen. Silakan gunakan app.santrionline.com.'
 };
 
 export const POST: RequestHandler = () => json(GONE_BODY, { status: 410 });

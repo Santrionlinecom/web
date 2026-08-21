@@ -408,7 +408,7 @@
 	<header class="sticky top-0 z-40 border-b border-so-border/80 bg-so-cream/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
-				<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl border border-so-border/80 object-cover shadow-sm" />
+				<img src={logo} alt="Logo SantriOnline" class="vt-logo size-10 rounded-xl border border-so-border/80 object-cover shadow-sm" />
 				<div class="min-w-0">
 					<p class="font-display truncate text-base font-bold tracking-[-0.02em] text-so-green sm:text-lg">SantriOnline</p>
 					<p class="hidden text-[10px] font-bold uppercase tracking-[0.16em] text-so-muted sm:block">Tumbuh · Beradab · Berdampak</p>
@@ -748,11 +748,16 @@
 								</div>
 							{/each}
 							{#if isChatLoading}
-							<p class="flex items-center gap-2 text-sm text-so-muted">
-								<span class="so-typing inline-flex items-center gap-1" aria-hidden="true"><span></span><span></span><span></span></span>
-								SantriOnline sedang menjawab…
-							</p>
-						{/if}
+								<div class="space-y-2" role="status" aria-label="SantriOnline sedang menjawab">
+									<div class="so-skeleton h-4 w-3/4"></div>
+									<div class="so-skeleton h-4 w-5/6"></div>
+									<div class="so-skeleton h-4 w-2/5"></div>
+									<p class="flex items-center gap-2 pt-1 text-sm text-so-muted">
+										<span class="so-typing inline-flex items-center gap-1" aria-hidden="true"><span></span><span></span><span></span></span>
+										SantriOnline sedang menjawab…
+									</p>
+								</div>
+							{/if}
 						</div>
 					{/if}
 				</div>

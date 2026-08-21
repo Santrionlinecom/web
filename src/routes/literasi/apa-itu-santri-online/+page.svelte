@@ -1,6 +1,7 @@
 <script lang="ts">
 	// src/routes/literasi/apa-itu-santri-online/+page.svelte
 	import logo from '$lib/assets/logo.png';
+	import { inview } from '$lib/actions/inview';
 
 	const appUrl = 'https://app.santrionline.com';
 	const blogUrl = `${appUrl}/blog/apa-itu-santri-online`;
@@ -56,7 +57,7 @@
 	<header class="border-b border-so-border/80 bg-white">
 		<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
 			<a href="/" class="inline-flex items-center gap-3 font-display text-lg font-bold text-so-green">
-				<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" />
+				<img src={logo} alt="Logo SantriOnline" class="vt-logo size-10 rounded-xl object-cover" />
 				SantriOnline
 			</a>
 			<a href={appUrl} class="rounded-full bg-so-green px-5 py-2.5 text-sm font-bold text-white">Buka Aplikasi</a>
@@ -72,7 +73,7 @@
 			</div>
 		</section>
 
-		<article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:py-16">
+		<article class="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:py-16" use:inview>
 			<div class="rounded-3xl border border-so-border bg-white p-6 shadow-soft sm:p-10">
 				<div class="space-y-6 text-base leading-8 text-so-muted sm:text-lg">
 					<p>Menjadi santri tidak selalu harus dimaknai secara sempit sebagai seseorang yang tinggal di pondok pesantren. Ada orang yang bekerja, menjalankan usaha, mengurus keluarga, menempuh pendidikan, atau memikul tanggung jawab lain sehingga belum memiliki kesempatan untuk menetap dan belajar langsung di pesantren.</p>

@@ -26,14 +26,18 @@ test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => 
 
 test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () => {
 	const robots = read('static/robots.txt');
-	const sitemap = read('static/sitemap.xml');
+	// Sitemap kini endpoint dinamis (src/routes/sitemap.xml/+server.ts),
+	// bukan berkas statis — lastmod mengikuti tanggal build.
+	const sitemap = read('src/routes/sitemap.xml/+server.ts');
 	const invoice = read('src/routes/invoice/[kode]/+page.svelte');
 	const invoiceLoader = read('src/routes/invoice/[kode]/+page.server.ts');
 	const invoiceDomain = read('src/lib/server/invoice.ts');
 
 	assert.match(robots, /Sitemap: https:\/\/santrionline\.com\/sitemap\.xml/);
 	assert.doesNotMatch(robots, /Disallow: \/invoice\//);
-	assert.match(sitemap, /<loc>https:\/\/santrionline\.com\/<\/loc>/);
+	assert.match(sitemap, /https:\/\/santrionline\.com/);
+	assert.match(sitemap, /literasi\/apa-itu-santri-online/);
+	assert.match(sitemap, /export const prerender = true/);
 	assert.match(invoice, /content="noindex, nofollow, noarchive"/);
 	assert.doesNotMatch(invoice, /maskEmail\(invoice\.email_klien\)/);
 	assert.doesNotMatch(invoice, /maskWhatsapp\(invoice\.whatsapp_klien\)/);

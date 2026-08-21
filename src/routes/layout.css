@@ -31,6 +31,15 @@
 	--radius-so-lg: 1.5rem;
 	--shadow-soft: 0 18px 60px rgb(18 63 52 / 0.1);
 	--shadow-card: 0 12px 34px rgb(18 63 52 / 0.08);
+
+	/* Token motion terpusat (Fase 2a). Tailwind v4 CSS-first: token di @theme
+	   otomatis jadi utility (duration-so-micro, ease-so, dst).
+	   Standar: micro 150-200ms · elemen 250-300ms · halaman 300-400ms. */
+	--duration-so-micro: 180ms;
+	--duration-so-element: 280ms;
+	--duration-so-page: 360ms;
+	--ease-so: cubic-bezier(0.4, 0, 0.2, 1);
+	--ease-so-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 :root {
@@ -338,6 +347,25 @@ select:focus-visible,
 }
 
 @media (prefers-reduced-motion: reduce) {
+	/* Catch-all global (Fase 2a): SEMUA animasi/transisi/scroll halus mati
+	   untuk pengguna yang memintanya — termasuk kelas yang belum lahir,
+	   sehingga tidak bergantung pada daftar manual yang bisa ketinggalan. */
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	/* View Transitions API ikut dimatikan. */
+	::view-transition-group(*),
+	::view-transition-old(*),
+	::view-transition-new(*) {
+		animation: none !important;
+	}
+
 	.mobile-drawer {
 		animation: none;
 	}
@@ -346,7 +374,7 @@ select:focus-visible,
 		scroll-behavior: auto;
 	}
 
-	/* Semua motion mati total: konten tampil langsung tanpa gerak. */
+	/* Konten yang menunggu animasi wajib langsung terlihat. */
 	.hero-stagger,
 	.hero-showcase {
 		animation: none;
@@ -355,9 +383,10 @@ select:focus-visible,
 	}
 
 	.js-reveal .so-reveal,
-	.so-reveal {
-		opacity: 1;
-		transform: none;
+	.so-reveal,
+	.js-inview [data-inview] {
+		opacity: 1 !important;
+		transform: none !important;
 		transition: none;
 	}
 
@@ -365,4 +394,73 @@ select:focus-visible,
 	.so-badge-dot {
 		animation: none;
 	}
+}
+
+/* ——— Transisi halaman (Fase 2b, View Transitions API) ——— */
+@keyframes so-page-out {
+	to {
+		opacity: 0;
+		transform: translateY(-8px);
+	}
+}
+
+@keyframes so-page-in {
+	from {
+		opacity: 0;
+		transform: translateY(8px);
+	}
+}
+
+::view-transition-old(root) {
+	animation: so-page-out var(--duration-so-page, 360ms) var(--ease-so, ease) both;
+}
+
+::view-transition-new(root) {
+	animation: so-page-in var(--duration-so-page, 360ms) var(--ease-so, ease) both;
+}
+
+/* Elemen kunci yang morph antar halaman: hanya logo. Tidak diobral. */
+.vt-logo {
+	view-transition-name: so-logo;
+}
+
+/* ——— Masuk viewport (Fase 2c, action inview) ———
+   Hanya transform+opacity (GPU-composited); tanpa width/height/top/left. */
+.js-inview [data-inview] {
+	opacity: 0;
+	transform: translateY(14px);
+	transition:
+		opacity var(--duration-so-element, 280ms) var(--ease-so-out, ease-out),
+		transform var(--duration-so-element, 280ms) var(--ease-so-out, ease-out);
+}
+
+.js-inview [data-inview].inview-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* ——— Skeleton / shimmer untuk state loading (Fase 2c) ——— */
+@keyframes so-shimmer {
+	from {
+		transform: translateX(-100%);
+	}
+	to {
+		transform: translateX(100%);
+	}
+}
+
+.so-skeleton {
+	position: relative;
+	overflow: hidden;
+	border-radius: var(--radius-so);
+	background: rgb(18 63 52 / 0.08);
+}
+
+.so-skeleton::after {
+	content: '';
+	position: absolute;
+	inset: 0;
+	transform: translateX(-100%);
+	background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+	animation: so-shimmer 1400ms var(--ease-so, ease) infinite;
 }
