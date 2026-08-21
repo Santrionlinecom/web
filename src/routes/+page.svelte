@@ -255,6 +255,9 @@
 		root.classList.add('js-reveal');
 
 		const nodes = Array.from(document.querySelectorAll<HTMLElement>('.so-reveal'));
+		// threshold HARUS kecil: dengan 0.15, section yang lebih tinggi dari
+		// ~6x viewport tidak pernah mencapai 15% terlihat, sehingga tidak pernah
+		// muncul — inilah penyebab "tengah halaman kosong" pada rilis 40f46fa.
 		const observer = new IntersectionObserver(
 			(entries) => {
 				for (const entry of entries) {
@@ -263,12 +266,19 @@
 					observer.unobserve(entry.target);
 				}
 			},
-			{ threshold: 0.15 }
+			{ threshold: 0, rootMargin: '0px 0px -5% 0px' }
 		);
 
 		for (const node of nodes) observer.observe(node);
 
+		// Jaring pengaman: apa pun yang terjadi (observer gagal, tab background,
+		// dsb.), seluruh konten wajib terlihat paling lambat 2.5 detik.
+		const safety = setTimeout(() => {
+			for (const node of nodes) node.classList.add('so-reveal-visible');
+		}, 2500);
+
 		return () => {
+			clearTimeout(safety);
 			observer.disconnect();
 			root.classList.remove('js-reveal');
 		};
