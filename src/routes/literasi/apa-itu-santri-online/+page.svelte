@@ -1,23 +1,55 @@
 <script lang="ts">
+	// src/routes/literasi/apa-itu-santri-online/+page.svelte
 	import logo from '$lib/assets/logo.png';
 
 	const appUrl = 'https://app.santrionline.com';
 	const blogUrl = `${appUrl}/blog/apa-itu-santri-online`;
+	const canonicalUrl = 'https://santrionline.com/literasi/apa-itu-santri-online';
+
+	// JSON-LD Article: halaman kunci kata kunci "santri online" dinyatakan
+	// eksplisit sebagai artikel milik Organization kanonik.
+	const articleSchema = {
+		'@context': 'https://schema.org',
+		'@type': 'Article',
+		headline: 'Apa Itu Santri Online?',
+		description:
+			'Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan.',
+		image: 'https://santrionline.com/og-santrionline.png',
+		author: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' },
+		publisher: { '@id': 'https://santrionline.com/#organization' },
+		mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+		inLanguage: 'id-ID',
+		articleSection: 'Literasi',
+		contentLocation: {
+			'@type': 'Place',
+			name: 'Indonesia',
+			address: { '@type': 'PostalAddress', addressCountry: 'ID' }
+		},
+		isAccessibleForFree: true
+	};
 </script>
 
 <svelte:head>
 	<title>Apa Itu Santri Online? | SantriOnline</title>
 	<meta name="description" content="Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan." />
-	<link rel="canonical" href="https://santrionline.com/literasi/apa-itu-santri-online" />
+	<link rel="canonical" href={canonicalUrl} />
+	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
+	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+	<meta name="language" content="id-ID" />
+	<meta name="geo.region" content="ID" />
+	<meta name="geo.placename" content="Indonesia" />
 	<meta property="og:title" content="Apa Itu Santri Online?" />
 	<meta property="og:description" content="Teknologi bukan pengganti ulama atau pesantren. Ia adalah jembatan agar jarak dan kesibukan tidak memutus semangat mengaji." />
 	<meta property="og:type" content="article" />
-	<meta property="og:url" content="https://santrionline.com/literasi/apa-itu-santri-online" />
+	<meta property="og:site_name" content="SantriOnline" />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="Apa Itu Santri Online?" />
 	<meta name="twitter:description" content="Teknologi adalah jembatan untuk terus mengaji, bukan pengganti ulama, guru, atau pesantren." />
 	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
+	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">
