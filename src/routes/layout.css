@@ -117,6 +117,38 @@ a {
 	border-color: rgb(201 168 76 / 0.82);
 }
 
+/* Focus ring global: setiap elemen interaktif wajib terlihat saat dinavigasi
+   keyboard — tanpa harus mengingat menempelkan kelas satu per satu. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+	outline: 3px solid var(--color-so-gold, #c9a84c);
+	outline-offset: 2px;
+	border-radius: 4px;
+}
+
+/* Skip-link: tersembunyi sampai difokus via Tab. */
+.skip-link {
+	position: absolute;
+	left: 1rem;
+	top: -100px;
+	z-index: 100;
+	padding: 0.75rem 1.25rem;
+	border-radius: 9999px;
+	background: var(--color-so-green, #0f5132);
+	color: #fff;
+	font-weight: 700;
+	font-size: 0.875rem;
+	transition: top 150ms ease;
+}
+
+.skip-link:focus-visible {
+	top: 1rem;
+}
+
 .icon-badge {
 	display: inline-flex;
 	height: 2.75rem;

@@ -402,7 +402,9 @@
 
 <svelte:window onkeydown={handleModalKeydown} />
 
-<main class="min-h-screen bg-so-cream text-so-ink antialiased">
+<a href="#konten-utama" class="skip-link">Langsung ke konten utama</a>
+
+<main id="konten-utama" class="min-h-screen bg-so-cream text-so-ink antialiased">
 	<header class="sticky top-0 z-40 border-b border-so-border/80 bg-so-cream/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
