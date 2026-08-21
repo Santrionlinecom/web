@@ -32,9 +32,6 @@
 		snap_token: string;
 	};
 
-	const ADMIN_PASSWORD_HASH =
-		'9de967cd3deb7dfa4b0741497c9ee39e246e73f5698f5810abf0111fa0c134ff';
-
 	let adminSecret = $state('');
 	let passwordInput = $state('');
 	let authError = $state('');
@@ -118,37 +115,33 @@
 		return 'Unpaid';
 	}
 
-	async function sha256Hex(value: string) {
-		const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(value));
-		return Array.from(new Uint8Array(digest))
-			.map((byte) => byte.toString(16).padStart(2, '0'))
-			.join('');
-	}
-
 	async function login(event: SubmitEvent) {
 		event.preventDefault();
 		await authenticateToken(passwordInput.trim());
 	}
 
+	// Verifikasi HANYA di server: secret dicoba langsung ke endpoint admin
+	// (Bearer INVOICE_ADMIN_SECRET). Tidak ada lagi hash password yang
+	// tertanam di bundle publik untuk di-brute-force offline.
 	async function authenticateToken(token: string) {
 		authError = '';
-		const hash = await sha256Hex(token);
 
-		if (hash !== ADMIN_PASSWORD_HASH) {
-			authError = 'Password admin tidak sesuai.';
+		if (!token) {
+			authError = 'Masukkan secret admin.';
 			return;
 		}
 
 		adminSecret = token;
-		sessionStorage.setItem('invoice_admin_secret', token);
 		const loaded = await loadInvoices();
 
 		if (!loaded) {
 			sessionStorage.removeItem('invoice_admin_secret');
 			adminSecret = '';
+			authError = authError || 'Secret admin tidak sesuai.';
 			return;
 		}
 
+		sessionStorage.setItem('invoice_admin_secret', token);
 		isAuthenticated = true;
 	}
 
