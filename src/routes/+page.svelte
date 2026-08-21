@@ -244,6 +244,41 @@
 		'Bagaimana membangun kebiasaan belajar agama setiap hari?'
 	];
 
+	// ——— Motion: scroll reveal per section ———
+	// Konten dirender server dan tetap terlihat tanpa JS. Kelas .js-reveal baru
+	// dipasang setelah IntersectionObserver dipastikan tersedia, sehingga tidak
+	// ada risiko konten tersembunyi permanen.
+	$effect(() => {
+		if (typeof IntersectionObserver === 'undefined') return;
+
+		const root = document.documentElement;
+		root.classList.add('js-reveal');
+
+		const nodes = Array.from(document.querySelectorAll<HTMLElement>('.so-reveal'));
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add('so-reveal-visible');
+					observer.unobserve(entry.target);
+				}
+			},
+			{ threshold: 0.15 }
+		);
+
+		for (const node of nodes) observer.observe(node);
+
+		return () => {
+			observer.disconnect();
+			root.classList.remove('js-reveal');
+		};
+	});
+
+	// Catatan: landing ini belum menampilkan angka statistik (jumlah lembaga/santri),
+	// sehingga animasi count-up belum dipasang. Saat blok statistik ditambahkan,
+	// gunakan pola yang sama dengan app: hitung naik sekali saat masuk viewport,
+	// dan lewati animasi bila prefers-reduced-motion aktif.
+
 	async function sendQuestion(nextQuestion = question.trim()) {
 		const message = nextQuestion.trim();
 		if (!message || isChatLoading) return;
@@ -411,37 +446,37 @@
 	<section class="relative px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-10 lg:pb-24 lg:pt-24">
 		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[720px] bg-[radial-gradient(circle_at_16%_15%,rgb(45 106 79 / 0.16),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201 168 76 / 0.14),transparent_27%)]"></div>
 		<div class="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
-			<div class="hero-copy max-w-3xl rounded-[30px] border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
-				<p class="inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
-					<span class="size-2 rounded-full bg-so-green-2"></span>
+			<div class="hero-copy max-w-3xl rounded-3xl border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
+				<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
+					<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
 					Sistem Pembinaan Generasi Muslim
 				</p>
-				<h1 class="font-display mt-7 max-w-[18ch] text-[clamp(2.35rem,10vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
+				<h1 class="hero-stagger hero-stagger-2 font-display mt-7 max-w-[18ch] text-[clamp(2.35rem,10vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
 					Pembinaan santri lebih terarah. <span class="text-so-green-2">Lembaga lebih tertata.</span>
 				</h1>
-				<p class="mt-7 max-w-2xl text-lg leading-8 text-so-muted sm:text-xl">
+				<p class="hero-stagger hero-stagger-3 mt-7 max-w-2xl text-lg leading-8 text-so-muted sm:text-xl">
 					Satukan data santri, kelas, hafalan, perkembangan, serta pembiasaan aqidah, adab, amal, ilmu, keterampilan, komunitas, dan kebiasaan baik untuk TPQ, pesantren, rumah tahfidz, masjid, serta musholla.
 				</p>
 
-				<div class="mt-9 flex flex-col gap-3 sm:flex-row">
-					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition hover:-translate-y-0.5 hover:bg-so-green-3" href={appInstitutionUrl}>
-						Daftarkan Lembaga <span aria-hidden="true">→</span>
+				<div class="hero-stagger hero-stagger-4 mt-9 flex flex-col gap-3 sm:flex-row">
+					<a class="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition duration-200 hover:-translate-y-0.5 hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25" href={appInstitutionUrl}>
+						Daftarkan Lembaga <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
 					</a>
-					<a class="inline-flex items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition hover:border-so-green/40 hover:text-so-green" href="#ekosistem">
+					<a class="inline-flex min-h-[48px] items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition duration-200 hover:border-so-green/40 hover:text-so-green focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/20" href="#ekosistem">
 						Lihat Cara Kerjanya
 					</a>
 				</div>
 
-				<div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-so-muted">
+				<div class="hero-stagger hero-stagger-5 mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-so-muted">
 					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Aqidah Aswaja</span>
 					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Ringan dan mudah diakses</span>
 					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Untuk lembaga di seluruh Indonesia</span>
 				</div>
 			</div>
 
-			<div class="relative lg:pl-4">
-				<div class="absolute -inset-5 rounded-[40px] bg-gradient-to-br from-so-green-2/15 to-so-gold/15 blur-2xl"></div>
-				<div class="relative overflow-hidden rounded-[28px] border border-so-border bg-so-surface shadow-soft">
+			<div class="hero-showcase relative lg:pl-4">
+				<div class="absolute -inset-5 rounded-3xl bg-gradient-to-br from-so-green-2/15 to-so-gold/15 blur-2xl"></div>
+				<div class="relative overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft">
 					<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
 						<div class="flex items-center gap-3">
 							<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
@@ -467,7 +502,7 @@
 
 						<div class="mt-4 grid grid-cols-2 gap-3">
 							{#each appPreviewItems as item}
-								<a class="group rounded-2xl border border-so-border/80 bg-white p-4 transition hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={item.href}>
+								<a class="group rounded-2xl border border-so-border/80 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={item.href}>
 									<span class={`icon-badge ${item.tone === 'gold' ? 'icon-badge-gold' : item.tone === 'cyan' ? 'icon-badge-cyan' : item.tone === 'violet' ? 'icon-badge-violet' : 'icon-badge-emerald'}`}>
 										<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={item.icon} stroke-linecap="round" stroke-linejoin="round" /></svg>
 									</span>
@@ -487,13 +522,13 @@
 		</div>
 	</section>
 
-	<section id="santri-online" class="scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20" aria-labelledby="santri-online-title">
+	<section id="santri-online" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20" aria-labelledby="santri-online-title">
 		<div class="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
 			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Mengenal SantriOnline</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Mengenal SantriOnline</p>
 				<h2 id="santri-online-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Santri adalah semangat belajar sepanjang hayat.</h2>
 			</div>
-			<div class="rounded-[28px] border border-so-border bg-so-cream p-6 sm:p-8">
+			<div class="rounded-3xl border border-so-border bg-so-cream p-6 sm:p-8">
 				<p class="text-lg leading-8 text-so-ink">Dalam semangat SantriOnline, siapa saja dapat terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi digital.</p>
 				<p class="mt-4 leading-7 text-so-muted"><strong class="text-so-green">Teknologi bukan pengganti ulama, guru, atau pesantren.</strong> Ia adalah jembatan agar jarak, usia, pekerjaan, dan keadaan hidup tidak memutus hubungan seseorang dengan ilmu.</p>
 				<a href="/literasi/apa-itu-santri-online" class="mt-6 inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-6 py-3 font-bold text-white hover:bg-so-green-3">Baca: Apa Itu Santri Online? <span class="ml-2">→</span></a>
@@ -501,11 +536,11 @@
 		</div>
 	</section>
 
-	<section id="arah" class="scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="arah" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-end">
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Arah SantriOnline</p>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Arah SantriOnline</p>
 					<h2 class="font-display mt-4 text-3xl font-bold leading-tight tracking-[-0.03em] sm:text-5xl text-so-green">Bukan sekadar konten. Ini perjalanan pembentukan diri.</h2>
 				</div>
 				<p class="max-w-2xl text-lg leading-8 text-so-muted lg:justify-self-end">
@@ -533,10 +568,10 @@
 		</div>
 	</section>
 
-	<section id="ekosistem" class="scroll-mt-20 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="ekosistem" class="so-reveal scroll-mt-20 px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Satu Ekosistem, Dua Pintu</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Satu Ekosistem, Dua Pintu</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Kenali visinya di sini. Jalani pembinaannya di aplikasi.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">santrionline.com adalah halaman publik. Aktivitas belajar, kelas, kitab, kebiasaan, dan pemantauan perkembangan tersedia di app.santrionline.com.</p>
 			</div>
@@ -574,7 +609,7 @@
 
 			<div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
 				{#each appShortcuts as shortcut}
-					<a class="group rounded-2xl border border-so-border/80 bg-white p-5 transition hover:-translate-y-1 hover:border-so-green/25 hover:shadow-lg" href={shortcut.href}>
+					<a class="group rounded-2xl border border-so-border/80 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/25 hover:shadow-lg" href={shortcut.href}>
 						<div class="flex items-center justify-between">
 							<span class={`icon-badge ${shortcut.accent === 'gold' ? 'icon-badge-gold' : 'icon-badge-emerald'}`}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={shortcut.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 							<span class="text-so-muted transition group-hover:translate-x-1 group-hover:text-so-green">→</span>
@@ -587,11 +622,11 @@
 		</div>
 	</section>
 
-	<section id="jalur" class="scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="jalur" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
 				<div class="lg:sticky lg:top-24">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Formula Pembinaan</p>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Formula Pembinaan</p>
 					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Dari keyakinan hingga kompetensi.</h2>
 					<p class="mt-5 text-lg leading-8 text-so-muted">Setiap bagian saling menguatkan. Keterampilan tanpa adab kehilangan arah; ilmu tanpa amal kehilangan daya.</p>
 					<a class="mt-7 inline-flex items-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white" href={`${appBaseUrl}/belajar`}>Jelajahi Jalur Belajar <span>→</span></a>
@@ -599,7 +634,7 @@
 
 				<div class="grid gap-4 sm:grid-cols-2">
 					{#each pillars as pillar}
-						<article class="rounded-2xl border border-so-border/80 bg-so-cream p-6 transition hover:border-so-green/20 hover:bg-so-cream">
+						<article class="rounded-2xl border border-so-border/80 bg-so-cream p-6 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/20 hover:shadow-md">
 							<span class="icon-badge icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={pillar.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 							<h3 class="mt-5 text-xl font-extrabold tracking-[-0.02em]">{pillar.title}</h3>
 							<p class="mt-3 leading-7 text-so-muted">{pillar.description}</p>
@@ -610,10 +645,10 @@
 		</div>
 	</section>
 
-	<section class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section class="so-reveal px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="max-w-3xl">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Tumbuh Bersama</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Tumbuh Bersama</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Satu ekosistem untuk santri, pendamping, dan lembaga.</h2>
 			</div>
 			<div class="mt-12 grid gap-5 lg:grid-cols-3">
@@ -633,7 +668,7 @@
 		</div>
 	</section>
 
-	<section id="lembaga" class="scroll-mt-20 border-y border-so-border/70 bg-so-green-3 px-4 py-16 text-white sm:px-6 lg:px-10 lg:py-24">
+	<section id="lembaga" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-so-green-3 px-4 py-16 text-white sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto max-w-7xl">
 			<div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
 				<div class="max-w-3xl">
@@ -649,7 +684,7 @@
 
 			<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 				{#each institutionTypes as institution}
-					<a class="group rounded-3xl border border-white/15 bg-white/5 p-6 transition hover:-translate-y-1 hover:border-so-gold/50 hover:bg-white/10" href={institution.href}>
+					<a class="group rounded-3xl border border-white/15 bg-white/5 p-6 transition duration-200 hover:-translate-y-0.5 hover:border-so-gold/50 hover:bg-white/10" href={institution.href}>
 						<span class="icon-badge icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={institution.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 						<h3 class="mt-5 text-xl font-extrabold">{institution.name}</h3>
 						<p class="mt-3 text-sm leading-7 text-white/65">{institution.description}</p>
@@ -666,10 +701,10 @@
 		</div>
 	</section>
 
-	<section id="tanya" class="scroll-mt-20 bg-so-cream px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+	<section id="tanya" class="so-reveal scroll-mt-20 bg-so-cream px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
 		<div class="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center">
 			<div>
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Coba SantriOnline AI</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Coba SantriOnline AI</p>
 				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Mulai dari satu pertanyaan yang baik.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">Gunakan asisten publik untuk orientasi awal. Untuk pengalaman lengkap dan riwayat percakapan, lanjutkan di aplikasi.</p>
 				<div class="mt-7 flex flex-wrap gap-2">
@@ -679,7 +714,7 @@
 				</div>
 			</div>
 
-			<div class="overflow-hidden rounded-[28px] border border-so-border bg-so-surface shadow-soft" role="region" aria-label="Chat demo SantriOnline">
+			<div class="overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft" role="region" aria-label="Chat demo SantriOnline">
 				<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
 					<div class="flex items-center gap-3">
 						<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
@@ -700,7 +735,12 @@
 									<div class={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-7 ${message.role === 'user' ? 'rounded-br-md bg-so-green text-white' : 'rounded-bl-md bg-so-cream text-so-green'}`}>{message.content}</div>
 								</div>
 							{/each}
-							{#if isChatLoading}<p class="text-sm text-so-muted">SantriOnline sedang menjawab…</p>{/if}
+							{#if isChatLoading}
+							<p class="flex items-center gap-2 text-sm text-so-muted">
+								<span class="so-typing inline-flex items-center gap-1" aria-hidden="true"><span></span><span></span><span></span></span>
+								SantriOnline sedang menjawab…
+							</p>
+						{/if}
 						</div>
 					{/if}
 				</div>
@@ -717,10 +757,10 @@
 		</div>
 	</section>
 
-	<section class="border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24" aria-labelledby="faq-title">
+	<section class="so-reveal border-y border-so-border/70 bg-white px-4 py-16 sm:px-6 lg:px-10 lg:py-24" aria-labelledby="faq-title">
 		<div class="mx-auto max-w-5xl">
 			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Pertanyaan Umum</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Pertanyaan Umum</p>
 				<h2 id="faq-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Mulai mengenal SantriOnline.</h2>
 				<p class="mt-5 text-lg leading-8 text-so-muted">Jawaban singkat untuk santri, orang tua, guru, dan pengelola lembaga yang ingin bergabung.</p>
 			</div>
@@ -735,8 +775,8 @@
 		</div>
 	</section>
 
-	<section class="px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
-		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-[32px] bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
+	<section class="so-reveal px-4 py-16 sm:px-6 lg:px-10 lg:py-24">
+		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
 			<div class="absolute -right-20 -top-20 size-72 rounded-full bg-so-green-2/25 blur-3xl"></div>
 			<div class="absolute -bottom-28 left-1/3 size-64 rounded-full bg-so-gold/15 blur-3xl"></div>
 			<div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
@@ -755,25 +795,60 @@
 </main>
 
 <footer class="border-t border-so-border/80 bg-white px-4 pb-28 pt-10 text-so-muted sm:px-6 sm:pb-10 lg:px-10">
-	<div class="mx-auto grid max-w-7xl gap-8 md:grid-cols-[1fr_auto] md:items-end">
-		<div>
-			<a class="inline-flex items-center gap-3 font-display font-bold text-so-green" href="/"><img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" /> SantriOnline</a>
-			<p class="mt-4 max-w-lg text-sm leading-6">Mesin pembentuk identitas, adab, aqidah, amal, ilmu, dan keterampilan generasi muslim.</p>
+	<div class="mx-auto max-w-7xl">
+		<div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
+			<div>
+				<a class="inline-flex items-center gap-3 font-display font-bold text-so-green" href="/"><img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" /> SantriOnline</a>
+				<p class="mt-4 max-w-lg text-sm leading-6">Mesin pembentuk identitas, adab, aqidah, amal, ilmu, dan keterampilan generasi muslim.</p>
+			</div>
+			<div class="md:text-right">
+				<nav class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold md:justify-end" aria-label="Navigasi footer">
+					<a class="hover:text-so-green" href="#arah">Arah</a>
+					<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
+					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
+					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
+				</nav>
+			</div>
 		</div>
-		<div class="md:text-right">
-			<nav class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold md:justify-end" aria-label="Navigasi footer">
-				<a class="hover:text-so-green" href="#arah">Arah</a>
-				<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
-				<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
-				<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
-				<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
-			</nav>
-			<p class="mt-4 text-xs">
-				© 2026 SantriOnline · Pendem, Batu, Jawa Timur ·
-				<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a> ·
-				<a class="hover:text-so-green" href="https://masyogik.santrionline.com/" rel="noopener">Jasa Web oleh Mas Yogik</a>
-			</p>
+
+		<div class="mt-9 rounded-3xl border border-so-border bg-so-cream p-6 sm:p-7">
+			<div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+				<div>
+					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Untuk Lembaga</p>
+					<h2 class="font-display mt-2 text-xl font-bold tracking-[-0.02em] text-so-green sm:text-2xl">
+						Mengelola TPQ, pondok, rumah tahfidz, masjid, atau musholla?
+					</h2>
+					<p class="mt-2 max-w-2xl text-sm leading-6">
+						Pengelolaan lembaga berjalan di app.santrionline.com — satu ekosistem dengan situs ini.
+					</p>
+				</div>
+				<a
+					class="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white transition duration-200 hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25"
+					href={appInstitutionUrl}
+				>
+					Daftarkan Lembaga
+					<span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
+				</a>
+			</div>
+
+			<div class="mt-5 flex flex-wrap gap-2 border-t border-so-border pt-5 text-sm font-semibold">
+				{#each institutionTypes as institution}
+					<a
+						class="rounded-full border border-so-border bg-white px-4 py-2 text-so-green transition duration-200 hover:-translate-y-0.5 hover:border-so-green/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/20"
+						href={institution.href}
+					>
+						{institution.name}
+					</a>
+				{/each}
+			</div>
 		</div>
+
+		<p class="mt-8 text-xs md:text-right">
+			© 2026 SantriOnline · Pendem, Batu, Jawa Timur ·
+			<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a> ·
+			<a class="hover:text-so-green" href="https://masyogik.santrionline.com/" rel="noopener">Jasa Web oleh Mas Yogik</a>
+		</p>
 	</div>
 </footer>
 
@@ -787,7 +862,7 @@
 
 {#if showUpgradeModal}
 	<div class="fixed inset-0 z-50 grid place-items-center bg-so-green-3/65 px-5 backdrop-blur-sm" role="presentation">
-		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-[28px] bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
+		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-3xl bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
 			<div class="flex items-start justify-between gap-4">
 				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
 				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>

@@ -34,7 +34,7 @@
 	<main>
 		<section class="border-b border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:py-20">
 			<div class="mx-auto max-w-4xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold">Literasi SantriOnline</p>
+				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Literasi SantriOnline</p>
 				<h1 class="font-display mt-4 text-4xl font-bold tracking-[-0.04em] text-so-green sm:text-6xl">Apa Itu Santri Online?</h1>
 				<p class="mx-auto mt-6 max-w-3xl text-lg leading-8 text-so-muted sm:text-xl">Dalam semangat SantriOnline, siapa saja dapat terus belajar, mengaji, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi digital.</p>
 			</div>

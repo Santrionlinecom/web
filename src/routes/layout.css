@@ -1,45 +1,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 @import 'tailwindcss';
 
-/* Canonical SantriOnline tokens — keep in sync with app.santrionline.com */
+/* Token kanonik SantriOnline — samakan dengan app.santrionline.com.
+   Palet 2026-08: hijau forest #123f34, aksen amber, latar #f6f7f3.
+
+   ATURAN KONTRAS (WCAG AA, sudah dihitung):
+   - Amber HANYA untuk teks di atas latar gelap forest (amber-300 = 8.15:1 LULUS).
+   - Di latar terang, amber GAGAL total (amber-300 hanya 1.34:1). Untuk eyebrow /
+     teks aksen di latar terang gunakan --color-so-accent-ink (emerald-800 = 7.14:1).
+   - Amber di latar terang boleh dipakai sebagai BIDANG (background/garis), bukan teks. */
 @theme {
 	--font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-display: 'Fraunces', Georgia, ui-serif, serif;
 
-	--color-so-green: #1b4332;
-	--color-so-green-2: #2d6a4f;
-	--color-so-green-3: #0f2f24;
-	--color-so-gold: #c9a84c;
-	--color-so-gold-2: #e8c97a;
-	--color-so-cream: #faf8f3;
+	--color-so-green: #123f34;
+	--color-so-green-2: #1b5546;
+	--color-so-green-3: #0c2c25;
+	--color-so-gold: #fcd34d;
+	--color-so-gold-2: #fde68a;
+	--color-so-accent-ink: #065f46;
+	--color-so-cream: #f6f7f3;
 	--color-so-surface: #ffffff;
-	--color-so-border: #e8e4dc;
-	--color-so-muted: #6b7280;
-	--color-so-ink: #1a1a1a;
+	--color-so-border: #e2e5dd;
+	--color-so-muted: #475569;
+	--color-so-ink: #0f172a;
 
-	--radius-so: 12px;
-	--radius-so-lg: 20px;
-	--shadow-soft: 0 18px 60px rgb(27 67 50 / 0.1);
-	--shadow-card: 0 12px 34px rgb(27 67 50 / 0.08);
+	--radius-so: 0.75rem;
+	--radius-so-lg: 1.5rem;
+	--shadow-soft: 0 18px 60px rgb(18 63 52 / 0.1);
+	--shadow-card: 0 12px 34px rgb(18 63 52 / 0.08);
 }
 
 :root {
 	--font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 	--font-display: 'Fraunces', Georgia, ui-serif, serif;
-	--color-so-green: #1b4332;
-	--color-so-green-2: #2d6a4f;
-	--color-so-green-3: #0f2f24;
-	--color-so-gold: #c9a84c;
-	--color-so-gold-2: #e8c97a;
-	--color-so-cream: #faf8f3;
+	--color-so-green: #123f34;
+	--color-so-green-2: #1b5546;
+	--color-so-green-3: #0c2c25;
+	--color-so-gold: #fcd34d;
+	--color-so-gold-2: #fde68a;
+	--color-so-accent-ink: #065f46;
+	--color-so-cream: #f6f7f3;
 	--color-so-surface: #ffffff;
-	--color-so-border: #e8e4dc;
-	--color-so-muted: #6b7280;
-	--color-so-ink: #1a1a1a;
-	--radius-so: 12px;
-	--radius-so-lg: 20px;
-	--shadow-soft: 0 18px 60px rgb(27 67 50 / 0.1);
-	--shadow-card: 0 12px 34px rgb(27 67 50 / 0.08);
+	--color-so-border: #e2e5dd;
+	--color-so-muted: #475569;
+	--color-so-ink: #0f172a;
+	--radius-so: 0.75rem;
+	--radius-so-lg: 1.5rem;
+	--shadow-soft: 0 18px 60px rgb(18 63 52 / 0.1);
+	--shadow-card: 0 12px 34px rgb(18 63 52 / 0.08);
 
 	font-family: var(--font-sans);
 	color-scheme: light;
@@ -194,6 +203,96 @@ a {
 	animation: drawer-in 180ms ease-out;
 }
 
+/* ——— Sistem motion (selaras app) ———
+   Prinsip: satu momen signature per halaman, sisanya tenang.
+   Hanya transform + opacity supaya tidak memicu layout shift. */
+
+@keyframes so-enter {
+	from {
+		opacity: 0;
+		transform: translateY(12px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+@keyframes so-enter-scale {
+	from {
+		opacity: 0;
+		transform: translateY(12px) scale(0.98);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
+}
+
+@keyframes so-dot-pulse {
+	0%,
+	100% {
+		opacity: 1;
+		transform: scale(1);
+	}
+	50% {
+		opacity: 0.55;
+		transform: scale(0.72);
+	}
+}
+
+.hero-stagger {
+	opacity: 0;
+	animation: so-enter 400ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-stagger-1 { animation-delay: 0ms; }
+.hero-stagger-2 { animation-delay: 80ms; }
+.hero-stagger-3 { animation-delay: 160ms; }
+.hero-stagger-4 { animation-delay: 240ms; }
+.hero-stagger-5 { animation-delay: 320ms; }
+
+/* Kotak aplikasi: bintang halaman, masuk terakhir dengan skala halus. */
+.hero-showcase {
+	opacity: 0;
+	animation: so-enter-scale 460ms cubic-bezier(0.16, 1, 0.3, 1) 400ms forwards;
+}
+
+/* Scroll reveal per SECTION. Kelas .js-reveal dipasang lewat JS setelah
+   IntersectionObserver dipastikan ada, sehingga tanpa JS konten tetap terlihat. */
+.js-reveal .so-reveal {
+	opacity: 0;
+	transform: translateY(16px);
+}
+
+.so-reveal {
+	transition:
+		opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+		transform 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.so-reveal-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* Indikator AI mengetik — satu-satunya loop selain titik badge. */
+.so-typing span {
+	display: inline-block;
+	height: 0.45rem;
+	width: 0.45rem;
+	border-radius: 9999px;
+	background: var(--color-so-gold);
+	animation: so-dot-pulse 1200ms ease-in-out infinite;
+}
+
+.so-typing span:nth-child(2) { animation-delay: 160ms; }
+.so-typing span:nth-child(3) { animation-delay: 320ms; }
+
+.so-badge-dot {
+	animation: so-dot-pulse 1800ms ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: no-preference) {
 	@supports (animation-timeline: view()) {
 		.fade-in {
@@ -211,5 +310,25 @@ a {
 
 	html {
 		scroll-behavior: auto;
+	}
+
+	/* Semua motion mati total: konten tampil langsung tanpa gerak. */
+	.hero-stagger,
+	.hero-showcase {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+
+	.js-reveal .so-reveal,
+	.so-reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.so-typing span,
+	.so-badge-dot {
+		animation: none;
 	}
 }
