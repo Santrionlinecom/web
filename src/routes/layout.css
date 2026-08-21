@@ -319,6 +319,15 @@ select:focus-visible,
 	transform: translateY(0);
 }
 
+/* WAJIB lebih spesifik daripada `.js-reveal .so-reveal` (0,2,0) di atas.
+   Bug 2026-08-21: `.so-reveal-visible` sendirian hanya (0,1,0), sehingga
+   opacity:0 tetap menang meski JS sudah menambahkan kelasnya — seluruh
+   tengah beranda kosong permanen. Selektor di bawah (0,3,0) yang menang. */
+.js-reveal .so-reveal.so-reveal-visible {
+	opacity: 1;
+	transform: translateY(0);
+}
+
 /* Indikator AI mengetik — satu-satunya loop selain titik badge. */
 .so-typing span {
 	display: inline-block;
