@@ -2,6 +2,13 @@
 	// src/routes/+page.svelte
 	import logo from '$lib/assets/logo.png';
 	import ChatSection from '$lib/components/ui/ChatSection.svelte';
+	import RakKatalog from '$lib/components/ui/RakKatalog.svelte';
+
+	// Etalase: rak katalog dari D1 db-app (lihat +page.server.ts / katalog.ts).
+	let { data } = $props();
+	const rak = $derived(data.rak ?? []);
+	const tabRak = $derived(rak.map((r: { id: string; judul: string }) => ({ href: `#rak-${r.id}`, label: r.judul })));
+	const jumlahItem = $derived(rak.reduce((t: number, r: { item: unknown[] }) => t + r.item.length, 0));
 
 	let showUpgradeModal = $state(false);
 	let showMobileMenu = $state(false);
@@ -15,6 +22,7 @@
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
 	const navigation = [
+		{ href: '#katalog', label: 'Katalog' },
 		{ href: '#santri-online', label: 'Apa Itu Santri Online' },
 		{ href: '#arah', label: 'Arah' },
 		{ href: '#ekosistem', label: 'Ekosistem' },
@@ -362,7 +370,7 @@
 
 <a href="#konten-utama" class="skip-link">Langsung ke konten utama</a>
 
-<main id="konten-utama" class="min-h-screen bg-so-cream text-so-ink antialiased">
+<main id="konten-utama" class="min-h-screen bg-so-cream pb-16 text-so-ink antialiased md:pb-0">
 	<header class="sticky top-0 z-40 border-b border-so-border/80 bg-so-cream/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
 		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
 			<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
@@ -413,83 +421,52 @@
 		{/if}
 	</header>
 
-	<section class="relative px-4 pb-16 pt-14 sm:px-6 sm:pt-20 lg:px-10 lg:pb-24 lg:pt-24">
-		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[720px] bg-[radial-gradient(circle_at_16%_15%,rgb(45 106 79 / 0.16),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201 168 76 / 0.14),transparent_27%)]"></div>
-		<div class="relative mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.04fr_0.96fr] lg:items-center">
-			<div class="hero-copy max-w-3xl rounded-3xl border border-white/80 bg-white/72 p-6 shadow-[0_24px_80px_rgb(27_67_50_/_0.08)] backdrop-blur-sm sm:border-0 sm:bg-transparent sm:p-0 sm:shadow-none sm:backdrop-blur-none">
-				<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-4 py-2 text-xs font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
-					<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
-					Sistem Pembinaan Generasi Muslim
-				</p>
-				<h1 class="hero-stagger hero-stagger-2 font-display mt-7 max-w-[18ch] text-[clamp(2.35rem,10vw,3.35rem)] font-bold leading-[1.08] tracking-[-0.04em] text-so-green sm:max-w-none sm:text-6xl lg:text-[4.35rem]">
-					Pembinaan santri lebih terarah. <span class="text-so-green-2">Lembaga lebih tertata.</span>
-				</h1>
-				<p class="hero-stagger hero-stagger-3 mt-7 max-w-2xl text-lg leading-8 text-so-muted sm:text-xl">
-					Satukan data santri, kelas, hafalan, perkembangan, serta pembiasaan aqidah, adab, amal, ilmu, keterampilan, komunitas, dan kebiasaan baik untuk TPQ, pesantren, rumah tahfidz, masjid, serta musholla.
-				</p>
-
-				<div class="hero-stagger hero-stagger-4 mt-9 flex flex-col gap-3 sm:flex-row">
-					<a class="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3.5 text-base font-bold text-white shadow-soft transition duration-200 hover:-translate-y-0.5 hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25" href={appInstitutionUrl}>
-						Daftarkan Lembaga <span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-					</a>
-					<a class="inline-flex min-h-[48px] items-center justify-center rounded-full border border-so-border bg-so-surface px-7 py-3.5 text-base font-bold text-so-green shadow-sm transition duration-200 hover:border-so-green/40 hover:text-so-green focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/20" href="#ekosistem">
-						Lihat Cara Kerjanya
-					</a>
+	<!-- ETALASE: hero ringkas + rak katalog (pola etalase digital: sampul geser, tab, tombol aksi). -->
+	<section id="katalog" class="relative scroll-mt-16 px-0 pb-4 pt-3 sm:pt-8">
+		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[420px] bg-[radial-gradient(circle_at_16%_15%,rgb(45_106_79_/_0.14),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201_168_76_/_0.12),transparent_27%)]"></div>
+		<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+			<div class="hero-copy grid gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+				<div>
+					<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
+						<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
+						Etalase SantriOnline · {jumlahItem} pilihan
+					</p>
+					<h1 class="hero-stagger hero-stagger-2 font-display mt-4 text-[clamp(1.35rem,5.2vw,1.9rem)] font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">
+						Kitab, buku, kursus, dan game kampung santri — <span class="text-so-green-2">satu akun, mulai hari ini.</span>
+					</h1>
+					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
+						Semua yang membentuk aqidah, adab, ilmu, dan keterampilan santri ada di rak ini. Pilih, lalu lanjutkan di aplikasi.
+					</p>
+					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="https://app.santrionline.com/kitab" method="get" role="search">
+						<label class="sr-only" for="cari-katalog">Cari kitab, buku, atau kursus</label>
+						<input id="cari-katalog" name="q" type="search" placeholder="Cari kitab, buku, kursus…" class="min-h-[42px] w-full rounded-full border border-so-border bg-white px-5 text-sm text-so-ink shadow-sm outline-none placeholder:text-so-muted/70 focus:border-so-green/50 focus:ring-4 focus:ring-so-green/15" />
+						<button type="submit" class="min-h-[42px] shrink-0 rounded-full bg-so-green px-5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">Cari</button>
+					</form>
 				</div>
-
-				<div class="hero-stagger hero-stagger-5 mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-semibold text-so-muted">
-					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Aqidah Aswaja</span>
-					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Ringan dan mudah diakses</span>
-					<span class="flex items-center gap-2"><span class="text-so-green-2">✓</span> Untuk lembaga di seluruh Indonesia</span>
-				</div>
+				<a class="hero-showcase group relative hidden overflow-hidden rounded-3xl border border-so-border bg-so-green-3 p-5 text-white shadow-soft lg:block" href={`${appBaseUrl}/kampung`}>
+					<p class="text-xs font-bold uppercase tracking-[0.14em] text-so-gold-2">Baru · Game 3D</p>
+					<p class="font-display mt-2 text-2xl font-bold tracking-[-0.03em]">Kampung Santri Digital</p>
+					<p class="mt-2 max-w-sm text-sm leading-6 text-white/75">Kampung yang mengikuti waktu sholat sungguhan. Wudhu, adzan, jamaah, ngaji — dari novel "Rumah di Ujung Pulau".</p>
+					<span class="mt-4 inline-flex items-center gap-2 rounded-full bg-so-gold px-4 py-2 text-sm font-bold text-so-green-3 transition group-hover:translate-x-0.5">Mainkan gratis →</span>
+					<img src="/katalog/kampung-hero.webp" alt="" width="320" height="200" loading="eager" class="pointer-events-none absolute -bottom-6 -right-6 w-56 rotate-[-6deg] rounded-2xl opacity-90 shadow-xl transition group-hover:rotate-[-3deg]" />
+				</a>
 			</div>
 
-			<div class="hero-showcase relative lg:pl-4">
-				<div class="absolute -inset-5 rounded-3xl bg-gradient-to-br from-so-green-2/15 to-so-gold/15 blur-2xl"></div>
-				<div class="relative overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft">
-					<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
-						<div class="flex items-center gap-3">
-							<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
-							<div>
-								<p class="text-sm font-extrabold">Aplikasi SantriOnline</p>
-								<p class="text-xs text-so-muted">Satu akun untuk perjalanan tumbuh</p>
-							</div>
-						</div>
-						<span class="rounded-full bg-so-cream px-3 py-1 text-[11px] font-bold text-so-green">TERHUBUNG</span>
-					</div>
-
-					<div class="bg-gradient-to-b from-so-cream to-white p-5 sm:p-7">
-						<div class="rounded-2xl bg-so-green-3 p-5 text-white">
-							<p class="text-xs font-bold uppercase tracking-[0.14em] text-so-gold-2">Fokus Hari Ini</p>
-							<div class="mt-4 flex items-end justify-between gap-4">
-								<div>
-									<p class="text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan langkah kecilmu</p>
-									<p class="mt-2 text-sm leading-6 text-white/70">Belajar, beramal, lalu jaga istiqamah.</p>
-								</div>
-								<span class="grid size-12 shrink-0 place-items-center rounded-full bg-so-gold text-xl text-so-green-3">↗</span>
-							</div>
-						</div>
-
-						<div class="mt-4 grid grid-cols-2 gap-3">
-							{#each appPreviewItems as item}
-								<a class="group rounded-2xl border border-so-border/80 bg-white p-4 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/30 hover:shadow-md" href={item.href}>
-									<span class={`icon-badge ${item.tone === 'gold' ? 'icon-badge-gold' : item.tone === 'cyan' ? 'icon-badge-cyan' : item.tone === 'violet' ? 'icon-badge-violet' : 'icon-badge-emerald'}`}>
-										<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={item.icon} stroke-linecap="round" stroke-linejoin="round" /></svg>
-									</span>
-									<p class="mt-4 text-sm font-extrabold">{item.label}</p>
-									<p class="mt-1 text-xs leading-5 text-so-muted">{item.note}</p>
-								</a>
-							{/each}
-						</div>
-					</div>
-
-					<a class="flex items-center justify-between border-t border-so-border/80 px-5 py-4 text-sm font-bold text-so-green transition hover:bg-so-cream" href={appBaseUrl}>
-						<span>Buka pengalaman lengkap di app.santrionline.com</span>
-						<span aria-hidden="true">→</span>
-					</a>
-				</div>
-			</div>
+			<!-- Tab jenis: geser ke rak (tanpa JS). -->
+			<nav class="hero-stagger hero-stagger-5 -mx-4 mt-3 flex gap-2 sm:mt-5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" aria-label="Jenis katalog" style="scrollbar-width:none">
+				{#each tabRak as t, i}
+					<a class={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition sm:text-sm ${i === 0 ? 'border-so-green bg-so-green text-white' : 'border-so-border bg-white text-so-green hover:border-so-green/40'}`} href={t.href}>{t.label}</a>
+				{/each}
+			</nav>
 		</div>
+
+		{#each rak as r, i (r.id)}
+			<RakKatalog rak={r} prioritas={i === 0} />
+		{/each}
+
+		{#if rak.length === 0}
+			<p class="mx-auto max-w-7xl px-4 py-10 text-center text-sm text-so-muted sm:px-6 lg:px-10">Katalog sedang disiapkan. Buka <a class="font-bold text-so-green underline" href={appBaseUrl}>aplikasi</a> untuk melihat semua pilihan.</p>
+		{/if}
 	</section>
 
 	<section id="santri-online" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-14 sm:px-6 lg:px-10 lg:py-20" aria-labelledby="santri-online-title">
@@ -768,11 +745,13 @@
 	</div>
 </footer>
 
-<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-so-border bg-white/95 p-2 shadow-soft backdrop-blur-xl md:hidden" aria-label="Akses cepat aplikasi">
-	<div class="mx-auto grid max-w-md grid-cols-[1fr_1.25fr_1fr] gap-2">
-		<a class="mobile-action" href={appLoginUrl} aria-label="Masuk ke akun SantriOnline"><span class="mobile-action-icon icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Masuk</span></a>
-		<a class="mobile-action mobile-action-primary" href={appBaseUrl} aria-label="Buka aplikasi SantriOnline"><span class="mobile-action-icon bg-gradient-to-br from-emerald-400 to-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 4h6v6m0-6L10 14M5 7v12h12v-5" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buka Aplikasi</span></a>
-		<a class="mobile-action" href={`${appBaseUrl}/belajar`} aria-label="Buka ruang belajar SantriOnline"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d={appShortcuts[0].icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Belajar</span></a>
+<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-so-border bg-white/95 p-1.5 shadow-soft backdrop-blur-xl md:hidden" aria-label="Navigasi bawah">
+	<div class="mx-auto grid max-w-md grid-cols-5 gap-1">
+		<a class="mobile-action" href="#katalog" aria-label="Ke katalog"><span class="mobile-action-icon icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round" /></svg></span><span>Katalog</span></a>
+		<a class="mobile-action" href="#rak-kitab" aria-label="Ke rak kitab"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kitab</span></a>
+		<a class="mobile-action mobile-action-primary" href={`${appBaseUrl}/kampung`} aria-label="Mainkan Kampung Santri"><span class="mobile-action-icon bg-gradient-to-br from-emerald-400 to-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kampung</span></a>
+		<a class="mobile-action" href="#rak-buku" aria-label="Ke rak buku"><span class="mobile-action-icon icon-badge-violet"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buku</span></a>
+		<a class="mobile-action" href={appLoginUrl} aria-label="Masuk ke akun SantriOnline"><span class="mobile-action-icon icon-badge-cyan"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Masuk</span></a>
 	</div>
 </nav>
 
