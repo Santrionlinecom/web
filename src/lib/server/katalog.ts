@@ -84,28 +84,28 @@ async function tanya(db: D1Database, sql: string): Promise<Baris[]> {
 const s = (v: unknown) => (typeof v === 'string' && v.trim() ? v.trim() : null);
 const n = (v: unknown) => (typeof v === 'number' ? v : Number(v) || 0);
 
-export async function muatKatalog(db: D1Database | undefined): Promise<RakKatalog[]> {
+export async function muatKatalog(db: D1Database | undefined, batas = 24): Promise<RakKatalog[]> {
 	if (!db) return rakDariItem([], [], [], []);
 	const [kitab, buku, produk, kursus] = await Promise.all([
 		tanya(
 			db,
 			`SELECT slug, title, summary, cover_url, category FROM kitab_catalog
-			 WHERE status='published' ORDER BY updated_at DESC, title LIMIT 24`
+			 WHERE status='published' ORDER BY updated_at DESC, title LIMIT ${batas}`
 		),
 		tanya(
 			db,
 			`SELECT slug, title, description, cover_url, category, free_chapter_limit, price_per_chapter
-			 FROM buku_books WHERE status='published' ORDER BY updated_at DESC LIMIT 24`
+			 FROM buku_books WHERE status='published' ORDER BY updated_at DESC LIMIT ${batas}`
 		),
 		tanya(
 			db,
 			`SELECT slug, title, summary, cover_url, price, featured FROM digital_products
-			 WHERE status='published' ORDER BY featured DESC, updated_at DESC LIMIT 24`
+			 WHERE status='published' ORDER BY featured DESC, updated_at DESC LIMIT ${batas}`
 		),
 		tanya(
 			db,
 			`SELECT slug, judul, ringkasan, sampul_url, harga_koin, kategori, level FROM kursus
-			 WHERE status='published' ORDER BY urutan, judul LIMIT 24`
+			 WHERE status='published' ORDER BY urutan, judul LIMIT ${batas}`
 		)
 	]);
 
@@ -192,37 +192,62 @@ function rakDariItem(
 			id: 'unggulan',
 			judul: 'Pilihan Utama',
 			keterangan: 'Yang paling banyak dipakai santri pekan ini.',
-			lihatSemua: `${APP}/beranda`,
+			lihatSemua: '/katalog/semua',
 			item: unggulan
 		},
 		{
 			id: 'kitab',
 			judul: 'Kitab Digital',
 			keterangan: 'Bahasa Arab, fiqih, aqidah, akhlak — dengan penjelasan.',
-			lihatSemua: `${APP}/kitab`,
+			lihatSemua: '/katalog/kitab',
 			item: kitab
 		},
 		{
 			id: 'buku',
 			judul: 'Novel & Buku',
 			keterangan: 'Cerita yang menumbuhkan adab dan cita-cita.',
-			lihatSemua: `${APP}/buku`,
+			lihatSemua: '/katalog/buku',
 			item: buku
 		},
 		{
 			id: 'kursus',
 			judul: 'Kursus',
 			keterangan: 'Belajar terarah, selesai per modul.',
-			lihatSemua: `${APP}/kursus`,
+			lihatSemua: '/katalog/kursus',
 			item: kursus
 		},
 		{
 			id: 'produk',
 			judul: 'Aplikasi & Produk Digital',
 			keterangan: 'Alat bantu untuk santri, guru, dan lembaga.',
-			lihatSemua: `${APP}/digital-store`,
+			lihatSemua: '/katalog/produk',
 			item: produk
 		}
 	];
 	return rak.filter((r) => r.item.length > 0);
+}
+
+/** Halaman "Lihat semua": satu jenis (atau 'semua'), dengan saringan teks sederhana. */
+export async function muatKatalogJenis(
+	db: D1Database | undefined,
+	jenis: string,
+	q = ''
+): Promise<{ judul: string; keterangan: string; item: ItemKatalog[] } | null> {
+	const rak = await muatKatalog(db, 200);
+	const cari = q.trim().toLowerCase();
+	const saring = (item: ItemKatalog[]) =>
+		cari ? item.filter((i) => `${i.judul} ${i.ringkasan} ${i.kategori ?? ''}`.toLowerCase().includes(cari)) : item;
+	if (jenis === 'semua') {
+		const lihat = new Set<string>();
+		const semua = rak.flatMap((r) => r.item).filter((i) => {
+			const k = `${i.jenis}:${i.slug}`;
+			if (lihat.has(k)) return false;
+			lihat.add(k);
+			return true;
+		});
+		return { judul: 'Semua Katalog', keterangan: 'Kitab, buku, kursus, aplikasi, dan game — satu tempat.', item: saring(semua) };
+	}
+	const r = rak.find((x) => x.id === jenis);
+	if (!r) return null;
+	return { judul: r.judul, keterangan: r.keterangan, item: saring(r.item) };
 }
