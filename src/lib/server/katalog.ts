@@ -24,6 +24,8 @@ export interface ItemKatalog {
 	aksi: string;
 	kategori: string | null;
 	unggulan?: boolean;
+	/** halaman detail publik di santrionline.com (SEO); kartu tetap tidak punya */
+	detail?: string;
 }
 
 export interface RakKatalog {
@@ -118,6 +120,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		harga: 'Gratis',
 		gratis: true,
 		href: `${APP}/kitab/${r.slug}`,
+		detail: `/katalog/kitab/${r.slug}`,
 		aksi: 'Baca',
 		kategori: s(r.category)
 	}));
@@ -134,6 +137,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 			harga: perBab > 0 ? `${bebas} bab gratis · ${perBab} koin/bab` : 'Gratis',
 			gratis: perBab === 0,
 			href: `${APP}/buku/${r.slug}`,
+			detail: `/katalog/buku/${r.slug}`,
 			aksi: 'Baca',
 			kategori: s(r.category),
 			unggulan: true
@@ -149,6 +153,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		harga: n(r.price) > 0 ? rupiah(n(r.price)) : 'Gratis',
 		gratis: n(r.price) === 0,
 		href: `${APP}/digital-store/${r.slug}`,
+		detail: `/katalog/produk/${r.slug}`,
 		aksi: 'Ambil',
 		kategori: 'Aplikasi',
 		unggulan: n(r.featured) === 1
@@ -163,6 +168,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		harga: n(r.harga_koin) > 0 ? `${n(r.harga_koin)} koin` : 'Gratis',
 		gratis: n(r.harga_koin) === 0,
 		href: `${APP}/kursus/${r.slug}`,
+		detail: `/katalog/kursus/${r.slug}`,
 		aksi: 'Ikuti',
 		kategori: s(r.kategori) ?? s(r.level)
 	}));

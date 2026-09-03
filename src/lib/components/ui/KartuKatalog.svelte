@@ -34,8 +34,8 @@
 
 <a
 	class="kartu group flex w-[9.25rem] shrink-0 snap-start flex-col sm:w-[10.5rem] lg:w-[11.5rem]"
-	href={item.href}
-	aria-label={`${item.aksi} ${item.judul}`}
+	href={item.detail ?? item.href}
+	aria-label={`${item.detail ? 'Lihat' : item.aksi} ${item.judul}`}
 >
 	<div class="relative aspect-[2/3] overflow-hidden rounded-2xl border border-so-border/80 bg-so-cream shadow-sm transition duration-200 group-hover:-translate-y-1 group-hover:shadow-md">
 		{#if item.sampul}
