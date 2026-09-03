@@ -10,6 +10,7 @@ const ASAL = 'https://santrionline.com';
 const PAGES = [
 	{ path: '/', changefreq: 'daily', priority: '1.0' },
 	{ path: '/literasi/apa-itu-santri-online', changefreq: 'monthly', priority: '0.8' },
+	{ path: '/lembaga', changefreq: 'weekly', priority: '0.9' },
 	...['semua', 'kitab', 'buku', 'kursus', 'produk'].map((j) => ({ path: `/katalog/${j}`, changefreq: 'daily', priority: '0.8' }))
 ];
 

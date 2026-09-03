@@ -26,7 +26,7 @@
 		{ href: '#santri-online', label: 'Apa Itu Santri Online' },
 		{ href: '#arah', label: 'Arah' },
 		{ href: '#ekosistem', label: 'Ekosistem' },
-		{ href: '#lembaga', label: 'Untuk Lembaga' },
+		{ href: '/lembaga', label: 'Untuk Lembaga' },
 		{ href: '#jalur', label: 'Pembinaan' },
 		{ href: '#tanya', label: 'Tanya AI' }
 	];
@@ -625,7 +625,7 @@
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
 					<a class="inline-flex items-center justify-center rounded-full bg-so-gold px-6 py-3.5 text-sm font-bold text-so-green-3" href={appInstitutionUrl}>Mulai Daftar Lembaga <span class="ml-2" aria-hidden="true">→</span></a>
-					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10" href={`${appBaseUrl}/fitur`}>Lihat Fitur Aplikasi</a>
+					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10" href="/lembaga">Gratis untuk Lembaga + Pendampingan</a>
 				</div>
 			</div>
 
@@ -698,6 +698,7 @@
 				<nav class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold md:justify-end" aria-label="Navigasi footer">
 					<a class="hover:text-so-green" href="#arah">Arah</a>
 					<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
+					<a class="hover:text-so-green" href="/lembaga">Untuk Lembaga</a>
 					<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
 					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
 					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
@@ -713,8 +714,8 @@
 						Mengelola TPQ, pondok, rumah tahfidz, masjid, atau musholla?
 					</h2>
 					<p class="mt-2 max-w-2xl text-sm leading-6">
-						Pengelolaan lembaga berjalan di app.santrionline.com — satu ekosistem dengan situs ini.
-					</p>
+						Gratis tanpa batas santri, termasuk pendampingan selama masa perkenalan. <a class="font-bold text-so-green underline" href="/lembaga">Lihat cara bergabung</a>.
+						</p>
 				</div>
 				<a
 					class="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white transition duration-200 hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25"

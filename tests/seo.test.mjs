@@ -24,6 +24,25 @@ test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => 
 	assert.match(source, /href: `\$\{appBaseUrl\}\/habit`/);
 });
 
+test('halaman /lembaga: SEO, WhatsApp resmi, dan harga tersinkron dengan JSON-LD', () => {
+	const source = read('src/routes/lembaga/+page.svelte');
+	const home = read('src/routes/+page.svelte');
+
+	assert.match(source, /rel="canonical" href=\{canonicalUrl\}/);
+	assert.match(source, /const canonicalUrl = 'https:\/\/santrionline\.com\/lembaga'/);
+	assert.match(source, /const WA = '6287854545274'/);
+	assert.match(source, /'@type': 'Service'/);
+	assert.match(source, /'@type': 'FAQPage'/);
+	assert.match(source, /'@type': 'BreadcrumbList'/);
+	// Keputusan 04 Sep 2026: semua gratis (termasuk pendampingan) — tidak boleh ada nominal rupiah.
+	assert.match(source, /const GRATIS_PENDAMPINGAN = true/);
+	assert.doesNotMatch(source, /Rp ?\d/);
+	assert.doesNotMatch(source, /price: '[1-9]/);
+	// Tidak ada pembayaran di situs publik: CTA = WhatsApp atau daftar di aplikasi.
+	assert.doesNotMatch(source, /midtrans|checkout|bayar sekarang/i);
+	assert.match(home, /href="\/lembaga"/);
+});
+
 test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () => {
 	const robots = read('static/robots.txt');
 	// Sitemap kini endpoint dinamis (src/routes/sitemap.xml/+server.ts),
@@ -37,7 +56,10 @@ test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () =>
 	assert.doesNotMatch(robots, /Disallow: \/invoice\//);
 	assert.match(sitemap, /https:\/\/santrionline\.com/);
 	assert.match(sitemap, /literasi\/apa-itu-santri-online/);
-	assert.match(sitemap, /export const prerender = true/);
+	// Sitemap dinamis: dilayani per request dari D1, cache edge — bukan prerender.
+	assert.doesNotMatch(sitemap, /export const prerender = true/);
+	assert.match(sitemap, /path: '\/lembaga'/);
+	assert.match(sitemap, /'cache-control': 'public, max-age=3600, s-maxage=21600'/);
 	assert.match(invoice, /content="noindex, nofollow, noarchive"/);
 	assert.doesNotMatch(invoice, /maskEmail\(invoice\.email_klien\)/);
 	assert.doesNotMatch(invoice, /maskWhatsapp\(invoice\.whatsapp_klien\)/);
