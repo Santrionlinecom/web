@@ -56,8 +56,10 @@ test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () =>
 	assert.doesNotMatch(robots, /Disallow: \/invoice\//);
 	assert.match(sitemap, /https:\/\/santrionline\.com/);
 	assert.match(sitemap, /literasi\/apa-itu-santri-online/);
-	// Sitemap dinamis: dilayani per request dari D1, cache edge — bukan prerender.
+	// Sitemap dinamis dibaca dari D1 saat diminta — TIDAK boleh prerender
+	// (prerender akan membekukan katalog saat build). Cache edge tetap wajib.
 	assert.doesNotMatch(sitemap, /export const prerender = true/);
+	assert.match(sitemap, /muatKatalog\(/);
 	assert.match(sitemap, /path: '\/lembaga'/);
 	assert.match(sitemap, /'cache-control': 'public, max-age=3600, s-maxage=21600'/);
 	assert.match(invoice, /content="noindex, nofollow, noarchive"/);

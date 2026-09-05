@@ -432,7 +432,7 @@
 						Etalase SantriOnline · {jumlahItem} pilihan
 					</p>
 					<h1 class="hero-stagger hero-stagger-2 font-display mt-4 text-[clamp(1.35rem,5.2vw,1.9rem)] font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">
-						Kitab, buku, kursus, dan game kampung santri — <span class="text-so-green-2">satu akun, mulai hari ini.</span>
+						Kitab, buku, kursus, alat desain, dan game kampung santri — <span class="text-so-green-2">satu akun, mulai hari ini.</span>
 					</h1>
 					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
 						Semua yang membentuk aqidah, adab, ilmu, dan keterampilan santri ada di rak ini. Pilih, lalu lanjutkan di aplikasi.

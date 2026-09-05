@@ -8,7 +8,7 @@
 // Hanya SELECT kolom publik; tidak ada data pribadi. Gagal DB → rak kosong,
 // halaman tetap tayang (etalase tidak boleh 500 karena satu rak).
 
-export type JenisKatalog = 'kitab' | 'buku' | 'produk' | 'kursus' | 'game' | 'belajar';
+export type JenisKatalog = 'kitab' | 'buku' | 'produk' | 'kursus' | 'game' | 'belajar' | 'alat';
 
 export interface ItemKatalog {
 	jenis: JenisKatalog;
@@ -68,6 +68,33 @@ export const KARTU_TETAP: ItemKatalog[] = [
 		aksi: 'Mulai',
 		kategori: 'Kurikulum',
 		unggulan: true
+	},
+	{
+		jenis: 'alat',
+		slug: 'desain-santri',
+		judul: 'Desain Santri',
+		ringkasan:
+			'Buat poster kajian, kartu ucapan, dan sampul langsung di peramban — font Arab, ornamen Islami, proyek tersimpan di akun.',
+		sampul: '/katalog/desain-santri.webp',
+		harga: 'Gratis',
+		gratis: true,
+		href: `${APP}/desain`,
+		aksi: 'Buka',
+		kategori: 'Alat kreatif',
+		unggulan: true
+	},
+	{
+		jenis: 'alat',
+		slug: 'toko-digital',
+		judul: 'Toko Digital SantriOnline',
+		ringkasan:
+			'Aplikasi dan produk digital untuk santri, guru, dan lembaga. Kode lisensi dikirim otomatis ke email setelah pembelian.',
+		sampul: null,
+		harga: 'Gratis & berbayar',
+		gratis: false,
+		href: `${APP}/digital-store`,
+		aksi: 'Kunjungi',
+		kategori: 'Toko'
 	}
 ];
 
@@ -188,7 +215,7 @@ function rakDariItem(
 	kursus: ItemKatalog[]
 ): RakKatalog[] {
 	const unggulan = [
-		...KARTU_TETAP,
+		...KARTU_TETAP.filter((k) => k.unggulan),
 		...buku.filter((b) => b.unggulan),
 		...produk.filter((p) => p.unggulan),
 		...kitab.slice(0, 3)
@@ -227,7 +254,7 @@ function rakDariItem(
 			judul: 'Aplikasi & Produk Digital',
 			keterangan: 'Alat bantu untuk santri, guru, dan lembaga.',
 			lihatSemua: '/katalog/produk',
-			item: produk
+			item: [...KARTU_TETAP.filter((k) => k.jenis === 'alat'), ...produk]
 		}
 	];
 	return rak.filter((r) => r.item.length > 0);
