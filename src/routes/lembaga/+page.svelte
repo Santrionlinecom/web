@@ -103,8 +103,9 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline untuk Lembaga — TPQ, Madrasah, Rumah Tahfidz</title>
-	<meta name="description" content="Rapikan data santri, setoran hafalan, rapor, dan komunikasi wali di satu aplikasi. Gratis untuk lembaga, termasuk pendampingan selama masa perkenalan 2026. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok." />
+	<title>Aplikasi Pondok Pesantren, TPQ & Tahfidz Gratis Berbasis Web | SantriOnline</title>
+	<meta name="description" content="Aplikasi manajemen pondok pesantren gratis berbasis web: keuangan, administrasi, data santri, setoran hafalan, rapor madrasah diniyah, ujian CBT, dan komunikasi wali. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok. Termasuk pendampingan 2026." />
+	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi pesantren berbasis web, aplikasi manajemen pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi ujian madrasah CBT online, sistem informasi pondok pesantren, aplikasi wali santri, aplikasi absensi santri" />
 	<link rel="canonical" href={canonicalUrl} />
 	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
 	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />

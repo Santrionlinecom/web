@@ -9,7 +9,10 @@ const read = (path) => readFileSync(`${root}${path}`, 'utf8');
 test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => {
 	const source = read('src/routes/+page.svelte');
 
-	assert.match(source, /<title>SantriOnline \| Platform Pembinaan Santri Indonesia<\/title>/);
+	assert.match(source, /<title>SantriOnline \| Aplikasi Pesantren & TPQ Gratis, Belajar Agama Islam Online<\/title>/);
+	// Riset kata kunci 2026-09-16: judul lama tidak boleh kembali.
+	assert.doesNotMatch(source, /<title>SantriOnline \| Platform Pembinaan Santri Indonesia<\/title>/);
+	assert.match(source, /aplikasi keuangan pondok pesantren gratis/);
 	assert.match(source, /rel="canonical" href="https:\/\/santrionline\.com\/"/);
 	assert.match(source, /property="og:image" content="https:\/\/santrionline\.com\/og-santrionline\.png"/);
 	assert.match(source, /name="twitter:card" content="summary_large_image"/);

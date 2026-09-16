@@ -330,19 +330,19 @@
 </script>
 
 <svelte:head>
-	<title>SantriOnline | Platform Pembinaan Santri Indonesia</title>
+	<title>SantriOnline | Aplikasi Pesantren & TPQ Gratis, Belajar Agama Islam Online</title>
 	<meta
 		name="description"
-		content="Platform pembinaan dan pengelolaan santri untuk TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam di seluruh Indonesia."
+		content="Aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis berbasis web: keuangan, administrasi, rapor, hafalan. Plus belajar agama Islam online — kisah nabi, tajwid, bahasa Arab, kitab kuning — untuk membina generasi muslim Indonesia."
 	/>
-	<meta name="keywords" content="SantriOnline, aplikasi santri, aplikasi TPQ, manajemen pondok pesantren, rumah tahfidz, platform pendidikan Islam, pembinaan santri, lembaga Islam Indonesia, aqidah Aswaja" />
+	<meta name="keywords" content="santri online, SantriOnline, aplikasi pesantren, aplikasi pondok pesantren gratis, aplikasi pondok pesantren berbasis web, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi ujian madrasah CBT online, sistem informasi pesantren, belajar agama islam online gratis, aplikasi belajar islam, aplikasi islami untuk anak, kisah nabi untuk anak, cerita sahabat nabi, belajar tajwid online, belajar bahasa arab online pemula, kitab kuning digital, terjemah kitab kuning, hafalan quran online, pendidikan karakter islami, aqidah Aswaja" />
 	<meta name="author" content="SantriOnline" />
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="id_ID" />
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/" />
-	<meta property="og:title" content="SantriOnline — Platform Pembinaan Santri & Lembaga Islam Indonesia" />
+	<meta property="og:title" content="SantriOnline — Aplikasi Pesantren & TPQ Gratis, Belajar Agama Islam Online" />
 	<meta
 		property="og:description"
 		content="Satu ekosistem untuk membantu lembaga di seluruh Indonesia membina santri yang kuat aqidahnya, beradab, berilmu, disiplin, dan siap menghadapi masa depan."
