@@ -33,6 +33,7 @@
 <svelte:head>
 	<title>Apa Itu Santri Online? | SantriOnline</title>
 	<meta name="description" content="Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan." />
+	<meta name="keywords" content="santri online, apa itu santri online, belajar agama islam online, belajar ngaji online, santri digital, pendidikan karakter islami" />
 	<link rel="canonical" href={canonicalUrl} />
 	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
 	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
