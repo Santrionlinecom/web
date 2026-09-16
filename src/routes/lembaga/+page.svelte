@@ -27,11 +27,11 @@
 	];
 
 	const fitur = [
-		{ nama: 'Data santri & kelas', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
-		{ nama: 'Setoran hafalan & rekap', isi: 'Guru mencatat setoran dari HP dalam hitungan detik. Rekap per santri, per kelas, per bulan langsung jadi.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
-		{ nama: 'Rapor santri', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan atau cetak.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
+		{ nama: 'Data santri & kelas', href: '/fitur/administrasi-pesantren', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
+		{ nama: 'Setoran hafalan & rekap', href: '/fitur/ujian-tahfidz', isi: 'Guru mencatat setoran dari HP dalam hitungan detik. Rekap per santri, per kelas, per bulan langsung jadi.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
+		{ nama: 'Rapor santri', href: '/fitur/raport-madrasah', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan atau cetak.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
 		{ nama: 'Halaqah & jadwal', isi: 'Kelompok ngaji, guru pengampu, dan jadwal pertemuan tercatat jelas untuk semua guru.', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13v5l3 2' },
-		{ nama: 'Keuangan lembaga', isi: 'Catatan iuran dan pengeluaran sederhana yang bisa dipertanggungjawabkan ke pengurus dan wali.', icon: 'M3 7h18v10H3V7Zm4 5h.01M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z' },
+		{ nama: 'Keuangan lembaga', href: '/fitur/keuangan-pesantren', isi: 'Catatan iuran dan pengeluaran sederhana yang bisa dipertanggungjawabkan ke pengurus dan wali.', icon: 'M3 7h18v10H3V7Zm4 5h.01M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z' },
 		{ nama: 'Akun wali santri', isi: 'Orang tua melihat hafalan, kehadiran, dan rapor anaknya sendiri, langsung dari HP.', icon: 'M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6' },
 		{ nama: 'Kitab digital & ruang belajar', isi: 'Safinatun Najah, Aqidatul Awam, Arba’in Nawawi, dan lainnya tersedia untuk santri dan guru.', icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6' },
 		{ nama: 'Kampung Santri Digital', isi: 'Permainan 3D yang mengikuti waktu sholat sungguhan. Anak belajar wudhu, adzan, jamaah sambil bermain.', icon: 'M4 20V9l8-5 8 5v11M9 20v-6h6v6' }
@@ -189,6 +189,7 @@
 							<span class="icon-badge icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={f.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
 							<h3 class="mt-4 font-extrabold">{f.nama}</h3>
 							<p class="mt-2 text-sm leading-6 text-so-muted">{f.isi}</p>
+							{#if f.href}<a href={f.href} class="mt-3 inline-block text-sm font-bold text-so-green underline">Selengkapnya →</a>{/if}
 						</article>
 					{/each}
 				</div>
