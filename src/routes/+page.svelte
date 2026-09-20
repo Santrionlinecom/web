@@ -209,7 +209,17 @@
 					'https://www.instagram.com/idsantrionline',
 					'https://www.youtube.com/@websantri'
 				],
-				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz']
+				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz'],
+				founder: {
+					'@type': 'Person',
+					'@id': 'https://masyogik.santrionline.com/#person',
+					name: 'Yogik Pratama Aprilian',
+					url: 'https://masyogik.santrionline.com/',
+					sameAs: [
+						'https://www.linkedin.com/in/yogik-pratama-aprilian/',
+						'https://about.me/yogikpratama'
+					]
+				}
 			},
 			{
 				'@type': 'WebSite',
