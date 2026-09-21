@@ -3,6 +3,7 @@
 // lastmod halaman tetap = waktu build; item = updated_at baris (bila ada).
 import type { RequestHandler } from '@sveltejs/kit';
 import { muatKatalog } from '$lib/server/katalog';
+import { FITUR_LEMBAGA } from '$lib/fitur-lembaga';
 
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const ASAL = 'https://santrionline.com';
@@ -11,6 +12,7 @@ const PAGES = [
 	{ path: '/', changefreq: 'daily', priority: '1.0' },
 	{ path: '/literasi/apa-itu-santri-online', changefreq: 'monthly', priority: '0.8' },
 	{ path: '/lembaga', changefreq: 'weekly', priority: '0.9' },
+	...FITUR_LEMBAGA.map((f) => ({ path: `/fitur/${f.slug}`, changefreq: 'monthly', priority: '0.8' })),
 	...['semua', 'kitab', 'buku', 'kursus', 'produk'].map((j) => ({ path: `/katalog/${j}`, changefreq: 'daily', priority: '0.8' }))
 ];
 
