@@ -478,7 +478,7 @@
 						<button type="submit" class="min-h-[42px] shrink-0 rounded-full bg-so-green px-5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">Cari</button>
 					</form>
 				</div>
-				<div class="hero-stagger hero-stagger-4 min-w-0">
+				<div class="hero-stagger hero-stagger-4 w-full min-w-0 self-stretch text-left">
 					<SlideEtalase slide={data.slide ?? []} />
 				</div>
 			</div>

@@ -63,7 +63,7 @@
 {#if n}
 	<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 	<section
-		class="slide-etalase relative overflow-hidden rounded-3xl bg-so-green-3 text-white shadow-soft"
+		class="slide-etalase relative w-full overflow-hidden rounded-3xl text-left bg-so-green-3 text-white shadow-soft"
 		aria-roledescription="carousel"
 		aria-label="Sorotan katalog"
 		bind:clientWidth={lebar}
