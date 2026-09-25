@@ -18,7 +18,7 @@ export const load: PageServerLoad = async ({ platform, setHeaders }) => {
 		cari(unggulan, 'kampung-santri'),
 		buku[0] ? { ...[...buku].sort((a, b) => (b.dibaca ?? 0) - (a.dibaca ?? 0))[0] } : undefined,
 		kitab.find((k) => k.kategori === 'Sirah & Kisah') ?? kitab[0],
-		produk.find((p) => !p.gratis) ?? produk[0],
+		produk.find((p) => p.jenis === 'produk' && !p.gratis) ?? produk[0],
 		cari(unggulan, 'ruang-belajar')
 	].filter((x): x is ItemKatalog => !!x);
 
