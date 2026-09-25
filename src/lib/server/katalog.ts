@@ -26,6 +26,10 @@ export interface ItemKatalog {
 	unggulan?: boolean;
 	/** halaman detail publik di santrionline.com (SEO); kartu tetap tidak punya */
 	detail?: string;
+	/** rating bintang pengunjung (katalog_ulasan); jumlah 0 = belum dinilai */
+	rating?: RingkasRating;
+	/** jumlah bab dibaca (khusus buku) — untuk rak "Paling Banyak Dibaca" */
+	dibaca?: number;
 }
 
 export interface RakKatalog {
@@ -37,6 +41,24 @@ export interface RakKatalog {
 }
 
 const APP = 'https://app.santrionline.com';
+
+import { muatSemuaRating, type RingkasRating } from './rating';
+
+/** Label ramah untuk kolom kitab_catalog.category. */
+export const LABEL_BIDANG: Record<string, string> = {
+	sirah: 'Sirah & Kisah',
+	aqidah: 'Aqidah',
+	'aqidah-samiyyat': "Aqidah Sam'iyyat",
+	'adab-tasawuf': 'Adab & Tasawuf',
+	fiqih: 'Fiqih',
+	hadits: 'Hadits',
+	'nahwu-sharaf': 'Nahwu & Sharaf',
+	'bahasa-arab': 'Bahasa Arab',
+	'perbandingan-agama': 'Perbandingan Agama',
+	'ushul-musthalah': 'Ushul & Musthalah',
+	'quran-tahsin': "Qur'an & Tahsin"
+};
+export const labelBidang = (k: string | null) => (k ? (LABEL_BIDANG[k] ?? k.replace(/-/g, ' ').replace(/^\w/, (h) => h.toUpperCase())) : null);
 
 const rupiah = (n: number) => 'Rp ' + n.toLocaleString('id-ID');
 
@@ -115,7 +137,13 @@ const n = (v: unknown) => (typeof v === 'number' ? v : Number(v) || 0);
 
 export async function muatKatalog(db: D1Database | undefined, batas = 24): Promise<RakKatalog[]> {
 	if (!db) return rakDariItem([], [], [], []);
-	const [kitab, buku, produk, kursus] = await Promise.all([
+	const [rating, dibacaBaris, kitab, buku, produk, kursus] = await Promise.all([
+		muatSemuaRating(db),
+		tanya(
+			db,
+			`SELECT b.slug AS slug, COUNT(*) AS v FROM buku_chapter_views v JOIN buku_books b ON b.id = v.book_id
+			 WHERE b.status='published' GROUP BY b.slug`
+		),
 		tanya(
 			db,
 			`SELECT slug, title, summary, cover_url, category FROM kitab_catalog
@@ -149,7 +177,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		href: `${APP}/kitab/${r.slug}`,
 		detail: `/katalog/kitab/${r.slug}`,
 		aksi: 'Baca',
-		kategori: s(r.category)
+		kategori: labelBidang(s(r.category))
 	}));
 
 	const itemBuku: ItemKatalog[] = buku.map((r) => {
@@ -200,7 +228,63 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		kategori: s(r.kategori) ?? s(r.level)
 	}));
 
-	return rakDariItem(itemKitab, itemBuku, itemProduk, itemKursus);
+	const dibaca = new Map(dibacaBaris.map((b) => [String(b.slug), n(b.v)]));
+	const beriRating = (i: ItemKatalog): ItemKatalog => ({
+		...i,
+		rating: rating.get(`${i.jenis}:${i.slug}`) ?? { rata: 0, jumlah: 0 },
+		...(i.jenis === 'buku' ? { dibaca: dibaca.get(i.slug) ?? 0 } : {})
+	});
+	return rakDariItem(itemKitab.map(beriRating), itemBuku.map(beriRating), itemProduk.map(beriRating), itemKursus.map(beriRating), rating);
+}
+
+export interface BidangKitab {
+	id: string;
+	label: string;
+	jumlah: number;
+	item: ItemKatalog[];
+}
+
+/** Kitab dikelompokkan per bidang (maks `perBidang` sampul per bidang), untuk tab "Kitab per Bidang". */
+export async function muatKitabPerBidang(db: D1Database | undefined, perBidang = 8): Promise<BidangKitab[]> {
+	if (!db) return [];
+	const [baris, jumlah, rating] = await Promise.all([
+		tanya(
+			db,
+			`SELECT slug, title, summary, cover_url, category FROM (
+			   SELECT slug, title, summary, cover_url, category,
+			          ROW_NUMBER() OVER (PARTITION BY category ORDER BY updated_at DESC, title) AS rn
+			   FROM kitab_catalog WHERE status='published'
+			 ) WHERE rn <= ${Math.max(1, Math.min(20, perBidang))}`
+		),
+		tanya(db, `SELECT category, COUNT(*) AS n FROM kitab_catalog WHERE status='published' GROUP BY category ORDER BY n DESC`),
+		muatSemuaRating(db)
+	]);
+	return jumlah
+		.filter((j) => s(j.category))
+		.map((j) => {
+			const id = String(j.category);
+			return {
+				id,
+				label: labelBidang(id) ?? id,
+				jumlah: n(j.n),
+				item: baris
+					.filter((r) => r.category === id)
+					.map((r) => ({
+						jenis: 'kitab' as const,
+						slug: String(r.slug),
+						judul: String(r.title),
+						ringkasan: s(r.summary) ?? 'Kitab digital dengan penjelasan yang mudah dipelajari.',
+						sampul: s(r.cover_url),
+						harga: 'Gratis',
+						gratis: true,
+						href: `${APP}/kitab/${r.slug}`,
+						detail: `/katalog/kitab/${r.slug}`,
+						aksi: 'Baca',
+						kategori: labelBidang(id),
+						rating: rating.get(`kitab:${r.slug}`) ?? { rata: 0, jumlah: 0 }
+					}))
+			};
+		});
 }
 
 function potong(t: string, maks = 140) {
@@ -212,10 +296,12 @@ function rakDariItem(
 	kitab: ItemKatalog[],
 	buku: ItemKatalog[],
 	produk: ItemKatalog[],
-	kursus: ItemKatalog[]
+	kursus: ItemKatalog[],
+	rating: Map<string, RingkasRating> = new Map()
 ): RakKatalog[] {
+	const tetap = KARTU_TETAP.map((k) => ({ ...k, rating: rating.get(`${k.jenis}:${k.slug}`) ?? { rata: 0, jumlah: 0 } }));
 	const unggulan = [
-		...KARTU_TETAP.filter((k) => k.unggulan),
+		...tetap.filter((k) => k.unggulan),
 		...buku.filter((b) => b.unggulan),
 		...produk.filter((p) => p.unggulan),
 		...kitab.slice(0, 3)
@@ -224,7 +310,7 @@ function rakDariItem(
 		{
 			id: 'unggulan',
 			judul: 'Pilihan Utama',
-			keterangan: 'Yang paling banyak dipakai santri pekan ini.',
+			keterangan: 'Pilihan redaksi: novel, game, alat, dan kitab yang paling pas untuk memulai.',
 			lihatSemua: '/katalog/semua',
 			item: unggulan
 		},
@@ -254,7 +340,7 @@ function rakDariItem(
 			judul: 'Aplikasi & Produk Digital',
 			keterangan: 'Alat bantu untuk santri, guru, dan lembaga.',
 			lihatSemua: '/katalog/produk',
-			item: [...KARTU_TETAP.filter((k) => k.jenis === 'alat'), ...produk]
+			item: [...tetap.filter((k) => k.jenis === 'alat'), ...produk]
 		}
 	];
 	return rak.filter((r) => r.item.length > 0);

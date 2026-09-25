@@ -3,12 +3,37 @@
 	import logo from '$lib/assets/logo.png';
 	import ChatSection from '$lib/components/ui/ChatSection.svelte';
 	import RakKatalog from '$lib/components/ui/RakKatalog.svelte';
+	import SlideEtalase from '$lib/components/etalase/SlideEtalase.svelte';
+	import BukuBolakBalik from '$lib/components/etalase/BukuBolakBalik.svelte';
+	import DaftarPeringkat from '$lib/components/etalase/DaftarPeringkat.svelte';
+	import KitabPerBidang from '$lib/components/etalase/KitabPerBidang.svelte';
+	import EtalaseAplikasi from '$lib/components/etalase/EtalaseAplikasi.svelte';
 
 	// Etalase: rak katalog dari D1 db-app (lihat +page.server.ts / katalog.ts).
+	// Beranda sengaja memakai bentuk yang berbeda-beda per rak: slide, rak geser,
+	// buku bolak-balik, peringkat, tab bidang, bento aplikasi.
 	let { data } = $props();
 	const rak = $derived(data.rak ?? []);
-	const tabRak = $derived(rak.map((r: { id: string; judul: string }) => ({ href: `#rak-${r.id}`, label: r.judul })));
-	const jumlahItem = $derived(rak.reduce((t: number, r: { item: unknown[] }) => t + r.item.length, 0));
+	const cariRak = (id: string) => rak.find((r: { id: string }) => r.id === id);
+	const rakUnggulan = $derived(cariRak('unggulan'));
+	const rakKursus = $derived(cariRak('kursus'));
+	const rakBuku = $derived(cariRak('buku'));
+	const rakProduk = $derived(cariRak('produk'));
+	const bidang = $derived(data.bidang ?? []);
+	const jumlahKitab = $derived(bidang.reduce((t: number, b: { jumlah: number }) => t + b.jumlah, 0));
+	const jumlahItem = $derived(
+		jumlahKitab + (rakBuku?.item.length ?? 0) + (rakProduk?.item.length ?? 0) + (rakKursus?.item.length ?? 0) + 2
+	);
+	const tabRak = $derived(
+		[
+			{ href: '#rak-unggulan', label: 'Pilihan Utama', ada: !!rakUnggulan },
+			{ href: '#rak-bolak-balik', label: 'Novel', ada: !!rakBuku },
+			{ href: '#rak-peringkat', label: 'Terpopuler', ada: (data.populer ?? []).length > 0 },
+			{ href: '#rak-bidang', label: `Kitab (${jumlahKitab})`, ada: bidang.length > 0 },
+			{ href: '#rak-kursus', label: 'Kursus', ada: !!rakKursus },
+			{ href: '#rak-aplikasi', label: 'Aplikasi', ada: !!rakProduk }
+		].filter((t) => t.ada)
+	);
 
 	let showUpgradeModal = $state(false);
 	let showMobileMenu = $state(false);
@@ -447,19 +472,15 @@
 					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
 						Semua yang membentuk aqidah, adab, ilmu, dan keterampilan santri ada di rak ini. Pilih, lalu lanjutkan di aplikasi.
 					</p>
-					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="https://app.santrionline.com/kitab" method="get" role="search">
+					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="/katalog/semua" method="get" role="search">
 						<label class="sr-only" for="cari-katalog">Cari kitab, buku, atau kursus</label>
 						<input id="cari-katalog" name="q" type="search" placeholder="Cari kitab, buku, kursus…" class="min-h-[42px] w-full rounded-full border border-so-border bg-white px-5 text-sm text-so-ink shadow-sm outline-none placeholder:text-so-muted/70 focus:border-so-green/50 focus:ring-4 focus:ring-so-green/15" />
 						<button type="submit" class="min-h-[42px] shrink-0 rounded-full bg-so-green px-5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">Cari</button>
 					</form>
 				</div>
-				<a class="hero-showcase group relative hidden overflow-hidden rounded-3xl border border-so-border bg-so-green-3 p-5 text-white shadow-soft lg:block" href={`${appBaseUrl}/kampung`}>
-					<p class="text-xs font-bold uppercase tracking-[0.14em] text-so-gold-2">Baru · Game 3D</p>
-					<p class="font-display mt-2 text-2xl font-bold tracking-[-0.03em]">Kampung Santri Digital</p>
-					<p class="mt-2 max-w-sm text-sm leading-6 text-white/75">Kampung yang mengikuti waktu sholat sungguhan. Wudhu, adzan, jamaah, ngaji — dari novel "Rumah di Ujung Pulau".</p>
-					<span class="mt-4 inline-flex items-center gap-2 rounded-full bg-so-gold px-4 py-2 text-sm font-bold text-so-green-3 transition group-hover:translate-x-0.5">Mainkan gratis →</span>
-					<img src="/katalog/kampung-hero.webp" alt="" width="320" height="200" loading="eager" class="pointer-events-none absolute -bottom-6 -right-6 w-56 rotate-[-6deg] rounded-2xl opacity-90 shadow-xl transition group-hover:rotate-[-3deg]" />
-				</a>
+				<div class="hero-stagger hero-stagger-4 min-w-0">
+					<SlideEtalase slide={data.slide ?? []} />
+				</div>
 			</div>
 
 			<!-- Tab jenis: geser ke rak (tanpa JS). -->
@@ -470,9 +491,14 @@
 			</nav>
 		</div>
 
-		{#each rak as r, i (r.id)}
-			<RakKatalog rak={r} prioritas={i === 0} />
-		{/each}
+		{#if rakUnggulan}<RakKatalog rak={rakUnggulan} prioritas />{/if}
+		{#if rakBuku}
+			<BukuBolakBalik buku={rakBuku.item} judul="Rak Novel — Buka dan Balik Halamannya" keterangan="Cerita yang menumbuhkan adab dan cita-cita. Geser atau klik panah untuk membalik." />
+		{/if}
+		<DaftarPeringkat item={data.populer ?? []} judul="Paling Banyak Dibaca" keterangan="Diurutkan dari jumlah bab yang dibuka pembaca." />
+		<KitabPerBidang {bidang} />
+		{#if rakKursus}<RakKatalog rak={rakKursus} />{/if}
+		{#if rakProduk}<EtalaseAplikasi item={rakProduk.item} />{/if}
 
 		{#if rak.length === 0}
 			<p class="mx-auto max-w-7xl px-4 py-10 text-center text-sm text-so-muted sm:px-6 lg:px-10">Katalog sedang disiapkan. Buka <a class="font-bold text-so-green underline" href={appBaseUrl}>aplikasi</a> untuk melihat semua pilihan.</p>
@@ -759,9 +785,9 @@
 <nav class="fixed inset-x-0 bottom-0 z-40 border-t border-so-border bg-white/95 p-1.5 shadow-soft backdrop-blur-xl md:hidden" aria-label="Navigasi bawah">
 	<div class="mx-auto grid max-w-md grid-cols-5 gap-1">
 		<a class="mobile-action" href="#katalog" aria-label="Ke katalog"><span class="mobile-action-icon icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round" /></svg></span><span>Katalog</span></a>
-		<a class="mobile-action" href="#rak-kitab" aria-label="Ke rak kitab"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kitab</span></a>
+		<a class="mobile-action" href="#rak-bidang" aria-label="Ke rak kitab"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kitab</span></a>
 		<a class="mobile-action mobile-action-primary" href={`${appBaseUrl}/kampung`} aria-label="Mainkan Kampung Santri"><span class="mobile-action-icon bg-gradient-to-br from-emerald-400 to-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kampung</span></a>
-		<a class="mobile-action" href="#rak-buku" aria-label="Ke rak buku"><span class="mobile-action-icon icon-badge-violet"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buku</span></a>
+		<a class="mobile-action" href="#rak-bolak-balik" aria-label="Ke rak buku"><span class="mobile-action-icon icon-badge-violet"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buku</span></a>
 		<a class="mobile-action" href={appLoginUrl} aria-label="Masuk ke akun SantriOnline"><span class="mobile-action-icon icon-badge-cyan"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Masuk</span></a>
 	</div>
 </nav>

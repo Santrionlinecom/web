@@ -3,8 +3,10 @@
 	// judul 2 baris, harga, tombol aksi). Sampul kosong → plakat warna per
 	// jenis dengan inisial, supaya rak tetap rapi tanpa gambar.
 	import type { ItemKatalog } from '$lib/server/katalog';
+	import Bintang from '$lib/components/etalase/Bintang.svelte';
 
-	let { item, prioritas = false }: { item: ItemKatalog; prioritas?: boolean } = $props();
+	// isi=true → kartu mengisi sel grid (halaman katalog / tab bidang), bukan lebar tetap rak geser.
+	let { item, prioritas = false, isi = false }: { item: ItemKatalog; prioritas?: boolean; isi?: boolean } = $props();
 
 	const warnaJenis: Record<string, string> = {
 		kitab: 'from-so-green to-so-green-3',
@@ -12,7 +14,8 @@
 		produk: 'from-sky-700 to-so-green-3',
 		kursus: 'from-violet-700 to-so-green-3',
 		game: 'from-emerald-600 to-so-green-3',
-		belajar: 'from-teal-600 to-so-green-3'
+		belajar: 'from-teal-600 to-so-green-3',
+		alat: 'from-violet-700 to-so-green-3'
 	};
 	const labelJenis: Record<string, string> = {
 		kitab: 'Kitab',
@@ -20,7 +23,8 @@
 		produk: 'Aplikasi',
 		kursus: 'Kursus',
 		game: 'Game',
-		belajar: 'Belajar'
+		belajar: 'Belajar',
+		alat: 'Alat'
 	};
 	const inisial = $derived(
 		item.judul
@@ -33,7 +37,7 @@
 </script>
 
 <a
-	class="kartu group flex w-[9.25rem] shrink-0 snap-start flex-col sm:w-[10.5rem] lg:w-[11.5rem]"
+	class={`kartu group flex min-w-0 flex-col ${isi ? 'w-full' : 'w-[9.25rem] shrink-0 snap-start sm:w-[10.5rem] lg:w-[11.5rem]'}`}
 	href={item.detail ?? item.href}
 	aria-label={`${item.detail ? 'Lihat' : item.aksi} ${item.judul}`}
 >
@@ -64,6 +68,7 @@
 	</div>
 	<p class="mt-2.5 line-clamp-2 text-sm font-bold leading-5 text-so-ink">{item.judul}</p>
 	<p class="mt-0.5 truncate text-xs text-so-muted">{item.kategori ?? item.harga}</p>
+	<div class="mt-1"><Bintang rata={item.rating?.rata} jumlah={item.rating?.jumlah} /></div>
 	<div class="mt-2 flex items-center justify-between gap-2">
 		<span class="truncate text-xs font-extrabold text-so-green">{item.harga}</span>
 		<span class="rounded-full bg-so-green px-3 py-1 text-[11px] font-bold text-white transition group-hover:bg-so-green-3">{item.aksi}</span>

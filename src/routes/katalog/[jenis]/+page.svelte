@@ -48,9 +48,9 @@
 	<p class="mt-4 text-xs text-so-muted">{data.item.length} item{data.q ? ` untuk “${data.q}”` : ''}</p>
 
 	{#if data.item.length}
-		<section class="mt-3 flex flex-wrap gap-3 sm:gap-4" aria-label={data.judul}>
+		<section class="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-6" aria-label={data.judul}>
 			{#each data.item as item, i (`${item.jenis}:${item.slug}`)}
-				<KartuKatalog {item} prioritas={i < 6} />
+				<KartuKatalog {item} prioritas={i < 6} isi />
 			{/each}
 		</section>
 	{:else}

@@ -3,6 +3,8 @@
 	// sampul, judul, deskripsi, daftar isi (judul saja), harga, CTA ke app.
 	// Isi bab/materi tidak pernah ditampilkan di sini — baca/ikuti di app.
 	import KartuKatalog from '$lib/components/ui/KartuKatalog.svelte';
+	import Bintang from '$lib/components/etalase/Bintang.svelte';
+	import NilaiBintang from '$lib/components/etalase/NilaiBintang.svelte';
 
 	let { data } = $props();
 	const item = $derived(data.item);
@@ -29,6 +31,9 @@
 			...(item.jenis === 'kursus' ? { provider: { '@type': 'Organization', name: 'SantriOnline', url: ASAL } } : {}),
 			...(item.jenis === 'produk' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
 			...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: { '@type': 'Organization', name: 'SantriOnline' } } : {}),
+			...(data.rating.jumlah > 0
+				? { aggregateRating: { '@type': 'AggregateRating', ratingValue: data.rating.rata, ratingCount: data.rating.jumlah, bestRating: 5, worstRating: 1 } }
+				: {}),
 			offers: { '@type': 'Offer', price: item.gratis ? '0' : undefined, priceCurrency: 'IDR', availability: 'https://schema.org/InStock', url: item.href },
 			contentLocation: { '@type': 'Place', name: 'Indonesia', address: { '@type': 'PostalAddress', addressCountry: 'ID' } }
 		})
@@ -89,6 +94,7 @@
 		<div class="min-w-0">
 			<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-so-gold">{labelJenis[item.jenis] ?? item.jenis}{item.kategori ? ` · ${item.kategori}` : ''}</p>
 			<h1 class="font-display mt-1 text-2xl font-bold leading-tight tracking-tight text-so-green sm:text-3xl lg:text-4xl">{item.judul}</h1>
+			<a href="#rating-judul" class="mt-2 inline-block"><Bintang rata={data.rating.rata} jumlah={data.rating.jumlah} ukuran="besar" /></a>
 			{#if item.ringkasan}<p class="mt-2 text-sm text-so-muted sm:text-base">{item.ringkasan}</p>{/if}
 
 			<div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
@@ -103,6 +109,8 @@
 				<a href={`/katalog/${tabJenis}`} class="inline-flex items-center justify-center rounded-full border border-so-border bg-white px-5 py-2.5 text-sm font-bold text-so-green transition hover:bg-so-cream">Lihat {labelJenis[item.jenis] ?? 'katalog'} lain</a>
 			</div>
 			<p class="mt-2 text-[11px] text-so-muted">Masuk gratis dengan akun Google di app.santrionline.com.</p>
+
+			<NilaiBintang jenis={item.jenis} slug={item.slug} awal={data.rating} />
 
 			{#if paragraf.length}
 				<section class="prose-so mt-6 max-w-none text-sm leading-relaxed text-so-ink/90 sm:text-[15px]" aria-label="Deskripsi">
@@ -133,7 +141,7 @@
 				<h2 class="font-display text-lg font-bold text-so-green">{labelJenis[item.jenis] ?? 'Katalog'} lainnya</h2>
 				<a href={`/katalog/${tabJenis}`} class="text-xs font-bold text-so-green hover:underline">Lihat Semua</a>
 			</div>
-			<div class="mt-3 flex snap-x gap-3 overflow-x-auto pb-2 sm:gap-4">
+			<div class="mt-3 flex snap-x gap-3 overflow-x-auto pb-2 sm:gap-4" style="scrollbar-width:thin">
 				{#each data.sejenis as s (s.slug)}<KartuKatalog item={s} />{/each}
 			</div>
 		</section>
