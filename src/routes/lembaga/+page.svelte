@@ -27,12 +27,12 @@
 	];
 
 	const fitur = [
-		{ nama: 'Data santri & kelas', href: '/fitur/administrasi-pesantren', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
-		{ nama: 'Setoran hafalan & rekap', href: '/fitur/ujian-tahfidz', isi: 'Guru mencatat setoran dari HP dalam hitungan detik. Rekap per santri, per kelas, per bulan langsung jadi.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
-		{ nama: 'Rapor santri', href: '/fitur/raport-madrasah', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan atau cetak.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
+		{ nama: 'Data santri & kelas', href: '/aplikasi-pondok-pesantren', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
+		{ nama: 'Setoran hafalan & rekap', href: '/aplikasi-hafalan-quran', isi: 'Guru mencatat setoran per ayat dari HP — ziyadah dan murojaah dibedakan. Capaian santri dan daftar hafalan belum lancar terkumpul sendiri.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
+		{ nama: 'Rapor santri', href: '/aplikasi-raport-tpq', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan tautannya. Ada templat raport TPQ Excel gratis.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
 		{ nama: 'Halaqah & jadwal', isi: 'Kelompok ngaji, guru pengampu, dan jadwal pertemuan tercatat jelas untuk semua guru.', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13v5l3 2' },
 		{ nama: 'Keuangan lembaga', href: '/fitur/keuangan-pesantren', isi: 'Catatan iuran dan pengeluaran sederhana yang bisa dipertanggungjawabkan ke pengurus dan wali.', icon: 'M3 7h18v10H3V7Zm4 5h.01M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z' },
-		{ nama: 'Akun wali santri', isi: 'Orang tua melihat hafalan, kehadiran, dan rapor anaknya sendiri, langsung dari HP.', icon: 'M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6' },
+		{ nama: 'Akun wali santri', isi: 'Orang tua diundang dengan kode dari lembaga, lalu memantau catatan kebiasaan harian anaknya dari HP.', icon: 'M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6' },
 		{ nama: 'Kitab digital & ruang belajar', isi: 'Safinatun Najah, Aqidatul Awam, Arba’in Nawawi, dan lainnya tersedia untuk santri dan guru.', icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6' },
 		{ nama: 'Kampung Santri Digital', isi: 'Permainan 3D yang mengikuti waktu sholat sungguhan. Anak belajar wudhu, adzan, jamaah sambil bermain.', icon: 'M4 20V9l8-5 8 5v11M9 20v-6h6v6' }
 	];
@@ -104,8 +104,8 @@
 
 <svelte:head>
 	<title>Aplikasi Pondok Pesantren, TPQ & Tahfidz Gratis Berbasis Web | SantriOnline</title>
-	<meta name="description" content="Aplikasi manajemen pondok pesantren gratis berbasis web: keuangan, administrasi, data santri, setoran hafalan, rapor madrasah diniyah, ujian CBT, dan komunikasi wali. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok. Termasuk pendampingan 2026." />
-	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi pesantren berbasis web, aplikasi manajemen pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi ujian madrasah CBT online, sistem informasi pondok pesantren, aplikasi wali santri, aplikasi absensi santri" />
+	<meta name="description" content="Aplikasi manajemen pondok pesantren gratis berbasis web: keuangan, administrasi, data santri, setoran hafalan, rapor madrasah diniyah, ujian tahfidz, asrama, dan akun wali. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok. Termasuk pendampingan 2026." />
+	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi pesantren berbasis web, aplikasi manajemen pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi hafalan quran, aplikasi raport tpq, sistem informasi pondok pesantren, aplikasi wali santri" />
 	<link rel="canonical" href={canonicalUrl} />
 	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
 	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />

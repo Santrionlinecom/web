@@ -777,6 +777,10 @@
 		<p class="mt-8 text-xs md:text-right">
 			© 2026 SantriOnline · Pendem, Batu, Jawa Timur ·
 			<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a> ·
+			<a class="hover:text-so-green" href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a> ·
+			<a class="hover:text-so-green" href="/aplikasi-raport-tpq">Templat Raport TPQ</a> ·
+			<a class="hover:text-so-green" href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a> ·
+			<a class="hover:text-so-green" href="/literasi/tahfidz-adalah">Tahfidz Adalah</a> ·
 			<a class="hover:text-so-green" href="https://masyogik.santrionline.com/" rel="noopener">Jasa Web oleh Mas Yogik</a>
 		</p>
 	</div>

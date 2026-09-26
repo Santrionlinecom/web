@@ -86,14 +86,16 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 			{ nama: 'Data santri', isi: 'Nama, kelas, wali, status aktif. Satu daftar untuk seluruh lembaga, bukan per guru.' },
 			{ nama: 'Kelas dan halaqah', isi: 'Kelompok ngaji, guru pengampu, dan anggota halaqah tercatat dan bisa diubah kapan saja.' },
 			{ nama: 'Akun guru', isi: 'Setiap guru punya akun sendiri; hanya melihat santri yang diampunya.' },
-			{ nama: 'Undangan wali santri', isi: 'Wali diundang lewat tautan, lalu melihat perkembangan anaknya sendiri dari HP.' },
+			{ nama: 'Undangan wali santri', isi: 'Wali diundang dengan kode dari lembaga, lalu memantau catatan kebiasaan harian anaknya dari HP.' },
 			{ nama: 'Persetujuan anggota', isi: 'Santri atau guru yang mendaftar sendiri masuk daftar tunggu; pengurus yang menyetujui.' },
 			{ nama: 'Kitab digital untuk santri', isi: 'Safinatun Najah, Aqidatul Awam, Arba’in Nawawi, dan lainnya bisa dibaca santri langsung di aplikasi.' }
 		],
 		belumAda: [
 			'Absensi harian santri dengan rekap kehadiran — belum ada sebagai modul tersendiri.',
 			'Surat-menyurat resmi lembaga (surat keterangan, mutasi) — belum ada.',
-			'Cetak kartu santri — belum ada di aplikasi web; tersedia lewat SantriPrint (aplikasi desktop terpisah).'
+			'Cetak kartu santri — belum ada di aplikasi web; tersedia lewat SantriPrint (aplikasi desktop terpisah).',
+			'Hafalan dan rapor di akun wali — belum tampil; wali saat ini memantau catatan kebiasaan harian.',
+			'Impor data santri dari Excel secara mandiri — belum ada; pada Pendampingan kami yang memasukkan.'
 		],
 		langkah: [
 			'Daftarkan lembaga: nama, kota, jenis (TPQ/madrasah/pondok).',
@@ -114,7 +116,7 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi raport madrasah diniyah',
 		title: 'Aplikasi Raport Madrasah Diniyah & Pondok Pesantren — Gratis',
 		description:
-			'Rapor hafalan dan capaian santri tersusun otomatis dari catatan setoran harian guru. Terbitkan per periode, bagikan ke wali lewat aplikasi. Untuk madrasah diniyah, TPQ, rumah tahfidz, pondok. Gratis.',
+			'Rapor hafalan dan capaian santri tersusun dari catatan setoran harian guru. Terbitkan per periode dan bagikan lewat tautan. Untuk madrasah diniyah, TPQ, dan rumah tahfidz. Gratis.',
 		label: 'Rapor santri',
 		judul: 'Aplikasi raport madrasah diniyah yang tersusun sendiri dari catatan harian guru.',
 		intro:
@@ -129,23 +131,26 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 			{ nama: 'Setoran harian jadi dasar rapor', isi: 'Guru mencatat setoran hafalan dari HP. Rapor dibangun dari catatan itu, bukan dari ingatan.' },
 			{ nama: 'Terbitkan per periode', isi: 'Pengurus menentukan periode (semester/caturwulan), meninjau, lalu menerbitkan.' },
 			{ nama: 'Rekap rapor hafalan', isi: 'Daftar seluruh santri beserta capaiannya dalam satu layar untuk pengurus.' },
-			{ nama: 'Wali membuka rapor sendiri', isi: 'Rapor yang sudah terbit bisa dilihat wali dari akunnya, kapan pun.' },
+			{ nama: 'Rapor bisa dibagikan', isi: 'Rapor yang sudah terbit bisa dibuka santri dari akunnya, dan dijadikan tautan publik bila ingin dikirim ke wali.' },
 			{ nama: 'Riwayat rapor tersimpan', isi: 'Rapor periode lalu tetap bisa dibuka; perkembangan antar semester terlihat.' }
 		],
 		belumAda: [
 			'Rapor mata pelajaran umum dengan KKM dan bobot nilai (seperti rapor sekolah formal) — belum ada; fokus saat ini rapor hafalan dan capaian santri.',
 			'Template rapor kustom dengan kop lembaga yang bisa diatur sendiri — belum ada.',
-			'Tanda tangan digital kepala madrasah — belum ada.'
+			'Tanda tangan digital kepala madrasah — belum ada.',
+			'Tombol cetak/PDF rapor khusus — belum ada; halaman rapor dicetak dari peramban.',
+			'Rapor di akun wali — belum ada; rapor dibagikan lewat tautan.',
+			'Pencatatan setoran untuk lembaga bertipe pondok — belum; saat ini untuk TPQ dan rumah tahfidz.'
 		],
 		langkah: [
 			'Guru mencatat setoran hafalan santri setiap pertemuan dari HP.',
 			'Menjelang akhir periode, pengurus membuka Terbitkan Rapor dan meninjau.',
-			'Rapor diterbitkan; wali langsung bisa membukanya.',
+			'Rapor diterbitkan; bagikan tautannya ke wali.',
 			'Cetak bila lembaga tetap ingin membagikan versi kertas.'
 		],
 		faq: [
 			{ q: 'Rapor apa yang tersedia?', a: 'Rapor hafalan dan capaian santri berdasarkan setoran harian. Rapor mata pelajaran umum belum tersedia.' },
-			{ q: 'Bisa dicetak?', a: 'Bisa dicetak dari peramban. Pada paket Pendampingan kami bantu sampai rapor semester pertama jadi.' },
+			{ q: 'Bisa dicetak?', a: 'Bisa dicetak dari peramban; tombol cetak khusus belum ada. Butuh rapor kertas sekarang juga? Pakai templat Excel raport TPQ gratis kami. Pada paket Pendampingan kami bantu sampai rapor semester pertama jadi.' },
 			{ q: 'Bagaimana kalau guru belum mencatat setoran secara rutin?', a: 'Rapor hanya sebaik catatannya. Karena itu kami latih guru mencatat dari HP — hanya butuh beberapa ketukan per santri.' },
 			{ q: 'Cocok untuk TPQ yang bukan tahfidz?', a: 'Cocok. Setoran bisa berupa bacaan Iqra/Al-Qur’an, hafalan surat pendek, doa harian, atau kategori lain yang lembaga tentukan sendiri.' }
 		],
@@ -156,11 +161,11 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi ujian tahfidz',
 		title: 'Aplikasi Ujian Tahfidz & Setoran Hafalan untuk Pesantren — Gratis',
 		description:
-			'Catat hasil ujian tahfidz dan setoran hafalan santri dari HP guru. Lanjut otomatis dari setoran terakhir, hasil tersimpan, terhubung ke rapor. Untuk rumah tahfidz, pondok, madrasah, TPQ. Gratis.',
+			'Catat hasil ujian tahfidz santri dari HP penguji: surat, ayat, nilai 0–100, catatan. Riwayat tersimpan per santri; bagian yang belum lancar dari setoran harian ikut ditandai. Gratis.',
 		label: 'Ujian tahfidz',
-		judul: 'Aplikasi ujian tahfidz: catat hasil, lanjut dari setoran terakhir, langsung masuk rapor.',
+		judul: 'Aplikasi ujian tahfidz: catat hasil di tempat, riwayat tersimpan per santri.',
 		intro:
-			'Ujian tahfidz sering dicatat di kertas penguji lalu direkap belakangan. SantriOnline mencatat hasilnya saat itu juga dari HP, melanjutkan dari setoran terakhir santri, dan menyimpannya sebagai dasar rapor.',
+			'Ujian tahfidz sering dicatat di kertas penguji lalu direkap belakangan. Di SantriOnline, penguji mencatat hasilnya saat itu juga dari HP, dan riwayatnya tersimpan per santri.',
 		jalurApp: '/dashboard/ujian-tahfidz',
 		masalah: [
 			{ judul: 'Penguji tidak tahu santri sampai mana', isi: 'Harus tanya dulu ke guru pengampu, atau ke santrinya sendiri.' },
@@ -168,27 +173,29 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 			{ judul: 'Hasil ujian tidak nyambung ke rapor', isi: 'Rapor diketik terpisah, angka ujian dimasukkan dari ingatan.' }
 		],
 		yangAda: [
-			{ nama: 'Catat hasil ujian di tempat', isi: 'Penguji membuka nama santri, mencatat hasil, selesai. Tidak ada kertas yang perlu direkap.' },
-			{ nama: 'Lanjut dari setoran', isi: 'Aplikasi menunjukkan capaian setoran terakhir, sehingga penguji tahu dari mana ujian dimulai.' },
-			{ nama: 'Hasil terakhir terlihat', isi: 'Riwayat ujian per santri tersimpan dan bisa dibuka guru maupun wali.' },
-			{ nama: 'Hafalan belum lancar ditandai', isi: 'Bagian yang perlu diulang tercatat, sehingga guru tahu apa yang harus dimurojaah.' },
-			{ nama: 'Terhubung ke rapor', isi: 'Hasil ujian menjadi bagian dari rapor periode tanpa diketik ulang.' }
+			{ nama: 'Catat hasil ujian di tempat', isi: 'Judul ujian, surat, ayat, nilai 0–100, dan catatan penguji. Tidak ada kertas yang perlu direkap.' },
+			{ nama: 'Capaian setoran bisa dilihat', isi: 'Pengurus bisa membuka pencapaian hafalan santri dari setoran yang sudah disetujui sebelum menguji.' },
+			{ nama: 'Riwayat ujian tersimpan', isi: 'Hasil ujian tiap santri tersimpan di lembaga dan bisa dibuka lagi oleh pengurus.' },
+			{ nama: 'Hafalan belum lancar ditandai', isi: 'Setoran yang dinilai “belum” atau “cukup” terkumpul di satu daftar, sehingga guru tahu apa yang harus dimurojaah.' }
 		],
 		belumAda: [
 			'Ujian pilihan ganda / CBT untuk mata pelajaran (fiqih, tajwid, dsb.) sebagai modul lembaga — belum ada; kuis yang tersedia saat ini adalah Ruang Belajar untuk santri secara mandiri.',
 			'Rekaman suara setoran/ujian — belum ada.',
-			'Penjadwalan ujian otomatis dengan pengingat — belum ada.'
+			'Penjadwalan ujian otomatis dengan pengingat — belum ada.',
+			'Predikat (mumtaz, jayyid jiddan, dst.), penguji ganda, dan syahadah per juz — belum ada; nilai dicatat sebagai angka 0–100.',
+			'Hasil ujian otomatis masuk rapor — belum; rapor terbit memuat ringkasan setoran.',
+			'Hasil ujian di akun wali — belum ada.'
 		],
 		langkah: [
 			'Pastikan setoran harian santri sudah dicatat guru.',
 			'Saat ujian, penguji membuka menu Ujian Tahfidz dan memilih santri.',
 			'Catat hasil dan bagian yang belum lancar.',
-			'Hasil tersimpan; wali bisa melihat, rapor mengambilnya otomatis.'
+			'Hasil tersimpan di riwayat ujian santri.'
 		],
 		faq: [
 			{ q: 'Apakah ini ujian CBT pilihan ganda?', a: 'Bukan. Ini pencatatan hasil ujian tahfidz (hafalan) oleh penguji. Ujian pilihan ganda untuk mata pelajaran belum tersedia sebagai modul lembaga.' },
 			{ q: 'Bisa dipakai rumah tahfidz kecil?', a: 'Bisa. Tidak ada batas jumlah santri, dan gratis selama masa perkenalan 2026.' },
-			{ q: 'Wali bisa melihat hasil ujian anaknya?', a: 'Bisa, dari akun wali yang diundang lembaga.' },
+			{ q: 'Wali bisa melihat hasil ujian anaknya?', a: 'Belum. Akun wali saat ini memantau catatan kebiasaan harian; hasil ujian dan hafalan belum tampil di sana. Ini termasuk pengembangan berikutnya.' },
 			{ q: 'Bagaimana kalau santri pindah halaqah?', a: 'Riwayat setoran dan ujian tetap melekat pada santri, bukan pada guru — jadi tidak hilang.' }
 		],
 		terkait: ['raport-madrasah', 'administrasi-pesantren']

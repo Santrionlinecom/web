@@ -4,6 +4,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { muatKatalog } from '$lib/server/katalog';
 import { FITUR_LEMBAGA } from '$lib/fitur-lembaga';
+import { HALAMAN_APLIKASI } from '$lib/halaman-aplikasi';
 
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const ASAL = 'https://santrionline.com';
@@ -11,7 +12,10 @@ const ASAL = 'https://santrionline.com';
 const PAGES = [
 	{ path: '/', changefreq: 'daily', priority: '1.0' },
 	{ path: '/literasi/apa-itu-santri-online', changefreq: 'monthly', priority: '0.8' },
+	{ path: '/literasi/tahfidz-adalah', changefreq: 'monthly', priority: '0.8' },
+	{ path: '/literasi/munaqosah-tahfidz', changefreq: 'monthly', priority: '0.7' },
 	{ path: '/lembaga', changefreq: 'weekly', priority: '0.9' },
+	...HALAMAN_APLIKASI.map((h) => ({ path: h.path, changefreq: 'monthly', priority: '0.9' })),
 	...FITUR_LEMBAGA.map((f) => ({ path: `/fitur/${f.slug}`, changefreq: 'monthly', priority: '0.8' })),
 	...['semua', 'kitab', 'buku', 'kursus', 'produk'].map((j) => ({ path: `/katalog/${j}`, changefreq: 'daily', priority: '0.8' }))
 ];
