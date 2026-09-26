@@ -119,7 +119,7 @@
 
 			<aside class="mt-6 flex gap-3 rounded-2xl border border-so-green/20 bg-white p-4 text-sm leading-6" aria-label="Peninjau">
 				<span class="mt-0.5 grid size-8 shrink-0 place-items-center rounded-full bg-so-green font-bold text-white">✓</span>
-				<p><strong class="text-so-ink">Ditinjau oleh {peninjau}</strong> <span class="text-so-muted">— pengajar TPQ, pernah khatam hafalan Al-Qur’an 30 juz (2011), murojaah setiap hari.</span></p>
+				<p><strong class="text-so-ink">Ditinjau oleh {peninjau}</strong> <span class="text-so-muted">— pengajar TPQ, pernah khatam hafalan Al-Qur’an 30 juz (2011).</span></p>
 			</aside>
 
 			<div class="literasi mt-8 space-y-5 text-base leading-8 text-so-ink sm:text-lg">
