@@ -42,7 +42,23 @@
 	aria-label={`${item.detail ? 'Lihat' : item.aksi} ${item.judul}`}
 >
 	<div class="relative aspect-[2/3] overflow-hidden rounded-2xl border border-so-border/80 bg-so-cream shadow-sm transition duration-200 group-hover:-translate-y-1 group-hover:shadow-md">
-		{#if item.sampul}
+		{#if item.sampul && item.jenis === 'produk'}
+			<!-- Sampul produk berbentuk lanskap (±16:9). Dipotong `object-cover` ke 2:3
+			     hanya tersisa potongan tengah ("okus", "tepat.") — tampak rusak dan
+			     semua varian terlihat kembar. Tampilkan utuh di atas latar kabur. -->
+			<img src={item.sampul} alt="" aria-hidden="true" class="absolute inset-0 h-full w-full scale-125 object-cover opacity-70 blur-xl" loading="lazy" decoding="async" />
+			<div class="absolute inset-0 bg-gradient-to-b from-so-green-3/30 via-transparent to-so-green-3/60"></div>
+			<img
+				src={item.sampul}
+				alt=""
+				width="240"
+				height="135"
+				loading={prioritas ? 'eager' : 'lazy'}
+				decoding="async"
+				class="relative top-1/2 w-full -translate-y-1/2 object-contain px-1.5 drop-shadow-lg"
+			/>
+			<span class="absolute inset-x-2 bottom-2 line-clamp-2 text-center text-[11px] font-extrabold leading-4 text-white drop-shadow">{item.judul}</span>
+		{:else if item.sampul}
 			<img
 				src={item.sampul}
 				alt=""

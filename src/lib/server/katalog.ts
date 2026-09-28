@@ -111,7 +111,7 @@ export const KARTU_TETAP: ItemKatalog[] = [
 		judul: 'Toko Digital SantriOnline',
 		ringkasan:
 			'Aplikasi dan produk digital untuk santri, guru, dan lembaga. Kode lisensi dikirim otomatis ke email setelah pembelian.',
-		sampul: null,
+		sampul: '/katalog/toko-digital.webp',
 		harga: 'Gratis & berbayar',
 		gratis: false,
 		href: `${APP}/digital-store`,
@@ -346,6 +346,48 @@ function rakDariItem(
 	return rak.filter((r) => r.item.length > 0);
 }
 
+/**
+ * Urutan "Semua": kartu tetap (game, ruang belajar, alat) di depan, lalu semua
+ * kelompok (tiap bidang kitab, buku, aplikasi, kursus) DISEBAR merata sepanjang
+ * daftar sesuai jumlahnya — tidak 70 kitab sirah berderet atau 11 aplikasi
+ * menumpuk di atas. Varian sekeluarga (Fokus/Fokus Pro) tidak bersebelahan.
+ */
+export function campurSemua(item: ItemKatalog[]): ItemKatalog[] {
+	const tetap = item.filter((i) => ['game', 'belajar', 'alat'].includes(i.jenis) && i.unggulan);
+	const sisa = item.filter((i) => !tetap.includes(i));
+
+	const kelompok = new Map<string, ItemKatalog[]>();
+	for (const i of sisa) {
+		const k = i.jenis === 'kitab' ? `kitab:${i.kategori ?? '-'}` : i.jenis === 'alat' ? 'produk' : i.jenis;
+		kelompok.set(k, [...(kelompok.get(k) ?? []), i]);
+	}
+	// Dalam satu kelompok, giliran per keluarga judul (kata pertama).
+	const giliran = (xs: ItemKatalog[]) => {
+		const kel = new Map<string, ItemKatalog[]>();
+		for (const x of xs) {
+			const k = x.judul.split(/\s+/)[0].toLowerCase();
+			kel.set(k, [...(kel.get(k) ?? []), x]);
+		}
+		const antre = [...kel.values()];
+		const out: ItemKatalog[] = [];
+		while (antre.some((a) => a.length)) for (const a of antre) {
+			const x = a.shift();
+			if (x) out.push(x);
+		}
+		return out;
+	};
+
+	const berposisi: { pos: number; i: ItemKatalog }[] = [];
+	[...kelompok.values()].forEach((xs, g) => {
+		const urut = xs[0]?.jenis === 'kitab' ? xs : giliran(xs);
+		// Kelompok non-kitab sedikit dimajukan agar tampil di layar pertama.
+		const maju = urut[0]?.jenis === 'kitab' ? 0 : 0.35;
+		urut.forEach((i, k) => berposisi.push({ pos: ((k + 0.5) / urut.length) * (1 - maju) + g * 1e-6, i }));
+	});
+	berposisi.sort((x, y) => x.pos - y.pos);
+	return [...tetap, ...berposisi.map((x) => x.i)];
+}
+
 /** Halaman "Lihat semua": satu jenis (atau 'semua'), dengan saringan teks sederhana. */
 export async function muatKatalogJenis(
 	db: D1Database | undefined,
@@ -364,7 +406,7 @@ export async function muatKatalogJenis(
 			lihat.add(k);
 			return true;
 		});
-		return { judul: 'Semua Katalog', keterangan: 'Kitab, buku, kursus, aplikasi, dan game — satu tempat.', item: saring(semua) };
+		return { judul: 'Semua Katalog', keterangan: 'Kitab, buku, kursus, aplikasi, dan game — satu tempat.', item: saring(campurSemua(semua)) };
 	}
 	const r = rak.find((x) => x.id === jenis);
 	if (!r) return null;
