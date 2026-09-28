@@ -26,11 +26,15 @@ const getCurrentCount = (value: string | undefined) => {
 
 const susunBalasan = (hasil: HasilApp) => {
 	const referensi = hasil.referensi ?? [];
-	if (!referensi.length) {
+	// Kutipan mentah hanya ditampilkan bila ringkasan ada, atau jatah ringkasan
+	// habis (kutipannya mungkin tetap relevan). Bila AI menilai kutipan TIDAK
+	// menjawab, menampilkan potongan acak justru menyesatkan tamu.
+	const bolehKutipan = !!hasil.ringkasan || hasil.status === 'jatah-habis';
+	if (!referensi.length || !bolehKutipan) {
 		return 'Belum ada kutipan kitab di perpustakaan SantriOnline yang cocok dengan pertanyaan ini. Coba ganti kata kuncinya, atau tanyakan langsung kepada guru/ustadz.';
 	}
 	const daftar = referensi
-		.slice(0, 4)
+		.slice(0, 6)
 		.map((r, i) => `[${i + 1}] ${r.judul}${r.lokasi ? ` — ${r.lokasi}` : ''}`)
 		.join('\n');
 	const penutup = '\n\nBaca kutipan lengkapnya di app.santrionline.com/tanya. Untuk kesimpulan hukum, musyawarahkan dengan guru/ustadz.';
