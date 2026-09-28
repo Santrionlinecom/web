@@ -1,0 +1,32 @@
+name: Audit dependency
+
+# Pemindai celah library pihak ketiga (npm audit, tanpa install — cukup membaca
+# package-lock.json, ±15 detik). Gagal bila ada celah HIGH/CRITICAL di
+# dependency produksi. Berjalan:
+#  - tiap Senin 07.00 WIB (celah baru bisa muncul walau kode tidak berubah),
+#  - di PR yang mengubah package.json / package-lock.json,
+#  - manual lewat tombol "Run workflow".
+on:
+  schedule:
+    - cron: "0 0 * * 1"
+  pull_request:
+    paths:
+      - package.json
+      - package-lock.json
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  npm-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Ringkasan semua tingkat
+        run: npm audit --omit=dev || true
+      - name: Gagal bila ada HIGH/CRITICAL
+        run: npm audit --omit=dev --audit-level=high
