@@ -739,6 +739,14 @@
 					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
 					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
 				</nav>
+				<nav class="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm md:justify-end" aria-label="Baca Al-Qur'an">
+					<span class="font-semibold text-so-green">Baca Al-Qur'an:</span>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/yasin`}>Surat Yasin</a>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/al-mulk`}>Surat Al-Mulk</a>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/al-kahfi`}>Surat Al-Kahfi</a>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/ayat-kursi`}>Ayat Kursi</a>
+					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran`}>114 Surat</a>
+				</nav>
 			</div>
 		</div>
 
