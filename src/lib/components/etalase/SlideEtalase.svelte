@@ -106,7 +106,7 @@
 						{#if s.sampul}
 							<img
 								src={s.sampul}
-								alt=""
+								alt={`Sampul ${s.judul}`}
 								width="240"
 								height="360"
 								loading={i === 0 ? 'eager' : 'lazy'}

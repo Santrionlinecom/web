@@ -8,22 +8,27 @@
 	import DaftarPeringkat from '$lib/components/etalase/DaftarPeringkat.svelte';
 	import KitabPerBidang from '$lib/components/etalase/KitabPerBidang.svelte';
 	import EtalaseAplikasi from '$lib/components/etalase/EtalaseAplikasi.svelte';
+	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
+	import { labelAngka } from '$lib/statistik';
 
 	// Etalase: rak katalog dari D1 db-app (lihat +page.server.ts / katalog.ts).
 	// Beranda sengaja memakai bentuk yang berbeda-beda per rak: slide, rak geser,
 	// buku bolak-balik, peringkat, tab bidang, bento aplikasi.
 	let { data } = $props();
 	const rak = $derived(data.rak ?? []);
-	const cariRak = (id: string) => rak.find((r: { id: string }) => r.id === id);
+	// Rak dengan kurang dari 3 item (mis. Kursus) tidak ditampilkan di beranda;
+	// tetap tersedia lengkap di /katalog.
+	const MIN_ITEM_RAK = 3;
+	const cariRak = (id: string) =>
+		rak.find((r: { id: string; item: unknown[] }) => r.id === id && (r.item?.length ?? 0) >= MIN_ITEM_RAK);
 	const rakUnggulan = $derived(cariRak('unggulan'));
 	const rakKursus = $derived(cariRak('kursus'));
 	const rakBuku = $derived(cariRak('buku'));
 	const rakProduk = $derived(cariRak('produk'));
 	const bidang = $derived(data.bidang ?? []);
+	// Angka traksi nyata dari db-app; null = gagal dimuat -> blok disembunyikan.
+	const statistik = $derived(data.statistik ?? null);
 	const jumlahKitab = $derived(bidang.reduce((t: number, b: { jumlah: number }) => t + b.jumlah, 0));
-	const jumlahItem = $derived(
-		jumlahKitab + (rakBuku?.item.length ?? 0) + (rakProduk?.item.length ?? 0) + (rakKursus?.item.length ?? 0) + 2
-	);
 	const tabRak = $derived(
 		[
 			{ href: '#rak-unggulan', label: 'Pilihan Utama', ada: !!rakUnggulan },
@@ -156,7 +161,7 @@
 		{
 			name: 'TPQ & TPA',
 			description: 'Kelola santri, kelas, setoran, hafalan, rapor, dan komunikasi pendamping dalam satu alur.',
-			href: `${appBaseUrl}/tpq`,
+			href: `${appBaseUrl}/tpq/daftar`,
 			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01'
 		},
 		{
@@ -168,13 +173,13 @@
 		{
 			name: 'Rumah Tahfidz',
 			description: 'Dukung setoran, murojaah, perkembangan hafalan, ujian, dan pendampingan santri secara bertahap.',
-			href: `${appBaseUrl}/lembaga/tambah`,
+			href: `${appBaseUrl}/rumah-tahfidz/daftar`,
 			icon: 'M12 3 4 9v11h16V9l-8-6Zm-3 17v-6h6v6m-7-9h8'
 		},
 		{
 			name: 'Masjid & Musholla',
 			description: 'Satukan kegiatan belajar, data jamaah dan santri, agenda, serta administrasi pembinaan umat.',
-			href: `${appBaseUrl}/lembaga/tambah`,
+			href: `${appBaseUrl}/masjid/daftar`,
 			icon: 'M3 20h18M6 20v-9h12v9M9 11V8.5a3 3 0 0 1 6 0V11m-3-8v2M9 15h.01M15 15h.01'
 		}
 	];
@@ -241,7 +246,7 @@
 					name: 'Yogik Pratama Aprilian',
 					url: 'https://masyogik.santrionline.com/',
 					sameAs: [
-						'https://www.linkedin.com/in/yogik-pratama-aprilian/',
+						'https://www.linkedin.com/in/yogik-pratama/',
 						'https://about.me/yogikpratama'
 					]
 				}
@@ -321,10 +326,8 @@
 		};
 	});
 
-	// Catatan: landing ini belum menampilkan angka statistik (jumlah lembaga/santri),
-	// sehingga animasi count-up belum dipasang. Saat blok statistik ditambahkan,
-	// gunakan pola yang sama dengan app: hitung naik sekali saat masuk viewport,
-	// dan lewati animasi bila prefers-reduced-motion aktif.
+	// Blok statistik (StatistikTraksi): count-up sekali saat masuk viewport,
+	// dilewati bila prefers-reduced-motion aktif; SSR merender angka akhir.
 
 	// State & alur chat pindah ke $lib/components/ui/ChatSection.svelte —
 	// halaman ini hanya menerima sinyal onLimit untuk membuka modal upgrade.
@@ -370,7 +373,7 @@
 		name="description"
 		content="Aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis berbasis web: keuangan, administrasi, rapor, hafalan. Plus belajar agama Islam online — kisah nabi, tajwid, bahasa Arab, kitab kuning — untuk membina generasi muslim Indonesia."
 	/>
-	<meta name="keywords" content="santri online, SantriOnline, aplikasi pesantren, aplikasi pondok pesantren gratis, aplikasi pondok pesantren berbasis web, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi ujian madrasah CBT online, sistem informasi pesantren, belajar agama islam online gratis, aplikasi belajar islam, aplikasi islami untuk anak, kisah nabi untuk anak, cerita sahabat nabi, belajar tajwid online, belajar bahasa arab online pemula, kitab kuning digital, terjemah kitab kuning, hafalan quran online, pendidikan karakter islami, aqidah Aswaja" />
+	<meta name="keywords" content="santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, belajar agama islam online gratis, kitab kuning digital" />
 	<meta name="author" content="SantriOnline" />
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<meta property="og:type" content="website" />
@@ -464,14 +467,18 @@
 				<div>
 					<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
 						<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
-						Etalase SantriOnline · {jumlahItem} pilihan
+						Tanya Kitab AI{#if statistik && statistik.kitab > 0} · {labelAngka(statistik.kitab)} kitab rujukan{/if}
 					</p>
 					<h1 class="hero-stagger hero-stagger-2 font-display mt-4 text-[clamp(1.35rem,5.2vw,1.9rem)] font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">
-						Kitab, buku, kursus, alat desain, dan game kampung santri — <span class="text-so-green-2">satu akun, mulai hari ini.</span>
+						Tanya agama, dijawab dengan rujukan kitab — <span class="text-so-green-2">dan kelola TPQ &amp; pesantren gratis dalam satu akun.</span>
 					</h1>
 					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
-						Semua yang membentuk aqidah, adab, ilmu, dan keterampilan santri ada di rak ini. Pilih, lalu lanjutkan di aplikasi.
+						Asisten AI SantriOnline menjawab berdasarkan kutipan kitab Aswaja dan menunjukkan sumbernya. Lembaga mendapat aplikasi data santri, hafalan, dan rapor tanpa biaya.
 					</p>
+					<div class="hero-stagger hero-stagger-3 mt-4 flex flex-col gap-2 sm:mt-5 sm:flex-row sm:flex-wrap">
+						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25" href="#tanya">Coba Tanya Kitab <span aria-hidden="true">→</span></a>
+						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-so-gold/50 bg-white px-6 py-2.5 text-sm font-bold text-so-green shadow-sm transition hover:border-so-green/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-gold/25" href={appRegisterUrl}>Daftarkan Lembaga Gratis</a>
+					</div>
 					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="/katalog/semua" method="get" role="search">
 						<label class="sr-only" for="cari-katalog">Cari kitab, buku, atau kursus</label>
 						<input id="cari-katalog" name="q" type="search" placeholder="Cari kitab, buku, kursus…" class="min-h-[42px] w-full rounded-full border border-so-border bg-white px-5 text-sm text-so-ink shadow-sm outline-none placeholder:text-so-muted/70 focus:border-so-green/50 focus:ring-4 focus:ring-so-green/15" />
@@ -490,6 +497,8 @@
 				{/each}
 			</nav>
 		</div>
+
+		{#if statistik}<StatistikTraksi {statistik} />{/if}
 
 		{#if rakUnggulan}<RakKatalog rak={rakUnggulan} prioritas />{/if}
 		{#if rakBuku}
@@ -654,7 +663,13 @@
 			<div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
 				<div class="max-w-3xl">
 					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Jaringan Lembaga Indonesia</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Dari lembaga lokal, tumbuh menjadi gerakan pembinaan nasional.</h2>
+					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">
+						{#if statistik && statistik.lembaga > 0}
+							{labelAngka(statistik.lembaga)} lembaga sudah memakai SantriOnline untuk merapikan data dan membina santrinya.
+						{:else}
+							Dari lembaga lokal, bertumbuh bersama lembaga lain di Indonesia.
+						{/if}
+					</h2>
 					<p class="mt-5 text-lg leading-8 text-white/70">Setiap lembaga memiliki karakter dan kebutuhan berbeda. SantriOnline menyediakan satu fondasi yang dapat digunakan bertahap—mulai dari merapikan data hingga menguatkan pembinaan santri.</p>
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
@@ -735,6 +750,7 @@
 					<a class="hover:text-so-green" href="#arah">Arah</a>
 					<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
 					<a class="hover:text-so-green" href="/lembaga">Untuk Lembaga</a>
+					<a class="hover:text-so-green" href="/tentang">Tentang</a>
 					<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
 					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
 					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>

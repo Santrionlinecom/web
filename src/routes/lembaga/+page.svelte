@@ -105,7 +105,7 @@
 <svelte:head>
 	<title>Aplikasi Pondok Pesantren, TPQ & Tahfidz Gratis Berbasis Web | SantriOnline</title>
 	<meta name="description" content="Aplikasi manajemen pondok pesantren gratis berbasis web: keuangan, administrasi, data santri, setoran hafalan, rapor madrasah diniyah, ujian tahfidz, asrama, dan akun wali. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok. Termasuk pendampingan 2026." />
-	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi pesantren berbasis web, aplikasi manajemen pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi hafalan quran, aplikasi raport tpq, sistem informasi pondok pesantren, aplikasi wali santri" />
+	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, sistem informasi pondok pesantren, aplikasi wali santri" />
 	<link rel="canonical" href={canonicalUrl} />
 	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
 	<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
@@ -278,6 +278,7 @@
 				<a class="hover:text-so-green" href="/">Beranda</a>
 				<a class="hover:text-so-green" href="/katalog/semua">Katalog</a>
 				<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a>
+				<a class="hover:text-so-green" href="/tentang">Tentang</a>
 				<a class="hover:text-so-green" href={appUrl}>Buka Aplikasi ↗</a>
 			</nav>
 		</div>

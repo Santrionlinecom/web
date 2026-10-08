@@ -27,7 +27,7 @@
 					<p class="text-[11px] font-bold uppercase tracking-[0.16em] text-so-gold-2">Sorotan aplikasi</p>
 					<div class="mt-3 flex items-center gap-4">
 						{#if sorotan.sampul}
-							<img src={sorotan.sampul} alt="" width="96" height="96" loading="lazy" decoding="async" class="size-20 shrink-0 rounded-2xl object-cover shadow-xl sm:size-24" />
+							<img src={sorotan.sampul} alt={`Sampul ${sorotan.judul}`} width="96" height="96" loading="lazy" decoding="async" class="size-20 shrink-0 rounded-2xl object-cover shadow-xl sm:size-24" />
 						{/if}
 						<div class="min-w-0">
 							<h3 class="font-display text-xl font-bold leading-tight sm:text-2xl">{sorotan.judul}</h3>
@@ -45,7 +45,7 @@
 					{#each sisa as a (a.jenis + a.slug)}
 						<a href={a.detail ?? a.href} class="group flex items-center gap-3 rounded-2xl border border-so-border/80 bg-white p-3 transition hover:-translate-y-0.5 hover:border-so-green/25 hover:shadow-md">
 							{#if a.sampul}
-								<img src={a.sampul} alt="" width="56" height="56" loading="lazy" decoding="async" class="size-14 shrink-0 rounded-xl object-cover" />
+								<img src={a.sampul} alt={`Sampul ${a.judul}`} width="56" height="56" loading="lazy" decoding="async" class="size-14 shrink-0 rounded-xl object-cover" />
 							{:else}
 								<span class="grid size-14 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-violet-700 to-so-green-3 font-display text-lg font-bold text-white">{a.judul.slice(0, 2)}</span>
 							{/if}

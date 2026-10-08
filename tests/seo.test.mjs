@@ -79,3 +79,20 @@ test('robots, sitemap, dan invoice menerapkan kebijakan indeks yang aman', () =>
 	assert.match(invoiceDomain, /new Uint8Array\(26\)/);
 	assert.doesNotMatch(invoiceDomain, /Math\.random\(\)/);
 });
+
+test('halaman /tentang: identitas usaha, LinkedIn resmi, dan masuk sitemap', () => {
+	const tentang = read('src/routes/tentang/+page.svelte');
+	const home = read('src/routes/+page.svelte');
+	const sitemap = read('src/routes/sitemap.xml/+server.ts');
+	assert.match(tentang, /const canonicalUrl = 'https:\/\/santrionline\.com\/tentang'/);
+	assert.match(tentang, /rel="canonical" href=\{canonicalUrl\}/);
+	assert.match(tentang, /NIB 0229010241784/);
+	assert.match(tentang, /KBLI 62199/);
+	assert.match(tentang, /https:\/\/www\.linkedin\.com\/in\/yogik-pratama\//);
+	// Tidak menampilkan NPWP maupun nomor telepon di halaman publik.
+	assert.doesNotMatch(tentang, /NPWP|tel:|\+62|08\d{8,}/);
+	assert.match(sitemap, /path: '\/tentang'/);
+	assert.match(home, /href="\/tentang"/);
+	// LinkedIn lama tidak boleh kembali di skema JSON-LD.
+	assert.doesNotMatch(home, /yogik-pratama-aprilian/);
+});

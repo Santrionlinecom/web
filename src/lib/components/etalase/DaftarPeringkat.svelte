@@ -18,7 +18,7 @@
 						<a href={b.detail ?? b.href} class="group flex items-center gap-3 rounded-2xl border border-so-border/80 bg-white p-2.5 pr-3 transition hover:-translate-y-0.5 hover:shadow-md">
 							<span class="nomor font-display w-9 shrink-0 text-center text-4xl font-bold leading-none" aria-hidden="true">{i + 1}</span>
 							{#if b.sampul}
-								<img src={b.sampul} alt="" width="56" height="84" loading="lazy" decoding="async" class="h-[84px] w-14 shrink-0 rounded-lg object-cover shadow-sm" />
+								<img src={b.sampul} alt={`Sampul ${b.judul}`} width="56" height="84" loading="lazy" decoding="async" class="h-[84px] w-14 shrink-0 rounded-lg object-cover shadow-sm" />
 							{/if}
 							<span class="min-w-0">
 								<span class="sr-only">Peringkat {i + 1}:</span>

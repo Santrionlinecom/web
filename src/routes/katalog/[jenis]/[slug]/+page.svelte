@@ -94,7 +94,7 @@
 		<div class="min-w-0">
 			<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-so-gold">{labelJenis[item.jenis] ?? item.jenis}{item.kategori ? ` · ${item.kategori}` : ''}</p>
 			<h1 class="font-display mt-1 text-2xl font-bold leading-tight tracking-tight text-so-green sm:text-3xl lg:text-4xl">{item.judul}</h1>
-			<a href="#rating-judul" class="mt-2 inline-block"><Bintang rata={data.rating.rata} jumlah={data.rating.jumlah} ukuran="besar" /></a>
+			{#if data.rating.jumlah}<a href="#rating-judul" class="mt-2 inline-block"><Bintang rata={data.rating.rata} jumlah={data.rating.jumlah} ukuran="besar" /></a>{/if}
 			{#if item.ringkasan}<p class="mt-2 text-sm text-so-muted sm:text-base">{item.ringkasan}</p>{/if}
 
 			<div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
