@@ -8,6 +8,8 @@
 	import DaftarPeringkat from '$lib/components/etalase/DaftarPeringkat.svelte';
 	import KitabPerBidang from '$lib/components/etalase/KitabPerBidang.svelte';
 	import EtalaseAplikasi from '$lib/components/etalase/EtalaseAplikasi.svelte';
+	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
+	import { labelAngka } from '$lib/statistik';
 
 	// Etalase: rak katalog dari D1 db-app (lihat +page.server.ts / katalog.ts).
 	// Beranda sengaja memakai bentuk yang berbeda-beda per rak: slide, rak geser,
@@ -20,6 +22,8 @@
 	const rakBuku = $derived(cariRak('buku'));
 	const rakProduk = $derived(cariRak('produk'));
 	const bidang = $derived(data.bidang ?? []);
+	// Angka traksi nyata dari db-app; null = gagal dimuat -> blok disembunyikan.
+	const statistik = $derived(data.statistik ?? null);
 	const jumlahKitab = $derived(bidang.reduce((t: number, b: { jumlah: number }) => t + b.jumlah, 0));
 	const jumlahItem = $derived(
 		jumlahKitab + (rakBuku?.item.length ?? 0) + (rakProduk?.item.length ?? 0) + (rakKursus?.item.length ?? 0) + 2
@@ -321,10 +325,8 @@
 		};
 	});
 
-	// Catatan: landing ini belum menampilkan angka statistik (jumlah lembaga/santri),
-	// sehingga animasi count-up belum dipasang. Saat blok statistik ditambahkan,
-	// gunakan pola yang sama dengan app: hitung naik sekali saat masuk viewport,
-	// dan lewati animasi bila prefers-reduced-motion aktif.
+	// Blok statistik (StatistikTraksi): count-up sekali saat masuk viewport,
+	// dilewati bila prefers-reduced-motion aktif; SSR merender angka akhir.
 
 	// State & alur chat pindah ke $lib/components/ui/ChatSection.svelte —
 	// halaman ini hanya menerima sinyal onLimit untuk membuka modal upgrade.
@@ -491,6 +493,8 @@
 			</nav>
 		</div>
 
+		{#if statistik}<StatistikTraksi {statistik} />{/if}
+
 		{#if rakUnggulan}<RakKatalog rak={rakUnggulan} prioritas />{/if}
 		{#if rakBuku}
 			<BukuBolakBalik buku={rakBuku.item} judul="Rak Novel — Buka dan Balik Halamannya" keterangan="Cerita yang menumbuhkan adab dan cita-cita. Geser atau klik panah untuk membalik." />
@@ -654,7 +658,13 @@
 			<div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
 				<div class="max-w-3xl">
 					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Jaringan Lembaga Indonesia</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Dari lembaga lokal, tumbuh menjadi gerakan pembinaan nasional.</h2>
+					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">
+						{#if statistik && statistik.lembaga > 0}
+							{labelAngka(statistik.lembaga)} lembaga sudah memakai SantriOnline untuk merapikan data dan membina santrinya.
+						{:else}
+							Dari lembaga lokal, bertumbuh bersama lembaga lain di Indonesia.
+						{/if}
+					</h2>
 					<p class="mt-5 text-lg leading-8 text-white/70">Setiap lembaga memiliki karakter dan kebutuhan berbeda. SantriOnline menyediakan satu fondasi yang dapat digunakan bertahap—mulai dari merapikan data hingga menguatkan pembinaan santri.</p>
 				</div>
 				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">

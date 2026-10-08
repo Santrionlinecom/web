@@ -1,10 +1,16 @@
 // src/routes/+page.server.ts — beranda etalase: katalog dari D1 db-app.
 import type { PageServerLoad } from './$types';
 import { muatKatalog, muatKitabPerBidang, type ItemKatalog } from '$lib/server/katalog';
+import { muatStatistik } from '$lib/server/statistik';
 
 export const load: PageServerLoad = async ({ platform, setHeaders }) => {
 	const db = (platform?.env as { DB?: D1Database } | undefined)?.DB;
-	const [rak, bidang] = await Promise.all([muatKatalog(db), muatKitabPerBidang(db, 10)]);
+	// Angka traksi (COUNT saja) ikut paralel; gagal -> null dan blok disembunyikan.
+	const [rak, bidang, statistik] = await Promise.all([
+		muatKatalog(db),
+		muatKitabPerBidang(db, 10),
+		muatStatistik(db)
+	]);
 
 	const semua = (id: string) => rak.find((r) => r.id === id)?.item ?? [];
 	const buku = semua('buku');
@@ -26,5 +32,5 @@ export const load: PageServerLoad = async ({ platform, setHeaders }) => {
 
 	// Katalog berubah jarang; cache tepi 5 menit supaya D1 tidak dipukul tiap kunjungan.
 	setHeaders({ 'cache-control': 'public, max-age=60, s-maxage=300' });
-	return { rak, bidang, slide, populer };
+	return { rak, bidang, slide, populer, statistik };
 };
