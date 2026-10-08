@@ -80,6 +80,9 @@
 		</span>
 		{#if item.gratis}
 			<span class="absolute right-2 top-2 rounded-full bg-so-gold px-2 py-0.5 text-[10px] font-extrabold text-so-green-3 shadow-sm">Gratis</span>
+		{:else if item.jenis === 'produk'}
+			<!-- Versi berbayar diberi lencana PRO supaya tidak tampak kembar dengan versi gratisnya. -->
+			<span class="absolute right-2 top-2 rounded-full bg-so-green-3 px-2 py-0.5 text-[10px] font-extrabold tracking-[0.08em] text-so-gold-2 shadow-sm ring-1 ring-so-gold/60">PRO</span>
 		{/if}
 	</div>
 	<p class="mt-2.5 line-clamp-2 text-sm font-bold leading-5 text-so-ink">{item.judul}</p>

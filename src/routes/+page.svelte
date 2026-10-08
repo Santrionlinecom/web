@@ -16,7 +16,11 @@
 	// buku bolak-balik, peringkat, tab bidang, bento aplikasi.
 	let { data } = $props();
 	const rak = $derived(data.rak ?? []);
-	const cariRak = (id: string) => rak.find((r: { id: string }) => r.id === id);
+	// Rak dengan kurang dari 3 item (mis. Kursus) tidak ditampilkan di beranda;
+	// tetap tersedia lengkap di /katalog.
+	const MIN_ITEM_RAK = 3;
+	const cariRak = (id: string) =>
+		rak.find((r: { id: string; item: unknown[] }) => r.id === id && (r.item?.length ?? 0) >= MIN_ITEM_RAK);
 	const rakUnggulan = $derived(cariRak('unggulan'));
 	const rakKursus = $derived(cariRak('kursus'));
 	const rakBuku = $derived(cariRak('buku'));
