@@ -50,7 +50,7 @@
 			<div class="absolute inset-0 bg-gradient-to-b from-so-green-3/30 via-transparent to-so-green-3/60"></div>
 			<img
 				src={item.sampul}
-				alt=""
+				alt={`Sampul ${item.judul}`}
 				width="240"
 				height="135"
 				loading={prioritas ? 'eager' : 'lazy'}
@@ -61,7 +61,7 @@
 		{:else if item.sampul}
 			<img
 				src={item.sampul}
-				alt=""
+				alt={`Sampul ${item.judul}`}
 				width="240"
 				height="360"
 				loading={prioritas ? 'eager' : 'lazy'}

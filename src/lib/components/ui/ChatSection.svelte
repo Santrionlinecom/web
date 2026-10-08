@@ -80,7 +80,7 @@
 		<div class="overflow-hidden rounded-3xl border border-so-border bg-so-surface shadow-soft" role="region" aria-label="Chat demo SantriOnline">
 			<div class="flex items-center justify-between border-b border-so-border/80 px-5 py-4">
 				<div class="flex items-center gap-3">
-					<img src={logo} alt="" class="size-10 rounded-xl object-cover" />
+					<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" />
 					<div><p class="text-sm font-extrabold">SantriOnline AI</p><p class="text-xs text-so-muted">Asisten orientasi belajar</p></div>
 				</div>
 				<a class="rounded-full bg-so-gold-2 px-3 py-1.5 text-xs font-bold text-so-green-3" href={groupWaUrl}>Komunitas</a>
