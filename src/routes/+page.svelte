@@ -373,7 +373,7 @@
 		name="description"
 		content="Aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis berbasis web: keuangan, administrasi, rapor, hafalan. Plus belajar agama Islam online — kisah nabi, tajwid, bahasa Arab, kitab kuning — untuk membina generasi muslim Indonesia."
 	/>
-	<meta name="keywords" content="santri online, SantriOnline, aplikasi pesantren, aplikasi pondok pesantren gratis, aplikasi pondok pesantren berbasis web, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, aplikasi ujian madrasah CBT online, sistem informasi pesantren, belajar agama islam online gratis, aplikasi belajar islam, aplikasi islami untuk anak, kisah nabi untuk anak, cerita sahabat nabi, belajar tajwid online, belajar bahasa arab online pemula, kitab kuning digital, terjemah kitab kuning, hafalan quran online, pendidikan karakter islami, aqidah Aswaja" />
+	<meta name="keywords" content="santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, belajar agama islam online gratis, kitab kuning digital" />
 	<meta name="author" content="SantriOnline" />
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<meta property="og:type" content="website" />
