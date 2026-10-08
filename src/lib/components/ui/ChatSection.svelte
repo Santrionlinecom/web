@@ -5,11 +5,17 @@
 	// Halaman induk hanya memberi tahu kapan kuota habis (onLimit) supaya
 	// modal upgrade tetap milik halaman.
 	import logo from '$lib/assets/logo.png';
+	import { pecahSitasi } from '$lib/chat-rujukan.js';
 
+	type Rujukan = { no: number; judul: string; lokasi: string | null; url: string | null };
 	type ChatMessage = {
 		role: 'assistant' | 'user';
 		content: string;
+		rujukan?: Rujukan[];
 	};
+
+	const urlRujukan = (message: ChatMessage, no: number | null) =>
+		no == null ? null : (message.rujukan?.find((r) => r.no === no)?.url ?? null);
 
 	type Props = {
 		examples: string[];
@@ -38,7 +44,7 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message })
 			});
-			const data = (await response.json().catch(() => ({}))) as { reply?: string; message?: string };
+			const data = (await response.json().catch(() => ({}))) as { reply?: string; message?: string; rujukan?: Rujukan[] };
 
 			if (response.status === 429) {
 				onLimit();
@@ -50,7 +56,7 @@
 			}
 
 			if (!response.ok || !data.reply) throw new Error(data.message ?? 'Chat request failed');
-			chatMessages = [...chatMessages, { role: 'assistant', content: data.reply }];
+			chatMessages = [...chatMessages, { role: 'assistant', content: data.reply, rujukan: Array.isArray(data.rujukan) ? data.rujukan : [] }];
 		} catch {
 			chatMessages = [...chatMessages, { role: 'assistant', content: 'Maaf, coba lagi sebentar.' }];
 		} finally {
@@ -95,7 +101,7 @@
 					<div class="space-y-4">
 						{#each chatMessages as message}
 							<div class={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-								<div class={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-7 ${message.role === 'user' ? 'rounded-br-md bg-so-green text-white' : 'rounded-bl-md bg-so-cream text-so-green'}`}>{message.content}</div>
+								<div class={`max-w-[88%] whitespace-pre-line rounded-2xl px-4 py-3 text-sm leading-7 ${message.role === 'user' ? 'rounded-br-md bg-so-green text-white' : 'rounded-bl-md bg-so-cream text-so-green'}`}>{#if message.role === 'assistant'}{#each pecahSitasi(message.content) as part, pi (pi)}{#if urlRujukan(message, part.no)}<a class="font-bold text-so-accent-ink underline decoration-dotted underline-offset-2 hover:text-so-green-3" href={urlRujukan(message, part.no)} target="_blank" rel="noopener" title="Buka kitab rujukan">{part.teks}</a>{:else}{part.teks}{/if}{/each}{#if message.rujukan?.length}<span class="mt-3 block border-t border-so-green/10 pt-3 whitespace-normal"><span class="block text-xs font-bold uppercase tracking-[0.12em] text-so-muted">Rujukan</span>{#each message.rujukan as r (r.no)}<span class="mt-1 block leading-6">{#if r.url}<a class="group inline-flex max-w-full items-baseline gap-1.5 rounded-lg px-1 -mx-1 hover:bg-white" href={r.url} target="_blank" rel="noopener"><span class="shrink-0 font-bold">[{r.no}]</span><span class="min-w-0 underline decoration-so-green/30 underline-offset-2 group-hover:decoration-so-green"><bdi>{r.judul}</bdi>{#if r.lokasi}{` — ${r.lokasi}`}{/if}</span><span class="shrink-0 text-xs text-so-accent-ink" aria-hidden="true">↗</span></a>{:else}<span class="font-bold">[{r.no}]</span> <bdi>{r.judul}</bdi>{#if r.lokasi}{` — ${r.lokasi}`}{/if}{/if}</span>{/each}</span>{/if}{:else}{message.content}{/if}</div>
 							</div>
 						{/each}
 						{#if isChatLoading}

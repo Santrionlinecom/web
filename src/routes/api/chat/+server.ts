@@ -1,6 +1,7 @@
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { json, type RequestHandler } from '@sveltejs/kit';
+import { susunRujukan } from '$lib/chat-rujukan.js';
 
 /**
  * Chat beranda santrionline.com — kini diteruskan ke Tanya Kitab
@@ -24,6 +25,11 @@ const getCurrentCount = (value: string | undefined) => {
 	return Number.isFinite(count) && count > 0 ? count : 0;
 };
 
+/**
+ * Balasan = teks + daftar rujukan terstruktur (tiap rujukan bertaut ke halaman
+ * baca kitab di app). Rujukan kembar (kitab + halaman sama) digabung dan
+ * sitasi [n] di ringkasan dinomori ulang mengikutinya.
+ */
 const susunBalasan = (hasil: HasilApp) => {
 	const referensi = hasil.referensi ?? [];
 	// Kutipan mentah hanya ditampilkan bila ringkasan ada, atau jatah ringkasan
@@ -31,19 +37,27 @@ const susunBalasan = (hasil: HasilApp) => {
 	// menjawab, menampilkan potongan acak justru menyesatkan tamu.
 	const bolehKutipan = !!hasil.ringkasan || hasil.status === 'jatah-habis';
 	if (!referensi.length || !bolehKutipan) {
-		return 'Belum ada kutipan kitab di perpustakaan SantriOnline yang cocok dengan pertanyaan ini. Coba ganti kata kuncinya, atau tanyakan langsung kepada guru/ustadz.';
+		return {
+			reply: 'Belum ada kutipan kitab di perpustakaan SantriOnline yang cocok dengan pertanyaan ini. Coba ganti kata kuncinya, atau tanyakan langsung kepada guru/ustadz.',
+			rujukan: []
+		};
 	}
-	const daftar = referensi
-		.slice(0, 6)
-		.map((r, i) => `[${i + 1}] ${r.judul}${r.lokasi ? ` — ${r.lokasi}` : ''}`)
-		.join('\n');
-	const penutup = '\n\nBaca kutipan lengkapnya di app.santrionline.com/tanya. Untuk kesimpulan hukum, musyawarahkan dengan guru/ustadz.';
-	if (hasil.ringkasan) return `${hasil.ringkasan}\n\nRujukan:\n${daftar}${penutup}`;
-	const cuplikan = referensi
+	const { rujukan, ringkasan } = susunRujukan(referensi, hasil.ringkasan ?? null);
+	const penutup = '\n\nKlik rujukan untuk membuka kitabnya. Untuk kesimpulan hukum, musyawarahkan dengan guru/ustadz.';
+	if (ringkasan) return { reply: `${ringkasan}${penutup}`, rujukan };
+	// Tanpa ringkasan: dua kutipan pertama dari rujukan UNIK (urutan nomor sama dengan daftar).
+	const terlihat = new Set<string>();
+	const unik = referensi.filter((r) => {
+		const kunci = `${r.judul?.trim() || 'Kitab'}|${r.lokasi?.trim() ?? ''}`;
+		if (terlihat.has(kunci)) return false;
+		terlihat.add(kunci);
+		return true;
+	});
+	const cuplikan = unik
 		.slice(0, 2)
-		.map((r, i) => `[${i + 1}] ${r.judul}${r.lokasi ? ` — ${r.lokasi}` : ''}\n"${r.cuplikan}…"`)
+		.map((r, i) => `[${i + 1}] "${r.cuplikan}…"`)
 		.join('\n\n');
-	return `Kutipan kitab yang paling relevan:\n\n${cuplikan}${penutup}`;
+	return { reply: `Kutipan kitab yang paling relevan:\n\n${cuplikan}${penutup}`, rujukan: rujukan.slice(0, 2) };
 };
 
 export const POST: RequestHandler = async ({ request, cookies, fetch, platform, getClientAddress }) => {
@@ -92,7 +106,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 
 		const nextCount = currentCount + 1;
 		cookies.set(CHAT_LIMIT_COOKIE, String(nextCount), { path: '/', httpOnly: true, sameSite: 'lax', secure: !dev });
-		return json({ reply: susunBalasan(hasil), remaining: Math.max(CHAT_LIMIT - nextCount, 0) });
+		return json({ ...susunBalasan(hasil), remaining: Math.max(CHAT_LIMIT - nextCount, 0) });
 	} catch (error) {
 		console.error('Tanya kitab publik error', error);
 		return json({ message: 'Maaf, coba lagi sebentar.' }, { status: 500 });
