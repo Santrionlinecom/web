@@ -15,6 +15,7 @@ const PAGES = [
 	{ path: '/literasi/tahfidz-adalah', changefreq: 'monthly', priority: '0.8' },
 	{ path: '/literasi/munaqosah-tahfidz', changefreq: 'monthly', priority: '0.7' },
 	{ path: '/lembaga', changefreq: 'weekly', priority: '0.9' },
+	{ path: '/tentang', changefreq: 'monthly', priority: '0.6' },
 	...HALAMAN_APLIKASI.map((h) => ({ path: h.path, changefreq: 'monthly', priority: '0.9' })),
 	...FITUR_LEMBAGA.map((f) => ({ path: `/fitur/${f.slug}`, changefreq: 'monthly', priority: '0.8' })),
 	...['semua', 'kitab', 'buku', 'kursus', 'produk'].map((j) => ({ path: `/katalog/${j}`, changefreq: 'daily', priority: '0.8' }))

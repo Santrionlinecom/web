@@ -278,6 +278,7 @@
 				<a class="hover:text-so-green" href="/">Beranda</a>
 				<a class="hover:text-so-green" href="/katalog/semua">Katalog</a>
 				<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a>
+				<a class="hover:text-so-green" href="/tentang">Tentang</a>
 				<a class="hover:text-so-green" href={appUrl}>Buka Aplikasi ↗</a>
 			</nav>
 		</div>

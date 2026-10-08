@@ -746,6 +746,7 @@
 					<a class="hover:text-so-green" href="#arah">Arah</a>
 					<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
 					<a class="hover:text-so-green" href="/lembaga">Untuk Lembaga</a>
+					<a class="hover:text-so-green" href="/tentang">Tentang</a>
 					<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
 					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
 					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
