@@ -25,9 +25,6 @@
 	// Angka traksi nyata dari db-app; null = gagal dimuat -> blok disembunyikan.
 	const statistik = $derived(data.statistik ?? null);
 	const jumlahKitab = $derived(bidang.reduce((t: number, b: { jumlah: number }) => t + b.jumlah, 0));
-	const jumlahItem = $derived(
-		jumlahKitab + (rakBuku?.item.length ?? 0) + (rakProduk?.item.length ?? 0) + (rakKursus?.item.length ?? 0) + 2
-	);
 	const tabRak = $derived(
 		[
 			{ href: '#rak-unggulan', label: 'Pilihan Utama', ada: !!rakUnggulan },
@@ -466,14 +463,18 @@
 				<div>
 					<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
 						<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
-						Etalase SantriOnline · {jumlahItem} pilihan
+						Tanya Kitab AI{#if statistik && statistik.kitab > 0} · {labelAngka(statistik.kitab)} kitab rujukan{/if}
 					</p>
 					<h1 class="hero-stagger hero-stagger-2 font-display mt-4 text-[clamp(1.35rem,5.2vw,1.9rem)] font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">
-						Kitab, buku, kursus, alat desain, dan game kampung santri — <span class="text-so-green-2">satu akun, mulai hari ini.</span>
+						Tanya agama, dijawab dengan rujukan kitab — <span class="text-so-green-2">dan kelola TPQ &amp; pesantren gratis dalam satu akun.</span>
 					</h1>
 					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
-						Semua yang membentuk aqidah, adab, ilmu, dan keterampilan santri ada di rak ini. Pilih, lalu lanjutkan di aplikasi.
+						Asisten AI SantriOnline menjawab berdasarkan kutipan kitab Aswaja dan menunjukkan sumbernya. Lembaga mendapat aplikasi data santri, hafalan, dan rapor tanpa biaya.
 					</p>
+					<div class="hero-stagger hero-stagger-3 mt-4 flex flex-col gap-2 sm:mt-5 sm:flex-row sm:flex-wrap">
+						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25" href="#tanya">Coba Tanya Kitab <span aria-hidden="true">→</span></a>
+						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-so-gold/50 bg-white px-6 py-2.5 text-sm font-bold text-so-green shadow-sm transition hover:border-so-green/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-gold/25" href={appRegisterUrl}>Daftarkan Lembaga Gratis</a>
+					</div>
 					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="/katalog/semua" method="get" role="search">
 						<label class="sr-only" for="cari-katalog">Cari kitab, buku, atau kursus</label>
 						<input id="cari-katalog" name="q" type="search" placeholder="Cari kitab, buku, kursus…" class="min-h-[42px] w-full rounded-full border border-so-border bg-white px-5 text-sm text-so-ink shadow-sm outline-none placeholder:text-so-muted/70 focus:border-so-green/50 focus:ring-4 focus:ring-so-green/15" />
