@@ -1,6 +1,6 @@
 <script lang="ts">
 	// src/routes/tentang/+page.svelte — halaman Tentang SantriOnline.
-	// Identitas usaha (NIB/KBLI/alamat) sengaja ditulis apa adanya; tanpa NPWP
+	// Identitas usaha (NIB/KBLI/alamat) sengaja ditulis apa adanya; tanpa nomor pajak
 	// dan tanpa nomor telepon. Jangan tambahkan angka atau testimoni karangan.
 	import logo from '$lib/assets/logo.png';
 

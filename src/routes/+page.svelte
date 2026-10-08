@@ -242,7 +242,7 @@
 					name: 'Yogik Pratama Aprilian',
 					url: 'https://masyogik.santrionline.com/',
 					sameAs: [
-						'https://www.linkedin.com/in/yogik-pratama-aprilian/',
+						'https://www.linkedin.com/in/yogik-pratama/',
 						'https://about.me/yogikpratama'
 					]
 				}
