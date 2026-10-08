@@ -161,7 +161,7 @@
 		{
 			name: 'TPQ & TPA',
 			description: 'Kelola santri, kelas, setoran, hafalan, rapor, dan komunikasi pendamping dalam satu alur.',
-			href: `${appBaseUrl}/tpq`,
+			href: `${appBaseUrl}/tpq/daftar`,
 			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01'
 		},
 		{
@@ -173,13 +173,13 @@
 		{
 			name: 'Rumah Tahfidz',
 			description: 'Dukung setoran, murojaah, perkembangan hafalan, ujian, dan pendampingan santri secara bertahap.',
-			href: `${appBaseUrl}/lembaga/tambah`,
+			href: `${appBaseUrl}/rumah-tahfidz/daftar`,
 			icon: 'M12 3 4 9v11h16V9l-8-6Zm-3 17v-6h6v6m-7-9h8'
 		},
 		{
 			name: 'Masjid & Musholla',
 			description: 'Satukan kegiatan belajar, data jamaah dan santri, agenda, serta administrasi pembinaan umat.',
-			href: `${appBaseUrl}/lembaga/tambah`,
+			href: `${appBaseUrl}/masjid/daftar`,
 			icon: 'M3 20h18M6 20v-9h12v9M9 11V8.5a3 3 0 0 1 6 0V11m-3-8v2M9 15h.01M15 15h.01'
 		}
 	];
