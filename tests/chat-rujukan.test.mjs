@@ -8,6 +8,8 @@ test('tautan kitab memakai slug polos (bagian -bNN dibuang) ke halaman baca app'
 	// slug kecil yang kebetulan berakhir -b tanpa dua digit tidak dipotong
 	assert.equal(tautanKitab('kitab-b1'), 'https://app.santrionline.com/kitab/kitab-b1/baca');
 	for (const buruk of [null, '', 'javascript:alert(1)', '../admin', 'A B', 'x/y']) assert.equal(tautanKitab(buruk), null);
+	assert.equal(tautanKitab('syamilah-3404-b04', 'kitab:syamilah-3404-b04:ab:cd'), 'https://app.santrionline.com/kitab/syamilah-3404/baca?kutipan=kitab%3Asyamilah-3404-b04%3Aab%3Acd#kutipan');
+	assert.equal(tautanKitab('syamilah-4619', '<x>'), 'https://app.santrionline.com/kitab/syamilah-4619/baca');
 });
 
 test('rujukan kembar digabung dan sitasi di ringkasan dinomori ulang', () => {
