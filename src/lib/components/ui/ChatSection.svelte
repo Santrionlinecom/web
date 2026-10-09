@@ -6,6 +6,7 @@
 	// modal upgrade tetap milik halaman.
 	import logo from '$lib/assets/logo.png';
 	import { pecahSitasi } from '$lib/chat-rujukan.js';
+	import { sisaSlotMs, slotSaatIni } from '$lib/pertanyaan-siap.js';
 
 	type Rujukan = { no: number; judul: string; lokasi: string | null; url: string | null };
 	type ChatMessage = {
@@ -17,14 +18,54 @@
 	const urlRujukan = (message: ChatMessage, no: number | null) =>
 		no == null ? null : (message.rujukan?.find((r) => r.no === no)?.url ?? null);
 
+	type ItemSiap = { q: string; reply: string; rujukan: Rujukan[] };
 	type Props = {
-		examples: string[];
+		/** Pertanyaan siap-klik slot 30 menit saat ini (jawaban sudah disiapkan). */
+		siap: { slot: number; item: ItemSiap[] };
 		groupWaUrl: string;
 		/** Dipanggil saat API membalas 429 (kuota tamu habis). */
 		onLimit: () => void;
 	};
 
-	let { examples, groupWaUrl, onLimit }: Props = $props();
+	let { siap, groupWaUrl, onLimit }: Props = $props();
+
+	// Rotasi tiap 30 menit tanpa muat ulang: HTML beranda dicache beberapa menit,
+	// jadi slot dicek di peramban dan set baru diambil saat slot berganti.
+	// svelte-ignore state_referenced_locally
+	let siapKini = $state<{ slot: number; item: ItemSiap[] }>(siap);
+	const examples = $derived(siapKini.item);
+
+	async function segarkanSiap() {
+		try {
+			const r = await fetch(`/api/chat/siap?s=${slotSaatIni()}`);
+			if (r.ok) siapKini = await r.json();
+		} catch {
+			/* tetap pakai set lama */
+		}
+	}
+
+	$effect(() => {
+		let timer: ReturnType<typeof setTimeout>;
+		const jadwal = () => {
+			timer = setTimeout(async () => {
+				await segarkanSiap();
+				jadwal();
+			}, sisaSlotMs() + 1500);
+		};
+		if (siapKini.slot !== slotSaatIni()) void segarkanSiap();
+		jadwal();
+		return () => clearTimeout(timer);
+	});
+
+	/** Klik pertanyaan siap: jawaban tampil seketika, tanpa AI dan tanpa kuota. */
+	function jawabSiap(item: ItemSiap) {
+		if (isChatLoading) return;
+		chatMessages = [
+			...chatMessages,
+			{ role: 'user', content: item.q },
+			{ role: 'assistant', content: item.reply, rujukan: item.rujukan }
+		];
+	}
 
 	let question = $state('');
 	let isChatLoading = $state(false);
@@ -77,8 +118,8 @@
 			<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Mulai dari satu pertanyaan yang baik.</h2>
 			<p class="mt-5 text-lg leading-8 text-so-muted">Gunakan asisten publik untuk orientasi awal. Untuk pengalaman lengkap dan riwayat percakapan, lanjutkan di aplikasi.</p>
 			<div class="mt-7 flex flex-wrap gap-2">
-				{#each examples as example}
-					<button type="button" class="rounded-full border border-so-green/15 bg-white px-4 py-2 text-left text-xs font-semibold leading-5 text-so-green transition hover:border-so-green/40 hover:text-so-green" disabled={isChatLoading} onclick={() => void sendQuestion(example)}>{example}</button>
+				{#each examples as example (example.q)}
+					<button type="button" class="rounded-full border border-so-green/15 bg-white px-4 py-2 text-left text-xs font-semibold leading-5 text-so-green transition hover:border-so-green/40 hover:text-so-green" disabled={isChatLoading} onclick={() => jawabSiap(example)}><span aria-hidden="true" class="mr-1 text-so-accent-ink">⚡</span>{example.q}</button>
 				{/each}
 			</div>
 		</div>

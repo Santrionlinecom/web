@@ -1,7 +1,8 @@
 import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { json, type RequestHandler } from '@sveltejs/kit';
-import { susunRujukan } from '$lib/chat-rujukan.js';
+import { susunBalasan } from '$lib/chat-balasan.js';
+import { cariSiap } from '$lib/server/pertanyaan-siap';
 
 /**
  * Chat beranda santrionline.com — kini diteruskan ke Tanya Kitab
@@ -25,41 +26,6 @@ const getCurrentCount = (value: string | undefined) => {
 	return Number.isFinite(count) && count > 0 ? count : 0;
 };
 
-/**
- * Balasan = teks + daftar rujukan terstruktur (tiap rujukan bertaut ke halaman
- * baca kitab di app). Rujukan kembar (kitab + halaman sama) digabung dan
- * sitasi [n] di ringkasan dinomori ulang mengikutinya.
- */
-const susunBalasan = (hasil: HasilApp) => {
-	const referensi = hasil.referensi ?? [];
-	// Kutipan mentah hanya ditampilkan bila ringkasan ada, atau jatah ringkasan
-	// habis (kutipannya mungkin tetap relevan). Bila AI menilai kutipan TIDAK
-	// menjawab, menampilkan potongan acak justru menyesatkan tamu.
-	const bolehKutipan = !!hasil.ringkasan || hasil.status === 'jatah-habis';
-	if (!referensi.length || !bolehKutipan) {
-		return {
-			reply: 'Belum ada kutipan kitab di perpustakaan SantriOnline yang cocok dengan pertanyaan ini. Coba ganti kata kuncinya, atau tanyakan langsung kepada guru/ustadz.',
-			rujukan: []
-		};
-	}
-	const { rujukan, ringkasan } = susunRujukan(referensi, hasil.ringkasan ?? null);
-	const penutup = '\n\nKlik rujukan untuk membuka kitabnya. Untuk kesimpulan hukum, musyawarahkan dengan guru/ustadz.';
-	if (ringkasan) return { reply: `${ringkasan}${penutup}`, rujukan };
-	// Tanpa ringkasan: dua kutipan pertama dari rujukan UNIK (urutan nomor sama dengan daftar).
-	const terlihat = new Set<string>();
-	const unik = referensi.filter((r) => {
-		const kunci = `${r.judul?.trim() || 'Kitab'}|${r.lokasi?.trim() ?? ''}`;
-		if (terlihat.has(kunci)) return false;
-		terlihat.add(kunci);
-		return true;
-	});
-	const cuplikan = unik
-		.slice(0, 2)
-		.map((r, i) => `[${i + 1}] "${r.cuplikan}…"`)
-		.join('\n\n');
-	return { reply: `Kutipan kitab yang paling relevan:\n\n${cuplikan}${penutup}`, rujukan: rujukan.slice(0, 2) };
-};
-
 export const POST: RequestHandler = async ({ request, cookies, fetch, platform, getClientAddress }) => {
 	const runtimeEnv = platform?.env as Record<string, string | undefined> | undefined;
 	const rahasia = runtimeEnv?.PUBLIK_TANYA_SECRET?.trim() || env.PUBLIK_TANYA_SECRET?.trim();
@@ -67,13 +33,17 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 		return json({ message: 'Asisten sedang tidak tersedia. Silakan coba lagi nanti.' }, { status: 503 });
 	}
 
-	const currentCount = getCurrentCount(cookies.get(CHAT_LIMIT_COOKIE));
-	if (currentCount >= CHAT_LIMIT) return json({ message: UPGRADE_MESSAGE }, { status: 429 });
-
 	const body = (await request.json().catch(() => null)) as { message?: unknown } | null;
 	const message = typeof body?.message === 'string' ? body.message.trim() : '';
 	if (!message) return json({ message: 'Pesan wajib diisi.' }, { status: 400 });
 	if (message.length > 500) return json({ message: 'Pesan terlalu panjang. Maksimal 500 karakter.' }, { status: 400 });
+
+	// Pertanyaan siap-klik: jawaban sudah disiapkan, seketika dan tidak memakan kuota.
+	const siap = cariSiap(message);
+	if (siap) return json({ reply: siap.reply, rujukan: siap.rujukan, siap: true });
+
+	const currentCount = getCurrentCount(cookies.get(CHAT_LIMIT_COOKIE));
+	if (currentCount >= CHAT_LIMIT) return json({ message: UPGRADE_MESSAGE }, { status: 429 });
 
 	let ip = request.headers.get('cf-connecting-ip') ?? '';
 	if (!ip) {

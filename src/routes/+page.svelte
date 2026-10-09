@@ -280,11 +280,6 @@
 		]
 	};
 
-	const examples = [
-		'Bagaimana cara mengenali ulama yang lurus dan beradab?',
-		'Apa makna mengikuti صراط المستقيم dalam hidup santri?',
-		'Bagaimana membangun kebiasaan belajar agama setiap hari?'
-	];
 
 	// ——— Motion: scroll reveal per section ———
 	// Konten dirender server dan tetap terlihat tanpa JS. Kelas .js-reveal baru
@@ -699,7 +694,7 @@
 		</div>
 	</section>
 
-	<ChatSection {examples} {groupWaUrl} onLimit={() => (showUpgradeModal = true)} />
+	<ChatSection siap={data.siap} {groupWaUrl} onLimit={() => (showUpgradeModal = true)} />
 
 	<section class="so-reveal border-y border-so-border/70 bg-white px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16" aria-labelledby="faq-title">
 		<div class="mx-auto max-w-5xl">

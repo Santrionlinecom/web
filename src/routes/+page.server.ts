@@ -2,6 +2,7 @@
 import type { PageServerLoad } from './$types';
 import { muatKatalog, muatKitabPerBidang, type ItemKatalog } from '$lib/server/katalog';
 import { muatStatistik } from '$lib/server/statistik';
+import { siapUntukSaatIni } from '$lib/server/pertanyaan-siap';
 
 export const load: PageServerLoad = async ({ platform, setHeaders }) => {
 	const db = (platform?.env as { DB?: D1Database } | undefined)?.DB;
@@ -32,5 +33,5 @@ export const load: PageServerLoad = async ({ platform, setHeaders }) => {
 
 	// Katalog berubah jarang; cache tepi 5 menit supaya D1 tidak dipukul tiap kunjungan.
 	setHeaders({ 'cache-control': 'public, max-age=60, s-maxage=300' });
-	return { rak, bidang, slide, populer, statistik };
+	return { rak, bidang, slide, populer, statistik, siap: siapUntukSaatIni() };
 };
