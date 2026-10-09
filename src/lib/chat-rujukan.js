@@ -10,16 +10,20 @@ export const MAKS_RUJUKAN = 6;
 export const slugTanpaBagian = (slug) => String(slug ?? '').trim().replace(/-b\d{2}$/, '');
 
 /** Slug aman untuk URL (huruf kecil, angka, tanda hubung) → tautan baca; selain itu null.
+ * Dengan id kutipan (chunk), halaman baca membuka bab yang memuatnya dan menyorot paragrafnya.
  * @param {string|null|undefined} slug
+ * @param {string|null|undefined} [idKutipan]
  * @returns {string|null} */
-export const tautanKitab = (slug) => {
+export const tautanKitab = (slug, idKutipan) => {
 	const dasar = slugTanpaBagian(slug);
 	if (!/^[a-z0-9][a-z0-9-]{0,120}$/.test(dasar)) return null;
-	return `${APP_ORIGIN}/kitab/${dasar}/baca`;
+	const url = `${APP_ORIGIN}/kitab/${dasar}/baca`;
+	const id = String(idKutipan ?? '');
+	return /^kitab:[A-Za-z0-9:_.-]{1,160}$/.test(id) ? `${url}?kutipan=${encodeURIComponent(id)}#kutipan` : url;
 };
 
 /**
- * @param {Array<{judul: string, lokasi: string|null, slug: string|null}>} referensi
+ * @param {Array<{judul: string, lokasi: string|null, slug: string|null, id?: string|null}>} referensi
  * @param {string|null} ringkasan
  * @returns {{ rujukan: Array<{no: number, judul: string, lokasi: string|null, url: string|null}>, ringkasan: string|null }}
  */
@@ -40,7 +44,7 @@ export const susunRujukan = (referensi, ringkasan = null) => {
 			if (rujukan.length >= MAKS_RUJUKAN) return;
 			no = rujukan.length + 1;
 			nomorBaru.set(kunci, no);
-			rujukan.push({ no, judul, lokasi, url: tautanKitab(r?.slug) });
+			rujukan.push({ no, judul, lokasi, url: tautanKitab(r?.slug, r?.id) });
 		}
 		peta.set(i + 1, no);
 	});

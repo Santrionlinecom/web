@@ -17,7 +17,7 @@ const CHAT_LIMIT = 5;
 const CHAT_LIMIT_COOKIE = 'santrionline_chat_count';
 const UPGRADE_MESSAGE = 'Kuota gratis sudah habis. Daftar gratis di app.santrionline.com untuk bertanya ke kitab tanpa batas.';
 
-type Referensi = { judul: string; lokasi: string | null; slug: string | null; cuplikan: string };
+type Referensi = { judul: string; lokasi: string | null; slug: string | null; id?: string | null; cuplikan: string };
 type HasilApp = { ok?: boolean; status?: string; ringkasan?: string | null; referensi?: Referensi[]; error?: string };
 
 const getCurrentCount = (value: string | undefined) => {
