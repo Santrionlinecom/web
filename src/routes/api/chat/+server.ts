@@ -2,7 +2,7 @@ import { dev } from '$app/environment';
 import { env } from '$env/dynamic/private';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { susunBalasan } from '$lib/chat-balasan.js';
-import { cariSiap } from '$lib/server/pertanyaan-siap';
+import { cariSiap, cariSiapMirip } from '$lib/server/pertanyaan-siap';
 
 /**
  * Chat beranda santrionline.com — kini diteruskan ke Tanya Kitab
@@ -39,8 +39,11 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 	if (message.length > 500) return json({ message: 'Pesan terlalu panjang. Maksimal 500 karakter.' }, { status: 400 });
 
 	// Pertanyaan siap-klik: jawaban sudah disiapkan, seketika dan tidak memakan kuota.
-	const siap = cariSiap(message);
-	if (siap) return json({ reply: siap.reply, rujukan: siap.rujukan, siap: true });
+	const persis = cariSiap(message);
+	if (persis) return json({ reply: persis.reply, rujukan: persis.rujukan, siap: true });
+	// Maknanya sama dengan soal di bank: tetap seketika, dan soal yang dijawab disebut terang.
+	const mirip = await cariSiapMirip(platform?.env as { AI?: Ai; KEPUTUSAN_CEPAT_API_KEY?: string } | undefined, message);
+	if (mirip) return json({ reply: `Pertanyaan serupa: "${mirip.q}"\n\n${mirip.reply}`, rujukan: mirip.rujukan, siap: true });
 
 	const currentCount = getCurrentCount(cookies.get(CHAT_LIMIT_COOKIE));
 	if (currentCount >= CHAT_LIMIT) return json({ message: UPGRADE_MESSAGE }, { status: 429 });
