@@ -6,7 +6,9 @@ const config = {
 		// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
 		runes: ({ filename }) => filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 	},
-	kit: { adapter: adapter({ platformProxy: { persist: false } }) }
+	// Di build Pages (CF_PAGES=1) tidak ada kredensial: binding AI (selalu remote)
+	// membuat prerender gagal bila proxy mencoba sesi remote. Lokal tetap remote.
+	kit: { adapter: adapter({ platformProxy: { persist: false, remoteBindings: !process.env.CF_PAGES } }) }
 };
 
 export default config;
