@@ -13,7 +13,10 @@
 			"database_id": "9c7b8ab4-8e7a-406d-9e44-6da413d7d9e0",
 			"migrations_dir": "migrations"
 		}
-	]
+	],
+	"ai": {
+		"binding": "AI"
+	}
 
 	// Secrets yang harus diset manual:
 	// wrangler secret put TELEGRAM_BOT_TOKEN
