@@ -21,7 +21,7 @@ export const susunBalasan = (hasil) => {
 		};
 	}
 	const { rujukan, ringkasan } = susunRujukan(referensi, hasil.ringkasan ?? null);
-	const penutup = '\n\nKlik rujukan untuk membuka kitabnya. Untuk kesimpulan hukum, musyawarahkan dengan guru/ustadz.';
+	const penutup = '\n\nKlik rujukan untuk membuka kitabnya. Untuk kesimpulan hukum, Mudzakarahkan dan musyawarahkan dengan Orang yang lebih Alim dan Berilmu yang biasa di panggil guru/ustadz.';
 	if (ringkasan) return { reply: `${ringkasan}${penutup}`, rujukan };
 	// Tanpa ringkasan: dua kutipan pertama dari rujukan UNIK (urutan nomor sama dengan daftar).
 	const terlihat = new Set();
