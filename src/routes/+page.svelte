@@ -48,6 +48,14 @@
 	const appBaseUrl = 'https://app.santrionline.com';
 	const appLoginUrl = `${appBaseUrl}/auth`;
 	const appRegisterUrl = `${appBaseUrl}/register`;
+	// Kuota tamu habis → lanjut di Tanya Kitab aplikasi (/tanya), bukan dashboard.
+	// Pertanyaan yang belum terjawab ikut dibawa (?q=) dan mengisi kotak tanya.
+	let pertanyaanTertunda = $state('');
+	const tujuanTanya = $derived(
+		pertanyaanTertunda ? `/tanya?q=${encodeURIComponent(pertanyaanTertunda.slice(0, 500))}` : '/tanya'
+	);
+	const lanjutMasukUrl = $derived(`${appBaseUrl}/auth?redirect=${encodeURIComponent(tujuanTanya)}`);
+	const lanjutDaftarUrl = $derived(`${appBaseUrl}/auth/google?redirect=${encodeURIComponent(tujuanTanya)}`);
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
@@ -763,7 +771,10 @@
 		</div>
 	</section>
 
-	<ChatSection siap={data.siap} {groupWaUrl} onLimit={() => (showUpgradeModal = true)} />
+	<ChatSection siap={data.siap} {groupWaUrl} onLimit={(q) => {
+		pertanyaanTertunda = q;
+		showUpgradeModal = true;
+	}} />
 
 	<section class="so-reveal border-y border-so-border/70 bg-white px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16" aria-labelledby="faq-title">
 		<div class="mx-auto max-w-5xl">
@@ -891,10 +902,10 @@
 				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
 				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
 			</div>
-			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah selesai. Buat akun untuk pengalaman belajar dan riwayat yang lebih lengkap.</p>
+			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah habis. Masuk atau daftar untuk melanjutkan di Tanya Kitab aplikasi, lengkap dengan riwayat percakapan. Pertanyaan Anda ikut terbawa.</p>
 			<div class="mt-6 grid grid-cols-2 gap-3">
-				<a class="rounded-full bg-so-green px-5 py-3 text-center text-sm font-bold text-white" href={appRegisterUrl}>Daftar</a>
-				<a class="rounded-full border border-so-border px-5 py-3 text-center text-sm font-bold" href={appLoginUrl}>Masuk</a>
+				<a class="rounded-full bg-so-green px-5 py-3 text-center text-sm font-bold text-white" href={lanjutDaftarUrl}>Daftar</a>
+				<a class="rounded-full border border-so-border px-5 py-3 text-center text-sm font-bold" href={lanjutMasukUrl}>Masuk</a>
 			</div>
 		</div>
 	</div>
