@@ -3,6 +3,7 @@ import { env } from '$env/dynamic/private';
 import { json, type RequestHandler } from '@sveltejs/kit';
 import { susunBalasan } from '$lib/chat-balasan.js';
 import { cariSiap, cariSiapMirip } from '$lib/server/pertanyaan-siap';
+import { buatTokenSerah, catatTanyaJawab, sesiTamu, type DataTamu } from '$lib/server/tamu-serah';
 
 /**
  * Chat beranda santrionline.com — kini diteruskan ke Tanya Kitab
@@ -38,15 +39,34 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 	if (!message) return json({ message: 'Pesan wajib diisi.' }, { status: 400 });
 	if (message.length > 500) return json({ message: 'Pesan terlalu panjang. Maksimal 500 karakter.' }, { status: 400 });
 
+	// Percakapan tamu dicatat server supaya bisa dipindah utuh ke Tanya Kitab app
+	// setelah tamu masuk/daftar (lihat $lib/server/tamu-serah.ts). Gagal-terbuka.
+	const db = platform?.env?.DB;
+	const sesi = sesiTamu(cookies, !dev);
+	const catat = (data: DataTamu) => {
+		const tugas = catatTanyaJawab(db, sesi, message, data);
+		if (platform?.ctx?.waitUntil) platform.ctx.waitUntil(tugas);
+		return tugas;
+	};
+	const kuotaHabis = async (pesan: string) =>
+		json({ message: pesan, serah: await buatTokenSerah(db, sesi, message) }, { status: 429 });
+
 	// Pertanyaan siap-klik: jawaban sudah disiapkan, seketika dan tidak memakan kuota.
 	const persis = cariSiap(message);
-	if (persis) return json({ reply: persis.reply, rujukan: persis.rujukan, siap: true });
+	if (persis) {
+		catat({ v: 1, sumber: 'siap', qBank: persis.q, reply: persis.reply });
+		return json({ reply: persis.reply, rujukan: persis.rujukan, siap: true });
+	}
 	// Maknanya sama dengan soal di bank: tetap seketika, dan soal yang dijawab disebut terang.
 	const mirip = await cariSiapMirip(platform?.env as { AI?: Ai; KEPUTUSAN_CEPAT_API_KEY?: string } | undefined, message);
-	if (mirip) return json({ reply: `Pertanyaan serupa: "${mirip.q}"\n\n${mirip.reply}`, rujukan: mirip.rujukan, siap: true });
+	if (mirip) {
+		const reply = `Pertanyaan serupa: "${mirip.q}"\n\n${mirip.reply}`;
+		catat({ v: 1, sumber: 'mirip', qBank: mirip.q, reply });
+		return json({ reply, rujukan: mirip.rujukan, siap: true });
+	}
 
 	const currentCount = getCurrentCount(cookies.get(CHAT_LIMIT_COOKIE));
-	if (currentCount >= CHAT_LIMIT) return json({ message: UPGRADE_MESSAGE }, { status: 429 });
+	if (currentCount >= CHAT_LIMIT) return kuotaHabis(UPGRADE_MESSAGE);
 
 	let ip = request.headers.get('cf-connecting-ip') ?? '';
 	if (!ip) {
@@ -70,7 +90,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 		const hasil = (await res.json().catch(() => ({}))) as HasilApp;
 
 		if (res.status === 429) {
-			return json({ message: 'Batas tanya per jam tercapai. Coba lagi nanti, atau daftar gratis di app.santrionline.com.' }, { status: 429 });
+			return kuotaHabis('Batas tanya per jam tercapai. Coba lagi nanti, atau daftar gratis di app.santrionline.com.');
 		}
 		if (!res.ok || !hasil.ok) {
 			console.error('Tanya kitab publik gagal', { status: res.status, error: hasil.error });
@@ -79,7 +99,16 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 
 		const nextCount = currentCount + 1;
 		cookies.set(CHAT_LIMIT_COOKIE, String(nextCount), { path: '/', httpOnly: true, sameSite: 'lax', secure: !dev });
-		return json({ ...susunBalasan(hasil), remaining: Math.max(CHAT_LIMIT - nextCount, 0) });
+		const balasan = susunBalasan(hasil);
+		// Jawaban dibangun ulang di app dari id kutipan + ringkasan mentah; bila tamu
+		// melihat "belum ada kutipan" (gerbang menolak), app juga tidak menampilkannya.
+		const ids = (hasil.referensi ?? []).map((r) => r.id).filter((x): x is string => typeof x === 'string' && !!x);
+		catat(
+			balasan.rujukan.length && ids.length === (hasil.referensi ?? []).length
+				? { v: 1, sumber: 'app', ids, ringkasan: hasil.ringkasan ?? null, reply: balasan.reply }
+				: { v: 1, sumber: 'kosong', reply: balasan.reply }
+		);
+		return json({ ...balasan, remaining: Math.max(CHAT_LIMIT - nextCount, 0) });
 	} catch (error) {
 		console.error('Tanya kitab publik error', error);
 		return json({ message: 'Maaf, coba lagi sebentar.' }, { status: 500 });

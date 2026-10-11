@@ -23,9 +23,11 @@
 		/** Pertanyaan siap-klik slot 30 menit saat ini (jawaban sudah disiapkan). */
 		siap: { slot: number; item: ItemSiap[] };
 		groupWaUrl: string;
-		/** Dipanggil saat API membalas 429 (kuota tamu habis). */
-		/** Dipanggil saat kuota tamu habis, membawa pertanyaan yang belum terjawab. */
-		onLimit: (pertanyaan: string) => void;
+		/**
+		 * Dipanggil saat kuota tamu habis: pertanyaan yang belum terjawab + token
+		 * serah terima (null bila gagal dibuat) untuk memindahkan percakapan ke app.
+		 */
+		onLimit: (pertanyaan: string, serah: string | null) => void;
 	};
 
 	let { siap, groupWaUrl, onLimit }: Props = $props();
@@ -66,6 +68,15 @@
 			{ role: 'user', content: item.q },
 			{ role: 'assistant', content: item.reply, rujukan: item.rujukan }
 		];
+		// Jawaban tampil seketika dari data lokal; server tetap diberi tahu supaya
+		// tanya-jawab ini ikut pindah ke riwayat app bila tamu nanti masuk.
+		// Soal siap tidak memakan kuota.
+		fetch('/api/chat', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ message: item.q }),
+			keepalive: true
+		}).catch(() => {});
 	}
 
 	let question = $state('');
@@ -86,10 +97,10 @@
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({ message })
 			});
-			const data = (await response.json().catch(() => ({}))) as { reply?: string; message?: string; rujukan?: Rujukan[] };
+			const data = (await response.json().catch(() => ({}))) as { reply?: string; message?: string; rujukan?: Rujukan[]; serah?: string | null };
 
 			if (response.status === 429) {
-				onLimit(message);
+				onLimit(message, typeof data.serah === 'string' ? data.serah : null);
 				chatMessages = [
 					...chatMessages,
 					{ role: 'assistant', content: data.message ?? 'Daftar untuk melanjutkan percakapan.' }
