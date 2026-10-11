@@ -49,10 +49,17 @@
 	const appLoginUrl = `${appBaseUrl}/auth`;
 	const appRegisterUrl = `${appBaseUrl}/register`;
 	// Kuota tamu habis → lanjut di Tanya Kitab aplikasi (/tanya), bukan dashboard.
-	// Pertanyaan yang belum terjawab ikut dibawa (?q=) dan mengisi kotak tanya.
+	// Dengan token serah, seluruh percakapan tamu dipindah ke riwayat akun dan
+	// pertanyaan tertunda mengisi kotak tanya. Tanpa token (gagal dibuat), minimal
+	// pertanyaan tertunda tetap dibawa lewat ?q=.
 	let pertanyaanTertunda = $state('');
+	let tokenSerah = $state<string | null>(null);
 	const tujuanTanya = $derived(
-		pertanyaanTertunda ? `/tanya?q=${encodeURIComponent(pertanyaanTertunda.slice(0, 500))}` : '/tanya'
+		tokenSerah
+			? `/tanya?serah=${encodeURIComponent(tokenSerah)}`
+			: pertanyaanTertunda
+				? `/tanya?q=${encodeURIComponent(pertanyaanTertunda.slice(0, 500))}`
+				: '/tanya'
 	);
 	const lanjutMasukUrl = $derived(`${appBaseUrl}/auth?redirect=${encodeURIComponent(tujuanTanya)}`);
 	const lanjutDaftarUrl = $derived(`${appBaseUrl}/auth/google?redirect=${encodeURIComponent(tujuanTanya)}`);
@@ -771,8 +778,9 @@
 		</div>
 	</section>
 
-	<ChatSection siap={data.siap} {groupWaUrl} onLimit={(q) => {
+	<ChatSection siap={data.siap} {groupWaUrl} onLimit={(q, serah) => {
 		pertanyaanTertunda = q;
+		tokenSerah = serah;
 		showUpgradeModal = true;
 	}} />
 
@@ -902,7 +910,7 @@
 				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
 				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
 			</div>
-			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah habis. Masuk atau daftar untuk melanjutkan di Tanya Kitab aplikasi, lengkap dengan riwayat percakapan. Pertanyaan Anda ikut terbawa.</p>
+			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah habis. Masuk atau daftar untuk melanjutkan di Tanya Kitab aplikasi. Percakapan Anda di sini ikut pindah ke riwayat akun, dan pertanyaan terakhir sudah menunggu di kotak tanya.</p>
 			<div class="mt-6 grid grid-cols-2 gap-3">
 				<a class="rounded-full bg-so-green px-5 py-3 text-center text-sm font-bold text-white" href={lanjutDaftarUrl}>Daftar</a>
 				<a class="rounded-full border border-so-border px-5 py-3 text-center text-sm font-bold" href={lanjutMasukUrl}>Masuk</a>
