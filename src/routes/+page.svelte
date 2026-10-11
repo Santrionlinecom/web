@@ -51,15 +51,40 @@
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 
-	const navigation = [
-		{ href: '#katalog', label: 'Katalog' },
-		{ href: '#santri-online', label: 'Apa Itu Santri Online' },
-		{ href: '#arah', label: 'Arah' },
-		{ href: '#ekosistem', label: 'Ekosistem' },
-		{ href: '/lembaga', label: 'Untuk Lembaga' },
-		{ href: '#jalur', label: 'Pembinaan' },
-		{ href: '#tanya', label: 'Tanya AI' }
+	// Menu atas: 4 pintu utama, sisanya masuk sub menu agar baris atas tetap ringkas.
+	type MenuItem = { href: string; label: string; ket?: string };
+	type MenuGrup = { label: string; href?: string; anak?: MenuItem[]; sorot?: boolean };
+	const navigation: MenuGrup[] = [
+		{
+			label: 'Katalog',
+			anak: [
+				{ href: '/katalog/semua', label: 'Semua Katalog', ket: 'Kitab, buku, kursus, dan aplikasi' },
+				{ href: '/katalog/kitab', label: 'Kitab', ket: 'Kitab Aswaja per bidang ilmu' },
+				{ href: '/katalog/buku', label: 'Novel & Buku', ket: 'Cerita yang menumbuhkan adab' },
+				{ href: '/katalog/kursus', label: 'Kursus', ket: 'Belajar bertahap bersama pengajar' },
+				{ href: '/katalog/produk', label: 'Aplikasi', ket: 'Aplikasi pilihan untuk santri & lembaga' }
+			]
+		},
+		{
+			label: 'Tentang',
+			anak: [
+				{ href: '/literasi/apa-itu-santri-online', label: 'Apa Itu SantriOnline', ket: 'Pengertian dan tujuan kami' },
+				{ href: '/#arah', label: 'Arah & Visi', ket: 'Generasi berilmu, beradab, kompeten' },
+				{ href: '/#ekosistem', label: 'Ekosistem', ket: 'Semua layanan dalam satu akun' },
+				{ href: '/#jalur', label: 'Jalur Pembinaan', ket: 'Tahapan belajar santri' },
+				{ href: '/tentang', label: 'Profil Kami', ket: 'Siapa di balik SantriOnline' }
+			]
+		},
+		{ label: 'Untuk Lembaga', href: '/lembaga' },
+		{ label: 'Tanya AI', href: '#tanya', sorot: true }
 	];
+	let menuBuka = $state<string | null>(null);
+	// Dibuka lewat hover: klik pertama sesudahnya tidak menutup (supaya tidak berkedip tertutup).
+	let bukaHover = false;
+	let mobileGrup = $state<string | null>(null);
+	function tutupMenu() {
+		menuBuka = null;
+	}
 
 	const appShortcuts = [
 		{
@@ -335,6 +360,7 @@
 	});
 
 	function handleModalKeydown(event: KeyboardEvent) {
+		if (event.key === 'Escape') menuBuka = null;
 		if (!showUpgradeModal) return;
 		if (event.key === 'Escape') {
 			showUpgradeModal = false;
@@ -414,11 +440,40 @@
 				</div>
 			</a>
 
-			<div class="hidden items-center gap-7 text-sm font-semibold text-so-muted md:flex">
+			<ul class="hidden items-center gap-1 text-sm font-semibold text-so-muted md:flex">
 				{#each navigation as item}
-					<a class="transition hover:text-so-green" href={item.href}>{item.label}</a>
+					<li class="relative" onmouseenter={() => { if (item.anak && menuBuka !== item.label) { menuBuka = item.label; bukaHover = true; } }} onmouseleave={() => item.anak && tutupMenu()}>
+						{#if item.anak}
+							<button
+								type="button"
+								class="inline-flex items-center gap-1 rounded-full px-3 py-2 transition hover:text-so-green {menuBuka === item.label ? 'text-so-green' : ''}"
+								aria-haspopup="true"
+								aria-expanded={menuBuka === item.label}
+								onclick={() => { menuBuka = menuBuka === item.label && !bukaHover ? null : item.label; bukaHover = false; }}
+							>
+								{item.label}
+								<svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 transition {menuBuka === item.label ? 'rotate-180' : ''}" fill="currentColor"><path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z" /></svg>
+							</button>
+							{#if menuBuka === item.label}
+								<div class="absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-2">
+									<ul class="rounded-2xl border border-so-border bg-white p-2 shadow-lg">
+										{#each item.anak as sub}
+											<li>
+												<a class="block rounded-xl px-3 py-2.5 transition hover:bg-so-cream focus:bg-so-cream focus:outline-none" href={sub.href} onclick={tutupMenu}>
+													<span class="block text-sm font-bold text-so-green">{sub.label}</span>
+													{#if sub.ket}<span class="block text-xs font-medium text-so-muted">{sub.ket}</span>{/if}
+												</a>
+											</li>
+										{/each}
+									</ul>
+								</div>
+							{/if}
+						{:else}
+							<a class="inline-flex rounded-full px-3 py-2 transition hover:text-so-green {item.sorot ? 'text-so-green' : ''}" href={item.href}>{item.label}</a>
+						{/if}
+					</li>
 				{/each}
-			</div>
+			</ul>
 
 			<div class="hidden items-center gap-2 md:flex">
 				<a class="rounded-full border border-so-border bg-white px-4 py-2 text-sm font-bold transition hover:border-so-green-2/40 hover:text-so-green" href={appLoginUrl}>Masuk</a>
@@ -444,7 +499,21 @@
 		{#if showMobileMenu}
 			<nav id="mobile-navigation" class="mx-auto grid max-w-7xl gap-1 border-t border-so-border/80 py-4 md:hidden" aria-label="Navigasi mobile">
 				{#each navigation as item}
-					<a class="rounded-xl px-3 py-3 text-sm font-bold text-so-green hover:bg-so-cream" href={item.href} onclick={() => (showMobileMenu = false)}>{item.label}</a>
+					{#if item.anak}
+						<button type="button" class="flex items-center justify-between rounded-xl px-3 py-3 text-left text-sm font-bold text-so-green hover:bg-so-cream" aria-expanded={mobileGrup === item.label} onclick={() => (mobileGrup = mobileGrup === item.label ? null : item.label)}>
+							{item.label}
+							<svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 transition {mobileGrup === item.label ? 'rotate-180' : ''}" fill="currentColor"><path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z" /></svg>
+						</button>
+						{#if mobileGrup === item.label}
+							<div class="mb-1 ml-3 grid gap-0.5 border-l-2 border-so-border pl-2">
+								{#each item.anak as sub}
+									<a class="rounded-lg px-3 py-2.5 text-sm font-semibold text-so-ink hover:bg-so-cream" href={sub.href} onclick={() => (showMobileMenu = false)}>{sub.label}</a>
+								{/each}
+							</div>
+						{/if}
+					{:else}
+						<a class="rounded-xl px-3 py-3 text-sm font-bold text-so-green hover:bg-so-cream" href={item.href} onclick={() => (showMobileMenu = false)}>{item.label}</a>
+					{/if}
 				{/each}
 				<div class="mt-2 grid grid-cols-2 gap-2">
 					<a class="rounded-full border border-so-border bg-white px-4 py-3 text-center text-sm font-bold" href={appLoginUrl}>Masuk</a>
