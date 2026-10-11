@@ -24,7 +24,8 @@
 		siap: { slot: number; item: ItemSiap[] };
 		groupWaUrl: string;
 		/** Dipanggil saat API membalas 429 (kuota tamu habis). */
-		onLimit: () => void;
+		/** Dipanggil saat kuota tamu habis, membawa pertanyaan yang belum terjawab. */
+		onLimit: (pertanyaan: string) => void;
 	};
 
 	let { siap, groupWaUrl, onLimit }: Props = $props();
@@ -88,7 +89,7 @@
 			const data = (await response.json().catch(() => ({}))) as { reply?: string; message?: string; rujukan?: Rujukan[] };
 
 			if (response.status === 429) {
-				onLimit();
+				onLimit(message);
 				chatMessages = [
 					...chatMessages,
 					{ role: 'assistant', content: data.message ?? 'Daftar untuk melanjutkan percakapan.' }
