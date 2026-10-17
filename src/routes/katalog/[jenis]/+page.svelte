@@ -2,6 +2,8 @@
 	// /katalog/[jenis] — halaman "Lihat semua" satu jenis (atau semua), grid sampul
 	// + saringan teks (GET ?q=, tanpa JS). Memakai KartuKatalog yang sama dengan rak.
 	import KartuKatalog from '$lib/components/ui/KartuKatalog.svelte';
+	import RakKitab from '$lib/components/etalase/RakKitab.svelte';
+	import { APP } from '$lib/kitab-cta.js';
 
 	let { data } = $props();
 	const tab = [
@@ -11,12 +13,24 @@
 		['kursus', 'Kursus'],
 		['produk', 'Produk']
 	] as const;
+	// /katalog/kitab tanpa pencarian → tampilan rak sampul per bidang.
+	const rak = $derived(data.jenis === 'kitab' && !data.q);
+	const daftarLd = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'ItemList',
+			name: data.judul,
+			numberOfItems: data.item.length,
+			itemListElement: data.item.slice(0, 50).map((i, n) => ({ '@type': 'ListItem', position: n + 1, url: `https://santrionline.com${i.detail ?? ''}`, name: i.judul }))
+		})
+	);
 </script>
 
 <svelte:head>
 	<title>{data.judul} — Katalog | SantriOnline</title>
 	<meta name="description" content={data.keterangan} />
 	<link rel="canonical" href={`https://santrionline.com/katalog/${data.jenis}`} />
+	{#if rak}{@html `<script type="application/ld+json">${daftarLd}</script>`}{/if}
 </svelte:head>
 
 <main class="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
@@ -47,7 +61,16 @@
 
 	<p class="mt-4 text-xs text-so-muted">{data.item.length} item{data.q ? ` untuk “${data.q}”` : ''}</p>
 
-	{#if data.item.length}
+	{#if rak && data.item.length}
+		<aside class="mt-4 flex flex-col gap-3 rounded-2xl border border-so-gold/30 bg-[#fffdf7] p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+			<div class="min-w-0">
+				<p class="font-display text-base font-bold text-so-green">Rak Kitab — pilih sampul, lalu baca seperti kitab</p>
+				<p class="mt-0.5 text-xs text-so-muted">Di aplikasi, halaman kitab dibalik seperti kitab sungguhan. Gratis, masuk dengan akun Google.</p>
+			</div>
+			<a href={`${APP}/kitab?utm_source=santrionline.com&utm_medium=katalog&utm_campaign=baca-kitab&utm_content=rak`} rel="noopener" class="inline-flex shrink-0 items-center justify-center rounded-full bg-so-green px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-so-green-3">Buka perpustakaan →</a>
+		</aside>
+		<div class="mt-6"><RakKitab item={data.item} /></div>
+	{:else if data.item.length}
 		<section class="mt-3 grid grid-cols-3 gap-3 sm:grid-cols-4 sm:gap-4 md:grid-cols-5 lg:grid-cols-6" aria-label={data.judul}>
 			{#each data.item as item, i (`${item.jenis}:${item.slug}`)}
 				<KartuKatalog {item} prioritas={i < 6} isi />

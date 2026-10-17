@@ -1,7 +1,7 @@
 // Detail satu item katalog untuk halaman SEO publik di santrionline.com.
 // Hanya kolom publik (judul, deskripsi, sampul, harga, daftar judul bab/materi);
 // isi bab/materi TIDAK dibaca — baca/ikuti tetap di app (login).
-import { KARTU_TETAP, type ItemKatalog, type JenisKatalog } from './katalog';
+import { KARTU_TETAP, labelBidang, type ItemKatalog, type JenisKatalog } from './katalog';
 
 export interface DetailKatalog extends ItemKatalog {
 	deskripsi: string | null;
@@ -56,7 +56,7 @@ export async function muatDetail(
 	if (jenis === 'kitab') {
 		const r = await satu(
 			db,
-			`SELECT slug, title, summary, description, cover_url, category, page_count, updated_at
+			`SELECT slug, title, summary, description, cover_url, category, page_count, updated_at, author, author_latin, author_died_h
 			 FROM kitab_catalog WHERE status='published' AND slug=?`,
 			slug
 		);
@@ -73,9 +73,14 @@ export async function muatDetail(
 			gratis: true,
 			href: `${APP}/kitab/${slug}`,
 			aksi: 'Baca',
-			kategori: s(r.category),
+			kategori: labelBidang(s(r.category)),
+			penulis: s(r.author_latin) ?? s(r.author),
+			bidang: s(r.category),
 			daftar: [],
-			meta: n(r.page_count) > 0 ? [{ label: 'Halaman', nilai: String(n(r.page_count)) }] : [],
+			meta: [
+				...(n(r.page_count) > 0 ? [{ label: 'Halaman', nilai: String(n(r.page_count)) }] : []),
+				...(n(r.author_died_h) > 0 ? [{ label: 'H wafat pengarang', nilai: String(n(r.author_died_h)) }] : [])
+			],
 			diperbarui: tgl(r.updated_at)
 		};
 	}

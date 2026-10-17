@@ -30,6 +30,9 @@ export interface ItemKatalog {
 	rating?: RingkasRating;
 	/** jumlah bab dibaca (khusus buku) — untuk rak "Paling Banyak Dibaca" */
 	dibaca?: number;
+	/** khusus kitab: nama pengarang (Latin bila ada) dan id bidang (kitab_catalog.category) */
+	penulis?: string | null;
+	bidang?: string | null;
 }
 
 export interface RakKatalog {
@@ -146,7 +149,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		),
 		tanya(
 			db,
-			`SELECT slug, title, summary, cover_url, category FROM kitab_catalog
+			`SELECT slug, title, summary, cover_url, category, author, author_latin FROM kitab_catalog
 			 WHERE status='published' ORDER BY updated_at DESC, title LIMIT ${batas}`
 		),
 		tanya(
@@ -177,7 +180,9 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		href: `${APP}/kitab/${r.slug}`,
 		detail: `/katalog/kitab/${r.slug}`,
 		aksi: 'Baca',
-		kategori: labelBidang(s(r.category))
+		kategori: labelBidang(s(r.category)),
+		penulis: s(r.author_latin) ?? s(r.author),
+		bidang: s(r.category)
 	}));
 
 	const itemBuku: ItemKatalog[] = buku.map((r) => {

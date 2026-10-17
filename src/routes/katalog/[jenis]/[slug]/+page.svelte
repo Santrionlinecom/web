@@ -5,6 +5,7 @@
 	import KartuKatalog from '$lib/components/ui/KartuKatalog.svelte';
 	import Bintang from '$lib/components/etalase/Bintang.svelte';
 	import NilaiBintang from '$lib/components/etalase/NilaiBintang.svelte';
+	import { urlBacaKitab, urlDaftarKitab } from '$lib/kitab-cta.js';
 
 	let { data } = $props();
 	const item = $derived(data.item);
@@ -14,7 +15,23 @@
 		kitab: 'Kitab Digital', buku: 'Novel & Buku', kursus: 'Kursus', produk: 'Aplikasi & Produk Digital', game: 'Game', belajar: 'Ruang Belajar'
 	};
 	const tabJenis = $derived(['game', 'belajar'].includes(item.jenis) ? 'semua' : item.jenis);
-	const paragraf = $derived((item.deskripsi && item.deskripsi !== item.ringkasan ? item.deskripsi : '').split(/\n{2,}|\r\n\r\n/).map((p: string) => p.trim()).filter(Boolean));
+	const kitab = $derived(item.jenis === 'kitab');
+	const ctaBaca = $derived(urlBacaKitab(item.slug));
+	const ctaDaftar = $derived(urlDaftarKitab(item.slug));
+	const paragrafPenuh = $derived((item.deskripsi && item.deskripsi !== item.ringkasan ? item.deskripsi : '').split(/\n{2,}|\r\n\r\n/).map((p: string) => p.trim()).filter(Boolean));
+	// Kitab: etalase hanya memberi cuplikan (±2 paragraf / 420 huruf); isi utuh di app.
+	const paragraf = $derived.by(() => {
+		if (!kitab) return paragrafPenuh;
+		const out: string[] = [];
+		let sisa = 420;
+		for (const p of paragrafPenuh.slice(0, 2)) {
+			if (sisa <= 40) break;
+			out.push(p.length > sisa ? p.slice(0, sisa).replace(/\s+\S*$/, '') + '…' : p);
+			sisa -= p.length;
+		}
+		return out;
+	});
+	const terpotong = $derived(kitab && paragraf.join('').length < paragrafPenuh.join('').length);
 	const inisial = $derived(item.judul.split(/\s+/).slice(0, 2).map((k: string) => k[0]?.toUpperCase() ?? '').join(''));
 	const sampulAbs = $derived(item.sampul ? (item.sampul.startsWith('http') ? item.sampul : ASAL + item.sampul) : `${ASAL}/katalog/kampung-hero.webp`);
 	const deskripsiMeta = $derived((item.ringkasan || item.deskripsi || item.judul).replace(/\s+/g, ' ').slice(0, 155));
@@ -31,6 +48,7 @@
 			...(item.jenis === 'kursus' ? { provider: { '@type': 'Organization', name: 'SantriOnline', url: ASAL } } : {}),
 			...(item.jenis === 'produk' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
 			...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: { '@type': 'Organization', name: 'SantriOnline' } } : {}),
+			...(item.penulis ? { author: { '@type': 'Person', name: item.penulis } } : {}),
 			...(data.rating.jumlah > 0
 				? { aggregateRating: { '@type': 'AggregateRating', ratingValue: data.rating.rata, ratingCount: data.rating.jumlah, bestRating: 5, worstRating: 1 } }
 				: {}),
@@ -94,6 +112,7 @@
 		<div class="min-w-0">
 			<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-so-gold">{labelJenis[item.jenis] ?? item.jenis}{item.kategori ? ` · ${item.kategori}` : ''}</p>
 			<h1 class="font-display mt-1 text-2xl font-bold leading-tight tracking-tight text-so-green sm:text-3xl lg:text-4xl">{item.judul}</h1>
+			{#if item.penulis}<p class="mt-1 text-sm font-semibold text-so-ink/80">Karya {item.penulis}</p>{/if}
 			{#if data.rating.jumlah}<a href="#rating-judul" class="mt-2 inline-block"><Bintang rata={data.rating.rata} jumlah={data.rating.jumlah} ukuran="besar" /></a>{/if}
 			{#if item.ringkasan}<p class="mt-2 text-sm text-so-muted sm:text-base">{item.ringkasan}</p>{/if}
 
@@ -104,11 +123,22 @@
 				{/each}
 			</div>
 
-			<div class="mt-5 flex flex-wrap gap-2">
-				<a href={item.href} rel="noopener" class="inline-flex items-center justify-center rounded-full bg-so-green px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">{item.aksi} di Aplikasi →</a>
-				<a href={`/katalog/${tabJenis}`} class="inline-flex items-center justify-center rounded-full border border-so-border bg-white px-5 py-2.5 text-sm font-bold text-so-green transition hover:bg-so-cream">Lihat {labelJenis[item.jenis] ?? 'katalog'} lain</a>
-			</div>
-			<p class="mt-2 text-[11px] text-so-muted">Masuk gratis dengan akun Google di app.santrionline.com.</p>
+			{#if kitab}
+				<div class="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+					<a href={ctaBaca} rel="noopener" data-cta="baca-kitab" class="inline-flex items-center justify-center gap-2 rounded-full bg-so-green px-7 py-3 text-base font-bold text-white shadow-md transition hover:bg-so-green-3">
+						<svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 5.5C5 4 8.5 4 12 6c3.5-2 7-2 10-.5V19c-3-1.5-6.5-1.5-10 .5-3.5-2-7-2-10-.5Z"/><path d="M12 6v13.5"/></svg>
+						Baca seperti kitab
+					</a>
+					<a href={ctaDaftar} rel="noopener" data-cta="daftar-kitab" class="inline-flex items-center justify-center rounded-full border-2 border-so-green bg-white px-6 py-2.5 text-sm font-bold text-so-green transition hover:bg-so-cream">Daftar gratis</a>
+				</div>
+				<p class="mt-2 text-[11px] text-so-muted">Halaman dibalik seperti kitab sungguhan di app.santrionline.com. Daftar gratis dengan akun Google — setelah masuk Anda langsung kembali ke kitab ini.</p>
+			{:else}
+				<div class="mt-5 flex flex-wrap gap-2">
+					<a href={item.href} rel="noopener" class="inline-flex items-center justify-center rounded-full bg-so-green px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">{item.aksi} di Aplikasi →</a>
+					<a href={`/katalog/${tabJenis}`} class="inline-flex items-center justify-center rounded-full border border-so-border bg-white px-5 py-2.5 text-sm font-bold text-so-green transition hover:bg-so-cream">Lihat {labelJenis[item.jenis] ?? 'katalog'} lain</a>
+				</div>
+				<p class="mt-2 text-[11px] text-so-muted">Masuk gratis dengan akun Google di app.santrionline.com.</p>
+			{/if}
 
 			<NilaiBintang jenis={item.jenis} slug={item.slug} awal={data.rating} />
 
@@ -116,6 +146,17 @@
 				<section class="prose-so mt-6 max-w-none text-sm leading-relaxed text-so-ink/90 sm:text-[15px]" aria-label="Deskripsi">
 					<h2 class="font-display text-lg font-bold text-so-green">Tentang {labelJenis[item.jenis]?.split(' ')[0].toLowerCase() ?? 'item'} ini</h2>
 					{#each paragraf as p}<p class="mt-2">{p}</p>{/each}
+					{#if terpotong}<p class="mt-2"><a href={ctaBaca} rel="noopener" class="font-bold text-so-green hover:underline">Lanjutkan di aplikasi →</a></p>{/if}
+				</section>
+			{/if}
+			{#if kitab}
+				<section class="mt-6 rounded-2xl border border-so-gold/30 bg-[#fffdf7] p-4 shadow-sm" aria-label="Ajakan membaca">
+					<h2 class="font-display text-base font-bold text-so-green">Teruskan membaca di aplikasi</h2>
+					<p class="mt-1 text-sm text-so-muted">Teks lengkap, halaman yang dibalik seperti kitab, dan tanya jawab tentang isinya — gratis di app.santrionline.com.</p>
+					<div class="mt-3 flex flex-wrap gap-2">
+						<a href={ctaBaca} rel="noopener" class="inline-flex items-center rounded-full bg-so-green px-5 py-2 text-sm font-bold text-white hover:bg-so-green-3">Baca seperti kitab</a>
+						<a href={`/katalog/${tabJenis}`} class="inline-flex items-center rounded-full border border-so-border bg-white px-5 py-2 text-sm font-bold text-so-green hover:bg-so-cream">Lihat kitab lain</a>
+					</div>
 				</section>
 			{/if}
 
