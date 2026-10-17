@@ -399,7 +399,7 @@ export async function muatKatalogJenis(
 	jenis: string,
 	q = ''
 ): Promise<{ judul: string; keterangan: string; item: ItemKatalog[] } | null> {
-	const rak = await muatKatalog(db, 200);
+	const rak = await muatKatalog(db, 400);
 	const cari = q.trim().toLowerCase();
 	const saring = (item: ItemKatalog[]) =>
 		cari ? item.filter((i) => `${i.judul} ${i.ringkasan} ${i.kategori ?? ''}`.toLowerCase().includes(cari)) : item;

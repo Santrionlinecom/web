@@ -53,8 +53,8 @@
 			{/if}
 			<span class="punggung-kitab" aria-hidden="true"></span>
 		</div>
-		<span class="mt-2 line-clamp-2 text-[12px] font-bold leading-4 text-so-ink group-hover:text-so-green">{judulUtama(k.judul)}</span>
-		{#if k.penulis}<span class="mt-0.5 line-clamp-1 text-[11px] text-so-muted">{k.penulis}</span>{/if}
+		<span dir="auto" class="mt-2 line-clamp-2 text-[12px] font-bold leading-4 text-so-ink group-hover:text-so-green">{judulUtama(k.judul)}</span>
+		{#if k.penulis}<span dir="auto" class="mt-0.5 line-clamp-1 text-[11px] text-so-muted">{k.penulis}</span>{/if}
 	</a>
 {/snippet}
 
