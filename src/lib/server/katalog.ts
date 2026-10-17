@@ -30,6 +30,9 @@ export interface ItemKatalog {
 	rating?: RingkasRating;
 	/** jumlah bab dibaca (khusus buku) — untuk rak "Paling Banyak Dibaca" */
 	dibaca?: number;
+	/** khusus kitab: nama pengarang (Latin bila ada) dan id bidang (kitab_catalog.category) */
+	penulis?: string | null;
+	bidang?: string | null;
 }
 
 export interface RakKatalog {
@@ -146,7 +149,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		),
 		tanya(
 			db,
-			`SELECT slug, title, summary, cover_url, category FROM kitab_catalog
+			`SELECT slug, title, summary, cover_url, category, author, author_latin FROM kitab_catalog
 			 WHERE status='published' ORDER BY updated_at DESC, title LIMIT ${batas}`
 		),
 		tanya(
@@ -177,7 +180,9 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		href: `${APP}/kitab/${r.slug}`,
 		detail: `/katalog/kitab/${r.slug}`,
 		aksi: 'Baca',
-		kategori: labelBidang(s(r.category))
+		kategori: labelBidang(s(r.category)),
+		penulis: s(r.author_latin) ?? s(r.author),
+		bidang: s(r.category)
 	}));
 
 	const itemBuku: ItemKatalog[] = buku.map((r) => {
@@ -394,7 +399,7 @@ export async function muatKatalogJenis(
 	jenis: string,
 	q = ''
 ): Promise<{ judul: string; keterangan: string; item: ItemKatalog[] } | null> {
-	const rak = await muatKatalog(db, 200);
+	const rak = await muatKatalog(db, 400);
 	const cari = q.trim().toLowerCase();
 	const saring = (item: ItemKatalog[]) =>
 		cari ? item.filter((i) => `${i.judul} ${i.ringkasan} ${i.kategori ?? ''}`.toLowerCase().includes(cari)) : item;

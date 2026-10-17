@@ -1,5 +1,6 @@
 import type { PageServerLoad } from './$types';
-import { error } from '@sveltejs/kit';
+import { error, redirect } from '@sveltejs/kit';
+import { slugTanpaBagian } from '$lib/chat-rujukan.js';
 import { muatDetail } from '$lib/server/katalog-detail';
 import { muatKatalog } from '$lib/server/katalog';
 import { muatRatingItem } from '$lib/server/rating';
@@ -8,6 +9,11 @@ const JENIS = new Set(['kitab', 'buku', 'kursus', 'produk', 'game', 'belajar', '
 
 export const load: PageServerLoad = async ({ params, platform, setHeaders }) => {
 	if (!JENIS.has(params.jenis)) throw error(404, 'Jenis katalog tidak ada.');
+	// Kitab besar diindeks per bagian (<slug>-b01…); halaman publiknya satu, slug dasar.
+	if (params.jenis === 'kitab') {
+		const dasar = slugTanpaBagian(params.slug);
+		if (dasar !== params.slug) throw redirect(301, `/katalog/kitab/${dasar}`);
+	}
 	const db = (platform?.env as { DB?: D1Database } | undefined)?.DB;
 	const item = await muatDetail(db, params.jenis, params.slug);
 	if (!item) throw error(404, 'Item katalog tidak ditemukan atau belum diterbitkan.');
