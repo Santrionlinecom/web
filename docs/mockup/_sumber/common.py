@@ -38,7 +38,7 @@ section{{padding:44px 0}}
 
 HEADER = f'''<header class="hdr"><div class="wrap hdr-in">
   <a class="brand" href="#"><img src="{LOGO}" alt="SantriOnline" width="36" height="36"><span class="disp">SantriOnline</span></a>
-  <nav class="nav"><a href="#" class="on">Belajar</a><a href="#">Tipe Santri</a><a href="#">Perpustakaan Kitab</a><a href="#">Tanya Kitab</a><a href="#">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
+  <nav class="nav"><a href="https://santrionline.com/belajar" class="on">Belajar</a><a href="https://santrionline.com/tipe-santri">Tipe Santri</a><a href="https://santrionline.com/katalog/semua">Katalog <span class="car">&#9662;</span></a><a href="https://app.santrionline.com/tanya">Tanya Kitab</a><a href="https://santrionline.com/lembaga">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
   <div class="hdr-act"><a class="btn btn-s sm" href="#">Masuk</a><a class="btn btn-p sm hide-m" href="#">Daftar gratis</a><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></div>
 </div></header>'''
 

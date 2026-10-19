@@ -157,14 +157,27 @@ footer{background:#0a241e;color:#b9cdc4;padding:40px 0 26px;margin-top:44px}
  .pk{grid-template-columns:repeat(3,1fr)}
  .closing{padding:56px}
  .closing h2{font-size:44px}
- .fg{grid-template-columns:1.4fr 1fr 1fr 1fr}
+ .fg{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
  .fb{grid-column:auto}
 }
+
+.rakhead{display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 12px}
+.rakhead h3{font-family:'Fraunces',Georgia,serif;color:var(--g);font-size:20px;margin:0}
+.rakhead a{font-weight:800;font-size:14px;color:var(--ink2)}
+.rak{display:grid;grid-auto-flow:column;grid-auto-columns:128px;gap:14px;overflow-x:auto;padding-bottom:6px}
+.bk{display:flex;flex-direction:column;gap:6px}
+.bk img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:12px;box-shadow:var(--sh);background:#e9ece4}
+.bk b{font-size:13px;line-height:1.3;color:var(--ink)}.bk span{font-size:11.5px;color:var(--muted)}
+.prod{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pd{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px}
+.pd img{width:52px;height:52px;border-radius:12px;object-fit:cover}
+.pd b{display:block;font-size:14px}.pd span{font-size:12px;color:var(--muted)}
+@media(min-width:900px){.rak{grid-auto-flow:row;grid-template-columns:repeat(8,1fr);overflow:visible}.prod{grid-template-columns:repeat(4,1fr)}}
 
 </style></head><body>
 <header class="hdr"><div class="wrap hdr-in">
   <a class="brand" href="#"><img src="../../static/logo-santrionline.png" alt="SantriOnline" width="36" height="36"><span class="disp">SantriOnline</span></a>
-  <nav class="nav"><a href="#" class="on">Belajar</a><a href="#">Tipe Santri</a><a href="#">Perpustakaan Kitab</a><a href="#">Tanya Kitab</a><a href="#">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
+  <nav class="nav"><a href="https://santrionline.com/belajar" class="on">Belajar</a><a href="https://santrionline.com/tipe-santri">Tipe Santri</a><a href="https://santrionline.com/katalog/semua">Katalog <span class="car">&#9662;</span></a><a href="https://app.santrionline.com/tanya">Tanya Kitab</a><a href="https://santrionline.com/lembaga">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
   <div class="hdr-act"><a class="btn btn-s sm" href="#">Masuk</a><a class="btn btn-p sm hide-m" href="#">Daftar gratis</a><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></div>
 </div></header>
 <section class="hero"><div class="wrap hero-g">
@@ -248,6 +261,16 @@ footer{background:#0a241e;color:#b9cdc4;padding:40px 0 26px;margin-top:44px}
 <div class="card lv lock"><div class="no">02</div><div><h3>Ngaji Kitab Dasar <span class="tag t-pay">Paket</span></h3><p>Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab: video, teks Arab, makna, kuis.</p></div></div>
 <div class="card lv lock"><div class="no">03</div><div><h3>Hafalan Matan <span class="tag t-pay">Paket</span></h3><p>Menghafal matan pendek bait demi bait, dengan setoran dan pengulangan terjadwal.</p></div></div>
 <div class="card lv lock" style="grid-column:1/-1"><div class="no">04</div><div><h3>Kajian Lanjut <span class="tag t-pay">Paket lanjut</span></h3><p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab tanpa batas.</p></div></div></div>
+</div></section>
+<section id="rak"><div class="wrap">
+ <span class="kicker">Rak Kitab &amp; Buku</span><h2 class="sec">Perpustakaan yang bisa langsung dibaca</h2>
+ <p class="lead">206 kitab pesantren dari fiqih sampai tafsir, novel religi keluarga, dan aplikasi buatan SantriOnline. Semua bisa dibuka dari sini.</p>
+ <div class="rakhead"><h3>Kitab pilihan</h3><a href="https://santrionline.com/katalog/kitab">Lihat 206 kitab &rarr;</a></div>
+ <div class="rak"><a class="bk" href="https://santrionline.com/katalog/kitab/safinatun-najah"><img src="https://files.santrionline.com/kitab-covers/safinatun-najah.png" alt="Sampul Safinatun Najah"><b>Safinatun Najah</b><span>Fiqih · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/aqidatul-awam"><img src="https://files.santrionline.com/kitab-covers/aqidatul-awam.png" alt="Sampul 'Aqidatul 'Awam"><b>'Aqidatul 'Awam</b><span>Aqidah · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-7180"><img src="https://files.santrionline.com/kitab-sampul/syamilah-7180.jpg" alt="Sampul Fathul Qarib"><b>Fathul Qarib</b><span>Fiqih · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4242"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4242.jpg" alt="Sampul Matan Al-Jurumiyah"><b>Matan Al-Jurumiyah</b><span>Nahwu · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/arbain-nawawi"><img src="https://files.santrionline.com/kitab-covers/arbain-nawawi.png" alt="Sampul Arba'in Nawawi"><b>Arba'in Nawawi</b><span>Hadits · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4718"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4718.jpg" alt="Sampul Tafsir Jalalain"><b>Tafsir Jalalain</b><span>Tafsir · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4428"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4428.jpg" alt="Sampul Riyadhush Shalihin"><b>Riyadhush Shalihin</b><span>Adab · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4619"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4619.jpg" alt="Sampul Bidayatul Hidayah"><b>Bidayatul Hidayah</b><span>Tasawuf · Gratis baca</span></a></div>
+ <div class="rakhead"><h3>Novel SantriOnline</h3><a href="https://santrionline.com/katalog/buku">Semua buku &rarr;</a></div>
+ <div class="rak"><a class="bk" href="https://santrionline.com/katalog/buku/rumah-di-ujung-pulau"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/rumah-di-ujung-pulau.jpg" alt="Sampul Rumah di Ujung Pulau"><b>Rumah di Ujung Pulau</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/sebelum-ada-gerbang"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/sebelum-ada-gerbang.jpg" alt="Sampul Sebelum Ada Gerbang"><b>Sebelum Ada Gerbang</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/kuitansi-di-laci-koperasi"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/kuitansi-di-laci-koperasi.jpg" alt="Sampul Kuitansi di Laci Koperasi"><b>Kuitansi di Laci Koperasi</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/laut-yang-menagih-janji"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/laut-yang-menagih-janji.jpg" alt="Sampul Laut yang Menagih Janji"><b>Laut yang Menagih Janji</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/surat-tanpa-nama"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/surat-tanpa-nama.jpg" alt="Sampul Surat Tanpa Nama"><b>Surat Tanpa Nama</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/wasiat-di-balik-gerbang"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/wasiat-di-balik-gerbang.jpg" alt="Sampul Wasiat di Balik Gerbang"><b>Wasiat di Balik Gerbang</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/raka-dan-laptop-kedua"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/raka-dan-laptop-kedua.jpg" alt="Sampul Raka dan Laptop Kedua"><b>Raka dan Laptop Kedua</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/kunci-yang-dijual-nabil"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/kunci-yang-dijual-nabil.jpg" alt="Sampul Kunci yang Dijual Nabil"><b>Kunci yang Dijual Nabil</b><span>Novel · 10 bab gratis</span></a></div>
+ <div class="rakhead"><h3>Aplikasi</h3><a href="https://santrionline.com/katalog/produk">Semua aplikasi &rarr;</a></div>
+ <div class="prod"><a class="pd" href="https://santrionline.com/katalog/produk/santriprint"><img src="https://files.santrionline.com/digital-products/santriprint/santriprint-pro-cover-1.4.0.jpg" alt="SantriPrint"><div><b>SantriPrint</b><span>Aplikasi cetak · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/maly"><img src="https://files.santrionline.com/digital-products/maly/maly-cover.png" alt="Maly"><div><b>Maly</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/rekam"><img src="https://files.santrionline.com/digital-products/rekam/rekam-cover.png" alt="Rekam"><div><b>Rekam</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/fokus"><img src="https://files.santrionline.com/digital-products/fokus/fokus-cover.png" alt="Fokus"><div><b>Fokus</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a></div>
 </div></section>
 <section><div class="wrap">
  <span class="kicker">Sebelum dan sesudah</span><h2 class="sec">Siapa pun bisa mulai dari tempatnya</h2>
@@ -412,9 +435,9 @@ footer{background:#0a241e;color:#b9cdc4;padding:40px 0 26px;margin-top:44px}
 <footer><div class="wrap">
  <div class="fg">
   <div class="fb"><a class="brand" href="#" style="color:#fff"><img src="../../static/logo-santrionline.png" width="34" height="34" alt=""> <span class="disp">SantriOnline</span></a><p>Belajar Islam bertahap bersama kitab-kitab pesantren. Aqidah Aswaja, fiqih madzhab Syafi'i.</p></div>
-  <div><h5>Belajar</h5><a>Fondasi Muslim</a><a>Tipe Santri</a><a>Perpustakaan Kitab</a><a>Tanya Kitab</a></div>
-  <div class="lembaga"><h5>Untuk Lembaga</h5><a>Aplikasi Pondok Pesantren</a><a>Raport TPQ</a><a>Aplikasi Hafalan Quran</a><a>Katalog</a><a>Literasi</a><a>Daftarkan Lembaga</a></div>
-  <div><h5>Tentang</h5><a>Apa Itu SantriOnline</a><a>Profil Kami</a><a>Masuk Aplikasi</a></div>
+  <div><h5>Belajar</h5><a href="https://santrionline.com/belajar">Fondasi Muslim</a><a href="https://santrionline.com/tipe-santri">Tipe Santri</a><a href="https://app.santrionline.com/tanya">Tanya Kitab</a></div><div><h5>Katalog</h5><a href="https://santrionline.com/katalog/kitab">Kitab</a><a href="https://santrionline.com/katalog/buku">Buku</a><a href="https://santrionline.com/katalog/produk">Aplikasi</a><a href="https://santrionline.com/katalog/kursus">Kursus</a></div>
+  <div class="lembaga"><h5>Untuk Lembaga</h5><a href="https://santrionline.com/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a><a href="https://santrionline.com/aplikasi-raport-tpq">Raport TPQ</a><a href="https://santrionline.com/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a><a href="https://santrionline.com/fitur/administrasi-pesantren">Fitur Pesantren</a><a href="https://santrionline.com/literasi/apa-itu-santri-online">Literasi</a><a href="https://santrionline.com/lembaga">Daftarkan Lembaga</a></div>
+  <div><h5>Tentang</h5><a href="https://santrionline.com/literasi/apa-itu-santri-online">Apa Itu SantriOnline</a><a href="https://santrionline.com/tentang">Profil Kami</a><a href="https://app.santrionline.com">Masuk Aplikasi</a></div>
  </div>
  <div class="copy">&copy; 2026 SantriOnline · santrionline.com</div>
 </div></footer>
