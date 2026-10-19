@@ -6,10 +6,21 @@
 	import { replaceState } from '$app/navigation';
 	import tes from '../../content/belajar/tipe-santri.json';
 	import modul from '../../content/belajar/_modul.json';
-	import { MASKOT, URUTAN_TIPE, adalahTipe, hrefPelajaran, type IdTipe } from '$lib/belajar/maskot';
+	import {
+		MASKOT,
+		NAMA_KARAKTER,
+		URUTAN_KARAKTER,
+		URUTAN_TIPE,
+		adalahKarakter,
+		adalahTipe,
+		hrefPelajaran,
+		type IdTipe,
+		type Karakter
+	} from '$lib/belajar/maskot';
 
 	const ASAL = 'https://santrionline.com';
 	const KUNCI = 'so:tipe-santri';
+	const KUNCI_KARAKTER = 'so:karakter';
 	const situasi = tes.situasi;
 	const TIPE = tes.tipe as Record<IdTipe, { nama: string; deskripsi: string; titik_mulai: { pelajaran: string; alasan: string } }>;
 	const judulPelajaran = (stem: string) => modul.pelajaran.find((p) => p.file === `${stem}.md`)?.judul ?? 'Pelajaran pertama';
@@ -23,9 +34,30 @@
 	let terakhir = $state<IdTipe | null>(null);
 	let pesan = $state('');
 	let panel = $state<HTMLElement>();
+	// Putra/putri dipilih sendiri oleh pengguna; null = galeri campur bawaan.
+	let karakter = $state<Karakter | null>(null);
+
+	function pilihKarakter(k: Karakter) {
+		karakter = k;
+		try {
+			localStorage.setItem(KUNCI_KARAKTER, k);
+		} catch {
+			/* abaikan */
+		}
+		if (tahap === 'hasil' && hasil) replaceState(`?hasil=${hasil}&k=${k}`, {});
+	}
 
 	onMount(() => {
-		const q = new URLSearchParams(location.search).get('hasil');
+		const cari = new URLSearchParams(location.search);
+		const q = cari.get('hasil');
+		const k = cari.get('k');
+		try {
+			const simpan = localStorage.getItem(KUNCI_KARAKTER);
+			if (adalahKarakter(simpan)) karakter = simpan;
+		} catch {
+			/* abaikan */
+		}
+		if (adalahKarakter(k)) karakter = k;
 		try {
 			const s = JSON.parse(localStorage.getItem(KUNCI) ?? 'null');
 			if (s && adalahTipe(s.tipe)) terakhir = s.tipe;
@@ -83,7 +115,7 @@
 		} catch {
 			/* abaikan */
 		}
-		replaceState(`?hasil=${t}`, {});
+		replaceState(karakter ? `?hasil=${t}&k=${karakter}` : `?hasil=${t}`, {});
 		keAtas();
 	}
 
@@ -105,7 +137,7 @@
 
 	async function bagikan() {
 		if (!hasil) return;
-		const url = `${ASAL}/tipe-santri?hasil=${hasil}`;
+		const url = `${ASAL}/tipe-santri?hasil=${hasil}${karakter ? `&k=${karakter}` : ''}`;
 		const teks = `Hasil tes Tipe Santri-ku: ${TIPE[hasil].nama}. Kamu tipe yang mana?`;
 		try {
 			if (navigator.share) {
@@ -123,6 +155,9 @@
 	const s = $derived(situasi[idx]);
 	const persen = $derived(((idx + 1) / situasi.length) * 100);
 	const titik = $derived(hasil ? TIPE[hasil].titik_mulai : null);
+	const urlApp = $derived(
+		hasil ? `https://app.santrionline.com/register?tipe=${hasil}${karakter ? `&karakter=${karakter}` : ''}` : ''
+	);
 </script>
 
 <svelte:head>
@@ -140,6 +175,17 @@
 	<meta property="og:image" content="{ASAL}/og-santrionline.png" />
 </svelte:head>
 
+{#snippet pilihanKarakter(label: string)}
+	<div class="kar" role="radiogroup" aria-label={label}>
+		<span class="kar-l">{label}</span>
+		{#each URUTAN_KARAKTER as k (k)}
+			<button type="button" role="radio" aria-checked={karakter === k} class:on={karakter === k} onclick={() => pilihKarakter(k)}>
+				<span class="kar-m m-svg">{@html MASKOT.penanya.svg(26, k)}</span>{NAMA_KARAKTER[k]}
+			</button>
+		{/each}
+	</div>
+{/snippet}
+
 <section class="scr">
 	<div class="wrap narrow" bind:this={panel}>
 		{#if tahap === 'intro'}
@@ -148,9 +194,10 @@
 				<h1>Kamu tipe santri yang mana?</h1>
 				<p>Jawab 12 situasi sehari-hari dengan jujur. Tidak ada jawaban yang salah. Hasilnya saran dari mana sebaiknya kamu mulai belajar.</p>
 				<div class="facts"><span>12 situasi</span><span>&plusmn;3 menit</span><span>Tanpa login</span></div>
+				{@render pilihanKarakter('Karaktermu')}
 				<div class="mrow">
 					{#each URUTAN_TIPE as t (t)}
-						<div class="m"><span class="m-svg">{@html MASKOT[t].svg(80)}</span><b>Si<br />{MASKOT[t].nama.replace('Si ', '')}</b></div>
+						<div class="m"><span class="m-svg">{@html MASKOT[t].svg(80, karakter)}</span><b>Si<br />{MASKOT[t].nama.replace('Si ', '')}</b></div>
 					{/each}
 				</div>
 				<button type="button" class="btn btn-p blk" onclick={mulai}>Mulai tes &rarr;</button>
@@ -182,7 +229,8 @@
 		{:else if hasil && titik}
 			<div class="panel res">
 				<span class="badge">{dariLink ? 'Hasil Tipe Santri' : 'Hasil tesmu'}</span>
-				<div class="hero-m m-svg">{@html MASKOT[hasil].svg(140)}</div>
+				<div class="hero-m m-svg">{@html MASKOT[hasil].svg(140, karakter)}</div>
+				{@render pilihanKarakter('Tampilkan sebagai')}
 				<h1 class="rh">{dariLink ? TIPE[hasil].nama : `Kamu ${TIPE[hasil].nama}`}</h1>
 				<p class="d">{TIPE[hasil].deskripsi}</p>
 				<div class="box">
@@ -195,7 +243,7 @@
 						<button type="button" class="btn btn-ghost" onclick={mulai}>Ikut tes sendiri</button>
 					{:else}
 						<button type="button" class="btn btn-ghost" onclick={bagikan}>Bagikan hasil</button>
-						<a class="btn btn-ghost" href="https://app.santrionline.com/register?tipe={hasil}">Simpan progres di aplikasi</a>
+						<a class="btn btn-ghost" href={urlApp}>Simpan progres di aplikasi</a>
 					{/if}
 				</div>
 				{#if pesan}<p class="pesan" aria-live="polite">{pesan}</p>{/if}
@@ -205,7 +253,7 @@
 				<h2>Tipe lainnya</h2>
 				<div class="row">
 					{#each URUTAN_TIPE.filter((t) => t !== hasil) as t (t)}
-						<div class="m alt"><span class="m-svg">{@html MASKOT[t].svg(70)}</span><b>{MASKOT[t].nama}</b></div>
+						<div class="m alt"><span class="m-svg">{@html MASKOT[t].svg(70, karakter)}</span><b>{MASKOT[t].nama}</b></div>
 					{/each}
 				</div>
 			</div>
@@ -223,7 +271,7 @@
 			<div class="grid">
 				{#each URUTAN_TIPE as t (t)}
 					<article class="card tp">
-						<div class="av m-svg">{@html MASKOT[t].svg(70)}</div>
+						<div class="av m-svg">{@html MASKOT[t].svg(70, karakter)}</div>
 						<div>
 							<h3>{TIPE[t].nama}</h3>
 							<p class="ciri">{MASKOT[t].ciri}</p>
@@ -238,6 +286,49 @@
 {/if}
 
 <style>
+	.kar {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		margin: 14px 0 4px;
+	}
+	.kar-l {
+		font-size: 13px;
+		font-weight: 700;
+		color: var(--muted, #52615a);
+	}
+	.kar button {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		min-height: 44px;
+		padding: 6px 14px 6px 8px;
+		border-radius: 999px;
+		border: 1.5px solid var(--border);
+		background: #fff;
+		font: inherit;
+		font-weight: 700;
+		color: var(--g, #123f34);
+		cursor: pointer;
+	}
+	.kar button.on {
+		border-color: var(--g, #123f34);
+		background: #eef3ea;
+		box-shadow: inset 0 0 0 1px var(--g, #123f34);
+	}
+	.kar button:focus-visible {
+		outline: 3px solid #fcd34d;
+		outline-offset: 2px;
+	}
+	.kar-m {
+		display: inline-grid;
+		place-items: center;
+		width: 28px;
+		height: 36px;
+		overflow: hidden;
+	}
 	.scr {
 		padding: 28px 0 34px;
 	}

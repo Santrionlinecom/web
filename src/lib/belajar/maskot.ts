@@ -59,24 +59,49 @@ export const SEIMBANG =
 
 export type IdTipe = 'penanya' | 'penghafal' | 'pengamal' | 'pembaca' | 'penyeimbang';
 
-export const MASKOT: Record<IdTipe, { nama: string; ciri: string; svg: (w?: number) => string }> = {
-	penanya: { nama: 'Si Penanya', ciri: 'Ingin tahu dalilnya', svg: (w = 120) => lelaki('up', '#c79a2e', TANYA, w) },
-	penghafal: {
-		nama: 'Si Penghafal',
-		ciri: 'Kuat mengulang hafalan',
-		svg: (w = 120) => perempuan('hold', '#1b5546', '#3f8f74', BUKU_TUTUP + BINTANG, w)
-	},
-	pengamal: { nama: 'Si Pengamal', ciri: 'Ilmu langsung diamalkan', svg: (w = 120) => lelaki('pray', '#2f7a62', SAJADAH, w) },
-	pembaca: {
-		nama: 'Si Pembaca',
-		ciri: 'Betah membaca kitab',
-		svg: (w = 120) => perempuan('hold', '#7a4b2a', '#c79a2e', BUKU_BUKA, w)
-	},
-	penyeimbang: {
-		nama: 'Si Penyeimbang',
-		ciri: 'Ilmu, amal, adab sejalan',
-		svg: (w = 120) => lelaki('wide', '#8a6a1f', SEIMBANG, w)
-	}
+export type Karakter = 'putra' | 'putri';
+export const URUTAN_KARAKTER: Karakter[] = ['putra', 'putri'];
+export const NAMA_KARAKTER: Record<Karakter, string> = { putra: 'Putra', putri: 'Putri' };
+export const adalahKarakter = (v: unknown): v is Karakter => v === 'putra' || v === 'putri';
+
+// Lengan pose 'wide' tokoh putri 6px lebih rendah, jadi properti di tangan ikut digeser.
+const turun = (prop: string, dy = 6) => `<g transform="translate(0 ${dy})">${prop}</g>`;
+
+type Maskot = {
+	nama: string;
+	ciri: string;
+	/** Karakter yang tampil bila pengguna belum memilih (galeri campur putra/putri). */
+	bawaan: Karakter;
+	gambar: Record<Karakter, (w: number) => string>;
+	svg: (w?: number, k?: Karakter | null) => string;
+};
+
+function maskot(nama: string, ciri: string, bawaan: Karakter, gambar: Record<Karakter, (w: number) => string>): Maskot {
+	return { nama, ciri, bawaan, gambar, svg: (w = 120, k) => gambar[k ?? bawaan](w) };
+}
+
+// Setiap tipe punya versi putra (berpeci + sarung) dan putri (berhijab panjang + gamis).
+export const MASKOT: Record<IdTipe, Maskot> = {
+	penanya: maskot('Si Penanya', 'Ingin tahu dalilnya', 'putra', {
+		putra: (w) => lelaki('up', '#c79a2e', TANYA, w),
+		putri: (w) => perempuan('up', '#1b5546', '#c79a2e', TANYA, w)
+	}),
+	penghafal: maskot('Si Penghafal', 'Kuat mengulang hafalan', 'putri', {
+		putra: (w) => lelaki('hold', '#1b5546', BUKU_TUTUP + BINTANG, w),
+		putri: (w) => perempuan('hold', '#1b5546', '#3f8f74', BUKU_TUTUP + BINTANG, w)
+	}),
+	pengamal: maskot('Si Pengamal', 'Ilmu langsung diamalkan', 'putra', {
+		putra: (w) => lelaki('pray', '#2f7a62', SAJADAH, w),
+		putri: (w) => perempuan('pray', '#2f7a62', '#3f8f74', SAJADAH, w)
+	}),
+	pembaca: maskot('Si Pembaca', 'Betah membaca kitab', 'putri', {
+		putra: (w) => lelaki('hold', '#7a4b2a', BUKU_BUKA, w),
+		putri: (w) => perempuan('hold', '#7a4b2a', '#c79a2e', BUKU_BUKA, w)
+	}),
+	penyeimbang: maskot('Si Penyeimbang', 'Ilmu, amal, adab sejalan', 'putra', {
+		putra: (w) => lelaki('wide', '#8a6a1f', SEIMBANG, w),
+		putri: (w) => perempuan('wide', '#8a6a1f', '#c79a2e', turun(SEIMBANG), w)
+	})
 };
 
 export const URUTAN_TIPE: IdTipe[] = ['penanya', 'penghafal', 'pengamal', 'pembaca', 'penyeimbang'];
