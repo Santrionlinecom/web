@@ -63,7 +63,9 @@
 		position: sticky;
 		top: 0;
 		z-index: 30;
-		background: rgb(246 247 243 / 0.92);
+		/* pekat agar teks halaman tidak tembus saat digulir (HP) */
+		background: rgb(246 247 243 / 0.985);
+		box-shadow: 0 1px 0 rgb(18 63 52 / 0.08);
 		backdrop-filter: blur(12px);
 		-webkit-backdrop-filter: blur(12px);
 		border-bottom: 1px solid var(--border);
