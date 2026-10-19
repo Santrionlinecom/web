@@ -1,261 +1,142 @@
 <script lang="ts">
 	// src/routes/+page.svelte
-	import logo from '$lib/assets/logo.png';
-	import ChatSection from '$lib/components/ui/ChatSection.svelte';
-	import RakKatalog from '$lib/components/ui/RakKatalog.svelte';
-	import SlideEtalase from '$lib/components/etalase/SlideEtalase.svelte';
-	import BukuBolakBalik from '$lib/components/etalase/BukuBolakBalik.svelte';
-	import DaftarPeringkat from '$lib/components/etalase/DaftarPeringkat.svelte';
-	import KitabPerBidang from '$lib/components/etalase/KitabPerBidang.svelte';
-	import EtalaseAplikasi from '$lib/components/etalase/EtalaseAplikasi.svelte';
-	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
-	import { labelAngka } from '$lib/statistik';
+	// Beranda "Belajar Islam dari nol sampai paham" sesuai mockup yang disetujui
+	// (docs/mockup/beranda.html). Rak kitab/buku/aplikasi memakai data D1 bila ada.
+	import { MASKOT, URUTAN_TIPE, lelaki, perempuan, BUKU_BUKA } from '$lib/belajar/maskot';
 
-	// Etalase: rak katalog dari D1 db-app (lihat +page.server.ts / katalog.ts).
-	// Beranda sengaja memakai bentuk yang berbeda-beda per rak: slide, rak geser,
-	// buku bolak-balik, peringkat, tab bidang, bento aplikasi.
 	let { data } = $props();
-	const rak = $derived(data.rak ?? []);
-	// Rak dengan kurang dari 3 item (mis. Kursus) tidak ditampilkan di beranda;
-	// tetap tersedia lengkap di /katalog.
-	const MIN_ITEM_RAK = 3;
-	const cariRak = (id: string) =>
-		rak.find((r: { id: string; item: unknown[] }) => r.id === id && (r.item?.length ?? 0) >= MIN_ITEM_RAK);
-	const rakUnggulan = $derived(cariRak('unggulan'));
-	const rakKursus = $derived(cariRak('kursus'));
-	const rakBuku = $derived(cariRak('buku'));
-	const rakProduk = $derived(cariRak('produk'));
-	const bidang = $derived(data.bidang ?? []);
-	// Angka traksi nyata dari db-app; null = gagal dimuat -> blok disembunyikan.
-	const statistik = $derived(data.statistik ?? null);
-	const jumlahKitab = $derived(bidang.reduce((t: number, b: { jumlah: number }) => t + b.jumlah, 0));
-	const tabRak = $derived(
-		[
-			{ href: '#rak-unggulan', label: 'Pilihan Utama', ada: !!rakUnggulan },
-			{ href: '#rak-bolak-balik', label: 'Novel', ada: !!rakBuku },
-			{ href: '#rak-peringkat', label: 'Terpopuler', ada: (data.populer ?? []).length > 0 },
-			{ href: '#rak-bidang', label: `Kitab (${jumlahKitab})`, ada: bidang.length > 0 },
-			{ href: '#rak-kursus', label: 'Kursus', ada: !!rakKursus },
-			{ href: '#rak-aplikasi', label: 'Aplikasi', ada: !!rakProduk }
-		].filter((t) => t.ada)
-	);
-
-	let showUpgradeModal = $state(false);
-	let showMobileMenu = $state(false);
-	let upgradeDialog = $state<HTMLDivElement>();
-	let upgradeCloseButton = $state<HTMLButtonElement>();
 
 	const appBaseUrl = 'https://app.santrionline.com';
-	const appLoginUrl = `${appBaseUrl}/auth`;
 	const appRegisterUrl = `${appBaseUrl}/register`;
-	// Kuota tamu habis → lanjut di Tanya Kitab aplikasi (/tanya), bukan dashboard.
-	// Dengan token serah, seluruh percakapan tamu dipindah ke riwayat akun dan
-	// pertanyaan tertunda mengisi kotak tanya. Tanpa token (gagal dibuat), minimal
-	// pertanyaan tertunda tetap dibawa lewat ?q=.
-	let pertanyaanTertunda = $state('');
-	let tokenSerah = $state<string | null>(null);
-	const tujuanTanya = $derived(
-		tokenSerah
-			? `/tanya?serah=${encodeURIComponent(tokenSerah)}`
-			: pertanyaanTertunda
-				? `/tanya?q=${encodeURIComponent(pertanyaanTertunda.slice(0, 500))}`
-				: '/tanya'
-	);
-	const lanjutMasukUrl = $derived(`${appBaseUrl}/auth?redirect=${encodeURIComponent(tujuanTanya)}`);
-	const lanjutDaftarUrl = $derived(`${appBaseUrl}/auth/google?redirect=${encodeURIComponent(tujuanTanya)}`);
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
+	const PELAJARAN_PERTAMA = '/belajar/0/kenapa-belajar-agama-sekarang';
 
-	// Menu atas: 4 pintu utama, sisanya masuk sub menu agar baris atas tetap ringkas.
-	type MenuItem = { href: string; label: string; ket?: string };
-	type MenuGrup = { label: string; href?: string; anak?: MenuItem[]; sorot?: boolean };
-	const navigation: MenuGrup[] = [
-		{
-			label: 'Katalog',
-			anak: [
-				{ href: '/katalog/semua', label: 'Semua Katalog', ket: 'Kitab, buku, kursus, dan aplikasi' },
-				{ href: '/katalog/kitab', label: 'Kitab', ket: 'Kitab Aswaja per bidang ilmu' },
-				{ href: '/katalog/buku', label: 'Novel & Buku', ket: 'Cerita yang menumbuhkan adab' },
-				{ href: '/katalog/kursus', label: 'Kursus', ket: 'Belajar bertahap bersama pengajar' },
-				{ href: '/katalog/produk', label: 'Aplikasi', ket: 'Aplikasi pilihan untuk santri & lembaga' }
-			]
-		},
-		{
-			label: 'Tentang',
-			anak: [
-				{ href: '/literasi/apa-itu-santri-online', label: 'Apa Itu SantriOnline', ket: 'Pengertian dan tujuan kami' },
-				{ href: '/#arah', label: 'Arah & Visi', ket: 'Generasi berilmu, beradab, kompeten' },
-				{ href: '/#ekosistem', label: 'Ekosistem', ket: 'Semua layanan dalam satu akun' },
-				{ href: '/#jalur', label: 'Jalur Pembinaan', ket: 'Tahapan belajar santri' },
-				{ href: '/tentang', label: 'Profil Kami', ket: 'Siapa di balik SantriOnline' }
-			]
-		},
-		{ label: 'Untuk Lembaga', href: '/lembaga' },
-		{ label: 'Tanya AI', href: '#tanya', sorot: true }
-	];
-	let menuBuka = $state<string | null>(null);
-	// Dibuka lewat hover: klik pertama sesudahnya tidak menutup (supaya tidak berkedip tertutup).
-	let bukaHover = false;
-	let mobileGrup = $state<string | null>(null);
-	function tutupMenu() {
-		menuBuka = null;
+	type Kartu = { slug: string; judul: string; sampul: string | null; harga: string; kategori: string | null; detail: string | null };
+	const F = 'https://files.santrionline.com';
+
+	// Daftar pilihan bawaan (dari mockup); dipakai bila katalog D1 tidak termuat.
+	const KITAB_PILIHAN: Kartu[] = [
+		['safinatun-najah', 'Safinatun Najah', `${F}/kitab-covers/safinatun-najah.png`, 'Fiqih'],
+		['aqidatul-awam', "'Aqidatul 'Awam", `${F}/kitab-covers/aqidatul-awam.png`, 'Aqidah'],
+		['syamilah-7180', 'Fathul Qarib', `${F}/kitab-sampul/syamilah-7180.jpg`, 'Fiqih'],
+		['syamilah-4242', 'Matan Al-Jurumiyah', `${F}/kitab-sampul/syamilah-4242.jpg`, 'Nahwu'],
+		['arbain-nawawi', "Arba'in Nawawi", `${F}/kitab-covers/arbain-nawawi.png`, 'Hadits'],
+		['syamilah-4718', 'Tafsir Jalalain', `${F}/kitab-sampul/syamilah-4718.jpg`, 'Tafsir'],
+		['syamilah-4428', 'Riyadhush Shalihin', `${F}/kitab-sampul/syamilah-4428.jpg`, 'Adab'],
+		['syamilah-4619', 'Bidayatul Hidayah', `${F}/kitab-sampul/syamilah-4619.jpg`, 'Tasawuf']
+	].map(([slug, judul, sampul, kategori]) => ({ slug, judul, sampul, kategori, harga: 'Gratis', detail: `/katalog/kitab/${slug}` }));
+
+	const BUKU_PILIHAN: Kartu[] = [
+		['rumah-di-ujung-pulau', 'Rumah di Ujung Pulau'],
+		['sebelum-ada-gerbang', 'Sebelum Ada Gerbang'],
+		['kuitansi-di-laci-koperasi', 'Kuitansi di Laci Koperasi'],
+		['laut-yang-menagih-janji', 'Laut yang Menagih Janji'],
+		['surat-tanpa-nama', 'Surat Tanpa Nama'],
+		['wasiat-di-balik-gerbang', 'Wasiat di Balik Gerbang'],
+		['raka-dan-laptop-kedua', 'Raka dan Laptop Kedua'],
+		['kunci-yang-dijual-nabil', 'Kunci yang Dijual Nabil']
+	].map(([slug, judul]) => ({
+		slug,
+		judul,
+		sampul: `${F}/buku/covers/2x5yy1kcyjm194x/${slug}.jpg`,
+		kategori: 'Novel',
+		harga: '10 bab gratis',
+		detail: `/katalog/buku/${slug}`
+	}));
+
+	const PRODUK_PILIHAN: Kartu[] = [
+		['santriprint', 'SantriPrint', `${F}/digital-products/santriprint/santriprint-pro-cover-1.4.0.jpg`],
+		['maly', 'Maly', `${F}/digital-products/maly/maly-cover.png`],
+		['rekam', 'Rekam', `${F}/digital-products/rekam/rekam-cover.png`],
+		['fokus', 'Fokus', `${F}/digital-products/fokus/fokus-cover.png`]
+	].map(([slug, judul, sampul]) => ({ slug, judul, sampul, kategori: 'Aplikasi', harga: 'Gratis, ada versi Pro', detail: `/katalog/produk/${slug}` }));
+
+	/** Pilihan bawaan dulu (diperbarui dengan data D1 bila slug-nya ada), lalu sisa data D1 sampai `maks`. */
+	function gabung(pilihan: Kartu[], dinamis: Kartu[], maks: number): Kartu[] {
+		dinamis = dinamis.filter((d) => d.detail);
+		if (!dinamis.length) return pilihan.slice(0, maks);
+		const peta = new Map(dinamis.map((d) => [d.slug, d]));
+		const hasil = pilihan.map((p) => ({ ...p, ...(peta.get(p.slug) ?? {}), sampul: peta.get(p.slug)?.sampul ?? p.sampul }));
+		const ada = new Set(hasil.map((h) => h.slug));
+		for (const d of dinamis) {
+			if (hasil.length >= maks) break;
+			if (ada.has(d.slug) || !d.detail) continue;
+			ada.add(d.slug);
+			hasil.push(d);
+		}
+		return hasil;
 	}
 
-	const appShortcuts = [
+	const kitab = $derived(gabung(KITAB_PILIHAN, data.kitab ?? [], 16));
+	// Hanya item yang punya halaman detail publik; kosong -> daftar pilihan bawaan.
+	const adaDetail = (d: Kartu[] | undefined) => (d ?? []).filter((x) => x.detail);
+	const buku = $derived(adaDetail(data.buku).length ? adaDetail(data.buku).slice(0, 8) : BUKU_PILIHAN);
+	const produk = $derived(adaDetail(data.produk).length ? adaDetail(data.produk).slice(0, 8) : PRODUK_PILIHAN);
+	const jumlahKitab = $derived(data.jumlahKitab > 0 ? data.jumlahKitab : 206);
+	const labelBuku = (b: Kartu) => `${b.kategori ?? 'Novel'} · ${b.harga.split(' · ')[0]}`;
+	const labelProduk = (p: Kartu) => (p.harga === 'Gratis' ? 'Aplikasi · Gratis' : `Aplikasi · ${p.harga}`);
+
+	const LANGKAH = [
+		{ n: '01', judul: 'Kenali Diri', isi: 'Ikuti tes Tipe Santri. Kamu tahu mulai dari mana, tanpa merasa dihakimi.', ikon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0' },
+		{ n: '02', judul: 'Belajar', isi: 'Tonton video singkat, lalu baca materi dengan dalil berharakat, terjemah, dan sumber bernomor.', ikon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25' },
+		{ n: '03', judul: 'Praktik', isi: 'Jawab 3 soal, simpan kartu ringkas, dan bawa pulang satu amalan kecil untuk hari ini.', ikon: 'M9 12l2 2 4-4M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z' },
+		{ n: '04', judul: 'Tumbuh', isi: 'Naik ke ngaji kitab dasar, hafalan matan, lalu kajian lanjut bersama guru.', ikon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18' }
+	];
+
+	const MODUL_CHIP = ['Kenapa belajar sekarang', 'Kenalan dengan Islam', 'Aqidah dasar', 'Thaharah', 'Shalat', 'Puasa dan zakat', 'Adab dan akhlak', 'Langkah berikutnya'];
+
+	const PERSONA = [
 		{
-			label: 'Mulai Belajar',
-			description: 'Aqidah, adab, ibadah, sirah, dan keterampilan secara bertahap.',
-			href: `${appBaseUrl}/belajar`,
-			icon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25',
-			accent: 'emerald'
+			judul: 'Mahasiswa',
+			sub: 'Belajar di sela kuliah',
+			svg: lelaki('hold', '#c79a2e', BUKU_BUKA, 56),
+			sebelum: 'Agama dipelajari dari potongan video. Sering bingung, ini ada dalilnya atau tidak.',
+			sesudah: 'Terbiasa menanyakan sumber, tahu cara membaca keterangan hadits, dan tahu kapan harus bertanya ke guru.'
 		},
 		{
-			label: 'Baca Kitab',
-			description: 'Kitab digital dan rujukan yang disusun agar mudah dipelajari.',
-			href: `${appBaseUrl}/kitab`,
-			icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6',
-			accent: 'gold'
+			judul: 'Ibu rumah tangga',
+			sub: 'Ingin mendampingi anak',
+			svg: perempuan('down', '#7a4b2a', '#c79a2e', '', 56),
+			sebelum: 'Ingin mengajari anak wudhu dan shalat, tapi ragu bacaan dan urutannya sendiri sudah benar.',
+			sesudah: 'Paham rukun wudhu dan shalat, punya checklist sederhana untuk dipakai bersama anak di rumah.'
 		},
 		{
-			label: 'Kelola TPQ',
-			description: 'Data santri, kelas, hafalan, rapor, dan pendampingan lembaga.',
-			href: `${appBaseUrl}/tpq`,
-			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01',
-			accent: 'emerald'
-		},
-		{
-			label: 'Lihat Perjalanan',
-			description: 'Pantau progres dan lanjutkan aktivitas penting dari akun santri.',
-			href: `${appBaseUrl}/beranda`,
-			icon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18',
-			accent: 'gold'
+			judul: 'Pekerja',
+			sub: 'Waktunya sempit',
+			svg: lelaki('down', '#2f7a62', '', 56),
+			sebelum: 'Kajian panjang selalu tertunda. Belajar jadi loncat-loncat, tidak pernah tuntas.',
+			sesudah: 'Satu pelajaran sekitar 10 menit di perjalanan, tetap urut dari dasar, progres tersimpan.'
 		}
 	];
 
-	const pillars = [
-		{
-			title: 'Aqidah yang kuat',
-			description: 'Mengenal Allah, Rasulullah ﷺ, dan aqidah Aswaja secara ringan, sadar, dan bertahap.',
-			icon: 'M12 3 5 6v5c0 4.6 2.9 8.2 7 10 4.1-1.8 7-5.4 7-10V6l-7-3Zm-3 9 2 2 4-4'
-		},
-		{
-			title: 'Adab menjadi kebiasaan',
-			description: 'Adab kepada Allah, orang tua, guru, sesama, serta disiplin di ruang digital.',
-			icon: 'M12 20.5S4.5 16.2 4.5 10.3A4.3 4.3 0 0 1 12 7.4a4.3 4.3 0 0 1 7.5 2.9c0 5.9-7.5 10.2-7.5 10.2Z'
-		},
-		{
-			title: 'Amal yang nyata',
-			description: 'Ilmu diwujudkan melalui ibadah, amanah, disiplin, dan manfaat kecil yang dijaga setiap hari.',
-			icon: 'M9 12.5 11 14.5 15.5 9M12 3 5 6v5c0 4.6 2.9 8.2 7 10 4.1-1.8 7-5.4 7-10V6l-7-3Z'
-		},
-		{
-			title: 'Ilmu yang hidup',
-			description: 'Sirah, fiqih praktis, kitab, dan kisah ulama yang dekat dengan kehidupan sehari-hari.',
-			icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z'
-		},
-		{
-			title: 'Keterampilan dunia nyata',
-			description: 'Literasi digital, penggunaan AI secara bijak, komunikasi, menulis, dan pemecahan masalah.',
-			icon: 'm12 3 1.2 3.8L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2L12 3Zm6 10 .8 2.2L21 16l-2.2.8L18 19l-.8-2.2L15 16l2.2-.8L18 13ZM6 14l.9 2.6L9.5 17l-2.6.9L6 20.5l-.9-2.6L2.5 17l2.6-.4L6 14Z'
-		},
-		{
-			title: 'Komunitas pembinaan',
-			description: 'Santri, orang tua, mentor, dan lembaga tumbuh dalam lingkungan yang saling menjaga.',
-			icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6'
-		},
-		{
-			title: 'Kebiasaan yang terukur',
-			description: 'Misi, perkembangan, konsistensi, dan rapor pertumbuhan agar ilmu berubah menjadi amal.',
-			icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm-3.5-9 2.3 2.3 4.9-5'
-		}
-	];
-
-	const audiences = [
-		{
-			name: 'Untuk Santri',
-			description: 'Belajar, membaca kitab, membangun kebiasaan, dan melihat progres dalam satu akun.',
-			links: [
-				{ label: 'Daftar Santri', href: appRegisterUrl },
-				{ label: 'Buka Kelas', href: `${appBaseUrl}/belajar` }
-			]
-		},
-		{
-			name: 'Untuk Orang Tua & Mentor',
-			description: 'Mendampingi pertumbuhan ilmu, adab, hafalan, serta kebiasaan baik secara terarah.',
-			links: [
-				{ label: 'Pantau Perkembangan', href: `${appBaseUrl}/dashboard` },
-				{ label: 'Lihat Fitur', href: `${appBaseUrl}/fitur` }
-			]
-		},
-		{
-			name: 'Untuk TPQ & Lembaga',
-			description: 'Kelola data santri, kelas, setoran, rapor, dan administrasi pembinaan lebih rapi.',
-			links: [
-				{ label: 'Jelajahi TPQ', href: `${appBaseUrl}/tpq` },
-				{ label: 'Daftarkan Lembaga', href: `${appBaseUrl}/lembaga/tambah` }
-			]
-		}
-	];
-
-	const institutionTypes = [
-		{
-			name: 'TPQ & TPA',
-			description: 'Kelola santri, kelas, setoran, hafalan, rapor, dan komunikasi pendamping dalam satu alur.',
-			href: `${appBaseUrl}/tpq/daftar`,
-			icon: 'M4 20V9l8-5 8 5v11M8 20v-6h8v6M9 10h.01M15 10h.01'
-		},
-		{
-			name: 'Pondok Pesantren',
-			description: 'Bangun profil lembaga dan hubungkan pembinaan, akademik, data santri, serta layanan digital pondok.',
-			href: `${appBaseUrl}/pondok/daftar`,
-			icon: 'M3 20h18M5 20V8l7-5 7 5v12M9 20v-5h6v5M8 10h.01M12 10h.01M16 10h.01'
-		},
-		{
-			name: 'Rumah Tahfidz',
-			description: 'Dukung setoran, murojaah, perkembangan hafalan, ujian, dan pendampingan santri secara bertahap.',
-			href: `${appBaseUrl}/rumah-tahfidz/daftar`,
-			icon: 'M12 3 4 9v11h16V9l-8-6Zm-3 17v-6h6v6m-7-9h8'
-		},
-		{
-			name: 'Masjid & Musholla',
-			description: 'Satukan kegiatan belajar, data jamaah dan santri, agenda, serta administrasi pembinaan umat.',
-			href: `${appBaseUrl}/masjid/daftar`,
-			icon: 'M3 20h18M6 20v-9h12v9M9 11V8.5a3 3 0 0 1 6 0V11m-3-8v2M9 15h.01M15 15h.01'
-		}
-	];
-
-	const appPreviewItems = [
-		{ label: 'Lanjut Belajar', note: 'Materi bertahap', href: `${appBaseUrl}/belajar`, icon: appShortcuts[0].icon, tone: 'emerald' },
-		{ label: 'Buka Kitab', note: 'Rujukan terarah', href: `${appBaseUrl}/kitab`, icon: appShortcuts[1].icon, tone: 'gold' },
-		{ label: 'Kebiasaan Harian', note: 'Jaga konsistensi', href: `${appBaseUrl}/habit`, icon: pillars[6].icon, tone: 'emerald' },
-		{ label: 'Lihat Progres', note: 'Pantau pertumbuhan', href: `${appBaseUrl}/dashboard`, icon: appShortcuts[3].icon, tone: 'violet' }
-	];
-
-	const institutionBenefits = [
-		'Data santri dan lembaga lebih rapi',
-		'Pembinaan aqidah, adab, amal, ilmu, dan skill terhubung',
-		'Perkembangan santri dapat dipantau bertahap',
-		'Satu akun untuk guru, pendamping, orang tua, dan pengelola',
-		'Tetap ringan untuk lembaga yang baru memulai digitalisasi',
-		'Siap menghubungkan lembaga dari berbagai daerah di Indonesia'
+	const ALUR = [
+		{ k: '1', judul: 'Tonton', isi: 'Video kurang dari 1 menit: cerita pembuka, inti, satu pelajaran.' },
+		{ k: '2', judul: 'Baca', isi: 'Materi 400 sampai 800 kata. Dalil berharakat, terjemah, dan nomor sumbernya.' },
+		{ k: '3', judul: 'Coba', isi: 'Kuis 3 soal untuk mengecek pemahaman, bukan untuk menghakimi.' },
+		{ k: '4', judul: 'Bawa pulang', isi: 'Kartu ringkas yang bisa disimpan, plus satu amalan untuk hari ini.' }
 	];
 
 	const faqs = [
 		{
-			question: 'Apa itu SantriOnline?',
-			answer: 'SantriOnline adalah ekosistem pembinaan generasi muslim dan platform digital lembaga yang menghubungkan aqidah Aswaja, adab, amal, ilmu, keterampilan, kebiasaan, komunitas, serta pengelolaan santri.'
+			question: 'Saya benar-benar mulai dari nol. Apakah cocok?',
+			answer: 'Cocok. Level 01 disusun untuk yang baru mulai: dari rukun Islam, wudhu, sampai shalat. Tidak ada istilah yang dipakai tanpa dijelaskan.'
 		},
 		{
-			question: 'Lembaga apa saja yang dapat menggunakan SantriOnline?',
-			answer: 'SantriOnline dirancang untuk TPQ, TPA, pondok pesantren, rumah tahfidz, masjid, musholla, madrasah, dan komunitas pembinaan Islam dari berbagai daerah di Indonesia.'
+			question: 'Apakah harus daftar dulu?',
+			answer: 'Tidak. Tes Tipe Santri dan pelajaran pertama bisa dibuka tanpa akun. Akun gratis di app.santrionline.com dipakai untuk menyimpan progres dan membuka pelajaran berikutnya.'
 		},
 		{
-			question: 'Bagaimana lembaga mulai menggunakan aplikasi?',
-			answer: 'Pengelola dapat membuat akun di app.santrionline.com, mendaftarkan lembaga, lalu menyiapkan data dan ruang pembinaan sesuai kebutuhan lembaganya.'
+			question: 'Siapa yang memeriksa materinya?',
+			answer: 'Setiap pelajaran ditulis dengan dalil bernomor, lalu diperiksa ustadz sebelum terbit. Selama belum diperiksa, pelajaran diberi tanda draf dan belum kami sebarkan.'
 		},
 		{
-			question: 'Apakah SantriOnline hanya untuk administrasi lembaga?',
-			answer: 'Tidak. Administrasi adalah pendukung. Arah utamanya adalah membantu lembaga membentuk santri yang kuat aqidahnya, beradab, terbiasa beramal, hidup ilmunya, dan memiliki keterampilan masa depan.'
+			question: 'Apakah belajar online bisa menggantikan guru?',
+			answer: "Tidak. SantriOnline membantu kamu memulai dan mengulang. Ilmu agama tetap perlu diambil dari guru yang jelas sanadnya, terutama untuk bacaan Al-Qur'an, praktik ibadah, dan masalah yang rumit."
+		},
+		{
+			question: 'Lembaga saya ingin memakai SantriOnline. Bagaimana?',
+			answer: 'Pondok pesantren, TPQ, dan rumah tahfidz bisa memakai aplikasi gratis kami: Aplikasi Pondok Pesantren, Raport TPQ, dan Aplikasi Hafalan Quran. Daftarkan lembaga di app.santrionline.com atau baca dulu halaman Untuk Lembaga.'
 		}
 	];
 
@@ -269,7 +150,7 @@
 				alternateName: ['Santri Online', 'Santri Online Indonesia'],
 				url: 'https://santrionline.com/',
 				logo: 'https://santrionline.com/logo-santrionline.png',
-				description: 'Ekosistem pembinaan generasi muslim dan platform digital untuk lembaga yang memiliki santri di Indonesia.',
+				description: 'Tempat belajar Islam bertahap dari nol dan platform digital gratis untuk pondok pesantren, TPQ, dan rumah tahfidz di Indonesia.',
 				areaServed: { '@type': 'Country', name: 'Indonesia' },
 				address: { '@type': 'PostalAddress', addressLocality: 'Batu', addressRegion: 'Jawa Timur', addressCountry: 'ID' },
 				sameAs: [
@@ -279,16 +160,13 @@
 					'https://www.instagram.com/idsantrionline',
 					'https://www.youtube.com/@websantri'
 				],
-				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz'],
+				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Fiqih madzhab Syafi\'i', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz'],
 				founder: {
 					'@type': 'Person',
 					'@id': 'https://masyogik.santrionline.com/#person',
 					name: 'Yogik Pratama Aprilian',
 					url: 'https://masyogik.santrionline.com/',
-					sameAs: [
-						'https://www.linkedin.com/in/yogik-pratama/',
-						'https://about.me/yogikpratama'
-					]
+					sameAs: ['https://www.linkedin.com/in/yogik-pratama/', 'https://about.me/yogikpratama']
 				}
 			},
 			{
@@ -307,6 +185,7 @@
 				applicationCategory: 'EducationalApplication',
 				operatingSystem: 'Web',
 				inLanguage: 'id-ID',
+				offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
 				description: 'Aplikasi pembinaan dan pengelolaan santri untuk TPQ, pondok pesantren, rumah tahfidz, masjid, musholla, dan lembaga Islam.'
 			},
 			{
@@ -319,602 +198,1172 @@
 			}
 		]
 	};
-
-
-	// ——— Motion: scroll reveal per section ———
-	// Konten dirender server dan tetap terlihat tanpa JS. Kelas .js-reveal baru
-	// dipasang setelah IntersectionObserver dipastikan tersedia, sehingga tidak
-	// ada risiko konten tersembunyi permanen.
-	$effect(() => {
-		if (typeof IntersectionObserver === 'undefined') return;
-
-		const root = document.documentElement;
-		root.classList.add('js-reveal');
-
-		const nodes = Array.from(document.querySelectorAll<HTMLElement>('.so-reveal'));
-		// threshold HARUS kecil: dengan 0.15, section yang lebih tinggi dari
-		// ~6x viewport tidak pernah mencapai 15% terlihat, sehingga tidak pernah
-		// muncul — inilah penyebab "tengah halaman kosong" pada rilis 40f46fa.
-		const observer = new IntersectionObserver(
-			(entries) => {
-				for (const entry of entries) {
-					if (!entry.isIntersecting) continue;
-					entry.target.classList.add('so-reveal-visible');
-					observer.unobserve(entry.target);
-				}
-			},
-			{ threshold: 0, rootMargin: '0px 0px -5% 0px' }
-		);
-
-		for (const node of nodes) observer.observe(node);
-
-		// Jaring pengaman: apa pun yang terjadi (observer gagal, tab background,
-		// dsb.), seluruh konten wajib terlihat paling lambat 2.5 detik.
-		const safety = setTimeout(() => {
-			for (const node of nodes) node.classList.add('so-reveal-visible');
-		}, 2500);
-
-		return () => {
-			clearTimeout(safety);
-			observer.disconnect();
-			root.classList.remove('js-reveal');
-		};
-	});
-
-	// Blok statistik (StatistikTraksi): count-up sekali saat masuk viewport,
-	// dilewati bila prefers-reduced-motion aktif; SSR merender angka akhir.
-
-	// State & alur chat pindah ke $lib/components/ui/ChatSection.svelte —
-	// halaman ini hanya menerima sinyal onLimit untuk membuka modal upgrade.
-
-	$effect(() => {
-		if (!showUpgradeModal || typeof document === 'undefined') return;
-		const previouslyFocused = document.activeElement as HTMLElement | null;
-		requestAnimationFrame(() => upgradeCloseButton?.focus());
-		return () => previouslyFocused?.focus();
-	});
-
-	function handleModalKeydown(event: KeyboardEvent) {
-		if (event.key === 'Escape') menuBuka = null;
-		if (!showUpgradeModal) return;
-		if (event.key === 'Escape') {
-			showUpgradeModal = false;
-			return;
-		}
-		if (event.key !== 'Tab' || !upgradeDialog) return;
-
-		const focusable = Array.from(
-			upgradeDialog.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])')
-		);
-		if (focusable.length === 0) {
-			event.preventDefault();
-			return;
-		}
-
-		const first = focusable[0];
-		const last = focusable[focusable.length - 1];
-		if (event.shiftKey && document.activeElement === first) {
-			event.preventDefault();
-			last.focus();
-		} else if (!event.shiftKey && document.activeElement === last) {
-			event.preventDefault();
-			first.focus();
-		}
-	}
+	const ldJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 </script>
 
 <svelte:head>
-	<title>SantriOnline | Aplikasi Pesantren & TPQ Gratis, Belajar Agama Islam Online</title>
+	<title>SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis</title>
 	<meta
 		name="description"
-		content="Aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis berbasis web: keuangan, administrasi, rapor, hafalan. Plus belajar agama Islam online — kisah nabi, tajwid, bahasa Arab, kitab kuning — untuk membina generasi muslim Indonesia."
+		content="Belajar Islam dari nol secara bertahap: video singkat, bacaan berdalil, dan kuis ringan, mulai gratis tanpa daftar. Plus aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis untuk lembaga."
 	/>
-	<meta name="keywords" content="santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, belajar agama islam online gratis, kitab kuning digital" />
+	<meta name="keywords" content="belajar islam dari nol, belajar agama islam online gratis, tes tipe santri, santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, kitab kuning digital" />
 	<meta name="author" content="SantriOnline" />
 	<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="id_ID" />
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/" />
-	<meta property="og:title" content="SantriOnline — Aplikasi Pesantren & TPQ Gratis, Belajar Agama Islam Online" />
-	<meta
-		property="og:description"
-		content="Satu ekosistem untuk membantu lembaga di seluruh Indonesia membina santri yang kuat aqidahnya, beradab, berilmu, disiplin, dan siap menghadapi masa depan."
-	/>
+	<meta property="og:title" content="SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis" />
+	<meta property="og:description" content="Belajar Islam bertahap dari nol: video singkat, bacaan berdalil, kuis. Plus aplikasi gratis untuk pondok, TPQ, dan rumah tahfidz." />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content="SantriOnline — Pembinaan generasi muslim dan lembaga Islam Indonesia" />
+	<meta property="og:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
 	<meta name="twitter:card" content="summary_large_image" />
-	<meta name="twitter:title" content="SantriOnline — Membina Santri Indonesia" />
-	<meta name="twitter:description" content="Platform pembinaan dan pengelolaan santri untuk lembaga Islam di seluruh Indonesia." />
+	<meta name="twitter:title" content="SantriOnline | Belajar Islam dari Nol" />
+	<meta name="twitter:description" content="Belajar Islam bertahap dari nol, plus aplikasi gratis untuk pondok pesantren dan TPQ." />
 	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:image:alt" content="SantriOnline — Membina Santri Indonesia yang beradab dan berdaya saing" />
+	<meta name="twitter:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
 	<link rel="canonical" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="id-ID" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="x-default" href="https://santrionline.com/" />
-	<!-- GEO: bahasa dan wilayah sasaran dinyatakan tegas, tidak ditebak mesin. -->
 	<meta name="language" content="id-ID" />
 	<meta name="geo.region" content="ID" />
 	<meta name="geo.placename" content="Indonesia" />
-	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
+	<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
+	{@html `<script type="application/ld+json">${ldJson}<\/script>`}
 </svelte:head>
 
-<svelte:window onkeydown={handleModalKeydown} />
+<section class="hero">
+	<div class="wrap hero-g">
+		<div>
+			<span class="eyebrow"><span class="dot"></span>Kelas Islam bertahap · gratis untuk mulai</span>
+			<h1>Belajar Islam dari nol sampai <em>paham</em></h1>
+			<p class="sub">
+				Mulai dari yang paling dasar, pelan dan berurutan. Setiap pelajaran berisi video singkat, bacaan yang mencantumkan dalil dan sumbernya, lalu kuis ringan. Tidak perlu malu memulai dari awal.
+			</p>
+			<div class="ctas">
+				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama <span aria-hidden="true">&rarr;</span></a>
+				<a class="btn btn-s" href="/tipe-santri">Cek Tipe Santri kamu</a>
+			</div>
+			<div class="trust">
+				<span><b aria-hidden="true">&#10003;</b>Pelajaran 1 tanpa daftar</span>
+				<span><b aria-hidden="true">&#10003;</b>{jumlahKitab} kitab di perpustakaan</span>
+				<span><b aria-hidden="true">&#10003;</b>Fiqih madzhab Syafi'i, aqidah Aswaja</span>
+			</div>
+		</div>
+		<a class="mascot-card" href="/tipe-santri">
+			<span class="tag" style="background:rgb(252 211 77/.18);color:var(--gold2)">Tes 3 menit · tanpa login</span>
+			<h2 class="mc-h">Kamu tipe santri yang mana?</h2>
+			<p class="s">12 situasi sehari-hari. Hasilnya titik mulai belajar yang cocok untukmu.</p>
+			<div class="mrow">
+				{#each URUTAN_TIPE as t (t)}
+					<div class="m">
+						<span class="m-svg">{@html MASKOT[t].svg(90)}</span>
+						<b>Si<br />{MASKOT[t].nama.replace('Si ', '')}</b>
+					</div>
+				{/each}
+			</div>
+			<div class="mini">
+				<span class="ic">01</span>
+				<p>Pelajaran pertama: <b>Kenapa belajar agama sekarang?</b> Video 1 menit, bacaan 5 menit, 3 soal.</p>
+			</div>
+		</a>
+	</div>
+</section>
 
-<a href="#konten-utama" class="skip-link">Langsung ke konten utama</a>
+<section>
+	<div class="wrap">
+		<span class="kicker">Cara belajarnya</span>
+		<h2 class="sec">Empat langkah, satu per satu</h2>
+		<p class="lead">Tidak ada lompatan. Kamu tahu posisimu, belajar sedikit tapi rutin, mempraktikkannya, lalu naik pelan-pelan.</p>
+		<div class="steps">
+			{#each LANGKAH as l (l.n)}
+				<div class="card step">
+					<div class="ico">
+						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={l.ikon} /></svg>
+					</div>
+					<div class="n">{l.n}</div>
+					<h3>{l.judul}</h3>
+					<p>{l.isi}</p>
+				</div>
+			{/each}
+		</div>
+	</div>
+</section>
 
-<main id="konten-utama" class="min-h-screen bg-so-cream pb-16 text-so-ink antialiased md:pb-0">
-	<header class="sticky top-0 z-40 border-b border-so-border/80 bg-so-cream/90 px-4 backdrop-blur-xl sm:px-6 lg:px-10">
-		<nav class="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4" aria-label="Navigasi utama">
-			<a class="flex min-w-0 items-center gap-3" href="/" aria-label="SantriOnline beranda">
-				<img src={logo} alt="Logo SantriOnline" class="vt-logo size-10 rounded-xl border border-so-border/80 object-cover shadow-sm" />
-				<div class="min-w-0">
-					<p class="font-display truncate text-base font-bold tracking-[-0.02em] text-so-green sm:text-lg">SantriOnline</p>
-					<p class="hidden text-[10px] font-bold uppercase tracking-[0.16em] text-so-muted sm:block">Tumbuh · Beradab · Berdampak</p>
+<section style="background:#eef1ea">
+	<div class="wrap">
+		<span class="kicker">Peta belajar</span>
+		<h2 class="sec">Dari kenal diri sampai kajian kitab</h2>
+		<p class="lead">Dua tahap pertama gratis. Tahap berikutnya menyambung ke kitab-kitab yang biasa dikaji di pesantren.</p>
+		<div class="ladder">
+			<a class="card lv" href="/tipe-santri">
+				<div class="no">00</div>
+				<div>
+					<h3>Tipe Santri <span class="tag t-free">Gratis · tanpa login</span></h3>
+					<p>12 situasi, sekitar 3 menit. Hasilnya satu dari 5 tipe dan saran titik mulai.</p>
 				</div>
 			</a>
-
-			<ul class="hidden items-center gap-1 text-sm font-semibold text-so-muted md:flex">
-				{#each navigation as item}
-					<li class="relative" onmouseenter={() => { if (item.anak && menuBuka !== item.label) { menuBuka = item.label; bukaHover = true; } }} onmouseleave={() => item.anak && tutupMenu()}>
-						{#if item.anak}
-							<button
-								type="button"
-								class="inline-flex items-center gap-1 rounded-full px-3 py-2 transition hover:text-so-green {menuBuka === item.label ? 'text-so-green' : ''}"
-								aria-haspopup="true"
-								aria-expanded={menuBuka === item.label}
-								onclick={() => { menuBuka = menuBuka === item.label && !bukaHover ? null : item.label; bukaHover = false; }}
-							>
-								{item.label}
-								<svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 transition {menuBuka === item.label ? 'rotate-180' : ''}" fill="currentColor"><path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z" /></svg>
-							</button>
-							{#if menuBuka === item.label}
-								<div class="absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-2">
-									<ul class="rounded-2xl border border-so-border bg-white p-2 shadow-lg">
-										{#each item.anak as sub}
-											<li>
-												<a class="block rounded-xl px-3 py-2.5 transition hover:bg-so-cream focus:bg-so-cream focus:outline-none" href={sub.href} onclick={tutupMenu}>
-													<span class="block text-sm font-bold text-so-green">{sub.label}</span>
-													{#if sub.ket}<span class="block text-xs font-medium text-so-muted">{sub.ket}</span>{/if}
-												</a>
-											</li>
-										{/each}
-									</ul>
-								</div>
-							{/if}
-						{:else}
-							<a class="inline-flex rounded-full px-3 py-2 transition hover:text-so-green {item.sorot ? 'text-so-green' : ''}" href={item.href}>{item.label}</a>
-						{/if}
-					</li>
-				{/each}
-			</ul>
-
-			<div class="hidden items-center gap-2 md:flex">
-				<a class="rounded-full border border-so-border bg-white px-4 py-2 text-sm font-bold transition hover:border-so-green-2/40 hover:text-so-green" href={appLoginUrl}>Masuk</a>
-				<a class="rounded-full bg-so-green px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3 focus:outline-none focus:ring-4 focus:ring-so-gold/25" href={appBaseUrl}>Buka Aplikasi <span aria-hidden="true">↗</span></a>
-			</div>
-
-			<button
-				type="button"
-				class="grid size-10 place-items-center rounded-full border border-so-border bg-white text-so-green md:hidden"
-				aria-label={showMobileMenu ? 'Tutup menu' : 'Buka menu'}
-				aria-controls="mobile-navigation"
-				aria-expanded={showMobileMenu}
-				onclick={() => (showMobileMenu = !showMobileMenu)}
-			>
-				{#if showMobileMenu}
-					<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18" stroke-linecap="round" /></svg>
-				{:else}
-					<svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round" /></svg>
-				{/if}
-			</button>
-		</nav>
-
-		{#if showMobileMenu}
-			<nav id="mobile-navigation" class="mx-auto grid max-w-7xl gap-1 border-t border-so-border/80 py-4 md:hidden" aria-label="Navigasi mobile">
-				{#each navigation as item}
-					{#if item.anak}
-						<button type="button" class="flex items-center justify-between rounded-xl px-3 py-3 text-left text-sm font-bold text-so-green hover:bg-so-cream" aria-expanded={mobileGrup === item.label} onclick={() => (mobileGrup = mobileGrup === item.label ? null : item.label)}>
-							{item.label}
-							<svg aria-hidden="true" viewBox="0 0 20 20" class="size-4 transition {mobileGrup === item.label ? 'rotate-180' : ''}" fill="currentColor"><path d="M5.3 7.3a1 1 0 0 1 1.4 0L10 10.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 0 1 0-1.4Z" /></svg>
-						</button>
-						{#if mobileGrup === item.label}
-							<div class="mb-1 ml-3 grid gap-0.5 border-l-2 border-so-border pl-2">
-								{#each item.anak as sub}
-									<a class="rounded-lg px-3 py-2.5 text-sm font-semibold text-so-ink hover:bg-so-cream" href={sub.href} onclick={() => (showMobileMenu = false)}>{sub.label}</a>
-								{/each}
-							</div>
-						{/if}
-					{:else}
-						<a class="rounded-xl px-3 py-3 text-sm font-bold text-so-green hover:bg-so-cream" href={item.href} onclick={() => (showMobileMenu = false)}>{item.label}</a>
-					{/if}
-				{/each}
-				<div class="mt-2 grid grid-cols-2 gap-2">
-					<a class="rounded-full border border-so-border bg-white px-4 py-3 text-center text-sm font-bold" href={appLoginUrl}>Masuk</a>
-					<a class="rounded-full bg-so-green px-4 py-3 text-center text-sm font-bold text-white" href={appBaseUrl}>Buka Aplikasi ↗</a>
-				</div>
-			</nav>
-		{/if}
-	</header>
-
-	<!-- ETALASE: hero ringkas + rak katalog (pola etalase digital: sampul geser, tab, tombol aksi). -->
-	<section id="katalog" class="relative scroll-mt-16 px-0 pb-4 pt-3 sm:pt-8">
-		<div class="pointer-events-none absolute inset-x-0 top-0 -z-0 h-[420px] bg-[radial-gradient(circle_at_16%_15%,rgb(45_106_79_/_0.14),transparent_32%),radial-gradient(circle_at_85%_30%,rgb(201_168_76_/_0.12),transparent_27%)]"></div>
-		<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-			<div class="hero-copy grid gap-5 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+			<a class="card lv hi" href="/belajar">
+				<div class="no">01</div>
 				<div>
-					<p class="hero-stagger hero-stagger-1 inline-flex items-center gap-2 rounded-full border border-so-gold/30 bg-so-surface/90 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.14em] text-so-green shadow-sm">
-						<span class="so-badge-dot size-2 rounded-full bg-so-green-2"></span>
-						Tanya Kitab AI{#if statistik && statistik.kitab > 0} · {labelAngka(statistik.kitab)} kitab rujukan{/if}
-					</p>
-					<h1 class="hero-stagger hero-stagger-2 font-display mt-4 text-[clamp(1.35rem,5.2vw,1.9rem)] font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">
-						Tanya agama, dijawab dengan rujukan kitab — <span class="text-so-green-2">dan kelola TPQ &amp; pesantren gratis dalam satu akun.</span>
-					</h1>
-					<p class="hero-stagger hero-stagger-3 mt-2 max-w-2xl text-sm leading-6 text-so-muted sm:mt-3 sm:text-lg">
-						Asisten AI SantriOnline menjawab berdasarkan kutipan kitab Aswaja dan menunjukkan sumbernya. Lembaga mendapat aplikasi data santri, hafalan, dan rapor tanpa biaya.
-					</p>
-					<div class="hero-stagger hero-stagger-3 mt-4 flex flex-col gap-2 sm:mt-5 sm:flex-row sm:flex-wrap">
-						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25" href="#tanya">Coba Tanya Kitab <span aria-hidden="true">→</span></a>
-						<a class="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-full border border-so-gold/50 bg-white px-6 py-2.5 text-sm font-bold text-so-green shadow-sm transition hover:border-so-green/40 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-gold/25" href={appRegisterUrl}>Daftarkan Lembaga Gratis</a>
+					<h3>Fondasi Muslim <span class="tag" style="background:var(--gold);color:var(--g3)">Gratis</span></h3>
+					<p>24 pelajaran berurutan. Pelajaran pertama terbuka untuk siapa saja; sisanya cukup dengan akun gratis.</p>
+					<div class="chips">
+						{#each MODUL_CHIP as c (c)}<span class="chip">{c}</span>{/each}
 					</div>
-					<form class="hero-stagger hero-stagger-4 mt-3 flex max-w-xl gap-2 sm:mt-5" action="/katalog/semua" method="get" role="search">
-						<label class="sr-only" for="cari-katalog">Cari kitab, buku, atau kursus</label>
-						<input id="cari-katalog" name="q" type="search" placeholder="Cari kitab, buku, kursus…" class="min-h-[42px] w-full rounded-full border border-so-border bg-white px-5 text-sm text-so-ink shadow-sm outline-none placeholder:text-so-muted/70 focus:border-so-green/50 focus:ring-4 focus:ring-so-green/15" />
-						<button type="submit" class="min-h-[42px] shrink-0 rounded-full bg-so-green px-5 text-sm font-bold text-white shadow-sm transition hover:bg-so-green-3">Cari</button>
-					</form>
 				</div>
-				<div class="hero-stagger hero-stagger-4 w-full min-w-0 self-stretch text-left">
-					<SlideEtalase slide={data.slide ?? []} />
-				</div>
-			</div>
-
-			<!-- Tab jenis: geser ke rak (tanpa JS). -->
-			<nav class="hero-stagger hero-stagger-5 -mx-4 mt-3 flex gap-2 sm:mt-5 overflow-x-auto px-4 pb-1 sm:mx-0 sm:px-0" aria-label="Jenis katalog" style="scrollbar-width:none">
-				{#each tabRak as t, i}
-					<a class={`shrink-0 rounded-full border px-4 py-2 text-xs font-bold transition sm:text-sm ${i === 0 ? 'border-so-green bg-so-green text-white' : 'border-so-border bg-white text-so-green hover:border-so-green/40'}`} href={t.href}>{t.label}</a>
-				{/each}
-			</nav>
-		</div>
-
-		{#if statistik}<StatistikTraksi {statistik} />{/if}
-
-		{#if rakUnggulan}<RakKatalog rak={rakUnggulan} prioritas />{/if}
-		{#if rakBuku}
-			<BukuBolakBalik buku={rakBuku.item} judul="Rak Novel — Buka dan Balik Halamannya" keterangan="Cerita yang menumbuhkan adab dan cita-cita. Geser atau klik panah untuk membalik." />
-		{/if}
-		<DaftarPeringkat item={data.populer ?? []} judul="Paling Banyak Dibaca" keterangan="Diurutkan dari jumlah bab yang dibuka pembaca." />
-		<KitabPerBidang {bidang} />
-		{#if rakKursus}<RakKatalog rak={rakKursus} />{/if}
-		{#if rakProduk}<EtalaseAplikasi item={rakProduk.item} />{/if}
-
-		{#if rak.length === 0}
-			<p class="mx-auto max-w-7xl px-4 py-10 text-center text-sm text-so-muted sm:px-6 lg:px-10">Katalog sedang disiapkan. Buka <a class="font-bold text-so-green underline" href={appBaseUrl}>aplikasi</a> untuk melihat semua pilihan.</p>
-		{/if}
-	</section>
-
-	<!--
-		Blok "Mengenal SantriOnline" dan "Arah SantriOnline" digabung.
-		Keduanya sama-sama menjawab "apa itu SantriOnline", sehingga pembaca
-		membaca pesan yang sama dua kali sebelum sampai ke isi.
-	-->
-	<section id="arah" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-10 lg:py-20" aria-labelledby="arah-title">
-		<div class="mx-auto max-w-7xl">
-			<div class="grid gap-7 lg:grid-cols-[0.85fr_1.15fr] lg:items-end">
+			</a>
+			<div class="card lv lock">
+				<div class="no">02</div>
 				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Mengenal SantriOnline</p>
-					<h2 id="arah-title" class="font-display mt-3 text-3xl font-bold leading-tight tracking-[-0.03em] text-so-green sm:text-5xl">Santri adalah semangat belajar sepanjang hayat.</h2>
-				</div>
-				<div class="rounded-3xl border border-so-border bg-so-cream p-6 sm:p-7">
-					<p class="leading-7 text-so-ink sm:text-lg sm:leading-8">Siapa saja dapat terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi digital.</p>
-					<p class="mt-3 leading-7 text-so-muted"><strong class="text-so-green">Teknologi bukan pengganti ulama, guru, atau pesantren.</strong> Ia jembatan agar jarak, usia, dan keadaan hidup tidak memutus hubungan seseorang dengan ilmu.</p>
-					<a href="/literasi/apa-itu-santri-online" class="mt-5 inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-6 py-3 font-bold text-white hover:bg-so-green-3">Baca: Apa Itu Santri Online? <span class="ml-2">→</span></a>
+					<h3>Ngaji Kitab Dasar <span class="tag t-pay">Paket</span></h3>
+					<p>Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab: video, teks Arab, makna, kuis.</p>
 				</div>
 			</div>
-
-			<div class="mt-8 grid gap-px overflow-hidden rounded-3xl border border-so-border/80 bg-so-border/80 md:grid-cols-3">
-				<div class="bg-so-cream p-6 sm:p-7">
-					<p class="text-xs font-bold uppercase tracking-[0.15em] text-so-green">01 · Identitas</p>
-					<h3 class="mt-3 text-xl font-extrabold">Aku muslim yang punya misi</h3>
-					<p class="mt-2 leading-7 text-so-muted">Aqidah, adab, dan teladan Rasulullah ﷺ menjadi fondasi sebelum mengejar prestasi.</p>
+			<div class="card lv lock">
+				<div class="no">03</div>
+				<div>
+					<h3>Hafalan Matan <span class="tag t-pay">Paket</span></h3>
+					<p>Menghafal matan pendek bait demi bait, dengan setoran dan pengulangan terjadwal.</p>
 				</div>
-				<div class="bg-so-cream p-6 sm:p-7">
-					<p class="text-xs font-bold uppercase tracking-[0.15em] text-so-green">02 · Kebiasaan</p>
-					<h3 class="mt-3 text-xl font-extrabold">Ilmu berubah menjadi amal</h3>
-					<p class="mt-2 leading-7 text-so-muted">Misi harian dan progres membantu langkah kecil tumbuh menjadi istiqamah.</p>
-				</div>
-				<div class="bg-so-cream p-6 sm:p-7">
-					<p class="text-xs font-bold uppercase tracking-[0.15em] text-so-green">03 · Daya Saing</p>
-					<h3 class="mt-3 text-xl font-extrabold">Berilmu dan kompeten</h3>
-					<p class="mt-2 leading-7 text-so-muted">Agama menjadi kompas untuk menguasai teknologi, komunikasi, dan keterampilan masa depan.</p>
+			</div>
+			<div class="card lv lock wide">
+				<div class="no">04</div>
+				<div>
+					<h3>Kajian Lanjut <span class="tag t-pay">Paket lanjut</span></h3>
+					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab tanpa batas.</p>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section id="ekosistem" class="so-reveal scroll-mt-20 px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
-		<div class="mx-auto max-w-7xl">
-			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Satu Ekosistem, Dua Pintu</p>
-				<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Kenali visinya di sini. Jalani pembinaannya di aplikasi.</h2>
-				<p class="mt-5 text-lg leading-8 text-so-muted">santrionline.com adalah halaman publik. Aktivitas belajar, kelas, kitab, kebiasaan, dan pemantauan perkembangan tersedia di app.santrionline.com.</p>
-			</div>
+<section id="rak">
+	<div class="wrap">
+		<span class="kicker">Rak Kitab &amp; Buku</span>
+		<h2 class="sec">Perpustakaan yang bisa langsung dibaca</h2>
+		<p class="lead">{jumlahKitab} kitab pesantren dari fiqih sampai tafsir, novel religi keluarga, dan aplikasi buatan SantriOnline. Semua bisa dibuka dari sini.</p>
 
-			<div class="mt-12 grid gap-6 lg:grid-cols-[0.88fr_auto_1.12fr] lg:items-stretch">
-				<article class="rounded-3xl border border-so-border/80 bg-white p-7 shadow-sm sm:p-9">
-					<span class="inline-flex rounded-full bg-so-cream px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-so-muted">santrionline.com</span>
-					<h3 class="mt-6 text-2xl font-extrabold tracking-[-0.03em]">Pintu publik</h3>
-					<p class="mt-3 leading-7 text-so-muted">Mengenal visi, arah pembinaan, jalur belajar, dan manfaat SantriOnline.</p>
-					<ul class="mt-6 space-y-3 text-sm font-semibold text-so-green">
-						<li class="flex gap-3"><span class="text-so-green-2">✓</span> Memahami misi SantriOnline</li>
-						<li class="flex gap-3"><span class="text-so-green-2">✓</span> Mencoba asisten AI publik</li>
-						<li class="flex gap-3"><span class="text-so-green-2">✓</span> Memilih jalur yang sesuai</li>
-					</ul>
-				</article>
-
-				<div class="hidden items-center justify-center lg:flex" aria-hidden="true">
-					<span class="grid size-14 place-items-center rounded-full bg-so-green text-xl text-white shadow-lg">→</span>
-				</div>
-
-				<article class="relative overflow-hidden rounded-3xl bg-so-green-3 p-7 text-white shadow-soft sm:p-9">
-					<div class="absolute right-0 top-0 size-48 rounded-full bg-so-green-2/20 blur-3xl"></div>
-					<span class="relative inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-[0.12em] text-so-gold-2">app.santrionline.com</span>
-					<h3 class="relative mt-6 text-2xl font-extrabold tracking-[-0.03em]">Ruang bertumbuh</h3>
-					<p class="relative mt-3 leading-7 text-white/70">Masuk dengan satu akun untuk belajar, membaca, beramal, serta melihat perkembangan.</p>
-					<ul class="relative mt-6 grid gap-3 text-sm font-semibold sm:grid-cols-2">
-						<li class="flex gap-3"><span class="text-so-gold-2">✓</span> Kelas & kitab</li>
-						<li class="flex gap-3"><span class="text-so-gold-2">✓</span> Kebiasaan & perkembangan</li>
-						<li class="flex gap-3"><span class="text-so-gold-2">✓</span> Komunitas</li>
-						<li class="flex gap-3"><span class="text-so-gold-2">✓</span> Ruang pantau lembaga</li>
-					</ul>
-					<a class="relative mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-bold text-so-green-3 transition hover:bg-so-cream" href={appBaseUrl}>Masuk ke Aplikasi <span aria-hidden="true">↗</span></a>
-				</article>
-			</div>
-
-			<div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-				{#each appShortcuts as shortcut}
-					<a class="group rounded-2xl border border-so-border/80 bg-white p-5 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/25 hover:shadow-lg" href={shortcut.href}>
-						<div class="flex items-center justify-between">
-							<span class={`icon-badge ${shortcut.accent === 'gold' ? 'icon-badge-gold' : 'icon-badge-emerald'}`}><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={shortcut.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-							<span class="text-so-muted transition group-hover:translate-x-1 group-hover:text-so-green">→</span>
-						</div>
-						<h3 class="mt-5 font-extrabold">{shortcut.label}</h3>
-						<p class="mt-2 text-sm leading-6 text-so-muted">{shortcut.description}</p>
-					</a>
-				{/each}
-			</div>
+		<div class="rakhead"><h3>Kitab pilihan</h3><a href="/katalog/kitab">Lihat {jumlahKitab} kitab &rarr;</a></div>
+		<div class="rak">
+			{#each kitab as k (k.slug)}
+				<a class="bk" href={k.detail ?? `/katalog/kitab/${k.slug}`}>
+					{#if k.sampul}<img src={k.sampul} alt="Sampul {k.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{k.judul}</span>{/if}
+					<b>{k.judul}</b><span>{k.kategori ?? 'Kitab'} · Gratis baca</span>
+				</a>
+			{/each}
 		</div>
-	</section>
 
-	<section id="jalur" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-white px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
-		<div class="mx-auto max-w-7xl">
-			<div class="grid gap-8 lg:grid-cols-[0.72fr_1.28fr] lg:items-start">
-				<div class="lg:sticky lg:top-24">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Formula Pembinaan</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] sm:text-5xl text-so-green">Dari keyakinan hingga kompetensi.</h2>
-					<p class="mt-5 text-lg leading-8 text-so-muted">Setiap bagian saling menguatkan. Keterampilan tanpa adab kehilangan arah; ilmu tanpa amal kehilangan daya.</p>
-					<a class="mt-7 inline-flex items-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white" href={`${appBaseUrl}/belajar`}>Jelajahi Jalur Belajar <span>→</span></a>
+		<div class="rakhead"><h3>Novel SantriOnline</h3><a href="/katalog/buku">Semua buku &rarr;</a></div>
+		<div class="rak">
+			{#each buku as b (b.slug)}
+				<a class="bk" href={b.detail ?? `/katalog/buku/${b.slug}`}>
+					{#if b.sampul}<img src={b.sampul} alt="Sampul {b.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{b.judul}</span>{/if}
+					<b>{b.judul}</b><span>{labelBuku(b)}</span>
+				</a>
+			{/each}
+		</div>
+
+		<div class="rakhead"><h3>Aplikasi</h3><a href="/katalog/produk">Semua aplikasi &rarr;</a></div>
+		<div class="prod">
+			{#each produk as p (p.slug)}
+				<a class="pd" href={p.detail ?? `/katalog/produk/${p.slug}`}>
+					{#if p.sampul}<img src={p.sampul} alt={p.judul} width="52" height="52" loading="lazy" decoding="async" />{/if}
+					<div><b>{p.judul}</b><span>{labelProduk(p)}</span></div>
+				</a>
+			{/each}
+		</div>
+		<p class="semua"><a href="/katalog/semua">Buka semua katalog</a> · <a href="/katalog/kursus">Kursus</a></p>
+	</div>
+</section>
+
+<section>
+	<div class="wrap">
+		<span class="kicker">Sebelum dan sesudah</span>
+		<h2 class="sec">Siapa pun bisa mulai dari tempatnya</h2>
+		<p class="lead">Tiga gambaran tujuan belajar untuk orang dengan kesibukan berbeda.</p>
+		<div class="persona">
+			{#each PERSONA as p (p.judul)}
+				<div class="card pc">
+					<div class="pc-h">
+						<div class="av m-svg">{@html p.svg}</div>
+						<div><h3>{p.judul}</h3><span>{p.sub}</span></div>
+					</div>
+					<div class="ba before"><small>Sebelum</small>{p.sebelum}</div>
+					<div class="ba after"><small>Setelah Fondasi Muslim</small>{p.sesudah}</div>
 				</div>
+			{/each}
+		</div>
+		<p class="note">Ilustrasi tujuan belajar, bukan testimoni peserta.</p>
+	</div>
+</section>
 
-				<!-- Di HP kartu ditata mendatar agar lima pilar tidak menumpuk setinggi layar. -->
-				<div class="grid gap-3 sm:grid-cols-2 sm:gap-4">
-					{#each pillars as pillar}
-						<article class="flex flex-row items-start gap-4 rounded-2xl border border-so-border/80 bg-so-cream p-4 transition duration-200 hover:-translate-y-0.5 hover:border-so-green/20 hover:shadow-md sm:flex-col sm:gap-0 sm:p-6">
-							<span class="icon-badge icon-badge-emerald shrink-0"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={pillar.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-							<div class="min-w-0 flex-1 sm:contents">
-							<h3 class="text-lg font-extrabold tracking-[-0.02em] sm:mt-5 sm:text-xl">{pillar.title}</h3>
-							<p class="mt-3 leading-7 text-so-muted">{pillar.description}</p>
-						</div>
-						</article>
+<section style="background:#eef1ea">
+	<div class="wrap">
+		<div class="vid-g">
+			<a class="phone" href={PELAJARAN_PERTAMA} aria-label="Buka cuplikan pelajaran pertama">
+				<div class="screen">
+					<div class="top"><span>Pelajaran 1 dari 24</span><span>0:48</span></div>
+					<div class="prog"><i></i></div>
+					<div class="board">
+						<div class="ar" lang="ar">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</div>
+						<div class="tr">"Barang siapa menempuh jalan untuk mencari ilmu, Allah mudahkan baginya jalan menuju surga."<br />HR. Muslim no. 2699</div>
+					</div>
+					<div class="fig m-svg">{@html lelaki('hold', '#c79a2e', BUKU_BUKA, 120)}</div>
+					<div class="play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#0c2c25" /></svg></div>
+					<div class="cap">Ilmu agama bukan hanya untuk santri pondok. Kita mulai dari sini.</div>
+				</div>
+			</a>
+			<div>
+				<span class="kicker">Cuplikan pelajaran</span>
+				<h2 class="sec">Satu pelajaran, empat langkah kecil</h2>
+				<p class="lead">Video tegak 9:16 dengan tokoh stickman sederhana, nyaman ditonton di HP. Setelah itu kamu membaca, mencoba, dan membawa pulang satu hal.</p>
+				<div class="flow">
+					{#each ALUR as a (a.k)}
+						<div class="card fl"><span class="k">{a.k}</span><div><h3>{a.judul}</h3><p>{a.isi}</p></div></div>
 					{/each}
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<!--
-		Dahulu blok penuh "Tumbuh Bersama" setinggi 1.374px di HP. Judulnya
-		bentrok dengan penutup "Tumbuh Bersama Indonesia" dan isinya sudah
-		terwakili blok ekosistem. Yang benar-benar berguna hanya tiga pintu
-		masuk di bawah ini, jadi disisakan sebagai kartu ringkas.
-	-->
-	<section class="so-reveal px-4 py-10 sm:px-6 sm:py-14 lg:px-10" aria-labelledby="audiens-title">
-		<div class="mx-auto max-w-7xl">
-			<h2 id="audiens-title" class="font-display text-2xl font-bold tracking-[-0.03em] text-so-green sm:text-3xl">Mulai dari peran Anda.</h2>
-			<div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 lg:gap-4">
-				{#each audiences as audience}
-					<article class="rounded-2xl border border-so-border/80 bg-white p-5">
-						<h3 class="text-lg font-extrabold tracking-[-0.02em] text-so-green">{audience.name}</h3>
-						<p class="mt-2 text-sm leading-6 text-so-muted">{audience.description}</p>
-						<div class="mt-4 flex flex-wrap gap-2">
-							{#each audience.links as link, linkIndex}
-								<a class={`rounded-full px-4 py-2 text-sm font-bold transition ${linkIndex === 0 ? 'bg-so-green text-white hover:bg-so-green-3' : 'border border-so-border text-so-green hover:border-so-green/30'}`} href={link.href}>{link.label}</a>
-							{/each}
-						</div>
-					</article>
-				{/each}
+<section class="dark">
+	<div class="wrap">
+		<span class="kicker">Komunitas</span>
+		<h2 class="sec">Belajar tidak sendirian</h2>
+		<p class="lead">Ilmu lebih mudah dijaga bila ada teman dan ada guru tempat bertanya.</p>
+		<div class="kom">
+			<div class="kc"><div class="em" aria-hidden="true">&#128172;</div><h3>Grup belajar</h3><p>Tempat saling menyemangati dan bertanya sesama peserta lewat grup Telegram atau WhatsApp. Segera dibuka.</p></div>
+			<a class="kc" href="{appBaseUrl}/tanya"><div class="em" aria-hidden="true">&#128218;</div><h3>Tanya Kitab</h3><p>Ajukan pertanyaan dan dapatkan jawaban yang menunjuk ke halaman kitab di perpustakaan kami. Untuk perkara penting, tetap tanyakan ke guru.</p></a>
+			<div class="kc"><div class="em" aria-hidden="true">&#129309;</div><h3>Bersama guru</h3><p>Materi melewati pemeriksaan ustadz sebelum terbit. Di level lanjut ada kajian langsung dua kali sebulan.</p></div>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="wrap">
+		<span class="kicker">Paket</span>
+		<h2 class="sec">Mulai gratis, lanjut bila siap</h2>
+		<p class="lead">Fondasi tetap gratis. Paket untuk level kitab dan hafalan sedang kami siapkan.</p>
+		<div class="pk">
+			<div class="card pkc">
+				<span class="tag t-free">Mulai di sini</span>
+				<h3>Gratis</h3>
+				<div class="pr">Rp0</div>
+				<ul>
+					<li>Tes Tipe Santri</li>
+					<li>Fondasi Muslim: 24 pelajaran</li>
+					<li>5 contekan PDF: jadwal 30 hari, checklist wudhu dan shalat, doa harian, dan lainnya</li>
+				</ul>
+				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama</a>
+			</div>
+			<div class="card pkc feat">
+				<span class="tag t-pay">Level 02 + 03</span>
+				<h3>Paket Santri</h3>
+				<div class="pr">Segera <small>harga diumumkan</small></div>
+				<ul>
+					<li>Ngaji Kitab Dasar per bab</li>
+					<li>Hafalan Matan dengan setoran</li>
+					<li>Progres tersimpan di akun</li>
+				</ul>
+				<a class="btn btn-s" href={groupWaUrl}>Kabari saya</a>
+			</div>
+			<div class="card pkc">
+				<span class="tag t-soon">Level 04 · lembaga</span>
+				<h3>Paket Lanjut</h3>
+				<div class="pr">Segera <small>harga diumumkan</small></div>
+				<ul>
+					<li>Kajian Lanjut: Fathul Qarib, Bidayatul Hidayah, sirah</li>
+					<li>Kajian langsung 2x sebulan</li>
+					<li>Tanya Kitab tanpa batas</li>
+				</ul>
+				<a class="btn btn-s" href={groupWaUrl}>Kabari saya</a>
 			</div>
 		</div>
-	</section>
+	</div>
+</section>
 
-	<section id="lembaga" class="so-reveal scroll-mt-20 border-y border-so-border/70 bg-so-green-3 px-4 py-10 text-white sm:px-6 sm:py-14 lg:px-10 lg:py-16">
-		<div class="mx-auto max-w-7xl">
-			<div class="grid gap-8 lg:grid-cols-[1fr_0.9fr] lg:items-end">
-				<div class="max-w-3xl">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Jaringan Lembaga Indonesia</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">
-						{#if statistik && statistik.lembaga > 0}
-							{labelAngka(statistik.lembaga)} lembaga sudah memakai SantriOnline untuk merapikan data dan membina santrinya.
-						{:else}
-							Dari lembaga lokal, bertumbuh bersama lembaga lain di Indonesia.
-						{/if}
-					</h2>
-					<p class="mt-5 text-lg leading-8 text-white/70">Setiap lembaga memiliki karakter dan kebutuhan berbeda. SantriOnline menyediakan satu fondasi yang dapat digunakan bertahap—mulai dari merapikan data hingga menguatkan pembinaan santri.</p>
-				</div>
-				<div class="flex flex-col gap-3 sm:flex-row lg:justify-end">
-					<a class="inline-flex items-center justify-center rounded-full bg-so-gold px-6 py-3.5 text-sm font-bold text-so-green-3" href={appInstitutionUrl}>Mulai Daftar Lembaga <span class="ml-2" aria-hidden="true">→</span></a>
-					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-6 py-3.5 text-sm font-bold text-white hover:bg-white/10" href="/lembaga">Gratis untuk Lembaga + Pendampingan</a>
-				</div>
-			</div>
-
-			<div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-				{#each institutionTypes as institution}
-					<a class="group flex flex-row items-start gap-4 rounded-2xl border border-white/15 bg-white/5 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-so-gold/50 hover:bg-white/10 sm:flex-col sm:gap-0 sm:rounded-3xl sm:p-6" href={institution.href}>
-						<span class="icon-badge icon-badge-gold shrink-0"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={institution.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
-						<span class="min-w-0 flex-1 sm:contents">
-							<h3 class="text-lg font-extrabold sm:mt-5 sm:text-xl">{institution.name}</h3>
-							<p class="mt-1 text-sm leading-6 text-white/65 sm:mt-3 sm:leading-7">{institution.description}</p>
-							<span class="mt-2 inline-flex items-center gap-2 text-sm font-bold text-so-gold-2 sm:mt-5">Jelajahi <span class="transition group-hover:translate-x-1">→</span></span>
-						</span>
-					</a>
-				{/each}
-			</div>
-
-			<div class="mt-6 grid gap-3 rounded-3xl border border-white/15 bg-white/5 p-6 sm:grid-cols-2 lg:grid-cols-3 sm:p-8">
-				{#each institutionBenefits as benefit}
-					<p class="flex gap-3 text-sm font-semibold leading-6 text-white/80"><span class="text-so-gold-2">✓</span><span>{benefit}</span></p>
-				{/each}
-			</div>
-		</div>
-	</section>
-
-	<ChatSection siap={data.siap} {groupWaUrl} onLimit={(q, serah) => {
-		pertanyaanTertunda = q;
-		tokenSerah = serah;
-		showUpgradeModal = true;
-	}} />
-
-	<section class="so-reveal border-y border-so-border/70 bg-white px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16" aria-labelledby="faq-title">
-		<div class="mx-auto max-w-5xl">
-			<div class="mx-auto max-w-3xl text-center">
-				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Pertanyaan Umum</p>
-				<h2 id="faq-title" class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Mulai mengenal SantriOnline.</h2>
-				<p class="mt-5 text-lg leading-8 text-so-muted">Jawaban singkat untuk santri, orang tua, guru, dan pengelola lembaga yang ingin bergabung.</p>
-			</div>
-			<div class="mt-10 grid gap-4 sm:grid-cols-2">
-				{#each faqs as faq}
-					<article class="rounded-2xl border border-so-border/80 bg-so-cream p-6 sm:p-7">
-						<h3 class="text-lg font-extrabold leading-7 text-so-green">{faq.question}</h3>
-						<p class="mt-3 text-sm leading-7 text-so-muted">{faq.answer}</p>
-					</article>
-				{/each}
-			</div>
-		</div>
-	</section>
-
-	<section class="so-reveal px-4 py-10 sm:px-6 sm:py-14 lg:px-10 lg:py-16">
-		<div class="relative mx-auto max-w-7xl overflow-hidden rounded-3xl bg-so-green-3 px-6 py-12 text-white sm:px-10 lg:px-14 lg:py-16">
-			<div class="absolute -right-20 -top-20 size-72 rounded-full bg-so-green-2/25 blur-3xl"></div>
-			<div class="absolute -bottom-28 left-1/3 size-64 rounded-full bg-so-gold/15 blur-3xl"></div>
-			<div class="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
-				<div class="max-w-3xl">
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Tumbuh Bersama Indonesia</p>
-					<h2 class="font-display mt-4 text-3xl font-bold tracking-[-0.03em] text-white sm:text-5xl">Hubungkan lembaga Anda dengan masa depan pembinaan santri.</h2>
-					<p class="mt-5 max-w-2xl text-lg leading-8 text-white/70">Mulai dari kebutuhan paling penting, gunakan secara bertahap, dan bangun lingkungan yang menjaga aqidah, adab, ilmu, amal, serta keterampilan santri.</p>
-				</div>
-				<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-					<a class="inline-flex items-center justify-center gap-2 rounded-full bg-so-gold px-7 py-3.5 text-base font-bold text-so-green-3" href={appInstitutionUrl}>Daftarkan Lembaga <span>→</span></a>
-					<a class="inline-flex items-center justify-center rounded-full border border-white/20 px-7 py-3.5 text-base font-bold text-white hover:bg-white/10" href={appLoginUrl}>Saya Sudah Punya Akun</a>
-				</div>
-			</div>
-		</div>
-	</section>
-</main>
-
-<footer class="border-t border-so-border/80 bg-white px-4 pb-28 pt-10 text-so-muted sm:px-6 sm:pb-10 lg:px-10">
-	<div class="mx-auto max-w-7xl">
-		<div class="grid gap-8 md:grid-cols-[1fr_auto] md:items-end">
-			<div>
-				<a class="inline-flex items-center gap-3 font-display font-bold text-so-green" href="/"><img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" /> SantriOnline</a>
-				<p class="mt-4 max-w-lg text-sm leading-6">Mesin pembentuk identitas, adab, aqidah, amal, ilmu, dan keterampilan generasi muslim.</p>
-			</div>
-			<div class="md:text-right">
-				<nav class="flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold md:justify-end" aria-label="Navigasi footer">
-					<a class="hover:text-so-green" href="#arah">Arah</a>
-					<a class="hover:text-so-green" href="#ekosistem">Ekosistem</a>
-					<a class="hover:text-so-green" href="/lembaga">Untuk Lembaga</a>
-					<a class="hover:text-so-green" href="/tentang">Tentang</a>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/blog`}>Artikel</a>
-					<a class="hover:text-so-green" href={groupWaUrl}>Komunitas</a>
-					<a class="hover:text-so-green" href={appBaseUrl}>Buka Aplikasi ↗</a>
-				</nav>
-				<nav class="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-sm md:justify-end" aria-label="Baca Al-Qur'an">
-					<span class="font-semibold text-so-green">Baca Al-Qur'an:</span>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/yasin`}>Surat Yasin</a>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/al-mulk`}>Surat Al-Mulk</a>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/al-kahfi`}>Surat Al-Kahfi</a>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran/ayat-kursi`}>Ayat Kursi</a>
-					<a class="hover:text-so-green" href={`${appBaseUrl}/al-quran`}>114 Surat</a>
-				</nav>
-			</div>
-		</div>
-
-		<div class="mt-9 rounded-3xl border border-so-border bg-so-cream p-6 sm:p-7">
-			<div class="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
-				<div>
-					<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Untuk Lembaga</p>
-					<h2 class="font-display mt-2 text-xl font-bold tracking-[-0.02em] text-so-green sm:text-2xl">
-						Mengelola TPQ, pondok, rumah tahfidz, masjid, atau musholla?
-					</h2>
-					<p class="mt-2 max-w-2xl text-sm leading-6">
-						Gratis tanpa batas santri, termasuk pendampingan selama masa perkenalan. <a class="font-bold text-so-green underline" href="/lembaga">Lihat cara bergabung</a>.
+<section style="padding-top:0">
+	<div class="wrap">
+		<span class="kicker">Pertanyaan</span>
+		<h2 class="sec">Yang sering ditanyakan</h2>
+		<div class="faq">
+			{#each faqs as f, i (f.question)}
+				<details class="card fq" open={i === 0}>
+					<summary><h3>{f.question}</h3><span class="pm" aria-hidden="true"></span></summary>
+					<p>{f.answer}</p>
+					{#if i === faqs.length - 1}
+						<p class="lembaga-links">
+							<a href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a>
+							<a href="/aplikasi-raport-tpq">Raport TPQ</a>
+							<a href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a>
+							<a href="/literasi/tahfidz-adalah">Apa itu tahfidz</a>
+							<a href="/lembaga">Untuk Lembaga</a>
+							<a href="/tentang">Tentang kami</a>
+							<a href={appInstitutionUrl}>Daftarkan Lembaga</a>
 						</p>
-				</div>
-				<a
-					class="group inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white transition duration-200 hover:bg-so-green-3 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/25"
-					href={appInstitutionUrl}
-				>
-					Daftarkan Lembaga
-					<span aria-hidden="true" class="transition-transform duration-200 group-hover:translate-x-0.5">→</span>
-				</a>
-			</div>
-
-			<div class="mt-5 flex flex-wrap gap-2 border-t border-so-border pt-5 text-sm font-semibold">
-				{#each institutionTypes as institution}
-					<a
-						class="rounded-full border border-so-border bg-white px-4 py-2 text-so-green transition duration-200 hover:-translate-y-0.5 hover:border-so-green/30 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-so-green/20"
-						href={institution.href}
-					>
-						{institution.name}
-					</a>
-				{/each}
-			</div>
+					{/if}
+				</details>
+			{/each}
 		</div>
-
-		<p class="mt-8 text-xs md:text-right">
-			© 2026 SantriOnline · Pendem, Batu, Jawa Timur ·
-			<a class="hover:text-so-green" href="/literasi/apa-itu-santri-online">Apa Itu Santri Online?</a> ·
-			<a class="hover:text-so-green" href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a> ·
-			<a class="hover:text-so-green" href="/aplikasi-raport-tpq">Templat Raport TPQ</a> ·
-			<a class="hover:text-so-green" href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a> ·
-			<a class="hover:text-so-green" href="/literasi/tahfidz-adalah">Tahfidz Adalah</a> ·
-			<a class="hover:text-so-green" href="https://masyogik.santrionline.com/" rel="noopener">Jasa Web oleh Mas Yogik</a>
-		</p>
 	</div>
-</footer>
+</section>
 
-<nav class="fixed inset-x-0 bottom-0 z-40 border-t border-so-border bg-white/95 p-1.5 shadow-soft backdrop-blur-xl md:hidden" aria-label="Navigasi bawah">
-	<div class="mx-auto grid max-w-md grid-cols-5 gap-1">
-		<a class="mobile-action" href="#katalog" aria-label="Ke katalog"><span class="mobile-action-icon icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h10" stroke-linecap="round" /></svg></span><span>Katalog</span></a>
-		<a class="mobile-action" href="#rak-bidang" aria-label="Ke rak kitab"><span class="mobile-action-icon icon-badge-gold"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kitab</span></a>
-		<a class="mobile-action mobile-action-primary" href={`${appBaseUrl}/kampung`} aria-label="Mainkan Kampung Santri"><span class="mobile-action-icon bg-gradient-to-br from-emerald-400 to-cyan-500"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 20V9l8-5 8 5v11M9 20v-6h6v6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Kampung</span></a>
-		<a class="mobile-action" href="#rak-bolak-balik" aria-label="Ke rak buku"><span class="mobile-action-icon icon-badge-violet"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Buku</span></a>
-		<a class="mobile-action" href={appLoginUrl} aria-label="Masuk ke akun SantriOnline"><span class="mobile-action-icon icon-badge-cyan"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span>Masuk</span></a>
-	</div>
-</nav>
-
-{#if showUpgradeModal}
-	<div class="fixed inset-0 z-50 grid place-items-center bg-so-green-3/65 px-5 backdrop-blur-sm" role="presentation">
-		<div bind:this={upgradeDialog} class="w-full max-w-md rounded-3xl bg-white p-6 text-so-ink shadow-2xl" role="dialog" aria-modal="true" aria-labelledby="upgrade-title">
-			<div class="flex items-start justify-between gap-4">
-				<div><p class="text-xs font-bold uppercase tracking-[0.14em] text-so-green">Aplikasi SantriOnline</p><h2 id="upgrade-title" class="mt-2 text-2xl font-extrabold tracking-[-0.03em]">Lanjutkan percakapan di aplikasi</h2></div>
-				<button bind:this={upgradeCloseButton} type="button" class="grid size-9 place-items-center rounded-full border border-so-border text-xl text-so-muted" aria-label="Tutup modal" onclick={() => (showUpgradeModal = false)}>×</button>
+<section style="padding-top:0">
+	<div class="wrap">
+		<div class="closing">
+			<div class="figs">
+				{#each URUTAN_TIPE as t (t)}<span class="m-svg fig64">{@html MASKOT[t].svg(64)}</span>{/each}
 			</div>
-			<p class="mt-5 rounded-2xl bg-so-cream p-4 text-sm leading-6 text-so-green">Kuota pertanyaan tamu sudah habis. Masuk atau daftar untuk melanjutkan di Tanya Kitab aplikasi. Percakapan Anda di sini ikut pindah ke riwayat akun, dan pertanyaan terakhir sudah menunggu di kotak tanya.</p>
-			<div class="mt-6 grid grid-cols-2 gap-3">
-				<a class="rounded-full bg-so-green px-5 py-3 text-center text-sm font-bold text-white" href={lanjutDaftarUrl}>Daftar</a>
-				<a class="rounded-full border border-so-border px-5 py-3 text-center text-sm font-bold" href={lanjutMasukUrl}>Masuk</a>
+			<h2>Mulai hari ini, satu pelajaran saja</h2>
+			<p>Sepuluh menit cukup untuk pelajaran pertama. Sisanya bisa kamu lanjutkan besok, dan lusa.</p>
+			<div class="ctas">
+				<a class="btn btn-gold" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama &rarr;</a>
+				<a class="btn btn-ghost" href="/tipe-santri">Cek Tipe Santri</a>
+				<a class="btn btn-ghost" href={appRegisterUrl}>Daftar gratis</a>
 			</div>
 		</div>
 	</div>
-{/if}
+</section>
+
+<style>
+	.hero {
+		padding: 34px 0 40px;
+		background:
+			radial-gradient(900px 420px at 85% 0%, rgb(252 211 77 / 0.18), transparent 60%),
+			radial-gradient(700px 400px at 0% 100%, rgb(27 85 70 / 0.1), transparent 60%);
+	}
+	.hero-g {
+		display: grid;
+		gap: 28px;
+	}
+	.hero-g > * {
+		min-width: 0;
+	}
+	h1 {
+		font-family: 'Fraunces', Georgia, serif;
+		color: var(--g);
+		font-size: 40px;
+		line-height: 1.06;
+		letter-spacing: -0.035em;
+		margin: 16px 0 14px;
+	}
+	h1 em {
+		font-style: normal;
+		background: linear-gradient(transparent 62%, rgb(252 211 77 / 0.65) 62%);
+		padding: 0 4px;
+	}
+	.sub {
+		font-size: 16px;
+		line-height: 1.65;
+		color: var(--muted);
+		margin: 0 0 22px;
+		max-width: 560px;
+	}
+	.ctas {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.trust {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px 16px;
+		margin-top: 18px;
+		font-size: 13px;
+		font-weight: 700;
+		color: var(--g);
+	}
+	.trust span {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+	}
+	.trust b {
+		display: inline-grid;
+		place-items: center;
+		width: 20px;
+		height: 20px;
+		border-radius: 99px;
+		background: #dcfce7;
+		color: var(--ink2);
+		font-size: 12px;
+	}
+	.mascot-card {
+		position: relative;
+		display: block;
+		padding: 20px 16px 18px;
+		border-radius: 26px;
+		background: var(--g3);
+		color: #fff;
+		overflow: hidden;
+		box-shadow: var(--sh2);
+	}
+	.mascot-card::before {
+		content: '';
+		position: absolute;
+		right: -60px;
+		top: -60px;
+		width: 220px;
+		height: 220px;
+		border-radius: 999px;
+		background: rgb(27 85 70 / 0.6);
+		filter: blur(30px);
+	}
+	.mc-h {
+		position: relative;
+		font-family: 'Fraunces', serif;
+		font-size: 21px;
+		margin: 8px 0 4px;
+	}
+	.mascot-card .s {
+		position: relative;
+		color: #cfe3da;
+		font-size: 13px;
+		margin: 0 0 14px;
+	}
+	.mascot-card .tag {
+		position: relative;
+	}
+	.mrow {
+		position: relative;
+		display: grid;
+		grid-template-columns: repeat(5, minmax(0, 1fr));
+		gap: 6px;
+	}
+	.m {
+		background: #f6f1e3;
+		border-radius: 16px;
+		padding: 8px 2px 6px;
+		text-align: center;
+		color: var(--g);
+	}
+	.m b {
+		display: block;
+		font-size: 8.5px;
+		letter-spacing: -0.01em;
+		line-height: 1.2;
+		margin-top: 2px;
+	}
+	.mini {
+		position: relative;
+		margin-top: 14px;
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		background: rgb(255 255 255 / 0.08);
+		border: 1px solid rgb(255 255 255 / 0.14);
+		border-radius: 16px;
+		padding: 12px;
+	}
+	.mini .ic {
+		flex: none;
+		width: 40px;
+		height: 40px;
+		border-radius: 12px;
+		background: var(--gold);
+		display: grid;
+		place-items: center;
+		color: var(--g3);
+		font-weight: 900;
+	}
+	.mini p {
+		margin: 0;
+		font-size: 13px;
+		line-height: 1.45;
+		color: #e6efe9;
+	}
+	.mini p b {
+		color: var(--gold2);
+	}
+	.steps {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 12px;
+	}
+	.step {
+		padding: 16px;
+	}
+	.step .n {
+		font-family: 'Fraunces', serif;
+		font-size: 15px;
+		font-weight: 800;
+		color: #b88b24;
+	}
+	.step h3 {
+		margin: 6px 0;
+		font-size: 19px;
+		color: var(--g);
+	}
+	.step p {
+		margin: 0;
+		color: var(--muted);
+		font-size: 13px;
+		line-height: 1.55;
+	}
+	.step .ico {
+		width: 46px;
+		height: 46px;
+		border-radius: 14px;
+		display: grid;
+		place-items: center;
+		background: linear-gradient(135deg, #34a873, #12633f);
+		color: #fff;
+		margin-bottom: 12px;
+	}
+	.step:nth-child(even) .ico {
+		background: linear-gradient(135deg, #e8c97a, #b88b24);
+		color: #173d2e;
+	}
+	.ladder {
+		display: grid;
+		gap: 12px;
+	}
+	.lv {
+		display: grid;
+		grid-template-columns: 58px 1fr;
+		gap: 14px;
+		padding: 18px;
+		align-items: start;
+	}
+	.lv .no {
+		font-family: 'Fraunces', serif;
+		font-size: 30px;
+		font-weight: 800;
+		color: var(--g);
+		line-height: 1;
+	}
+	.lv h3 {
+		margin: 0 0 4px;
+		font-size: 18px;
+		color: var(--g);
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		align-items: center;
+	}
+	.lv p {
+		margin: 4px 0 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.lv.hi {
+		background: var(--g);
+		border-color: var(--g);
+	}
+	.lv.hi .no,
+	.lv.hi h3 {
+		color: #fff;
+	}
+	.lv.hi p {
+		color: #cfe3da;
+	}
+	.chips {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 10px;
+	}
+	.chip {
+		font-size: 12px;
+		font-weight: 700;
+		padding: 5px 10px;
+		border-radius: 99px;
+		background: rgb(255 255 255 / 0.12);
+		color: #fff;
+		border: 1px solid rgb(255 255 255 / 0.18);
+	}
+	.lv.lock .no {
+		color: #b8bfb3;
+	}
+	.rakhead {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 12px;
+		margin: 26px 0 12px;
+	}
+	.rakhead h3 {
+		font-family: 'Fraunces', Georgia, serif;
+		color: var(--g);
+		font-size: 20px;
+		margin: 0;
+	}
+	.rakhead a {
+		font-weight: 800;
+		font-size: 14px;
+		color: var(--ink2);
+		white-space: nowrap;
+	}
+	.rak {
+		display: grid;
+		grid-auto-flow: column;
+		grid-auto-columns: 128px;
+		gap: 14px;
+		overflow-x: auto;
+		padding-bottom: 6px;
+		scroll-snap-type: x proximity;
+	}
+	.bk {
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		scroll-snap-align: start;
+	}
+	.bk img,
+	.bk .ph {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 2/3;
+		object-fit: cover;
+		border-radius: 12px;
+		box-shadow: var(--sh);
+		background: #e9ece4;
+	}
+	.bk .ph {
+		display: grid;
+		place-items: center;
+		padding: 10px;
+		font-family: 'Fraunces', serif;
+		font-size: 13px;
+		color: var(--g);
+		text-align: center;
+	}
+	.bk b {
+		font-size: 13px;
+		line-height: 1.3;
+		color: var(--ink);
+	}
+	.bk span {
+		font-size: 11.5px;
+		color: var(--muted);
+	}
+	.prod {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		gap: 12px;
+	}
+	.pd {
+		display: flex;
+		gap: 12px;
+		align-items: center;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 18px;
+		padding: 10px;
+		min-width: 0;
+	}
+	.pd img {
+		flex: none;
+		width: 52px;
+		height: 52px;
+		border-radius: 12px;
+		object-fit: cover;
+	}
+	.pd div {
+		min-width: 0;
+	}
+	.pd b {
+		display: block;
+		font-size: 14px;
+	}
+	.pd span {
+		font-size: 12px;
+		color: var(--muted);
+	}
+	.semua {
+		margin: 18px 0 0;
+		font-size: 14px;
+		color: var(--muted);
+	}
+	.semua a {
+		font-weight: 800;
+		color: var(--ink2);
+	}
+	.persona {
+		display: grid;
+		gap: 14px;
+	}
+	.pc {
+		padding: 20px;
+		display: grid;
+		gap: 12px;
+	}
+	.pc-h {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.pc-h .av {
+		flex: none;
+		width: 62px;
+		height: 72px;
+		background: #f6f1e3;
+		border-radius: 16px;
+		display: grid;
+		place-items: center;
+		overflow: hidden;
+		padding: 4px 6px;
+	}
+	.pc-h h3 {
+		margin: 0;
+		font-size: 17px;
+		color: var(--g);
+	}
+	.pc-h span {
+		font-size: 13px;
+		color: var(--muted);
+	}
+	.ba {
+		border-radius: 14px;
+		padding: 12px 14px;
+		font-size: 14px;
+		line-height: 1.55;
+	}
+	.ba small {
+		display: block;
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		margin-bottom: 4px;
+	}
+	.before {
+		background: #f3f4f1;
+		color: #334155;
+	}
+	.before small {
+		color: #64748b;
+	}
+	.after {
+		background: #ecfdf3;
+		color: #064e3b;
+		border: 1px solid #c9f0d9;
+	}
+	.after small {
+		color: var(--ink2);
+	}
+	.note {
+		font-size: 12px;
+		color: var(--muted);
+		margin-top: 14px;
+		font-style: italic;
+	}
+	.vid-g {
+		display: grid;
+		gap: 26px;
+		align-items: center;
+	}
+	.vid-g > * {
+		min-width: 0;
+	}
+	.phone {
+		display: block;
+		width: 250px;
+		margin: 0 auto;
+		aspect-ratio: 9/16;
+		border-radius: 30px;
+		background: #0c2c25;
+		padding: 10px;
+		box-shadow: var(--sh2);
+		position: relative;
+	}
+	.screen {
+		position: relative;
+		height: 100%;
+		border-radius: 22px;
+		overflow: hidden;
+		background: linear-gradient(180deg, #f6f1e3, #efe6cd);
+	}
+	.screen .top {
+		position: absolute;
+		left: 12px;
+		right: 12px;
+		top: 12px;
+		display: flex;
+		justify-content: space-between;
+		font-size: 10px;
+		font-weight: 800;
+		color: var(--g);
+	}
+	.board {
+		position: absolute;
+		left: 18px;
+		right: 18px;
+		top: 46px;
+		background: #123f34;
+		border-radius: 10px;
+		padding: 10px;
+		color: #fff;
+		text-align: center;
+	}
+	.board .ar {
+		font-family: 'Amiri', serif;
+		font-size: 19px;
+		color: var(--gold2);
+		direction: rtl;
+		line-height: 1.5;
+	}
+	.board .tr {
+		font-size: 10px;
+		line-height: 1.4;
+		color: #d7e7df;
+		margin-top: 2px;
+	}
+	.fig {
+		position: absolute;
+		left: 18%;
+		bottom: 70px;
+		width: 110px;
+	}
+	.cap {
+		position: absolute;
+		left: 10px;
+		right: 10px;
+		bottom: 16px;
+		background: rgb(12 44 37 / 0.88);
+		color: #fff;
+		font-size: 11px;
+		font-weight: 700;
+		line-height: 1.35;
+		border-radius: 10px;
+		padding: 7px 9px;
+		text-align: center;
+	}
+	.play {
+		position: absolute;
+		right: 22px;
+		top: 46%;
+		width: 52px;
+		height: 52px;
+		border-radius: 99px;
+		background: rgb(252 211 77 / 0.95);
+		display: grid;
+		place-items: center;
+		box-shadow: 0 10px 24px rgb(0 0 0 / 0.25);
+	}
+	.prog {
+		position: absolute;
+		left: 12px;
+		right: 12px;
+		top: 30px;
+		height: 3px;
+		background: rgb(18 63 52 / 0.15);
+		border-radius: 3px;
+	}
+	.prog i {
+		display: block;
+		width: 34%;
+		height: 100%;
+		background: var(--g);
+		border-radius: 3px;
+	}
+	.flow {
+		display: grid;
+		gap: 10px;
+	}
+	.fl {
+		display: flex;
+		gap: 14px;
+		align-items: flex-start;
+		padding: 14px 16px;
+	}
+	.fl .k {
+		flex: none;
+		width: 34px;
+		height: 34px;
+		border-radius: 10px;
+		background: var(--g);
+		color: #fff;
+		font-weight: 900;
+		display: grid;
+		place-items: center;
+		font-size: 14px;
+	}
+	.fl h3 {
+		margin: 0 0 2px;
+		font-size: 15px;
+		color: var(--g);
+	}
+	.fl p {
+		margin: 0;
+		font-size: 13.5px;
+		line-height: 1.5;
+		color: var(--muted);
+	}
+	.dark {
+		background: var(--g3);
+		color: #fff;
+	}
+	.dark .sec {
+		color: #fff;
+	}
+	.dark .lead {
+		color: #cfe3da;
+	}
+	.dark .kicker {
+		color: var(--gold);
+	}
+	.kom {
+		display: grid;
+		gap: 14px;
+	}
+	.kc {
+		display: block;
+		padding: 20px;
+		border-radius: 20px;
+		background: rgb(255 255 255 / 0.06);
+		border: 1px solid rgb(255 255 255 / 0.14);
+	}
+	.kc h3 {
+		margin: 8px 0 6px;
+		font-size: 17px;
+		color: var(--gold2);
+	}
+	.kc p {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.6;
+		color: #d7e7df;
+	}
+	.kc .em {
+		font-size: 22px;
+	}
+	.pk {
+		display: grid;
+		gap: 14px;
+	}
+	.pkc {
+		padding: 24px;
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+	}
+	.pkc .tag {
+		align-self: flex-start;
+	}
+	.pkc h3 {
+		margin: 0;
+		font-size: 20px;
+		color: var(--g);
+	}
+	.pkc .pr {
+		font-family: 'Fraunces', serif;
+		font-size: 30px;
+		font-weight: 800;
+		color: var(--g);
+	}
+	.pkc .pr small {
+		font-family: 'Plus Jakarta Sans', sans-serif;
+		font-size: 13px;
+		color: var(--muted);
+		font-weight: 600;
+	}
+	.pkc ul {
+		margin: 4px 0 8px;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 8px;
+		font-size: 14px;
+		color: #334155;
+	}
+	.pkc li {
+		display: flex;
+		gap: 8px;
+		line-height: 1.45;
+	}
+	.pkc li::before {
+		content: '\2713';
+		color: var(--ink2);
+		font-weight: 900;
+	}
+	.pkc.feat {
+		border: 2px solid var(--g);
+	}
+	.pkc .btn {
+		margin-top: auto;
+	}
+	.faq {
+		display: grid;
+		gap: 10px;
+		max-width: 820px;
+		margin-top: 18px;
+	}
+	.fq {
+		padding: 16px 18px;
+	}
+	.fq summary {
+		list-style: none;
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+		cursor: pointer;
+	}
+	.fq summary::-webkit-details-marker {
+		display: none;
+	}
+	.fq h3 {
+		margin: 0;
+		font-size: 15.5px;
+		color: var(--g);
+	}
+	.pm::before {
+		content: '+';
+		color: #b88b24;
+		font-size: 20px;
+		line-height: 1;
+		font-weight: 800;
+	}
+	.fq[open] .pm::before {
+		content: '\2212';
+	}
+	.fq p {
+		margin: 10px 0 0;
+		font-size: 14px;
+		line-height: 1.65;
+		color: var(--muted);
+	}
+	.lembaga-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 14px;
+	}
+	.lembaga-links a {
+		font-weight: 800;
+		color: var(--ink2);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.closing {
+		position: relative;
+		overflow: hidden;
+		border-radius: 28px;
+		background: var(--g3);
+		color: #fff;
+		padding: 34px 22px;
+		text-align: center;
+	}
+	.closing::before {
+		content: '';
+		position: absolute;
+		left: -80px;
+		bottom: -120px;
+		width: 300px;
+		height: 300px;
+		border-radius: 999px;
+		background: rgb(252 211 77 / 0.14);
+		filter: blur(30px);
+	}
+	.closing h2 {
+		position: relative;
+		font-family: 'Fraunces', serif;
+		font-size: 30px;
+		line-height: 1.15;
+		margin: 0 0 10px;
+	}
+	.closing p {
+		position: relative;
+		color: #cfe3da;
+		margin: 0 auto 20px;
+		max-width: 520px;
+		font-size: 15px;
+		line-height: 1.6;
+	}
+	.closing .ctas {
+		position: relative;
+		align-items: center;
+	}
+	.figs {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		gap: 4px;
+		margin-bottom: 6px;
+	}
+	.fig64 {
+		width: 64px;
+	}
+	@media (min-width: 900px) {
+		.hero {
+			padding: 64px 0 72px;
+		}
+		.hero-g {
+			grid-template-columns: 1.1fr 0.9fr;
+			gap: 48px;
+			align-items: center;
+		}
+		h1 {
+			font-size: 64px;
+		}
+		.sub {
+			font-size: 18px;
+		}
+		.ctas {
+			flex-direction: row;
+		}
+		.mascot-card {
+			padding: 28px;
+		}
+		.m b {
+			font-size: 9.5px;
+		}
+		.mrow {
+			gap: 8px;
+		}
+		.steps {
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.step {
+			padding: 22px;
+		}
+		.step p {
+			font-size: 14px;
+		}
+		.ladder {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.lv.hi {
+			grid-row: span 2;
+		}
+		.lv:first-child,
+		.lv.wide {
+			grid-column: 1/-1;
+		}
+		.rak {
+			grid-auto-flow: row;
+			grid-template-columns: repeat(8, minmax(0, 1fr));
+			overflow: visible;
+		}
+		.prod {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+		.persona {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.vid-g {
+			grid-template-columns: auto 1fr;
+			gap: 56px;
+		}
+		.phone {
+			width: 300px;
+		}
+		.kom {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.pk {
+			grid-template-columns: repeat(3, 1fr);
+		}
+		.closing {
+			padding: 56px;
+		}
+		.closing h2 {
+			font-size: 44px;
+		}
+	}
+</style>

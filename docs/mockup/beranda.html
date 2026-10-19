@@ -1,0 +1,444 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SantriOnline · Belajar Islam dari nol sampai paham (mockup)</title>
+<link href="fonts.css" rel="stylesheet">
+<style>
+:root{--g:#123f34;--g2:#1b5546;--g3:#0c2c25;--gold:#fcd34d;--gold2:#fde68a;--ink2:#065f46;--cream:#f6f7f3;--border:#e2e5dd;--muted:#475569;--ink:#0f172a;
+--sh:0 12px 34px rgb(18 63 52/.08);--sh2:0 18px 60px rgb(18 63 52/.12)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.disp{font-family:'Fraunces',Georgia,serif;letter-spacing:-.02em}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgb(252 211 77/.45);background:#fff;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--g)}
+.dot{width:8px;height:8px;border-radius:9px;background:var(--g2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:999px;font-weight:800;font-size:15px}
+.btn-p{background:var(--g);color:#fff;box-shadow:0 8px 20px rgb(18 63 52/.22)}
+.btn-s{background:#fff;color:var(--g);border:1.5px solid rgb(201 168 76/.6)}
+.btn-gold{background:var(--gold);color:var(--g3)}
+.btn-ghost{border:1.5px solid rgb(255 255 255/.3);color:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:var(--sh)}
+.tag{display:inline-block;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.t-free{background:#dcfce7;color:#065f46}.t-pay{background:#fef3c7;color:#7c5a06}.t-soon{background:#eef0ea;color:#475569}
+h2.sec{font-family:'Fraunces',Georgia,serif;color:var(--g);font-size:28px;line-height:1.15;margin:10px 0 8px;letter-spacing:-.02em}
+p.lead{color:var(--muted);font-size:15px;line-height:1.65;margin:0 0 22px;max-width:640px}
+section{padding:44px 0}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+@media(min-width:900px){h2.sec{font-size:40px} section{padding:72px 0} p.lead{font-size:17px} .wrap{padding:0 40px}}
+
+.hdr{position:sticky;top:0;z-index:5;background:rgb(246 247 243/.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--g);font-size:19px}
+.brand img{border-radius:10px}
+.nav{display:none;gap:4px;font-weight:700;font-size:14px;color:var(--muted)}
+.nav a{padding:8px 12px;border-radius:999px}.nav a.on{color:var(--g);background:rgb(18 63 52/.07)}
+.car{font-size:10px}
+.hdr-act{display:flex;align-items:center;gap:8px}
+.btn.sm{min-height:38px;padding:8px 16px;font-size:13px}
+.burger{display:grid;gap:4px;width:40px;height:40px;place-content:center;border:1px solid var(--border);border-radius:999px;background:#fff}
+.burger i{display:block;width:16px;height:2px;background:var(--g);border-radius:2px}
+.hide-m{display:none}
+@media(min-width:900px){.nav{display:flex}.burger{display:none}.hide-m{display:inline-flex}}
+
+.hero{padding:34px 0 40px;background:radial-gradient(900px 420px at 85% 0%,rgb(252 211 77/.18),transparent 60%),radial-gradient(700px 400px at 0% 100%,rgb(27 85 70/.10),transparent 60%)}
+.hero-g{display:grid;gap:28px}
+.hero h1{font-family:'Fraunces',Georgia,serif;color:var(--g);font-size:40px;line-height:1.06;letter-spacing:-.035em;margin:16px 0 14px}
+.hero h1 em{font-style:normal;background:linear-gradient(transparent 62%,rgb(252 211 77/.65) 62%);padding:0 4px}
+.hero p.sub{font-size:16px;line-height:1.65;color:var(--muted);margin:0 0 22px;max-width:560px}
+.ctas{display:flex;flex-direction:column;gap:10px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:18px;font-size:13px;font-weight:700;color:var(--g)}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+.trust b{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:99px;background:#dcfce7;color:var(--ink2);font-size:12px}
+.mascot-card{position:relative;padding:20px 16px 18px;border-radius:26px;background:var(--g3);color:#fff;overflow:hidden;box-shadow:var(--sh2)}
+.mascot-card:before{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:999px;background:rgb(27 85 70/.6);filter:blur(30px)}
+.mascot-card h3{position:relative;font-family:'Fraunces',serif;font-size:21px;margin:4px 0 4px}
+.mascot-card .s{position:relative;color:#cfe3da;font-size:13px;margin:0 0 14px}
+.mrow{position:relative;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+.m{background:#f6f1e3;border-radius:16px;padding:8px 2px 6px;text-align:center;color:var(--g)}
+.m svg{width:100%;height:auto;display:block}
+.m b{display:block;font-size:8.5px;letter-spacing:-.01em;line-height:1.2;margin-top:2px;overflow-wrap:normal}
+.mini{position:relative;margin-top:14px;display:flex;align-items:center;gap:12px;background:rgb(255 255 255/.08);border:1px solid rgb(255 255 255/.14);border-radius:16px;padding:12px}
+.mini .ic{flex:none;width:40px;height:40px;border-radius:12px;background:var(--gold);display:grid;place-items:center;color:var(--g3);font-weight:900}
+.mini p{margin:0;font-size:13px;line-height:1.45;color:#e6efe9}.mini p b{color:var(--gold2)}
+.steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.step{padding:16px}
+.step .n{font-family:'Fraunces',serif;font-size:15px;font-weight:800;color:#b88b24}
+.step h3{margin:6px 0 6px;font-size:19px;color:var(--g)}
+.step p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+@media(min-width:900px){.step{padding:22px}.step p{font-size:14px}}
+.step .ico{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#34a873,#12633f);color:#fff;margin-bottom:12px}
+.step:nth-child(even) .ico{background:linear-gradient(135deg,#e8c97a,#b88b24);color:#173d2e}
+.ladder{display:grid;gap:12px}
+.lv{display:grid;grid-template-columns:58px 1fr;gap:14px;padding:18px;align-items:start}
+.lv .no{font-family:'Fraunces',serif;font-size:30px;font-weight:800;color:var(--g);line-height:1}
+.lv h3{margin:0 0 4px;font-size:18px;color:var(--g);display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.lv p{margin:4px 0 0;font-size:14px;line-height:1.55;color:var(--muted)}
+.lv.hi{background:var(--g);border-color:var(--g)}.lv.hi .no,.lv.hi h3{color:#fff}.lv.hi p{color:#cfe3da}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.chip{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:rgb(255 255 255/.12);color:#fff;border:1px solid rgb(255 255 255/.18)}
+.lv.lock .no{color:#b8bfb3}
+.persona{display:grid;gap:14px}
+.pc{padding:20px;display:grid;gap:12px}
+.pc-h{display:flex;align-items:center;gap:12px}
+.pc-h .av{flex:none;width:62px;height:72px;background:#f6f1e3;border-radius:16px;display:grid;place-items:center;overflow:hidden}
+.pc-h .av svg{width:56px;height:auto}
+.pc-h h3{margin:0;font-size:17px;color:var(--g)}.pc-h span{font-size:13px;color:var(--muted)}
+.ba{border-radius:14px;padding:12px 14px;font-size:14px;line-height:1.55}
+.ba small{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px}
+.before{background:#f3f4f1;color:#334155}.before small{color:#64748b}
+.after{background:#ecfdf3;color:#064e3b;border:1px solid #c9f0d9}.after small{color:var(--ink2)}
+.note{font-size:12px;color:var(--muted);margin-top:14px;font-style:italic}
+.vid-g{display:grid;gap:26px;align-items:center}
+.phone{width:250px;margin:0 auto;aspect-ratio:9/16;border-radius:30px;background:#0c2c25;padding:10px;box-shadow:var(--sh2);position:relative}
+.screen{position:relative;height:100%;border-radius:22px;overflow:hidden;background:linear-gradient(180deg,#f6f1e3,#efe6cd)}
+.screen .top{position:absolute;left:12px;right:12px;top:12px;display:flex;justify-content:space-between;font-size:10px;font-weight:800;color:var(--g)}
+.screen .board{position:absolute;left:18px;right:18px;top:46px;background:#123f34;border-radius:10px;padding:10px;color:#fff;text-align:center}
+.screen .board .ar{font-family:'Amiri',serif;font-size:19px;color:var(--gold2);direction:rtl;line-height:1.5}
+.screen .board .tr{font-size:10px;line-height:1.4;color:#d7e7df;margin-top:2px}
+.screen .fig{position:absolute;left:18%;bottom:70px;width:110px}
+.screen .cap{position:absolute;left:10px;right:10px;bottom:16px;background:rgb(12 44 37/.88);color:#fff;font-size:11px;font-weight:700;line-height:1.35;border-radius:10px;padding:7px 9px;text-align:center}
+.play{position:absolute;right:22px;top:46%;width:52px;height:52px;border-radius:99px;background:rgb(252 211 77/.95);display:grid;place-items:center;box-shadow:0 10px 24px rgb(0 0 0/.25)}
+.prog{position:absolute;left:12px;right:12px;top:30px;height:3px;background:rgb(18 63 52/.15);border-radius:3px}.prog i{display:block;width:34%;height:100%;background:var(--g);border-radius:3px}
+.flow{display:grid;gap:10px}
+.fl{display:flex;gap:14px;align-items:flex-start;padding:14px 16px}
+.fl .k{flex:none;width:34px;height:34px;border-radius:10px;background:var(--g);color:#fff;font-weight:900;display:grid;place-items:center;font-size:14px}
+.fl h4{margin:0 0 2px;font-size:15px;color:var(--g)}.fl p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.dark{background:var(--g3);color:#fff}
+.dark h2.sec{color:#fff}.dark p.lead{color:#cfe3da}.dark .kicker{color:var(--gold)}
+.kom{display:grid;gap:14px}
+.kc{padding:20px;border-radius:20px;background:rgb(255 255 255/.06);border:1px solid rgb(255 255 255/.14)}
+.kc h3{margin:8px 0 6px;font-size:17px;color:var(--gold2)}.kc p{margin:0;font-size:14px;line-height:1.6;color:#d7e7df}
+.kc .em{font-size:22px}
+.pk{display:grid;gap:14px}
+.pkc{padding:24px;display:flex;flex-direction:column;gap:10px}
+.pkc h3{margin:0;font-size:20px;color:var(--g)}
+.pkc .pr{font-family:'Fraunces',serif;font-size:30px;font-weight:800;color:var(--g)}
+.pkc .pr small{font-family:'Plus Jakarta Sans';font-size:13px;color:var(--muted);font-weight:600}
+.pkc ul{margin:4px 0 8px;padding:0;list-style:none;display:grid;gap:8px;font-size:14px;color:#334155}
+.pkc li{display:flex;gap:8px;line-height:1.45}.pkc li:before{content:"\2713";color:var(--ink2);font-weight:900}
+.pkc.feat{border:2px solid var(--g);position:relative}
+.pkc .btn{margin-top:auto}
+.faq{display:grid;gap:10px;max-width:820px}
+.fq{padding:16px 18px}
+.fq h4{margin:0;font-size:15.5px;color:var(--g);display:flex;justify-content:space-between;gap:12px}
+.fq h4 span{color:#b88b24;font-size:20px;line-height:1}
+.fq p{margin:10px 0 0;font-size:14px;line-height:1.65;color:var(--muted)}
+.closing{position:relative;overflow:hidden;border-radius:28px;background:var(--g3);color:#fff;padding:34px 22px;text-align:center}
+.closing:before{content:"";position:absolute;left:-80px;bottom:-120px;width:300px;height:300px;border-radius:999px;background:rgb(252 211 77/.14);filter:blur(30px)}
+.closing h2{position:relative;font-family:'Fraunces',serif;font-size:30px;line-height:1.15;margin:0 0 10px}
+.closing p{position:relative;color:#cfe3da;margin:0 auto 20px;max-width:520px;font-size:15px;line-height:1.6}
+.closing .ctas{position:relative;align-items:center}
+.closing .figs{position:relative;display:flex;justify-content:center;gap:4px;margin-bottom:6px}
+footer{background:#0a241e;color:#b9cdc4;padding:40px 0 26px;margin-top:44px}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:26px}
+.fg h5{margin:0 0 10px;color:#fff;font-size:13px;letter-spacing:.1em;text-transform:uppercase}
+.fg a{display:block;font-size:14px;padding:4px 0}
+.fb{grid-column:1/-1}
+.fb p{font-size:14px;line-height:1.6;margin:10px 0 0;max-width:340px}
+.lembaga h5{color:var(--gold)}
+.copy{border-top:1px solid rgb(255 255 255/.1);margin-top:26px;padding-top:16px;font-size:12px}
+@media(min-width:900px){
+ .hero{padding:64px 0 72px}
+ .hero-g{grid-template-columns:1.1fr .9fr;gap:48px;align-items:center}
+ .hero h1{font-size:64px}
+ .hero p.sub{font-size:18px}
+ .ctas{flex-direction:row}
+ .mascot-card{padding:28px}
+ .m b{font-size:10.5px}
+ .mrow{gap:8px}
+ .steps{grid-template-columns:repeat(4,1fr)}
+ .ladder{grid-template-columns:repeat(2,1fr)}
+ .lv.hi{grid-row:span 2}
+ .lv:first-child{grid-column:1/-1}
+ .persona{grid-template-columns:repeat(3,1fr)}
+ .vid-g{grid-template-columns:auto 1fr;gap:56px}
+ .phone{width:300px}
+ .kom{grid-template-columns:repeat(3,1fr)}
+ .pk{grid-template-columns:repeat(3,1fr)}
+ .closing{padding:56px}
+ .closing h2{font-size:44px}
+ .fg{grid-template-columns:1.4fr 1fr 1fr 1fr 1fr}
+ .fb{grid-column:auto}
+}
+
+.rakhead{display:flex;justify-content:space-between;align-items:baseline;margin:26px 0 12px}
+.rakhead h3{font-family:'Fraunces',Georgia,serif;color:var(--g);font-size:20px;margin:0}
+.rakhead a{font-weight:800;font-size:14px;color:var(--ink2)}
+.rak{display:grid;grid-auto-flow:column;grid-auto-columns:128px;gap:14px;overflow-x:auto;padding-bottom:6px}
+.bk{display:flex;flex-direction:column;gap:6px}
+.bk img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:12px;box-shadow:var(--sh);background:#e9ece4}
+.bk b{font-size:13px;line-height:1.3;color:var(--ink)}.bk span{font-size:11.5px;color:var(--muted)}
+.prod{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pd{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--border);border-radius:18px;padding:10px}
+.pd img{width:52px;height:52px;border-radius:12px;object-fit:cover}
+.pd b{display:block;font-size:14px}.pd span{font-size:12px;color:var(--muted)}
+@media(min-width:900px){.rak{grid-auto-flow:row;grid-template-columns:repeat(8,1fr);overflow:visible}.prod{grid-template-columns:repeat(4,1fr)}}
+
+</style></head><body>
+<header class="hdr"><div class="wrap hdr-in">
+  <a class="brand" href="#"><img src="../../static/logo-santrionline.png" alt="SantriOnline" width="36" height="36"><span class="disp">SantriOnline</span></a>
+  <nav class="nav"><a href="https://santrionline.com/belajar" class="on">Belajar</a><a href="https://santrionline.com/tipe-santri">Tipe Santri</a><a href="https://santrionline.com/katalog/semua">Katalog <span class="car">&#9662;</span></a><a href="https://app.santrionline.com/tanya">Tanya Kitab</a><a href="https://santrionline.com/lembaga">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
+  <div class="hdr-act"><a class="btn btn-s sm" href="#">Masuk</a><a class="btn btn-p sm hide-m" href="#">Daftar gratis</a><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></div>
+</div></header>
+<section class="hero"><div class="wrap hero-g">
+ <div>
+  <span class="eyebrow"><span class="dot"></span>Kelas Islam bertahap · gratis untuk mulai</span>
+  <h1>Belajar Islam dari nol sampai <em>paham</em></h1>
+  <p class="sub">Mulai dari yang paling dasar, pelan dan berurutan. Setiap pelajaran berisi video singkat, bacaan yang mencantumkan dalil dan sumbernya, lalu kuis ringan. Tidak perlu malu memulai dari awal.</p>
+  <div class="ctas"><a class="btn btn-p" href="#">Buka pelajaran pertama <span>&rarr;</span></a><a class="btn btn-s" href="#">Cek Tipe Santri kamu</a></div>
+  <div class="trust"><span><b>&#10003;</b>Pelajaran 1 tanpa daftar</span><span><b>&#10003;</b>206 kitab di perpustakaan</span><span><b>&#10003;</b>Fiqih madzhab Syafi'i, aqidah Aswaja</span></div>
+ </div>
+ <div class="mascot-card">
+  <span class="tag" style="background:rgb(252 211 77/.18);color:var(--gold2)">Tes 3 menit · tanpa login</span>
+  <h3>Kamu tipe santri yang mana?</h3>
+  <p class="s">12 situasi sehari-hari. Hasilnya titik mulai belajar yang cocok untukmu.</p>
+  <div class="mrow"><div class="m"><svg viewBox="0 0 120 170" width="90" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L80 44" /><path d="M60 66 L42 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <g><circle cx="94" cy="26" r="13" fill="#fcd34d" stroke="#123f34" stroke-width="3"/><text x="94" y="32" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="17" fill="#123f34">?</text></g>
+</svg><b>Si<br>Penanya</b></div><div class="m"><svg viewBox="0 0 120 170" width="90" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#3f8f74" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#1b5546" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <rect x="48" y="82" width="24" height="18" rx="2" fill="#fcd34d" stroke="#123f34" stroke-width="2.5"/><rect x="52" y="87" width="16" height="2.5" fill="#123f34"/><g fill="#fcd34d" stroke="#123f34" stroke-width="2"><circle cx="20" cy="30" r="5"/><circle cx="100" cy="22" r="4"/><circle cx="104" cy="48" r="3"/></g>
+</svg><b>Si<br>Penghafal</b></div><div class="m"><svg viewBox="0 0 120 170" width="90" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L48 80 L66 82" /><path d="M60 66 L72 80 L56 82" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#2f7a62" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M26 158 L94 158 L98 168 L22 168 Z" fill="#b45a3c" opacity=".85"/><path d="M30 163 L90 163" stroke="#fcd34d" stroke-width="2"/>
+</svg><b>Si<br>Pengamal</b></div><div class="m"><svg viewBox="0 0 120 170" width="90" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#7a4b2a" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg><b>Si<br>Pembaca</b></div><div class="m"><svg viewBox="0 0 120 170" width="90" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L36 74" /><path d="M60 66 L84 74" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#8a6a1f" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <rect x="24" y="66" width="16" height="12" rx="2" fill="#123f34"/><g fill="#c79a2e" stroke="#123f34" stroke-width="1.5"><circle cx="86" cy="72" r="3.2"/><circle cx="92" cy="74" r="3.2"/><circle cx="96" cy="79" r="3.2"/></g>
+</svg><b>Si<br>Penyeimbang</b></div></div>
+  <div class="mini"><span class="ic">01</span><p>Pelajaran pertama: <b>Kenapa belajar agama sekarang?</b> Video 1 menit, bacaan 5 menit, 3 soal.</p></div>
+ </div>
+</div></section>
+<section><div class="wrap">
+ <span class="kicker">Cara belajarnya</span><h2 class="sec">Empat langkah, satu per satu</h2>
+ <p class="lead">Tidak ada lompatan. Kamu tahu posisimu, belajar sedikit tapi rutin, mempraktikkannya, lalu naik pelan-pelan.</p>
+ <div class="steps"><div class="card step"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0"/></svg></div><div class="n">01</div><h3>Kenali Diri</h3><p>Ikuti tes Tipe Santri. Kamu tahu mulai dari mana, tanpa merasa dihakimi.</p></div><div class="card step"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25"/></svg></div><div class="n">02</div><h3>Belajar</h3><p>Tonton video singkat, lalu baca materi dengan dalil berharakat, terjemah, dan sumber bernomor.</p></div><div class="card step"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z"/></svg></div><div class="n">03</div><h3>Praktik</h3><p>Jawab 3 soal, simpan kartu ringkas, dan bawa pulang satu amalan kecil untuk hari ini.</p></div><div class="card step"><div class="ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18"/></svg></div><div class="n">04</div><h3>Tumbuh</h3><p>Naik ke ngaji kitab dasar, hafalan matan, lalu kajian lanjut bersama guru.</p></div></div>
+</div></section>
+<section style="background:#eef1ea"><div class="wrap">
+ <span class="kicker">Peta belajar</span><h2 class="sec">Dari kenal diri sampai kajian kitab</h2>
+ <p class="lead">Dua tahap pertama gratis. Tahap berikutnya menyambung ke kitab-kitab yang biasa dikaji di pesantren.</p>
+ <div class="ladder">
+<div class="card lv"><div class="no">00</div><div><h3>Tipe Santri <span class="tag t-free">Gratis · tanpa login</span></h3><p>12 situasi, sekitar 3 menit. Hasilnya satu dari 5 tipe dan saran titik mulai.</p></div></div>
+<div class="card lv hi"><div class="no">01</div><div><h3>Fondasi Muslim <span class="tag" style="background:var(--gold);color:var(--g3)">Gratis</span></h3><p>24 pelajaran berurutan. Pelajaran pertama terbuka untuk siapa saja; sisanya cukup dengan akun gratis.</p><div class="chips"><span class="chip">Kenapa belajar sekarang</span><span class="chip">Kenalan dengan Islam</span><span class="chip">Aqidah dasar</span><span class="chip">Thaharah</span><span class="chip">Shalat</span><span class="chip">Puasa dan zakat</span><span class="chip">Adab dan akhlak</span><span class="chip">Langkah berikutnya</span></div></div></div>
+<div class="card lv lock"><div class="no">02</div><div><h3>Ngaji Kitab Dasar <span class="tag t-pay">Paket</span></h3><p>Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab: video, teks Arab, makna, kuis.</p></div></div>
+<div class="card lv lock"><div class="no">03</div><div><h3>Hafalan Matan <span class="tag t-pay">Paket</span></h3><p>Menghafal matan pendek bait demi bait, dengan setoran dan pengulangan terjadwal.</p></div></div>
+<div class="card lv lock" style="grid-column:1/-1"><div class="no">04</div><div><h3>Kajian Lanjut <span class="tag t-pay">Paket lanjut</span></h3><p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab tanpa batas.</p></div></div></div>
+</div></section>
+<section id="rak"><div class="wrap">
+ <span class="kicker">Rak Kitab &amp; Buku</span><h2 class="sec">Perpustakaan yang bisa langsung dibaca</h2>
+ <p class="lead">206 kitab pesantren dari fiqih sampai tafsir, novel religi keluarga, dan aplikasi buatan SantriOnline. Semua bisa dibuka dari sini.</p>
+ <div class="rakhead"><h3>Kitab pilihan</h3><a href="https://santrionline.com/katalog/kitab">Lihat 206 kitab &rarr;</a></div>
+ <div class="rak"><a class="bk" href="https://santrionline.com/katalog/kitab/safinatun-najah"><img src="https://files.santrionline.com/kitab-covers/safinatun-najah.png" alt="Sampul Safinatun Najah"><b>Safinatun Najah</b><span>Fiqih · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/aqidatul-awam"><img src="https://files.santrionline.com/kitab-covers/aqidatul-awam.png" alt="Sampul 'Aqidatul 'Awam"><b>'Aqidatul 'Awam</b><span>Aqidah · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-7180"><img src="https://files.santrionline.com/kitab-sampul/syamilah-7180.jpg" alt="Sampul Fathul Qarib"><b>Fathul Qarib</b><span>Fiqih · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4242"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4242.jpg" alt="Sampul Matan Al-Jurumiyah"><b>Matan Al-Jurumiyah</b><span>Nahwu · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/arbain-nawawi"><img src="https://files.santrionline.com/kitab-covers/arbain-nawawi.png" alt="Sampul Arba'in Nawawi"><b>Arba'in Nawawi</b><span>Hadits · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4718"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4718.jpg" alt="Sampul Tafsir Jalalain"><b>Tafsir Jalalain</b><span>Tafsir · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4428"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4428.jpg" alt="Sampul Riyadhush Shalihin"><b>Riyadhush Shalihin</b><span>Adab · Gratis baca</span></a><a class="bk" href="https://santrionline.com/katalog/kitab/syamilah-4619"><img src="https://files.santrionline.com/kitab-sampul/syamilah-4619.jpg" alt="Sampul Bidayatul Hidayah"><b>Bidayatul Hidayah</b><span>Tasawuf · Gratis baca</span></a></div>
+ <div class="rakhead"><h3>Novel SantriOnline</h3><a href="https://santrionline.com/katalog/buku">Semua buku &rarr;</a></div>
+ <div class="rak"><a class="bk" href="https://santrionline.com/katalog/buku/rumah-di-ujung-pulau"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/rumah-di-ujung-pulau.jpg" alt="Sampul Rumah di Ujung Pulau"><b>Rumah di Ujung Pulau</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/sebelum-ada-gerbang"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/sebelum-ada-gerbang.jpg" alt="Sampul Sebelum Ada Gerbang"><b>Sebelum Ada Gerbang</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/kuitansi-di-laci-koperasi"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/kuitansi-di-laci-koperasi.jpg" alt="Sampul Kuitansi di Laci Koperasi"><b>Kuitansi di Laci Koperasi</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/laut-yang-menagih-janji"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/laut-yang-menagih-janji.jpg" alt="Sampul Laut yang Menagih Janji"><b>Laut yang Menagih Janji</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/surat-tanpa-nama"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/surat-tanpa-nama.jpg" alt="Sampul Surat Tanpa Nama"><b>Surat Tanpa Nama</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/wasiat-di-balik-gerbang"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/wasiat-di-balik-gerbang.jpg" alt="Sampul Wasiat di Balik Gerbang"><b>Wasiat di Balik Gerbang</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/raka-dan-laptop-kedua"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/raka-dan-laptop-kedua.jpg" alt="Sampul Raka dan Laptop Kedua"><b>Raka dan Laptop Kedua</b><span>Novel · 10 bab gratis</span></a><a class="bk" href="https://santrionline.com/katalog/buku/kunci-yang-dijual-nabil"><img src="https://files.santrionline.com/buku/covers/2x5yy1kcyjm194x/kunci-yang-dijual-nabil.jpg" alt="Sampul Kunci yang Dijual Nabil"><b>Kunci yang Dijual Nabil</b><span>Novel · 10 bab gratis</span></a></div>
+ <div class="rakhead"><h3>Aplikasi</h3><a href="https://santrionline.com/katalog/produk">Semua aplikasi &rarr;</a></div>
+ <div class="prod"><a class="pd" href="https://santrionline.com/katalog/produk/santriprint"><img src="https://files.santrionline.com/digital-products/santriprint/santriprint-pro-cover-1.4.0.jpg" alt="SantriPrint"><div><b>SantriPrint</b><span>Aplikasi cetak · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/maly"><img src="https://files.santrionline.com/digital-products/maly/maly-cover.png" alt="Maly"><div><b>Maly</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/rekam"><img src="https://files.santrionline.com/digital-products/rekam/rekam-cover.png" alt="Rekam"><div><b>Rekam</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a><a class="pd" href="https://santrionline.com/katalog/produk/fokus"><img src="https://files.santrionline.com/digital-products/fokus/fokus-cover.png" alt="Fokus"><div><b>Fokus</b><span>Aplikasi · Gratis, ada versi Pro</span></div></a></div>
+</div></section>
+<section><div class="wrap">
+ <span class="kicker">Sebelum dan sesudah</span><h2 class="sec">Siapa pun bisa mulai dari tempatnya</h2>
+ <p class="lead">Tiga gambaran tujuan belajar untuk orang dengan kesibukan berbeda.</p>
+ <div class="persona"><div class="card pc"><div class="pc-h"><div class="av"><svg viewBox="0 0 120 170" width="56" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L46 82 L58 86" /><path d="M60 66 L74 82 L62 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg></div><div><h3>Mahasiswa</h3><span>Belajar di sela kuliah</span></div></div>
+<div class="ba before"><small>Sebelum</small>Agama dipelajari dari potongan video. Sering bingung, ini ada dalilnya atau tidak.</div><div class="ba after"><small>Setelah Fondasi Muslim</small>Terbiasa menanyakan sumber, tahu cara membaca keterangan hadits, dan tahu kapan harus bertanya ke guru.</div></div><div class="card pc"><div class="pc-h"><div class="av"><svg viewBox="0 0 120 170" width="56" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L42 94" /><path d="M60 72 L78 94" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#7a4b2a" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  
+</svg></div><div><h3>Ibu rumah tangga</h3><span>Ingin mendampingi anak</span></div></div>
+<div class="ba before"><small>Sebelum</small>Ingin mengajari anak wudhu dan shalat, tapi ragu bacaan dan urutannya sendiri sudah benar.</div><div class="ba after"><small>Setelah Fondasi Muslim</small>Paham rukun wudhu dan shalat, punya checklist sederhana untuk dipakai bersama anak di rumah.</div></div><div class="card pc"><div class="pc-h"><div class="av"><svg viewBox="0 0 120 170" width="56" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L42 88" /><path d="M60 66 L78 88" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#2f7a62" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  
+</svg></div><div><h3>Pekerja</h3><span>Waktunya sempit</span></div></div>
+<div class="ba before"><small>Sebelum</small>Kajian panjang selalu tertunda. Belajar jadi loncat-loncat, tidak pernah tuntas.</div><div class="ba after"><small>Setelah Fondasi Muslim</small>Satu pelajaran sekitar 10 menit di perjalanan, tetap urut dari dasar, progres tersimpan.</div></div></div>
+ <p class="note">Ilustrasi tujuan belajar, bukan testimoni peserta.</p>
+</div></section>
+<section style="background:#eef1ea"><div class="wrap">
+<div class="vid-g">
+ <div class="phone"><div class="screen">
+  <div class="top"><span>Pelajaran 1 dari 24</span><span>0:48</span></div>
+  <div class="prog"><i></i></div>
+  <div class="board"><div class="ar">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</div><div class="tr">"Barang siapa menempuh jalan untuk mencari ilmu, Allah mudahkan baginya jalan menuju surga."<br>HR. Muslim no. 2699</div></div>
+  <div class="fig"><svg viewBox="0 0 120 170" width="120" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L46 82 L58 86" /><path d="M60 66 L74 82 L62 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg></div>
+  <div class="play"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#0c2c25"/></svg></div>
+  <div class="cap">Ilmu agama bukan hanya untuk santri pondok. Kita mulai dari sini.</div>
+ </div></div>
+ <div>
+  <span class="kicker">Cuplikan pelajaran</span>
+  <h2 class="sec">Satu pelajaran, empat langkah kecil</h2>
+  <p class="lead">Video tegak 9:16 dengan tokoh stickman sederhana, nyaman ditonton di HP. Setelah itu kamu membaca, mencoba, dan membawa pulang satu hal.</p>
+  <div class="flow">
+   <div class="card fl"><span class="k">1</span><div><h4>Tonton</h4><p>Video kurang dari 1 menit: cerita pembuka, inti, satu pelajaran.</p></div></div>
+   <div class="card fl"><span class="k">2</span><div><h4>Baca</h4><p>Materi 400 sampai 800 kata. Dalil berharakat, terjemah, dan nomor sumbernya.</p></div></div>
+   <div class="card fl"><span class="k">3</span><div><h4>Coba</h4><p>Kuis 3 soal untuk mengecek pemahaman, bukan untuk menghakimi.</p></div></div>
+   <div class="card fl"><span class="k">4</span><div><h4>Bawa pulang</h4><p>Kartu ringkas yang bisa disimpan, plus satu amalan untuk hari ini.</p></div></div>
+  </div>
+ </div>
+</div></div></section>
+<section class="dark"><div class="wrap">
+ <span class="kicker">Komunitas</span><h2 class="sec">Belajar tidak sendirian</h2>
+ <p class="lead">Ilmu lebih mudah dijaga bila ada teman dan ada guru tempat bertanya.</p>
+ 
+<div class="kom">
+ <div class="kc"><div class="em">&#128172;</div><h3>Grup belajar</h3><p>Tempat saling menyemangati dan bertanya sesama peserta lewat grup Telegram atau WhatsApp. Segera dibuka.</p></div>
+ <div class="kc"><div class="em">&#128218;</div><h3>Tanya Kitab</h3><p>Ajukan pertanyaan dan dapatkan jawaban yang menunjuk ke halaman kitab di perpustakaan kami. Untuk perkara penting, tetap tanyakan ke guru.</p></div>
+ <div class="kc"><div class="em">&#129309;</div><h3>Bersama guru</h3><p>Materi melewati pemeriksaan ustadz sebelum terbit. Di level lanjut ada kajian langsung dua kali sebulan.</p></div>
+</div>
+</div></section>
+<section><div class="wrap">
+ <span class="kicker">Paket</span><h2 class="sec">Mulai gratis, lanjut bila siap</h2>
+ <p class="lead">Fondasi tetap gratis. Paket untuk level kitab dan hafalan sedang kami siapkan.</p>
+ 
+<div class="pk">
+ <div class="card pkc"><span class="tag t-free" style="align-self:flex-start">Mulai di sini</span><h3>Gratis</h3><div class="pr">Rp0</div>
+  <ul><li>Tes Tipe Santri</li><li>Fondasi Muslim: 24 pelajaran</li><li>5 contekan PDF: jadwal 30 hari, checklist wudhu dan shalat, doa harian, dan lainnya</li></ul>
+  <a class="btn btn-p" href="#">Buka pelajaran pertama</a></div>
+ <div class="card pkc feat"><span class="tag t-pay" style="align-self:flex-start">Level 02 + 03</span><h3>Paket Santri</h3><div class="pr">Segera <small>harga diumumkan</small></div>
+  <ul><li>Ngaji Kitab Dasar per bab</li><li>Hafalan Matan dengan setoran</li><li>Progres tersimpan di akun</li></ul>
+  <a class="btn btn-s" href="#">Kabari saya</a></div>
+ <div class="card pkc"><span class="tag t-soon" style="align-self:flex-start">Level 04 · lembaga</span><h3>Paket Lanjut</h3><div class="pr">Segera <small>harga diumumkan</small></div>
+  <ul><li>Kajian Lanjut: Fathul Qarib, Bidayatul Hidayah, sirah</li><li>Kajian langsung 2x sebulan</li><li>Tanya Kitab tanpa batas</li></ul>
+  <a class="btn btn-s" href="#">Kabari saya</a></div>
+</div>
+</div></section>
+<section style="padding-top:0"><div class="wrap">
+ <span class="kicker">Pertanyaan</span><h2 class="sec">Yang sering ditanyakan</h2>
+ <div class="faq" style="margin-top:18px"><div class="card fq"><h4>Saya benar-benar mulai dari nol. Apakah cocok?<span>&minus;</span></h4><p>Cocok. Level 01 disusun untuk yang baru mulai: dari rukun Islam, wudhu, sampai shalat. Tidak ada istilah yang dipakai tanpa dijelaskan.</p></div><div class="card fq"><h4>Apakah harus daftar dulu?<span>+</span></h4></div><div class="card fq"><h4>Siapa yang memeriksa materinya?<span>+</span></h4></div><div class="card fq"><h4>Apakah belajar online bisa menggantikan guru?<span>+</span></h4></div><div class="card fq"><h4>Lembaga saya ingin memakai SantriOnline. Bagaimana?<span>+</span></h4></div></div>
+</div></section>
+<section style="padding-top:0"><div class="wrap"><div class="closing">
+ <div class="figs"><svg viewBox="0 0 120 170" width="64" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L80 44" /><path d="M60 66 L42 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <g><circle cx="94" cy="26" r="13" fill="#fcd34d" stroke="#123f34" stroke-width="3"/><text x="94" y="32" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="17" fill="#123f34">?</text></g>
+</svg><svg viewBox="0 0 120 170" width="64" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#3f8f74" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#1b5546" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <rect x="48" y="82" width="24" height="18" rx="2" fill="#fcd34d" stroke="#123f34" stroke-width="2.5"/><rect x="52" y="87" width="16" height="2.5" fill="#123f34"/><g fill="#fcd34d" stroke="#123f34" stroke-width="2"><circle cx="20" cy="30" r="5"/><circle cx="100" cy="22" r="4"/><circle cx="104" cy="48" r="3"/></g>
+</svg><svg viewBox="0 0 120 170" width="64" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L48 80 L66 82" /><path d="M60 66 L72 80 L56 82" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#2f7a62" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M26 158 L94 158 L98 168 L22 168 Z" fill="#b45a3c" opacity=".85"/><path d="M30 163 L90 163" stroke="#fcd34d" stroke-width="2"/>
+</svg><svg viewBox="0 0 120 170" width="64" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#7a4b2a" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg><svg viewBox="0 0 120 170" width="64" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L36 74" /><path d="M60 66 L84 74" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#8a6a1f" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <rect x="24" y="66" width="16" height="12" rx="2" fill="#123f34"/><g fill="#c79a2e" stroke="#123f34" stroke-width="1.5"><circle cx="86" cy="72" r="3.2"/><circle cx="92" cy="74" r="3.2"/><circle cx="96" cy="79" r="3.2"/></g>
+</svg></div>
+ <h2>Mulai hari ini, satu pelajaran saja</h2>
+ <p>Sepuluh menit cukup untuk pelajaran pertama. Sisanya bisa kamu lanjutkan besok, dan lusa.</p>
+ <div class="ctas"><a class="btn btn-gold" href="#">Buka pelajaran pertama &rarr;</a><a class="btn btn-ghost" href="#">Cek Tipe Santri</a></div>
+</div></div></section>
+<footer><div class="wrap">
+ <div class="fg">
+  <div class="fb"><a class="brand" href="#" style="color:#fff"><img src="../../static/logo-santrionline.png" width="34" height="34" alt=""> <span class="disp">SantriOnline</span></a><p>Belajar Islam bertahap bersama kitab-kitab pesantren. Aqidah Aswaja, fiqih madzhab Syafi'i.</p></div>
+  <div><h5>Belajar</h5><a href="https://santrionline.com/belajar">Fondasi Muslim</a><a href="https://santrionline.com/tipe-santri">Tipe Santri</a><a href="https://app.santrionline.com/tanya">Tanya Kitab</a></div><div><h5>Katalog</h5><a href="https://santrionline.com/katalog/kitab">Kitab</a><a href="https://santrionline.com/katalog/buku">Buku</a><a href="https://santrionline.com/katalog/produk">Aplikasi</a><a href="https://santrionline.com/katalog/kursus">Kursus</a></div>
+  <div class="lembaga"><h5>Untuk Lembaga</h5><a href="https://santrionline.com/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a><a href="https://santrionline.com/aplikasi-raport-tpq">Raport TPQ</a><a href="https://santrionline.com/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a><a href="https://santrionline.com/fitur/administrasi-pesantren">Fitur Pesantren</a><a href="https://santrionline.com/literasi/apa-itu-santri-online">Literasi</a><a href="https://santrionline.com/lembaga">Daftarkan Lembaga</a></div>
+  <div><h5>Tentang</h5><a href="https://santrionline.com/literasi/apa-itu-santri-online">Apa Itu SantriOnline</a><a href="https://santrionline.com/tentang">Profil Kami</a><a href="https://app.santrionline.com">Masuk Aplikasi</a></div>
+ </div>
+ <div class="copy">&copy; 2026 SantriOnline · santrionline.com</div>
+</div></footer>
+</body></html>
