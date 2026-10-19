@@ -67,6 +67,14 @@ Ditambah 5 "contekan" PDF:
 - `/belajar/[modul]/[pelajaran]`: pelajaran 1 terbuka. Pelajaran lain meminta login di app.santrionline.com (SSO yang sudah ada); progres disimpan di D1 app.
 - Halaman lama (aplikasi pondok, raport TPQ, katalog, literasi, lembaga) tetap ada di menu "Untuk Lembaga", supaya SEO yang ada tidak hilang (redirect 301 bila URL berubah).
 
+## 3b. Kesinambungan ke app.santrionline.com (permintaan pemilik 19 Okt)
+Maskot stickman "Tipe Santri" ikut tampil saat pengguna pindah ke app:
+- halaman masuk/daftar yang dibuka dari /belajar menampilkan maskot hasil tesnya ("Si Penanya, simpan progresmu");
+- halaman progres belajar di app memakai maskot yang sama, dengan status level dan pelajaran berikutnya;
+- empty state dan notifikasi (streak, pelajaran baru) memakai stickman dengan gaya yang sama.
+
+Hasil tes dibawa lewat parameter `?tipe=` atau cookie, lalu disimpan ke profil setelah login. Aset SVG stickman ada di satu sumber (`stick.py`), lalu diekspor ke kedua repo. Bagian ini dikerjakan di repo `Santrionlinecom/app` setelah Fase 2 (PR terpisah).
+
 ## 4. Video stickman
 - Mesin: `~/video-santri/ngaji-sanad`. Format 9:16 (juga untuk TikTok) dan 16:9 (halaman). Durasi 30–60 detik per pelajaran: 24 video untuk Level 01.
 - Suara (keputusan pemilik 19 Okt): **4 video pilot memakai ElevenLabs Mahaputra** (`v70fYBHUOrHA3AKIBjPq`, eleven_multilingual_v2) untuk narasi dan dalil. **Video berikutnya (20 sisanya) memakai SantriVoice.** Ejaan "Allah"/"Rasulullah" standar.
