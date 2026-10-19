@@ -5,12 +5,17 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { muatKatalog } from '$lib/server/katalog';
 import { FITUR_LEMBAGA } from '$lib/fitur-lembaga';
 import { HALAMAN_APLIKASI } from '$lib/halaman-aplikasi';
+import { pelajaranTerbit } from '$lib/server/belajar';
 
 const BUILD_DATE = new Date().toISOString().slice(0, 10);
 const ASAL = 'https://santrionline.com';
 
 const PAGES = [
 	{ path: '/', changefreq: 'daily', priority: '1.0' },
+	{ path: '/belajar', changefreq: 'weekly', priority: '0.9' },
+	{ path: '/tipe-santri', changefreq: 'monthly', priority: '0.8' },
+	// Hanya pelajaran berstatus 'terbit'; draf tidak pernah masuk sitemap.
+	...pelajaranTerbit().map((p) => ({ path: p.href, changefreq: 'monthly', priority: '0.8' })),
 	{ path: '/literasi/apa-itu-santri-online', changefreq: 'monthly', priority: '0.8' },
 	{ path: '/literasi/tahfidz-adalah', changefreq: 'monthly', priority: '0.8' },
 	{ path: '/literasi/munaqosah-tahfidz', changefreq: 'monthly', priority: '0.7' },
