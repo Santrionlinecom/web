@@ -1,0 +1,274 @@
+{
+  "level": "01",
+  "nama_level": "Fondasi Muslim",
+  "status": "draf",
+  "catatan": "Daftar mengikuti rancangan docs/2026-10-19_rombak-belajar-islam-ala-ailene.md §2: modul 0 sampai 7 (8 entri) berisi 24 pelajaran. Judul selain pilot masih sementara.",
+  "modul": [
+    {
+      "modul": 0,
+      "judul": "Kenapa belajar sekarang",
+      "deskripsi": "Niat dan keutamaan menuntut ilmu agama sebelum memulai.",
+      "jumlah_pelajaran": 1
+    },
+    {
+      "modul": 1,
+      "judul": "Kenalan dengan Islam",
+      "deskripsi": "Peta besar agama dari hadits Jibril: Islam, Iman, dan Ihsan.",
+      "jumlah_pelajaran": 3
+    },
+    {
+      "modul": 2,
+      "judul": "Aqidah dasar",
+      "deskripsi": "Mengenal Allah, para rasul, malaikat, kitab, dan hari akhir menurut Ahlussunnah wal Jama'ah, dengan pegangan 'Aqidatul 'Awam.",
+      "jumlah_pelajaran": 4
+    },
+    {
+      "modul": 3,
+      "judul": "Thaharah",
+      "deskripsi": "Bersuci menurut madzhab Syafi'i: najis, wudhu, mandi wajib, dan tayammum. Rujukan Safinatun Najah dan Fathul Qarib.",
+      "jumlah_pelajaran": 4
+    },
+    {
+      "modul": 4,
+      "judul": "Shalat",
+      "deskripsi": "Syarat, rukun, bacaan, sujud sahwi, jamaah, serta jamak dan qashar menurut madzhab Syafi'i.",
+      "jumlah_pelajaran": 5
+    },
+    {
+      "modul": 5,
+      "judul": "Puasa dan zakat dasar",
+      "deskripsi": "Rukun dan pembatal puasa, serta zakat fitrah.",
+      "jumlah_pelajaran": 3
+    },
+    {
+      "modul": 6,
+      "judul": "Adab dan akhlak",
+      "deskripsi": "Adab kepada orang tua, guru, dan ilmu dari Bidayatul Hidayah dan Ta'limul Muta'allim.",
+      "jumlah_pelajaran": 3
+    },
+    {
+      "modul": 7,
+      "judul": "Langkah berikutnya",
+      "deskripsi": "Cara memilih guru, memahami sanad, dan batas belajar agama dari AI atau internet.",
+      "jumlah_pelajaran": 1
+    }
+  ],
+  "pelajaran": [
+    {
+      "modul": 0,
+      "no": 1,
+      "judul": "Kenapa belajar agama sekarang",
+      "slug": "kenapa-belajar-agama-sekarang",
+      "file": "0-1-kenapa-belajar-agama-sekarang.md",
+      "status": "draf",
+      "terbuka_tanpa_login": true
+    },
+    {
+      "modul": 1,
+      "no": 1,
+      "judul": "Islam, Iman, Ihsan: tiga tingkatan agama",
+      "slug": "islam-iman-ihsan",
+      "file": "1-1-islam-iman-ihsan.md",
+      "status": "draf",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 1,
+      "no": 2,
+      "judul": "Rukun Islam yang lima",
+      "slug": "rukun-islam",
+      "file": "1-2-rukun-islam.md",
+      "status": "draf",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 1,
+      "no": 3,
+      "judul": "Rukun Iman yang enam",
+      "slug": "rukun-iman",
+      "file": "1-3-rukun-iman.md",
+      "status": "draf",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 2,
+      "no": 1,
+      "judul": "Sifat wajib bagi Allah (20 sifat)",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 2,
+      "no": 2,
+      "judul": "Sifat wajib bagi para rasul",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 2,
+      "no": 3,
+      "judul": "Iman kepada malaikat dan kitab-kitab",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 2,
+      "no": 4,
+      "judul": "Iman kepada hari akhir",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 3,
+      "no": 1,
+      "judul": "Najis dan cara menyucikannya",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 3,
+      "no": 2,
+      "judul": "Wudhu: syarat, rukun, dan pembatal",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 3,
+      "no": 3,
+      "judul": "Mandi wajib",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 3,
+      "no": 4,
+      "judul": "Tayammum",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 4,
+      "no": 1,
+      "judul": "Syarat-syarat shalat",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 4,
+      "no": 2,
+      "judul": "Rukun shalat yang tujuh belas",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 4,
+      "no": 3,
+      "judul": "Bacaan shalat",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 4,
+      "no": 4,
+      "judul": "Sujud sahwi",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 4,
+      "no": 5,
+      "judul": "Shalat berjamaah, jamak, dan qashar",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 5,
+      "no": 1,
+      "judul": "Rukun puasa",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 5,
+      "no": 2,
+      "judul": "Pembatal puasa",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 5,
+      "no": 3,
+      "judul": "Zakat fitrah",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 6,
+      "no": 1,
+      "judul": "Adab kepada orang tua",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 6,
+      "no": 2,
+      "judul": "Adab kepada guru",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 6,
+      "no": 3,
+      "judul": "Adab terhadap ilmu",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    },
+    {
+      "modul": 7,
+      "no": 1,
+      "judul": "Memilih guru, sanad, dan batas belajar dari AI",
+      "slug": null,
+      "file": null,
+      "status": "belum_ditulis",
+      "terbuka_tanpa_login": false
+    }
+  ]
+}

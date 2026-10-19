@@ -1,0 +1,429 @@
+{
+  "status": "draf",
+  "judul": "Tes Tipe Santri",
+  "petunjuk": "Pilih jawaban yang paling mirip dengan kebiasaanmu. Tidak ada jawaban yang benar atau salah.",
+  "catatan_penting": "Hasil tes hanya menunjukkan gaya belajar dan titik mulai yang disarankan. Ini bukan penilaian keimanan, kesalehan, atau kedudukan seseorang di sisi Allah. Semua pilihan baik dan boleh.",
+  "aturan_skor": "Jumlahkan skor tiap tipe dari semua jawaban. Tipe dengan skor tertinggi menjadi hasil. Bila seri, tampilkan Si Penyeimbang bila ikut seri; bila tidak, tampilkan tipe yang seri pertama dalam urutan daftar tipe.",
+  "urutan_tipe": [
+    "penanya",
+    "penghafal",
+    "pengamal",
+    "pembaca",
+    "penyeimbang"
+  ],
+  "tipe": {
+    "penanya": {
+      "nama": "Si Penanya",
+      "maskot": "Stickman berpeci dengan tanda tanya di atas kepala (versi putri: berhijab panjang)",
+      "deskripsi": "Kamu suka tahu alasan di balik setiap ajaran. Pertanyaan adalah pintumu menuju paham. Jaga adabnya: bertanya kepada guru yang tepat dan sabar menunggu penjelasan yang utuh.",
+      "titik_mulai": {
+        "pelajaran": "1-1-islam-iman-ihsan",
+        "alasan": "Hadits Jibril adalah contoh terbaik belajar lewat tanya jawab."
+      }
+    },
+    "penghafal": {
+      "nama": "Si Penghafal",
+      "maskot": "Stickman berpeci membawa mushaf kecil (versi putri: berhijab panjang)",
+      "deskripsi": "Ingatanmu adalah kekuatan. Hafalan yang dipahami maknanya akan menjadi bekal seumur hidup. Imbangi hafalan dengan memahami arti dan mengamalkannya.",
+      "titik_mulai": {
+        "pelajaran": "1-2-rukun-islam",
+        "alasan": "Rukun Islam dan hadits \"buniyal islam\" pendek dan mudah dihafal sebagai fondasi."
+      }
+    },
+    "pengamal": {
+      "nama": "Si Pengamal",
+      "maskot": "Stickman berpeci di atas sajadah (versi putri: berhijab panjang)",
+      "deskripsi": "Kamu ingin ilmu langsung terasa dalam ibadah dan keseharian. Itu tujuan ilmu yang sebenarnya. Pastikan amalan bersandar pada ilmu yang benar agar tidak salah cara.",
+      "titik_mulai": {
+        "pelajaran": "1-2-rukun-islam",
+        "alasan": "Langsung terhubung dengan amalan harian, terutama shalat lima waktu."
+      }
+    },
+    "pembaca": {
+      "nama": "Si Pembaca",
+      "maskot": "Stickman berpeci membuka kitab di atas rehal (versi putri: berhijab panjang)",
+      "deskripsi": "Kamu menikmati penjelasan yang runtut dan lengkap. Kitab-kitab pesantren akan menjadi sahabatmu. Ingat, membaca kitab paling aman bila didampingi guru yang bersanad.",
+      "titik_mulai": {
+        "pelajaran": "0-1-kenapa-belajar-agama-sekarang",
+        "alasan": "Mengenal keutamaan ilmu dan jalur kitab yang akan ditempuh sejak awal."
+      }
+    },
+    "penyeimbang": {
+      "nama": "Si Penyeimbang",
+      "maskot": "Stickman berpeci memegang buku dan tasbih (versi putri: berhijab panjang)",
+      "deskripsi": "Kamu suka belajar sedikit demi sedikit sambil menjaga kewajiban lain. Kebiasaan rutin yang kecil sering bertahan paling lama. Tetapkan jadwal tetap supaya keseimbangan tidak berubah menjadi menunda.",
+      "titik_mulai": {
+        "pelajaran": "0-1-kenapa-belajar-agama-sekarang",
+        "alasan": "Membangun niat dan kebiasaan 10 menit sehari sebelum masuk materi."
+      }
+    }
+  },
+  "situasi": [
+    {
+      "no": 1,
+      "tanya": "Kamu menonton potongan ceramah pendek yang ramai dibagikan. Apa yang kamu lakukan setelahnya?",
+      "pilihan": [
+        {
+          "teks": "Mencari tahu dalilnya dan siapa penceramahnya",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Mencatat kalimat kuncinya supaya ingat",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Langsung mencoba mengamalkan pesannya hari itu",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Mencari kitab atau tulisan yang membahasnya lebih lengkap",
+          "skor": {
+            "pembaca": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 2,
+      "tanya": "Waktu paling enak bagimu untuk belajar agama adalah...",
+      "pilihan": [
+        {
+          "teks": "Selepas Subuh, sambil murajaah bacaan",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Malam hari, membaca pelan-pelan",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Sedikit-sedikit di sela kegiatan, asal rutin",
+          "skor": {
+            "penyeimbang": 2
+          }
+        },
+        {
+          "teks": "Saat ada teman diskusi untuk tanya jawab",
+          "skor": {
+            "penanya": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 3,
+      "tanya": "Ustadz memberi tugas menghafal satu doa pendek. Reaksimu?",
+      "pilihan": [
+        {
+          "teks": "Senang, saya ulang-ulang sampai lancar",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Saya ingin tahu dulu artinya dan kapan dibaca",
+          "skor": {
+            "penanya": 1,
+            "pembaca": 1
+          }
+        },
+        {
+          "teks": "Saya langsung pakai doa itu di kesempatan pertama",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Saya hafalkan sedikit demi sedikit sambil tetap mengerjakan yang lain",
+          "skor": {
+            "penyeimbang": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 4,
+      "tanya": "Di grup keluarga ada pesan berantai tentang keutamaan amalan tertentu. Kamu...",
+      "pilihan": [
+        {
+          "teks": "Bertanya dulu: sumbernya dari mana?",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Mencari rujukannya di kitab atau situs hadits",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Bertanya kepada ustadz yang saya kenal sebelum ikut membagikan",
+          "skor": {
+            "penyeimbang": 1,
+            "penanya": 1
+          }
+        },
+        {
+          "teks": "Mengingatkan dengan lembut agar kita fokus pada amalan yang jelas dalilnya",
+          "skor": {
+            "pengamal": 1,
+            "penyeimbang": 1
+          }
+        }
+      ]
+    },
+    {
+      "no": 5,
+      "tanya": "Kalau datang ke majelis taklim, biasanya kamu...",
+      "pilihan": [
+        {
+          "teks": "Duduk di depan dan menyiapkan pertanyaan",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Membawa buku catatan dan menulis poin-poin",
+          "skor": {
+            "pembaca": 1,
+            "penghafal": 1
+          }
+        },
+        {
+          "teks": "Memperhatikan amalan apa yang bisa langsung saya kerjakan",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Mendengarkan dengan tenang, lalu merenungkannya di rumah",
+          "skor": {
+            "penyeimbang": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 6,
+      "tanya": "Kamu ingin memperbaiki shalatmu. Langkah pertamamu?",
+      "pilihan": [
+        {
+          "teks": "Mempelajari syarat dan rukunnya dari kitab dasar",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Menghafal ulang bacaan shalat dengan benar",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Mulai menjaga shalat di awal waktu",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Minta guru ngaji mengecek bacaan dan gerakan saya",
+          "skor": {
+            "penyeimbang": 1,
+            "penanya": 1
+          }
+        }
+      ]
+    },
+    {
+      "no": 7,
+      "tanya": "Kamu penasaran dengan satu masalah fiqih dan bertanya kepada AI. Lalu...",
+      "pilihan": [
+        {
+          "teks": "Saya tanyakan lagi dalilnya, lalu cek ke sumber aslinya",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Saya bandingkan dengan penjelasan di kitab madzhab",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Saya bawa jawabannya ke ustadz untuk dikonfirmasi",
+          "skor": {
+            "penyeimbang": 2
+          }
+        },
+        {
+          "teks": "Saya ambil yang praktis dulu, tapi tetap konfirmasi sebelum mengamalkan",
+          "skor": {
+            "pengamal": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 8,
+      "tanya": "Saat Ramadhan tiba, target pribadimu biasanya...",
+      "pilihan": [
+        {
+          "teks": "Menambah hafalan surah atau doa",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Menjaga tarawih dan tadarus tiap malam",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Khatam membaca satu buku atau kitab",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Membagi waktu antara ibadah, keluarga, dan pekerjaan dengan seimbang",
+          "skor": {
+            "penyeimbang": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 9,
+      "tanya": "Anak atau adik bertanya, \"Kenapa kita harus shalat?\" Kamu...",
+      "pilihan": [
+        {
+          "teks": "Menjawab dengan ayat atau hadits yang saya hafal",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Mengajaknya shalat bersama dulu, menjelaskan sambil jalan",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Mencarikan cerita dari buku yang cocok untuk anak",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Balik bertanya untuk tahu apa yang membuatnya penasaran",
+          "skor": {
+            "penanya": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 10,
+      "tanya": "Kalau ada waktu luang 15 menit, kamu memilih...",
+      "pilihan": [
+        {
+          "teks": "Murajaah hafalan",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Membaca satu halaman kitab atau artikel",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Dzikir atau shalat sunnah",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Menonton satu video kajian singkat lalu istirahat",
+          "skor": {
+            "penyeimbang": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 11,
+      "tanya": "Teman berbeda pendapat denganmu soal amalan yang ada khilafnya. Kamu...",
+      "pilihan": [
+        {
+          "teks": "Ingin tahu dasar pendapatnya",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Membuka kitab untuk melihat penjelasan ulama madzhab",
+          "skor": {
+            "pembaca": 2
+          }
+        },
+        {
+          "teks": "Menghormati, karena yang penting kita sama-sama beramal",
+          "skor": {
+            "pengamal": 1,
+            "penyeimbang": 1
+          }
+        },
+        {
+          "teks": "Menyampaikan pegangan saya dengan santun tanpa memperpanjang",
+          "skor": {
+            "penyeimbang": 2
+          }
+        }
+      ]
+    },
+    {
+      "no": 12,
+      "tanya": "Bentuk belajar yang paling membuatmu semangat adalah...",
+      "pilihan": [
+        {
+          "teks": "Tanya jawab langsung dengan guru",
+          "skor": {
+            "penanya": 2
+          }
+        },
+        {
+          "teks": "Setoran hafalan dengan target jelas",
+          "skor": {
+            "penghafal": 2
+          }
+        },
+        {
+          "teks": "Praktik bersama, misalnya latihan wudhu dan shalat",
+          "skor": {
+            "pengamal": 2
+          }
+        },
+        {
+          "teks": "Mengaji kitab bab demi bab",
+          "skor": {
+            "pembaca": 2
+          }
+        }
+      ]
+    }
+  ]
+}

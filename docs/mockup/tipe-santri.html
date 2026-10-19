@@ -1,0 +1,232 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tes Tipe Santri · SantriOnline (mockup)</title>
+<link href="fonts.css" rel="stylesheet">
+<style>
+:root{--g:#123f34;--g2:#1b5546;--g3:#0c2c25;--gold:#fcd34d;--gold2:#fde68a;--ink2:#065f46;--cream:#f6f7f3;--border:#e2e5dd;--muted:#475569;--ink:#0f172a;
+--sh:0 12px 34px rgb(18 63 52/.08);--sh2:0 18px 60px rgb(18 63 52/.12)}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--cream);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.disp{font-family:'Fraunces',Georgia,serif;letter-spacing:-.02em}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;border:1px solid rgb(252 211 77/.45);background:#fff;border-radius:999px;padding:6px 12px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--g)}
+.dot{width:8px;height:8px;border-radius:9px;background:var(--g2)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:12px 22px;border-radius:999px;font-weight:800;font-size:15px}
+.btn-p{background:var(--g);color:#fff;box-shadow:0 8px 20px rgb(18 63 52/.22)}
+.btn-s{background:#fff;color:var(--g);border:1.5px solid rgb(201 168 76/.6)}
+.btn-gold{background:var(--gold);color:var(--g3)}
+.btn-ghost{border:1.5px solid rgb(255 255 255/.3);color:#fff}
+.card{background:#fff;border:1px solid var(--border);border-radius:22px;box-shadow:var(--sh)}
+.tag{display:inline-block;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.t-free{background:#dcfce7;color:#065f46}.t-pay{background:#fef3c7;color:#7c5a06}.t-soon{background:#eef0ea;color:#475569}
+h2.sec{font-family:'Fraunces',Georgia,serif;color:var(--g);font-size:28px;line-height:1.15;margin:10px 0 8px;letter-spacing:-.02em}
+p.lead{color:var(--muted);font-size:15px;line-height:1.65;margin:0 0 22px;max-width:640px}
+section{padding:44px 0}
+.kicker{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--ink2)}
+@media(min-width:900px){h2.sec{font-size:40px} section{padding:72px 0} p.lead{font-size:17px} .wrap{padding:0 40px}}
+
+.hdr{position:sticky;top:0;z-index:5;background:rgb(246 247 243/.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.hdr-in{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--g);font-size:19px}
+.brand img{border-radius:10px}
+.nav{display:none;gap:4px;font-weight:700;font-size:14px;color:var(--muted)}
+.nav a{padding:8px 12px;border-radius:999px}.nav a.on{color:var(--g);background:rgb(18 63 52/.07)}
+.car{font-size:10px}
+.hdr-act{display:flex;align-items:center;gap:8px}
+.btn.sm{min-height:38px;padding:8px 16px;font-size:13px}
+.burger{display:grid;gap:4px;width:40px;height:40px;place-content:center;border:1px solid var(--border);border-radius:999px;background:#fff}
+.burger i{display:block;width:16px;height:2px;background:var(--g);border-radius:2px}
+.hide-m{display:none}
+@media(min-width:900px){.nav{display:flex}.burger{display:none}.hide-m{display:inline-flex}}
+
+.lbl{display:flex;align-items:center;gap:10px;margin:0 0 12px;font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lbl b{background:var(--g);color:#fff;border-radius:99px;padding:3px 10px;letter-spacing:.06em}
+.scr{padding:28px 0 34px;border-bottom:1px dashed #cdd3c7}
+.panel{border-radius:26px;padding:24px 20px;background:#fff;border:1px solid var(--border);box-shadow:var(--sh)}
+.intro{background:radial-gradient(500px 300px at 100% 0%,rgb(252 211 77/.22),transparent 60%),#fff;text-align:center}
+.intro h1{font-family:'Fraunces',serif;color:var(--g);font-size:34px;line-height:1.1;margin:14px 0 10px;letter-spacing:-.03em}
+.intro p{color:var(--muted);font-size:15px;line-height:1.65;margin:0 auto 18px;max-width:460px}
+.facts{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.facts span{background:#eef1ea;color:var(--g);font-weight:800;font-size:13px;border-radius:99px;padding:7px 12px}
+.mrow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;margin:6px -6px 20px}
+.m{background:#f6f1e3;border-radius:14px;padding:6px 2px 6px;text-align:center;color:var(--g)}
+.m svg{width:100%;height:auto;display:block}.m b{display:block;font-size:8.5px;letter-spacing:-.01em;line-height:1.2;overflow-wrap:normal}
+.btn.blk{width:100%}
+.fine{font-size:12px;color:var(--muted);margin:12px 0 0}
+.qtop{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:800;color:var(--g)}
+.qtop span:last-child{color:var(--muted);font-weight:700}
+.bar{height:8px;background:#eef1ea;border-radius:9px;margin:10px 0 20px;overflow:hidden}.bar i{display:block;height:100%;width:33.3%;background:linear-gradient(90deg,#1b5546,#34a873);border-radius:9px}
+.sit{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink2)}
+.q{font-family:'Fraunces',serif;color:var(--g);font-size:23px;line-height:1.3;margin:8px 0 18px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1.5px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;font-size:15px;line-height:1.5;background:#fff}
+.opt .k{flex:none;width:30px;height:30px;border-radius:9px;background:#eef1ea;color:var(--g);font-weight:900;display:grid;place-items:center;font-size:14px}
+.opt.sel{border-color:var(--g);background:#ecfdf3;box-shadow:0 0 0 3px rgb(18 63 52/.12)}.opt.sel .k{background:var(--g);color:#fff}
+.qnav{display:flex;justify-content:space-between;align-items:center;margin-top:16px}
+.qnav a.back{font-weight:800;color:var(--muted);font-size:14px}
+.hint{font-size:13px;color:var(--muted);background:#f6f7f3;border-radius:12px;padding:10px 12px;margin-top:14px}
+.res{background:var(--g3);color:#fff;text-align:center;position:relative;overflow:hidden;border:0}
+.res:before{content:"";position:absolute;right:-70px;top:-70px;width:240px;height:240px;border-radius:999px;background:rgb(27 85 70/.7);filter:blur(30px)}
+.res > *{position:relative}
+.res .badge{display:inline-block;background:rgb(252 211 77/.18);color:var(--gold2);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;border-radius:99px;padding:6px 12px}
+.res .hero-m{width:150px;margin:14px auto 4px;background:#f6f1e3;border-radius:28px;padding:10px 6px 4px}
+.res .hero-m svg{width:100%;height:auto;display:block}
+.res h2{font-family:'Fraunces',serif;font-size:32px;margin:8px 0 6px}
+.res p.d{color:#d7e7df;font-size:15px;line-height:1.65;margin:0 auto 18px;max-width:440px}
+.box{text-align:left;background:rgb(255 255 255/.07);border:1px solid rgb(255 255 255/.14);border-radius:16px;padding:14px 16px;margin-bottom:10px}
+.box small{display:block;font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.box p{margin:0;font-size:14px;line-height:1.6;color:#eef5f1}
+.acts{display:grid;gap:10px;margin-top:16px}
+.btn-ghost{border:1.5px solid rgb(255 255 255/.3);color:#fff}
+.lain{margin-top:20px}.lain h4{margin:0 0 10px;color:var(--g);font-size:15px}
+.lain .row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.lain .m{background:#fff;border:1px solid var(--border)}
+.disc{font-size:12px;color:#b9cdc4;margin:14px 0 0}
+
+.wrap{max-width:560px}
+</style></head><body>
+<header class="hdr"><div class="wrap hdr-in">
+  <a class="brand" href="#"><img src="../../static/logo-santrionline.png" alt="SantriOnline" width="36" height="36"><span class="disp">SantriOnline</span></a>
+  <nav class="nav"><a href="#" class="on">Belajar</a><a href="#">Tipe Santri</a><a href="#">Perpustakaan Kitab</a><a href="#">Tanya Kitab</a><a href="#">Untuk Lembaga <span class="car">&#9662;</span></a></nav>
+  <div class="hdr-act"><a class="btn btn-s sm" href="#">Masuk</a><a class="btn btn-p sm hide-m" href="#">Daftar gratis</a><span class="burger" aria-hidden="true"><i></i><i></i><i></i></span></div>
+</div></header><section class="scr"><div class="wrap">
+ <div class="lbl"><b>Layar 1</b>Pembuka</div>
+ <div class="panel intro">
+  <span class="eyebrow"><span class="dot"></span>Level 00 · Kenali Diri</span>
+  <h1>Kamu tipe santri yang mana?</h1>
+  <p>Jawab 12 situasi sehari-hari dengan jujur. Tidak ada jawaban yang salah. Hasilnya saran dari mana sebaiknya kamu mulai belajar.</p>
+  <div class="facts"><span>12 situasi</span><span>&plusmn;3 menit</span><span>Tanpa login</span></div>
+  <div class="mrow"><div class="m"><svg viewBox="0 0 120 170" width="80" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L80 44" /><path d="M60 66 L42 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <g><circle cx="94" cy="26" r="13" fill="#fcd34d" stroke="#123f34" stroke-width="3"/><text x="94" y="32" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="17" fill="#123f34">?</text></g>
+</svg><b>Si<br>Penanya</b></div><div class="m"><svg viewBox="0 0 120 170" width="80" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#3f8f74" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#1b5546" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <rect x="48" y="82" width="24" height="18" rx="2" fill="#fcd34d" stroke="#123f34" stroke-width="2.5"/><rect x="52" y="87" width="16" height="2.5" fill="#123f34"/><g fill="#fcd34d" stroke="#123f34" stroke-width="2"><circle cx="20" cy="30" r="5"/><circle cx="100" cy="22" r="4"/><circle cx="104" cy="48" r="3"/></g>
+</svg><b>Si<br>Penghafal</b></div><div class="m"><svg viewBox="0 0 120 170" width="80" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L48 80 L66 82" /><path d="M60 66 L72 80 L56 82" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#2f7a62" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M26 158 L94 158 L98 168 L22 168 Z" fill="#b45a3c" opacity=".85"/><path d="M30 163 L90 163" stroke="#fcd34d" stroke-width="2"/>
+</svg><b>Si<br>Pengamal</b></div><div class="m"><svg viewBox="0 0 120 170" width="80" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#7a4b2a" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg><b>Si<br>Pembaca</b></div><div class="m"><svg viewBox="0 0 120 170" width="80" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L36 74" /><path d="M60 66 L84 74" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#8a6a1f" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <rect x="24" y="66" width="16" height="12" rx="2" fill="#123f34"/><g fill="#c79a2e" stroke="#123f34" stroke-width="1.5"><circle cx="86" cy="72" r="3.2"/><circle cx="92" cy="74" r="3.2"/><circle cx="96" cy="79" r="3.2"/></g>
+</svg><b>Si<br>Penyeimbang</b></div></div>
+  <a class="btn btn-p blk" href="#">Mulai tes &rarr;</a>
+  <p class="fine">Jawabanmu tidak disimpan kecuali kamu memilih membuat akun.</p>
+ </div>
+</div></section><section class="scr"><div class="wrap">
+ <div class="lbl"><b>Layar 2</b>Contoh situasi</div>
+ <div class="panel">
+  <div class="qtop"><span>Situasi 4 dari 12</span><span>Tipe Santri</span></div>
+  <div class="bar"><i></i></div>
+  <div class="sit">Di grup keluarga</div>
+  <div class="q">Temanmu membagikan video ceramah yang menyebut sebuah hadits tanpa sumber. Apa yang kamu lakukan?</div>
+  <div class="opt"><span class="k">A</span><span>Langsung kubagikan lagi. Isinya bagus, pasti bermanfaat.</span></div><div class="opt"><span class="k">B</span><span>Kutanya temanku dengan sopan: haditsnya dari kitab apa?</span></div><div class="opt sel"><span class="k">C</span><span>Kucari dulu sumbernya. Kalau masih ragu, kutanyakan ke ustadz.</span></div><div class="opt"><span class="k">D</span><span>Kudiamkan saja. Takut salah kalau ikut berkomentar.</span></div>
+  <div class="hint">Pilih yang paling mirip dengan kebiasaanmu, bukan yang menurutmu paling ideal.</div>
+  <div class="qnav"><a class="back" href="#">&larr; Kembali</a><a class="btn btn-p" href="#">Lanjut &rarr;</a></div>
+ </div>
+</div></section><section class="scr" style="border:0"><div class="wrap">
+ <div class="lbl"><b>Layar 3</b>Contoh hasil</div>
+ <div class="panel res">
+  <span class="badge">Hasil tesmu</span>
+  <div class="hero-m"><svg viewBox="0 0 120 170" width="140" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L80 44" /><path d="M60 66 L42 86" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <g><circle cx="94" cy="26" r="13" fill="#fcd34d" stroke="#123f34" stroke-width="3"/><text x="94" y="32" text-anchor="middle" font-family="Plus Jakarta Sans,sans-serif" font-weight="800" font-size="17" fill="#123f34">?</text></g>
+</svg></div>
+  <h2>Kamu Si Penanya</h2>
+  <p class="d">Kamu tidak mudah menerima sesuatu sebelum tahu dasarnya. Rasa ingin tahu seperti ini bekal yang baik untuk menuntut ilmu.</p>
+  <div class="box"><small>Kekuatanmu</small><p>Teliti terhadap sumber dan tidak gampang ikut-ikutan.</p></div>
+  <div class="box"><small>Yang perlu dijaga</small><p>Adab bertanya: kepada orang yang tepat, di waktu yang tepat, untuk belajar dan bukan untuk menguji.</p></div>
+  <div class="box"><small>Titik mulai yang disarankan</small><p>Level 01 Fondasi Muslim, mulai dari pelajaran 1: Kenapa belajar agama sekarang.</p></div>
+  <div class="acts"><a class="btn btn-gold" href="#">Buka pelajaran yang disarankan &rarr;</a><a class="btn btn-ghost" href="#">Bagikan hasil sebagai gambar</a></div>
+  <p class="disc">Hasil ini hanya saran titik mulai belajar, bukan penilaian iman atau amal seseorang.</p>
+ </div>
+ <div class="lain"><h4>Tipe lainnya</h4><div class="row"><div class="m"><svg viewBox="0 0 120 170" width="70" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#3f8f74" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#1b5546" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <rect x="48" y="82" width="24" height="18" rx="2" fill="#fcd34d" stroke="#123f34" stroke-width="2.5"/><rect x="52" y="87" width="16" height="2.5" fill="#123f34"/><g fill="#fcd34d" stroke="#123f34" stroke-width="2"><circle cx="20" cy="30" r="5"/><circle cx="100" cy="22" r="4"/><circle cx="104" cy="48" r="3"/></g>
+</svg><b>Si Penghafal</b></div><div class="m"><svg viewBox="0 0 120 170" width="70" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L48 80 L66 82" /><path d="M60 66 L72 80 L56 82" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#2f7a62" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <path d="M26 158 L94 158 L98 168 L22 168 Z" fill="#b45a3c" opacity=".85"/><path d="M30 163 L90 163" stroke="#fcd34d" stroke-width="2"/>
+</svg><b>Si Pengamal</b></div><div class="m"><svg viewBox="0 0 120 170" width="70" aria-hidden="true">
+  <path d="M40 86 L80 86 L90 154 L30 154 Z" fill="#c79a2e" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M60 72 L46 88 L58 92" /><path d="M60 72 L74 88 L62 92" />
+  </g>
+  <path d="M60 18 C44 18 41 32 41 44 L34 90 Q60 102 86 90 L79 44 C79 32 76 18 60 18 Z" fill="#7a4b2a" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <ellipse cx="60" cy="41" rx="10.5" ry="12.5" fill="#fffdf6"/>
+  <path d="M52 154 L51 160 M68 154 L69 160" stroke="#123f34" stroke-width="4" stroke-linecap="round"/>
+  <path d="M46 92 L60 96 L74 92 L74 80 L60 84 L46 80 Z" fill="#fffdf6" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/><path d="M60 84 L60 96" stroke="#123f34" stroke-width="2"/>
+</svg><b>Si Pembaca</b></div><div class="m"><svg viewBox="0 0 120 170" width="70" aria-hidden="true">
+  <g fill="none" stroke="#123f34" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="60" cy="38" r="14" fill="#fffdf6"/>
+    <path d="M60 52 L60 98"/>
+    <path d="M60 66 L36 74" /><path d="M60 66 L84 74" />
+    <path d="M52 146 L50 156 M68 146 L70 156"/>
+  </g>
+  <path d="M45 30 L46 19 Q60 13 74 19 L75 30 Q60 26 45 30 Z" fill="#0c2c25"/>
+  <path d="M46 96 L74 96 L80 148 L40 148 Z" fill="#8a6a1f" stroke="#123f34" stroke-width="3" stroke-linejoin="round"/>
+  <path d="M44 114 L76 114 M42 130 L78 130" stroke="#fffdf6" stroke-opacity=".55" stroke-width="3"/>
+  <rect x="24" y="66" width="16" height="12" rx="2" fill="#123f34"/><g fill="#c79a2e" stroke="#123f34" stroke-width="1.5"><circle cx="86" cy="72" r="3.2"/><circle cx="92" cy="74" r="3.2"/><circle cx="96" cy="79" r="3.2"/></g>
+</svg><b>Si Penyeimbang</b></div></div></div>
+ <p style="text-align:center;margin:18px 0 0"><a href="#" style="font-weight:800;color:var(--g);font-size:14px">Ulangi tes</a></p>
+</div></section>
+</body></html>
