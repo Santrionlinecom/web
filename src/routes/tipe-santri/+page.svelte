@@ -295,20 +295,26 @@
 		margin: 14px 0 4px;
 	}
 	.kar-l {
+		flex-basis: 100%;
+		text-align: center;
 		font-size: 13px;
 		font-weight: 700;
 		color: var(--muted, #52615a);
+	}
+	.res .kar-l {
+		color: rgb(255 255 255 / 0.82);
 	}
 	.kar button {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
 		min-height: 44px;
-		padding: 6px 14px 6px 8px;
+		padding: 4px 14px 4px 8px;
 		border-radius: 999px;
 		border: 1.5px solid var(--border);
 		background: #fff;
 		font: inherit;
+		font-size: 15px;
 		font-weight: 700;
 		color: var(--g, #123f34);
 		cursor: pointer;
