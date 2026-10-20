@@ -58,8 +58,8 @@
 
 	const prinsip = [
 		{ judul: 'AI menunjukkan sumbernya', isi: 'Jawaban Tanya Kitab disertai kutipan kitab yang dipakai. AI adalah alat bantu belajar, bukan pengganti ulama dan guru; untuk perkara yang membutuhkan fatwa, pengguna kami arahkan bertanya langsung kepada ahlinya.' },
-		{ judul: 'Data bukan barang dagangan', isi: 'Data dipakai untuk menjalankan layanan, bukan diperjualbelikan. Kami tidak memasang iklan pihak ketiga, dan pengguna bisa menghapus akunnya sendiri kapan saja.' },
-		{ judul: 'Gratis untuk lembaga', isi: 'Aplikasi pengelolaan lembaga tidak dipungut biaya. Keberlanjutan SantriOnline ditopang oleh produk digital berbayar dan jasa pengembangan, sehingga misi pembinaan tidak bergantung pada iklan.' }
+		{ judul: 'Data bukan barang dagangan', isi: 'Data dipakai untuk menjalankan layanan, bukan diperjualbelikan. Situs publik ini menampilkan iklan Google; aplikasi dan data lembaga tidak dipakai untuk iklan, dan pengguna bisa menghapus akunnya sendiri kapan saja.' },
+		{ judul: 'Gratis untuk lembaga', isi: 'Aplikasi pengelolaan lembaga tidak dipungut biaya. Keberlanjutan SantriOnline ditopang oleh produk digital berbayar, jasa pengembangan, dan iklan di situs publik, sehingga misi pembinaan tidak bergantung pada satu sumber saja.' }
 	];
 
 	const schema = {
@@ -192,7 +192,7 @@
 					{/each}
 				</div>
 				<p class="mt-6 text-sm text-so-muted">
-					Baca selengkapnya di <a class="font-semibold text-so-green underline" href={`${appUrl}/privacy`}>Kebijakan Privasi</a> dan <a class="font-semibold text-so-green underline" href={`${appUrl}/syarat`}>Syarat Layanan</a>.
+					Baca selengkapnya di <a class="font-semibold text-so-green underline" href="/kebijakan-privasi">Kebijakan Privasi situs</a>, <a class="font-semibold text-so-green underline" href={`${appUrl}/privacy`}>Kebijakan Privasi aplikasi</a> dan <a class="font-semibold text-so-green underline" href={`${appUrl}/syarat`}>Syarat Layanan</a>.
 				</p>
 			</div>
 		</section>

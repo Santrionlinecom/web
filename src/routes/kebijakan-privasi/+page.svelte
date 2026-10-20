@@ -1,0 +1,86 @@
+<script lang="ts">
+	// src/routes/kebijakan-privasi/+page.svelte — kebijakan privasi situs publik santrionline.com.
+	// Wajib menyebut iklan Google AdSense + cookie pihak ketiga (syarat AdSense).
+	// Kebijakan aplikasi (app.santrionline.com) tetap di app.santrionline.com/privacy.
+	import logo from '$lib/assets/logo.png';
+	const email = 'masyogik@santrionline.com';
+	const diperbarui = '20 Oktober 2026';
+</script>
+
+<svelte:head>
+	<title>Kebijakan Privasi | SantriOnline</title>
+	<meta name="description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, iklan Google AdSense, cara menolak iklan yang dipersonalisasi, dan cara menghubungi kami." />
+	<link rel="canonical" href="https://santrionline.com/kebijakan-privasi" />
+	<meta name="robots" content="index, follow" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="id_ID" />
+	<meta property="og:site_name" content="SantriOnline" />
+	<meta property="og:url" content="https://santrionline.com/kebijakan-privasi" />
+	<meta property="og:title" content="Kebijakan Privasi | SantriOnline" />
+	<meta property="og:description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, iklan Google AdSense, cara menolak iklan yang dipersonalisasi, dan cara menghubungi kami." />
+	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+</svelte:head>
+
+<div class="min-h-screen bg-so-cream text-so-ink">
+	<header class="border-b border-so-border/80 bg-white">
+		<div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+			<a href="/" class="inline-flex items-center gap-3 font-display text-lg font-bold text-so-green">
+				<img src={logo} alt="Logo SantriOnline" class="size-10 rounded-xl object-cover" />
+				SantriOnline
+			</a>
+			<a href="https://app.santrionline.com" class="rounded-full bg-so-green px-5 py-2.5 text-sm font-bold text-white">Buka Aplikasi</a>
+		</div>
+	</header>
+	<main class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:py-16">
+		<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-accent-ink">Kebijakan</p>
+		<h1 class="font-display mt-3 text-4xl font-bold tracking-[-0.03em] text-so-green sm:text-5xl">Kebijakan Privasi</h1>
+		<p class="mt-3 text-sm text-so-muted">Berlaku untuk situs santrionline.com. Terakhir diperbarui {diperbarui}.</p>
+
+		<div class="prose-so mt-8 space-y-8 leading-7 text-so-muted">
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Siapa kami</h2>
+				<p class="mt-2">santrionline.com dikelola oleh SantriOnline, usaha perorangan atas nama Yogik Pratama Aprilian (NIB 0229010241784), Jl Welirang No 25A, Pendem, Junrejo, Kota Batu, Jawa Timur. Kebijakan ini menjelaskan data apa yang diproses saat Anda mengunjungi situs ini, sesuai Undang-Undang Nomor 27 Tahun 2022 tentang Pelindungan Data Pribadi.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Data yang kami kumpulkan</h2>
+				<ul class="mt-2 list-disc space-y-1 pl-5">
+					<li>Data teknis kunjungan: alamat IP, jenis peramban dan perangkat, halaman yang dibuka, dan waktu kunjungan. Data ini dipakai untuk keamanan, mencegah penyalahgunaan, dan memperbaiki situs.</li>
+					<li>Pertanyaan yang Anda ketik di fitur Tanya Kitab, untuk menjawab pertanyaan tersebut.</li>
+					<li>Data yang Anda kirim sendiri lewat email atau formulir, misalnya nama dan alamat email.</li>
+				</ul>
+				<p class="mt-2">Untuk membaca halaman di situs ini Anda tidak perlu membuat akun. Pendaftaran dan data akun diatur oleh <a class="font-semibold text-so-green underline" href="https://app.santrionline.com/privacy">kebijakan privasi aplikasi SantriOnline</a>.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Cookie</h2>
+				<p class="mt-2">Cookie adalah berkas kecil yang disimpan peramban Anda. Situs ini memakai cookie yang diperlukan agar situs berjalan, serta cookie pihak ketiga dari Google untuk menayangkan iklan (lihat bagian berikut). Anda bisa menghapus atau memblokir cookie lewat pengaturan peramban; sebagian fitur mungkin tidak berjalan sempurna setelahnya.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Iklan Google AdSense</h2>
+				<p class="mt-2">Situs ini menampilkan iklan dari Google AdSense untuk membantu biaya operasional. Terkait iklan tersebut:</p>
+				<ul class="mt-2 list-disc space-y-1 pl-5">
+					<li>Vendor pihak ketiga, termasuk Google, memakai cookie untuk menayangkan iklan berdasarkan kunjungan Anda sebelumnya ke situs ini atau situs lain.</li>
+					<li>Cookie iklan memungkinkan Google dan mitranya menayangkan iklan berdasarkan kunjungan Anda ke situs ini dan/atau situs lain di internet.</li>
+					<li>Anda dapat menolak iklan yang dipersonalisasi melalui <a class="font-semibold text-so-green underline" href="https://adssettings.google.com" rel="noopener">Setelan Iklan Google</a>, atau menolak cookie vendor pihak ketiga melalui <a class="font-semibold text-so-green underline" href="https://www.aboutads.info/choices/" rel="noopener">www.aboutads.info</a>.</li>
+					<li>Penjelasan Google tentang penggunaan data: <a class="font-semibold text-so-green underline" href="https://policies.google.com/technologies/partner-sites" rel="noopener">Cara Google menggunakan informasi dari situs yang memakai layanannya</a>.</li>
+				</ul>
+				<p class="mt-2">Kami memblokir kategori iklan yang bertentangan dengan nilai Islam sejauh disediakan oleh pengaturan AdSense. Bila Anda melihat iklan yang tidak pantas, kabari kami lewat halaman <a class="font-semibold text-so-green underline" href="/kontak">Kontak</a>.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Layanan pihak ketiga lain</h2>
+				<p class="mt-2">Situs ini dimuat melalui jaringan pengiriman konten dan memakai huruf dari Google Fonts. Penyedia tersebut dapat menerima data teknis seperti alamat IP untuk mengirimkan berkas ke peramban Anda.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Anak-anak</h2>
+				<p class="mt-2">Sebagian konten kami ditujukan untuk santri dan keluarga. Kami tidak meminta data pribadi anak di situs ini. Orang tua yang mendampingi anak dapat menghubungi kami untuk menanyakan atau meminta penghapusan data.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Hak Anda</h2>
+				<p class="mt-2">Anda berhak meminta akses, perbaikan, atau penghapusan data pribadi Anda, serta menarik persetujuan. Kirim permintaan ke <a class="font-semibold text-so-green underline" href={`mailto:${email}`}>{email}</a>. Kami tidak menjual data pribadi Anda.</p>
+			</section>
+			<section>
+				<h2 class="text-xl font-extrabold text-so-green">Perubahan kebijakan</h2>
+				<p class="mt-2">Kebijakan ini dapat diperbarui. Tanggal di bagian atas halaman menunjukkan versi terbaru.</p>
+			</section>
+		</div>
+	</main>
+</div>

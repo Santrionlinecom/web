@@ -77,6 +77,8 @@ export const FOOTER: { judul: string; lembaga?: boolean; tautan: Tautan[] }[] = 
 			{ href: '/literasi/tahfidz-adalah', label: 'Tahfidz Adalah' },
 			{ href: '/literasi/munaqosah-tahfidz', label: 'Munaqosah Tahfidz' },
 			{ href: '/tentang', label: 'Profil Kami' },
+			{ href: '/kontak', label: 'Kontak' },
+			{ href: '/kebijakan-privasi', label: 'Kebijakan Privasi' },
 			{ href: APP, label: 'Masuk Aplikasi' }
 		]
 	}
