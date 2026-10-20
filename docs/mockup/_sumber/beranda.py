@@ -246,7 +246,7 @@ faq_data = [
 ]
 faq = "".join(f'<div class="card fq"><h4>{q}<span>{"&minus;" if i==0 else "+"}</span></h4>{f"<p>{a}</p>" if i==0 else ""}</div>' for i,(q,a) in enumerate(faq_data))
 
-figs = "".join(MASKOT[k][2](64) for k in ["penanya","penghafal","pengamal","pembaca","penyeimbang"])
+figs = "".join(MASKOT[k][2](64) for k in ["pendengar","pengamat","pembaca","penghafal","penanya","pengamal","istiqomah"])
 
 body = f'''{hero}
 <section><div class="wrap">

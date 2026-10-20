@@ -12,20 +12,22 @@
 
 | Level | Nama | Isi | Harga |
 |---|---|---|---|
-| 00 | Kenali Diri | Tes "Tipe Santri": 12 situasi, ±3 menit, hasilnya 5 maskot stickman | Gratis, tanpa login |
+| 00 | Kenali Diri | Tes "Tipe Santri": 10 situasi, ±3 menit, hasilnya 7 cara belajar (maskot stickman) | Gratis, tanpa login |
 | 01 | Fondasi Muslim | 7 modul / 24 pelajaran (lihat §2) | Gratis. Pelajaran 1 tanpa login, sisanya dengan akun gratis |
 | 02 | Ngaji Kitab Dasar | Safinatun Najah, 'Aqidatul 'Awam, Jurumiyah per bab: video + teks Arab + makna + kuis. Terhubung ke /kitab dan Tanya Kitab | Paket santri (mis. Rp49–99 rb) |
 | 03 | Hafalan Matan | Fitur rancangan `app.santrionline/.hermes/plans/2026-10-19_hafalan-matan-pesantren.md` | Termasuk paket |
 | 04 | Kajian Lanjut | Fathul Qarib, Bidayatul Hidayah, sirah; Tanya Kitab tanpa batas; live kajian 2x/bulan | Paket lanjut / lembaga |
 
-Maskot "Tipe Santri" (stickman, laki-laki berpeci, perempuan berhijab panjang):
-- **Si Penanya**: suka bertanya dalil.
-- **Si Penghafal**: kuat di hafalan.
-- **Si Pengamal**: fokus ibadah.
-- **Si Pembaca**: suka membaca kitab.
-- **Si Penyeimbang**.
+Maskot "Tipe Santri" (stickman, laki-laki berpeci, perempuan berhijab panjang). Sejak Okt 2026 tipe = **cara belajar** (cara yang paling mudah membuat paham), bukan kebiasaan ibadah:
+- **Si Pendengar** 🎧: paham lewat mendengar (audio, kajian, video narasi).
+- **Si Pengamat** 👀: paham lewat melihat (gambar, bagan, contoh, peragaan).
+- **Si Pembaca** 📖: paham lewat tulisan yang runtut.
+- **Si Penghafal** 🔁: cepat menangkap lewat menghafal dan mengulang.
+- **Si Penanya** ❓: paham lewat bertanya dan berdiskusi.
+- **Si Pengamal** 🤲: paham lewat praktik langsung.
+- **Si Istiqomah** 🐢: tidak cepat paham, tapi mengulang sedikit tiap hari sampai paham dan melekat.
 
-Hasil tes = titik mulai yang disarankan, bukan penilaian keimanan.
+Si Penyeimbang dihapus (nilai lama di app dibaca sebagai Si Istiqomah). Hasil = cara utama + cara kedua (selalu tampil); bila seri, dua cara ditampilkan apa adanya. Hasil tes = pintu masuk yang paling nyaman, bukan satu-satunya cara belajar, dan bukan penilaian keimanan. Mockup PNG/HTML di `docs/mockup` masih versi 5 tipe (arsip desain).
 
 ## 2. Level 01 Fondasi Muslim: 7 modul, 24 pelajaran (draf, wajib dicek ustadz)
 0. **Kenapa belajar sekarang** (1): keutamaan menuntut ilmu. HR. Ibnu Majah 224, "menuntut ilmu wajib atas setiap muslim"; derajatnya dicek dulu.

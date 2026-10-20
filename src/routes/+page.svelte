@@ -256,7 +256,7 @@
 		<a class="mascot-card" href="/tipe-santri">
 			<span class="tag" style="background:rgb(252 211 77/.18);color:var(--gold2)">Tes 3 menit · tanpa login</span>
 			<h2 class="mc-h">Kamu tipe santri yang mana?</h2>
-			<p class="s">12 situasi sehari-hari. Hasilnya titik mulai belajar yang cocok untukmu.</p>
+			<p class="s">10 situasi sehari-hari. Hasilnya cara belajar yang paling mudah membuatmu paham, plus titik mulainya.</p>
 			<div class="mrow">
 				{#each URUTAN_TIPE as t (t)}
 					<div class="m">
@@ -303,7 +303,7 @@
 				<div class="no">00</div>
 				<div>
 					<h3>Tipe Santri <span class="tag t-free">Gratis · tanpa login</span></h3>
-					<p>12 situasi, sekitar 3 menit. Hasilnya satu dari 5 tipe dan saran titik mulai.</p>
+					<p>10 situasi, sekitar 3 menit. Hasilnya cara belajarmu dari 7 tipe, cara kedua, dan saran titik mulai.</p>
 				</div>
 			</a>
 			<a class="card lv hi" href="/belajar">
@@ -632,7 +632,7 @@
 	.mrow {
 		position: relative;
 		display: grid;
-		grid-template-columns: repeat(5, minmax(0, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: 6px;
 	}
 	.m {
@@ -1282,12 +1282,13 @@
 	.figs {
 		position: relative;
 		display: flex;
+		flex-wrap: wrap;
 		justify-content: center;
 		gap: 4px;
 		margin-bottom: 6px;
 	}
 	.fig64 {
-		width: 64px;
+		width: 44px;
 	}
 	@media (min-width: 900px) {
 		.hero {
@@ -1314,7 +1315,11 @@
 			font-size: 9.5px;
 		}
 		.mrow {
+			grid-template-columns: repeat(7, minmax(0, 1fr));
 			gap: 8px;
+		}
+		.fig64 {
+			width: 64px;
 		}
 		.steps {
 			grid-template-columns: repeat(4, 1fr);
