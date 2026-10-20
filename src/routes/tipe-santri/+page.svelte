@@ -55,7 +55,12 @@
 	/** Cara kedua bawaan bila tautan lama hanya membawa ?hasil=: tipe berikutnya dalam daftar. */
 	const keduaBawaan = (t: IdTipe) => URUTAN_TIPE[(URUTAN_TIPE.indexOf(t) + 1) % URUTAN_TIPE.length];
 
-	function bacaHasil(utama: unknown, kedua: unknown, seri: unknown): Hasil | null {
+	// Tautan hasil lama (versi 5 tipe) tetap terbuka: penyeimbang dibaca sebagai istiqomah, sama seperti di app.
+	const TIPE_LAMA: Record<string, IdTipe> = { penyeimbang: 'istiqomah' };
+	const tipeLama = (v: unknown) => (typeof v === 'string' && Object.prototype.hasOwnProperty.call(TIPE_LAMA, v) ? TIPE_LAMA[v] : v);
+
+	function bacaHasil(utamaMentah: unknown, kedua: unknown, seri: unknown): Hasil | null {
+		const utama = tipeLama(utamaMentah);
 		if (!adalahTipe(utama)) return null;
 		const k = adalahTipe(kedua) && kedua !== utama ? kedua : keduaBawaan(utama);
 		return { utama, kedua: k, seri: seri === true || seri === '1' };
@@ -610,6 +615,8 @@
 		text-align: center;
 		position: relative;
 		overflow: hidden;
+		/* clip: scrollIntoView tidak bisa menggeser isi panel ke samping. */
+		overflow: clip;
 		border: 0;
 	}
 	.res::before {
@@ -716,10 +723,14 @@
 		gap: 6px;
 	}
 	.duo .hero-m {
-		width: 124px;
+		box-sizing: border-box;
+		flex: 0 1 124px;
+		min-width: 0;
+		width: auto;
 		margin: 14px 0 4px;
 	}
 	.plus {
+		flex: none;
 		font-family: 'Fraunces', serif;
 		font-size: 30px;
 		font-weight: 800;
@@ -794,8 +805,9 @@
 		padding: 14px 16px;
 	}
 	.jadwal ol {
+		list-style: none;
 		margin: 0;
-		padding-left: 20px;
+		padding-left: 0;
 		font-size: 14px;
 		line-height: 1.6;
 		color: var(--ink);

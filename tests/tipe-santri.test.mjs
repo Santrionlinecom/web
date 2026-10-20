@@ -36,7 +36,10 @@ test('tujuh tipe cara belajar, urutan sama di JSON dan maskot, penyeimbang sudah
 	assert.deepEqual(Object.keys(tes.tipe), TUJUH);
 	assert.match(maskot, /URUTAN_TIPE: IdTipe\[\] = \['pendengar', 'pengamat', 'pembaca', 'penghafal', 'penanya', 'pengamal', 'istiqomah'\]/);
 	for (const t of TUJUH) assert.match(maskot, new RegExp(`\\t${t}: maskot\\('Si `), `maskot ${t}`);
-	assert.doesNotMatch(read('src/content/belajar/tipe-santri.json') + maskot + halaman + read('src/routes/+page.svelte'), /penyeimbang|SEIMBANG/i);
+	assert.doesNotMatch(read('src/content/belajar/tipe-santri.json') + maskot + read('src/routes/+page.svelte'), /penyeimbang|SEIMBANG/i);
+	// Halaman hanya menyebut id lama di peta tautan lama (penyeimbang -> istiqomah), tidak sebagai tipe.
+	assert.match(halaman, /TIPE_LAMA: Record<string, IdTipe> = \{ penyeimbang: 'istiqomah' \}/);
+	assert.doesNotMatch(halaman.replace(/^.*TIPE_LAMA: Record.*$/m, '').replace(/^.*penyeimbang dibaca sebagai istiqomah.*$/m, ''), /penyeimbang/i);
 	assert.equal(tes.status, 'draf');
 });
 
