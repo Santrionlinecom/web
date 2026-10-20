@@ -5,8 +5,8 @@ slug: rukun-islam
 judul: Rukun Islam yang lima
 ringkas: "Islam dibangun di atas lima tiang: syahadat, shalat, zakat, puasa Ramadhan, dan haji bagi yang mampu."
 durasi_baca: 4 menit
-status: draf
-dicek_oleh: null
+status: terbit
+dicek_oleh: "Mas Yogik, disahkan 2026-10-20"
 dalil:
 - jenis: hadits
   rujukan: HR. Bukhari no. 8

@@ -5,8 +5,8 @@ slug: kenapa-belajar-agama-sekarang
 judul: Kenapa belajar agama sekarang
 ringkas: Allah meninggikan derajat orang yang berilmu, dan jalan mencari ilmu adalah jalan yang dimudahkan menuju surga.
 durasi_baca: 4 menit
-status: draf
-dicek_oleh: null
+status: terbit
+dicek_oleh: "Mas Yogik, disahkan 2026-10-20"
 dalil:
 - jenis: ayat
   rujukan: "QS. Al-Mujadilah 58:11"
