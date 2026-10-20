@@ -1,6 +1,6 @@
 <script lang="ts">
 	// src/routes/kebijakan-privasi/+page.svelte — kebijakan privasi situs publik santrionline.com.
-	// Wajib menyebut iklan Google AdSense + cookie pihak ketiga (syarat AdSense).
+	// Situs tanpa iklan pihak ketiga (AdSense dicopot 20 Okt 2026).
 	// Kebijakan aplikasi (app.santrionline.com) tetap di app.santrionline.com/privacy.
 	import logo from '$lib/assets/logo.png';
 	const email = 'masyogik@santrionline.com';
@@ -9,7 +9,7 @@
 
 <svelte:head>
 	<title>Kebijakan Privasi | SantriOnline</title>
-	<meta name="description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, iklan Google AdSense, cara menolak iklan yang dipersonalisasi, dan cara menghubungi kami." />
+	<meta name="description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami." />
 	<link rel="canonical" href="https://santrionline.com/kebijakan-privasi" />
 	<meta name="robots" content="index, follow" />
 	<meta property="og:type" content="website" />
@@ -17,7 +17,7 @@
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/kebijakan-privasi" />
 	<meta property="og:title" content="Kebijakan Privasi | SantriOnline" />
-	<meta property="og:description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, iklan Google AdSense, cara menolak iklan yang dipersonalisasi, dan cara menghubungi kami." />
+	<meta property="og:description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami." />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
 </svelte:head>
 
@@ -52,18 +52,11 @@
 			</section>
 			<section>
 				<h2 class="text-xl font-extrabold text-so-green">Cookie</h2>
-				<p class="mt-2">Cookie adalah berkas kecil yang disimpan peramban Anda. Situs ini memakai cookie yang diperlukan agar situs berjalan, serta cookie pihak ketiga dari Google untuk menayangkan iklan (lihat bagian berikut). Anda bisa menghapus atau memblokir cookie lewat pengaturan peramban; sebagian fitur mungkin tidak berjalan sempurna setelahnya.</p>
+				<p class="mt-2">Cookie adalah berkas kecil yang disimpan peramban Anda. Situs ini memakai cookie yang diperlukan agar situs berjalan, bukan untuk iklan. Anda bisa menghapus atau memblokir cookie lewat pengaturan peramban; sebagian fitur mungkin tidak berjalan sempurna setelahnya.</p>
 			</section>
 			<section>
-				<h2 class="text-xl font-extrabold text-so-green">Iklan Google AdSense</h2>
-				<p class="mt-2">Situs ini menampilkan iklan dari Google AdSense untuk membantu biaya operasional. Terkait iklan tersebut:</p>
-				<ul class="mt-2 list-disc space-y-1 pl-5">
-					<li>Vendor pihak ketiga, termasuk Google, memakai cookie untuk menayangkan iklan berdasarkan kunjungan Anda sebelumnya ke situs ini atau situs lain.</li>
-					<li>Cookie iklan memungkinkan Google dan mitranya menayangkan iklan berdasarkan kunjungan Anda ke situs ini dan/atau situs lain di internet.</li>
-					<li>Anda dapat menolak iklan yang dipersonalisasi melalui <a class="font-semibold text-so-green underline" href="https://adssettings.google.com" rel="noopener">Setelan Iklan Google</a>, atau menolak cookie vendor pihak ketiga melalui <a class="font-semibold text-so-green underline" href="https://www.aboutads.info/choices/" rel="noopener">www.aboutads.info</a>.</li>
-					<li>Penjelasan Google tentang penggunaan data: <a class="font-semibold text-so-green underline" href="https://policies.google.com/technologies/partner-sites" rel="noopener">Cara Google menggunakan informasi dari situs yang memakai layanannya</a>.</li>
-				</ul>
-				<p class="mt-2">Kami memblokir kategori iklan yang bertentangan dengan nilai Islam sejauh disediakan oleh pengaturan AdSense. Bila Anda melihat iklan yang tidak pantas, kabari kami lewat halaman <a class="font-semibold text-so-green underline" href="/kontak">Kontak</a>.</p>
+				<h2 class="text-xl font-extrabold text-so-green">Tanpa iklan pihak ketiga</h2>
+				<p class="mt-2">santrionline.com tidak memasang iklan pihak ketiga dan tidak memakai cookie iklan atau pelacak iklan. Data kunjungan Anda tidak dijual dan tidak dipakai untuk menargetkan iklan.</p>
 			</section>
 			<section>
 				<h2 class="text-xl font-extrabold text-so-green">Layanan pihak ketiga lain</h2>

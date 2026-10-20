@@ -39,7 +39,7 @@
 			<article class="rounded-2xl border border-so-border/80 bg-white p-6">
 				<h2 class="text-lg font-extrabold text-so-green">Email</h2>
 				<a class="mt-2 inline-block font-semibold text-so-green underline" href={`mailto:${email}`}>{email}</a>
-				<p class="mt-2 text-sm leading-6 text-so-muted">Untuk pertanyaan umum, kerja sama, laporan iklan atau konten yang tidak pantas, dan permintaan terkait data pribadi.</p>
+				<p class="mt-2 text-sm leading-6 text-so-muted">Untuk pertanyaan umum, kerja sama, laporan konten yang tidak pantas, dan permintaan terkait data pribadi.</p>
 			</article>
 			<article class="rounded-2xl border border-so-border/80 bg-white p-6">
 				<h2 class="text-lg font-extrabold text-so-green">Alamat usaha</h2>
