@@ -27,6 +27,7 @@ export const MENU_LEMBAGA: Tautan[] = [
 export const MENU_UTAMA: GrupMenu[] = [
 	{ label: 'Belajar', href: '/belajar', aktif: '/belajar' },
 	{ label: 'Tipe Santri', href: '/tipe-santri', aktif: '/tipe-santri' },
+	{ label: 'Video', href: '/video', aktif: '/video' },
 	{ label: 'Katalog', href: '/katalog/semua', aktif: '/katalog', anak: MENU_KATALOG },
 	{ label: 'Tanya Kitab', href: `${APP}/tanya` },
 	{ label: 'Untuk Lembaga', href: '/lembaga', anak: MENU_LEMBAGA }
@@ -38,6 +39,7 @@ export const FOOTER: { judul: string; lembaga?: boolean; tautan: Tautan[] }[] = 
 		tautan: [
 			{ href: '/belajar', label: 'Fondasi Muslim' },
 			{ href: '/tipe-santri', label: 'Tipe Santri' },
+			{ href: '/video', label: 'Video' },
 			{ href: `${APP}/tanya`, label: 'Tanya Kitab' },
 			{ href: `${APP}/al-quran`, label: "Al-Qur'an" },
 			{ href: `${APP}/al-quran/yasin`, label: 'Surah Yasin' },

@@ -14,6 +14,7 @@ const PAGES = [
 	{ path: '/', changefreq: 'daily', priority: '1.0' },
 	{ path: '/belajar', changefreq: 'weekly', priority: '0.9' },
 	{ path: '/tipe-santri', changefreq: 'monthly', priority: '0.8' },
+	{ path: '/video', changefreq: 'weekly', priority: '0.8' },
 	// Hanya pelajaran berstatus 'terbit'; draf tidak pernah masuk sitemap.
 	...pelajaranTerbit().map((p) => ({ path: p.href, changefreq: 'monthly', priority: '0.8' })),
 	{ path: '/literasi/apa-itu-santri-online', changefreq: 'monthly', priority: '0.8' },
