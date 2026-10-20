@@ -5,8 +5,8 @@ slug: rukun-iman
 judul: Rukun Iman yang enam
 ringkas: "Iman berdiri di atas enam keyakinan: kepada Allah, malaikat, kitab-kitab, para rasul, hari akhir, dan takdir yang baik maupun yang buruk."
 durasi_baca: 4 menit
-status: draf
-dicek_oleh: null
+status: terbit
+dicek_oleh: "Mas Yogik, disahkan 2026-10-20"
 dalil:
 - jenis: hadits
   rujukan: HR. Muslim no. 8 (bagian Iman)

@@ -5,8 +5,8 @@ slug: islam-iman-ihsan
 judul: "Islam, Iman, Ihsan: tiga tingkatan agama"
 ringkas: Hadits Jibril mengajarkan bahwa agama terdiri dari Islam, Iman, dan Ihsan, yaitu amalan lahir, keyakinan hati, dan kesadaran selalu dilihat Allah.
 durasi_baca: 4 menit
-status: draf
-dicek_oleh: null
+status: terbit
+dicek_oleh: "Mas Yogik, disahkan 2026-10-20"
 dalil:
 - jenis: hadits
   rujukan: HR. Muslim no. 8 (bagian Islam)
