@@ -192,7 +192,7 @@
 					{/each}
 				</div>
 				<p class="mt-6 text-sm text-so-muted">
-					Baca selengkapnya di <a class="font-semibold text-so-green underline" href={`${appUrl}/privacy`}>Kebijakan Privasi</a> dan <a class="font-semibold text-so-green underline" href={`${appUrl}/syarat`}>Syarat Layanan</a>.
+					Baca selengkapnya di <a class="font-semibold text-so-green underline" href="/kebijakan-privasi">Kebijakan Privasi situs</a>, <a class="font-semibold text-so-green underline" href={`${appUrl}/privacy`}>Kebijakan Privasi aplikasi</a> dan <a class="font-semibold text-so-green underline" href={`${appUrl}/syarat`}>Syarat Layanan</a>.
 				</p>
 			</div>
 		</section>
