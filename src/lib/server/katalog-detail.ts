@@ -168,8 +168,9 @@ export async function muatDetail(
 			ringkasan: s(r.ringkasan) ?? '',
 			deskripsi: s(r.deskripsi),
 			sampul: s(r.sampul_url),
-			harga: n(r.harga_koin) > 0 ? `${n(r.harga_koin)} koin` : 'Gratis',
-			gratis: n(r.harga_koin) === 0,
+			// Belajar di SantriOnline gratis (keputusan 21 Okt 2026): kursus selalu tampil Gratis.
+			harga: 'Gratis',
+			gratis: true,
 			href: `${APP}/kursus/${slug}`,
 			aksi: 'Ikuti',
 			kategori: s(r.kategori),

@@ -225,8 +225,9 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		judul: String(r.judul),
 		ringkasan: s(r.ringkasan) ?? 'Kursus bertahap dengan materi dan latihan.',
 		sampul: s(r.sampul_url),
-		harga: n(r.harga_koin) > 0 ? `${n(r.harga_koin)} koin` : 'Gratis',
-		gratis: n(r.harga_koin) === 0,
+		// Belajar di SantriOnline gratis (keputusan 21 Okt 2026): kursus selalu tampil Gratis.
+		harga: 'Gratis',
+		gratis: true,
 		href: `${APP}/kursus/${r.slug}`,
 		detail: `/katalog/kursus/${r.slug}`,
 		aksi: 'Ikuti',
