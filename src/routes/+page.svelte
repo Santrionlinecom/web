@@ -262,7 +262,7 @@
 				{#each URUTAN_TIPE as t (t)}
 					<div class="m">
 						<span class="m-svg">{@html MASKOT[t].svg(90)}</span>
-						<b>{MASKOT[t].nama}</b>
+						<b><small>Si</small>{MASKOT[t].nama.replace('Si ', '')}</b>
 					</div>
 				{/each}
 			</div>
@@ -658,6 +658,17 @@
 		letter-spacing: -0.01em;
 		line-height: 1.2;
 		white-space: nowrap;
+	}
+	@media (max-width: 345px) {
+		.m b {
+			font-size: 10px;
+		}
+	}
+	.m b small {
+		display: block;
+		font-size: 0.8em;
+		font-weight: 700;
+		opacity: 0.75;
 		margin-top: 2px;
 	}
 	.mini {
