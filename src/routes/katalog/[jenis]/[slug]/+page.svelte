@@ -89,7 +89,7 @@
 	{@html `<script type="application/ld+json">${remah}</script>`}
 </svelte:head>
 
-<div class="mx-auto w-full max-w-5xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
+<div class="sb-tw mx-auto w-full max-w-5xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
 	<nav class="flex flex-wrap items-center gap-1 text-xs text-so-muted" aria-label="Remah roti">
 		<a href="/katalog/semua" class="font-bold text-so-green hover:underline">Katalog</a>
 		<span aria-hidden="true">›</span>
