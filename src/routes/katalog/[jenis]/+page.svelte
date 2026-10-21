@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// /katalog/[jenis] — halaman "Lihat semua" satu jenis (atau semua), grid sampul
 	// + saringan teks (GET ?q=, tanpa JS). Memakai KartuKatalog yang sama dengan rak.
 	import KartuKatalog from '$lib/components/ui/KartuKatalog.svelte';
@@ -43,7 +44,7 @@
 		</div>
 		<form method="GET" class="flex w-full items-center gap-2 sm:w-auto">
 			<label class="flex flex-1 items-center gap-2 rounded-full border border-so-border bg-white px-3 py-2 shadow-sm sm:w-72">
-				<svg class="size-4 shrink-0 text-so-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+				<Ikon nama="search" ukuran={18} aksen="#1f8a5b" />
 				<input name="q" value={data.q} placeholder="Cari judul…" class="w-full bg-transparent text-sm outline-none" aria-label="Cari di katalog" />
 			</label>
 			<button class="rounded-full bg-so-green px-4 py-2 text-sm font-bold text-white hover:bg-so-green-3">Cari</button>

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// src/routes/+page.svelte
 	// Beranda "Belajar Islam dari nol sampai paham" sesuai mockup yang disetujui
 	// (docs/mockup/beranda.html). Rak kitab/buku/aplikasi memakai data D1 bila ada.
@@ -78,10 +79,10 @@
 	const labelProduk = (p: Kartu) => (p.harga === 'Gratis' ? 'Aplikasi · Gratis' : `Aplikasi · ${p.harga}`);
 
 	const LANGKAH = [
-		{ n: '01', judul: 'Kenali Diri', isi: 'Ikuti tes Tipe Santri. Kamu tahu mulai dari mana, tanpa merasa dihakimi.', ikon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0' },
-		{ n: '02', judul: 'Belajar', isi: 'Tonton video singkat, lalu baca materi dengan dalil berharakat, terjemah, dan sumber bernomor.', ikon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25' },
-		{ n: '03', judul: 'Praktik', isi: 'Jawab 3 soal, simpan kartu ringkas, dan bawa pulang satu amalan kecil untuk hari ini.', ikon: 'M9 12l2 2 4-4M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z' },
-		{ n: '04', judul: 'Tumbuh', isi: 'Naik ke ngaji kitab dasar, hafalan matan, lalu kajian lanjut bersama guru.', ikon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18' }
+		{ n: '01', lucian: 'user', judul: 'Kenali Diri', isi: 'Ikuti tes Tipe Santri. Kamu tahu mulai dari mana, tanpa merasa dihakimi.', ikon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0' },
+		{ n: '02', lucian: 'book', judul: 'Belajar', isi: 'Tonton video singkat, lalu baca materi dengan dalil berharakat, terjemah, dan sumber bernomor.', ikon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25' },
+		{ n: '03', lucian: 'check', judul: 'Praktik', isi: 'Jawab 3 soal, simpan kartu ringkas, dan bawa pulang satu amalan kecil untuk hari ini.', ikon: 'M9 12l2 2 4-4M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z' },
+		{ n: '04', lucian: 'linechart', judul: 'Tumbuh', isi: 'Naik ke ngaji kitab dasar, hafalan matan, lalu kajian lanjut bersama guru.', ikon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18' }
 	];
 
 	const MODUL_CHIP = ['Kenapa belajar sekarang', 'Kenalan dengan Islam', 'Aqidah dasar', 'Thaharah', 'Shalat', 'Puasa dan zakat', 'Adab dan akhlak', 'Langkah berikutnya'];
@@ -282,7 +283,7 @@
 			{#each LANGKAH as l (l.n)}
 				<div class="card step">
 					<div class="ico">
-						<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d={l.ikon} /></svg>
+						<Ikon nama={l.lucian} ukuran={28} aksen={Number(l.n) % 2 ? '#1f8a5b' : '#b88b24'} />
 					</div>
 					<div class="n">{l.n}</div>
 					<h3>{l.judul}</h3>
@@ -711,13 +712,15 @@
 		border-radius: 14px;
 		display: grid;
 		place-items: center;
-		background: linear-gradient(135deg, #34a873, #12633f);
-		color: #fff;
+		background: #eef6f0;
+		border: 1px solid #cfe5d7;
+		color: #12633f;
 		margin-bottom: 12px;
 	}
 	.step:nth-child(even) .ico {
-		background: linear-gradient(135deg, #e8c97a, #b88b24);
-		color: #173d2e;
+		background: #fbf4e2;
+		border-color: #eedcae;
+		color: #7a5a12;
 	}
 	.ladder {
 		display: grid;

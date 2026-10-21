@@ -473,3 +473,10 @@ select:focus-visible,
 	background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
 	animation: so-shimmer 1400ms var(--ease-so, ease) infinite;
 }
+
+.icon-badge-lucian {
+	background: #eef6f0;
+	border: 1px solid #cfe5d7;
+	color: #12633f;
+	box-shadow: none;
+}
