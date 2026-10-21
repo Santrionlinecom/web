@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// src/routes/lembaga/+page.svelte — halaman "Untuk Lembaga": TPQ, madrasah diniyah,
 	// rumah tahfidz, pondok, masjid. Tanpa pembayaran di situs ini: jalur masuk =
 	// WhatsApp (pendampingan) atau daftar mandiri di aplikasi.
@@ -27,14 +28,14 @@
 	];
 
 	const fitur = [
-		{ nama: 'Data santri & kelas', href: '/aplikasi-pondok-pesantren', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
-		{ nama: 'Setoran hafalan & rekap', href: '/aplikasi-hafalan-quran', isi: 'Guru mencatat setoran per ayat dari HP — ziyadah dan murojaah dibedakan. Capaian santri dan daftar hafalan belum lancar terkumpul sendiri.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
-		{ nama: 'Rapor santri', href: '/aplikasi-raport-tpq', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan tautannya. Ada templat raport TPQ Excel gratis.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
-		{ nama: 'Halaqah & jadwal', isi: 'Kelompok ngaji, guru pengampu, dan jadwal pertemuan tercatat jelas untuk semua guru.', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13v5l3 2' },
-		{ nama: 'Keuangan lembaga', href: '/fitur/keuangan-pesantren', isi: 'Catatan iuran dan pengeluaran sederhana yang bisa dipertanggungjawabkan ke pengurus dan wali.', icon: 'M3 7h18v10H3V7Zm4 5h.01M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z' },
-		{ nama: 'Akun wali santri', isi: 'Orang tua diundang dengan kode dari lembaga, lalu memantau catatan kebiasaan harian anaknya dari HP.', icon: 'M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6' },
-		{ nama: 'Kitab digital & ruang belajar', isi: 'Safinatun Najah, Aqidatul Awam, Arba’in Nawawi, dan lainnya tersedia untuk santri dan guru.', icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6' },
-		{ nama: 'Kampung Santri Digital', isi: 'Permainan 3D yang mengikuti waktu sholat sungguhan. Anak belajar wudhu, adzan, jamaah sambil bermain.', icon: 'M4 20V9l8-5 8 5v11M9 20v-6h6v6' }
+		{ nama: 'Data santri & kelas', lucian: 'users', href: '/aplikasi-pondok-pesantren', isi: 'Satu daftar santri yang rapi: kelas, wali, status aktif. Tidak perlu buku induk baru setiap tahun.', icon: 'M16 20v-1.5a3.5 3.5 0 0 0-3.5-3.5h-5A3.5 3.5 0 0 0 4 18.5V20m6-8a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm10 8v-1.5a3.5 3.5 0 0 0-2.5-3.35M16 4.2a4 4 0 0 1 0 7.6' },
+		{ nama: 'Setoran hafalan & rekap', lucian: 'book', href: '/aplikasi-hafalan-quran', isi: 'Guru mencatat setoran per ayat dari HP — ziyadah dan murojaah dibedakan. Capaian santri dan daftar hafalan belum lancar terkumpul sendiri.', icon: 'M4 19.5V5.8C6.7 5 9.3 5.4 12 7v12.5c-2.7-1.6-5.3-2-8-1.2Zm16 0V5.8C17.3 5 14.7 5.4 12 7v12.5c2.7-1.6 5.3-2 8-1.2Z' },
+		{ nama: 'Rapor santri', lucian: 'document', href: '/aplikasi-raport-tpq', isi: 'Rapor tersusun dari catatan harian. Tinggal periksa, lalu bagikan tautannya. Ada templat raport TPQ Excel gratis.', icon: 'M7 3h7l5 5v13H7V3Zm7 0v5h5M9 13h6M9 17h6' },
+		{ nama: 'Halaqah & jadwal', lucian: 'clock', isi: 'Kelompok ngaji, guru pengampu, dan jadwal pertemuan tercatat jelas untuk semua guru.', icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0-13v5l3 2' },
+		{ nama: 'Keuangan lembaga', lucian: 'wallet', href: '/fitur/keuangan-pesantren', isi: 'Catatan iuran dan pengeluaran sederhana yang bisa dipertanggungjawabkan ke pengurus dan wali.', icon: 'M3 7h18v10H3V7Zm4 5h.01M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z' },
+		{ nama: 'Akun wali santri', lucian: 'userplus', isi: 'Orang tua diundang dengan kode dari lembaga, lalu memantau catatan kebiasaan harian anaknya dari HP.', icon: 'M15 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2m6-10a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm8-2v6m3-3h-6' },
+		{ nama: 'Kitab digital & ruang belajar', lucian: 'book', isi: 'Safinatun Najah, Aqidatul Awam, Arba’in Nawawi, dan lainnya tersedia untuk santri dan guru.', icon: 'M5 4.75h11.5A2.5 2.5 0 0 1 19 7.25v12H7.5A2.5 2.5 0 0 1 5 16.75v-12Zm0 12a2.5 2.5 0 0 1 2.5-2.5H19M9 8h6' },
+		{ nama: 'Kampung Santri Digital', lucian: 'home', isi: 'Permainan 3D yang mengikuti waktu sholat sungguhan. Anak belajar wudhu, adzan, jamaah sambil bermain.', icon: 'M4 20V9l8-5 8 5v11M9 20v-6h6v6' }
 	];
 
 	const paket = [
@@ -187,7 +188,7 @@
 				<div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
 					{#each fitur as f}
 						<article class="rounded-2xl border border-so-border/80 bg-so-cream p-5">
-							<span class="icon-badge icon-badge-emerald"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85"><path d={f.icon} stroke-linecap="round" stroke-linejoin="round" /></svg></span>
+							<span class="icon-badge icon-badge-lucian"><Ikon nama={f.lucian} ukuran={26} aksen="#1f8a5b" /></span>
 							<h3 class="mt-4 font-extrabold">{f.nama}</h3>
 							<p class="mt-2 text-sm leading-6 text-so-muted">{f.isi}</p>
 							{#if f.href}<a href={f.href} class="mt-3 inline-block text-sm font-bold text-so-green underline">Selengkapnya →</a>{/if}
