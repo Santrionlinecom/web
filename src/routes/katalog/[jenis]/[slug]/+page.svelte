@@ -45,7 +45,7 @@
 			image: sampulAbs,
 			url: kanonik,
 			inLanguage: 'id',
-			...(item.jenis === 'kursus' ? { provider: { '@type': 'Organization', name: 'SantriOnline', url: ASAL } } : {}),
+			...(item.jenis === 'kursus' ? { provider: { '@type': 'Organization', name: 'SantriOnline', url: ASAL }, isAccessibleForFree: true } : {}),
 			...(item.jenis === 'produk' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
 			...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: { '@type': 'Organization', name: 'SantriOnline' } } : {}),
 			...(item.penulis ? { author: { '@type': 'Person', name: item.penulis } } : {}),

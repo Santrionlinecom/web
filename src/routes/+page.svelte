@@ -10,7 +10,6 @@
 	const appBaseUrl = 'https://app.santrionline.com';
 	const appRegisterUrl = `${appBaseUrl}/register`;
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
-	const groupWaUrl = `${appBaseUrl}/r/groupwa`;
 	const PELAJARAN_PERTAMA = '/belajar/0/kenapa-belajar-agama-sekarang';
 
 	type Kartu = { slug: string; judul: string; sampul: string | null; harga: string; kategori: string | null; detail: string | null };
@@ -128,6 +127,10 @@
 			answer: 'Tidak. Tes Tipe Santri dan pelajaran pertama bisa dibuka tanpa akun. Akun gratis di app.santrionline.com dipakai untuk menyimpan progres dan membuka pelajaran berikutnya.'
 		},
 		{
+			question: 'Apakah belajar di SantriOnline berbayar?',
+			answer: 'Tidak. Belajar di SantriOnline gratis, tidak dipungut biaya: Tes Tipe Santri, Fondasi Muslim, Ngaji Kitab Dasar, Hafalan Matan, sampai Kajian Lanjut. Yang berbayar hanya beberapa aplikasi pendukung, misalnya versi Pro SantriPrint.'
+		},
+		{
 			question: 'Siapa yang memeriksa materinya?',
 			answer: 'Setiap pelajaran ditulis dengan dalil bernomor, lalu diperiksa ustadz sebelum terbit. Selama belum diperiksa, pelajaran diberi tanda draf dan belum kami sebarkan.'
 		},
@@ -151,7 +154,7 @@
 				alternateName: ['Santri Online', 'Santri Online Indonesia'],
 				url: 'https://santrionline.com/',
 				logo: 'https://santrionline.com/logo-santrionline.png',
-				description: 'Tempat belajar Islam bertahap dari nol dan platform digital gratis untuk pondok pesantren, TPQ, dan rumah tahfidz di Indonesia.',
+				description: 'Tempat belajar Islam bertahap dari nol, gratis tanpa biaya, dan platform digital gratis untuk pondok pesantren, TPQ, dan rumah tahfidz di Indonesia.',
 				areaServed: { '@type': 'Country', name: 'Indonesia' },
 				address: { '@type': 'PostalAddress', addressLocality: 'Batu', addressRegion: 'Jawa Timur', addressCountry: 'ID' },
 				sameAs: [
@@ -206,7 +209,7 @@
 	<title>SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis</title>
 	<meta
 		name="description"
-		content="Belajar Islam dari nol secara bertahap: video singkat, bacaan berdalil, dan kuis ringan, mulai gratis tanpa daftar. Plus aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis untuk lembaga."
+		content="Belajar Islam dari nol secara bertahap: video singkat, bacaan berdalil, dan kuis ringan. Belajar gratis, tidak dipungut biaya. Plus aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis untuk lembaga."
 	/>
 	<meta name="keywords" content="belajar islam dari nol, belajar agama islam online gratis, tes tipe santri, santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, kitab kuning digital" />
 	<meta name="author" content="SantriOnline" />
@@ -216,14 +219,14 @@
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/" />
 	<meta property="og:title" content="SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis" />
-	<meta property="og:description" content="Belajar Islam bertahap dari nol: video singkat, bacaan berdalil, kuis. Plus aplikasi gratis untuk pondok, TPQ, dan rumah tahfidz." />
+	<meta property="og:description" content="Belajar Islam bertahap dari nol, gratis: video singkat, bacaan berdalil, kuis. Plus aplikasi gratis untuk pondok, TPQ, dan rumah tahfidz." />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
 	<meta property="og:image:width" content="1200" />
 	<meta property="og:image:height" content="630" />
 	<meta property="og:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
 	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="SantriOnline | Belajar Islam dari Nol" />
-	<meta name="twitter:description" content="Belajar Islam bertahap dari nol, plus aplikasi gratis untuk pondok pesantren dan TPQ." />
+	<meta name="twitter:description" content="Belajar Islam bertahap dari nol secara gratis, plus aplikasi gratis untuk pondok pesantren dan TPQ." />
 	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
 	<meta name="twitter:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
 	<link rel="canonical" href="https://santrionline.com/" />
@@ -239,7 +242,7 @@
 <section class="hero">
 	<div class="wrap hero-g">
 		<div>
-			<span class="eyebrow"><span class="dot"></span>Kelas Islam bertahap · gratis untuk mulai</span>
+			<span class="eyebrow"><span class="dot"></span>Belajar Islam bertahap · 100% gratis</span>
 			<h1>Belajar Islam dari nol sampai <em>paham</em></h1>
 			<p class="sub">
 				Mulai dari yang paling dasar, pelan dan berurutan. Setiap pelajaran berisi video singkat, bacaan yang mencantumkan dalil dan sumbernya, lalu kuis ringan. Tidak perlu malu memulai dari awal.
@@ -248,6 +251,7 @@
 				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama <span aria-hidden="true">&rarr;</span></a>
 				<a class="btn btn-s" href="/tipe-santri">Cek Tipe Santri kamu</a>
 			</div>
+			<p class="gratis-note"><b aria-hidden="true">&#10003;</b>Belajar di SantriOnline gratis, tidak dipungut biaya.</p>
 			<div class="trust">
 				<span><b aria-hidden="true">&#10003;</b>Pelajaran 1 tanpa daftar</span>
 				<span><b aria-hidden="true">&#10003;</b>{jumlahKitab} kitab di perpustakaan</span>
@@ -298,7 +302,7 @@
 	<div class="wrap">
 		<span class="kicker">Peta belajar</span>
 		<h2 class="sec">Dari kenal diri sampai kajian kitab</h2>
-		<p class="lead">Dua tahap pertama gratis. Tahap berikutnya menyambung ke kitab-kitab yang biasa dikaji di pesantren.</p>
+		<p class="lead">Semua tahap belajar gratis, tidak dipungut biaya. Tahap berikutnya menyambung ke kitab-kitab yang biasa dikaji di pesantren.</p>
 		<div class="ladder">
 			<a class="card lv" href="/tipe-santri">
 				<div class="no">00</div>
@@ -310,7 +314,7 @@
 			<a class="card lv hi" href="/belajar">
 				<div class="no">01</div>
 				<div>
-					<h3>Fondasi Muslim <span class="tag" style="background:var(--gold);color:var(--g3)">Gratis</span></h3>
+					<h3>Fondasi Muslim <span class="tag" style="background:var(--gold);color:var(--g3)">Gratis · akun gratis</span></h3>
 					<p>24 pelajaran berurutan. Pelajaran pertama terbuka untuk siapa saja; sisanya cukup dengan akun gratis.</p>
 					<div class="chips">
 						{#each MODUL_CHIP as c (c)}<span class="chip">{c}</span>{/each}
@@ -320,22 +324,22 @@
 			<div class="card lv lock">
 				<div class="no">02</div>
 				<div>
-					<h3>Ngaji Kitab Dasar <span class="tag t-pay">Paket</span></h3>
+					<h3>Ngaji Kitab Dasar <span class="tag t-free">Gratis · akun gratis</span></h3>
 					<p>Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab: video, teks Arab, makna, kuis.</p>
 				</div>
 			</div>
 			<div class="card lv lock">
 				<div class="no">03</div>
 				<div>
-					<h3>Hafalan Matan <span class="tag t-pay">Paket</span></h3>
+					<h3>Hafalan Matan <span class="tag t-free">Gratis · akun gratis</span></h3>
 					<p>Menghafal matan pendek bait demi bait, dengan setoran dan pengulangan terjadwal.</p>
 				</div>
 			</div>
 			<div class="card lv lock wide">
 				<div class="no">04</div>
 				<div>
-					<h3>Kajian Lanjut <span class="tag t-pay">Paket lanjut</span></h3>
-					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab tanpa batas.</p>
+					<h3>Kajian Lanjut <span class="tag t-free">Gratis · akun gratis</span></h3>
+					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab.</p>
 				</div>
 			</div>
 		</div>
@@ -447,14 +451,14 @@
 
 <section>
 	<div class="wrap">
-		<span class="kicker">Paket</span>
-		<h2 class="sec">Mulai gratis, lanjut bila siap</h2>
-		<p class="lead">Fondasi tetap gratis. Paket untuk level kitab dan hafalan sedang kami siapkan.</p>
+		<span class="kicker">Biaya</span>
+		<h2 class="sec">Belajar gratis, tidak dipungut biaya</h2>
+		<p class="lead">Semua tahap belajar, dari Tipe Santri sampai Kajian Lanjut, gratis. Cukup akun gratis untuk menyimpan progres. Yang berbayar hanya beberapa aplikasi pendukung.</p>
 		<div class="pk">
 			<div class="card pkc">
 				<span class="tag t-free">Mulai di sini</span>
-				<h3>Gratis</h3>
-				<div class="pr">Rp0</div>
+				<h3>Level 00 + 01</h3>
+				<div class="pr">Rp0 <small>gratis</small></div>
 				<ul>
 					<li>Tes Tipe Santri</li>
 					<li>Fondasi Muslim: 24 pelajaran</li>
@@ -463,26 +467,27 @@
 				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama</a>
 			</div>
 			<div class="card pkc feat">
-				<span class="tag t-pay">Level 02 + 03</span>
-				<h3>Paket Santri</h3>
-				<div class="pr">Segera <small>harga diumumkan</small></div>
+				<span class="tag t-free">Level 02 + 03 + 04</span>
+				<h3>Kitab, hafalan, kajian</h3>
+				<div class="pr">Rp0 <small>gratis</small></div>
 				<ul>
 					<li>Ngaji Kitab Dasar per bab</li>
 					<li>Hafalan Matan dengan setoran</li>
-					<li>Progres tersimpan di akun</li>
+					<li>Kajian Lanjut dan kajian langsung 2x sebulan</li>
+					<li>Tanya Kitab, dengan batas harian yang wajar</li>
 				</ul>
-				<a class="btn btn-s" href={groupWaUrl}>Kabari saya</a>
+				<a class="btn btn-s" href={appRegisterUrl}>Daftar akun gratis</a>
 			</div>
 			<div class="card pkc">
-				<span class="tag t-soon">Level 04 · lembaga</span>
-				<h3>Paket Lanjut</h3>
-				<div class="pr">Segera <small>harga diumumkan</small></div>
+				<span class="tag t-soon">Aplikasi</span>
+				<h3>Aplikasi pendukung</h3>
+				<div class="pr">Gratis &amp; Pro <small>sesuai aplikasi</small></div>
 				<ul>
-					<li>Kajian Lanjut: Fathul Qarib, Bidayatul Hidayah, sirah</li>
-					<li>Kajian langsung 2x sebulan</li>
-					<li>Tanya Kitab tanpa batas</li>
+					<li>Aplikasi lembaga untuk pondok, TPQ, dan rumah tahfidz: gratis</li>
+					<li>Versi Pro aplikasi kerja seperti SantriPrint: berbayar, dibeli sekali</li>
+					<li>Biaya ini tidak menyangkut materi belajar</li>
 				</ul>
-				<a class="btn btn-s" href={groupWaUrl}>Kabari saya</a>
+				<a class="btn btn-s" href="/katalog/produk">Lihat aplikasi</a>
 			</div>
 		</div>
 	</div>
@@ -569,6 +574,29 @@
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+	}
+	.gratis-note {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		margin: 14px 0 0;
+		padding: 10px 14px;
+		border-radius: 14px;
+		background: #dcfce7;
+		color: var(--g3);
+		font-size: 15px;
+		font-weight: 800;
+	}
+	.gratis-note b {
+		display: inline-grid;
+		place-items: center;
+		width: 22px;
+		height: 22px;
+		flex: none;
+		border-radius: 99px;
+		background: var(--g);
+		color: #fff;
+		font-size: 12px;
 	}
 	.trust {
 		display: flex;

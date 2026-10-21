@@ -17,7 +17,7 @@ import { buatTokenSerah, catatTanyaJawab, sesiTamu, type DataTamu } from '$lib/s
 const APP_TANYA_URL = 'https://app.santrionline.com/api/public/tanya-kitab';
 const CHAT_LIMIT = 5;
 const CHAT_LIMIT_COOKIE = 'santrionline_chat_count';
-const UPGRADE_MESSAGE = 'Kuota gratis sudah habis. Daftar gratis di app.santrionline.com untuk bertanya ke kitab tanpa batas.';
+const UPGRADE_MESSAGE = 'Kuota gratis sudah habis. Daftar gratis di app.santrionline.com untuk bertanya ke kitab lebih banyak setiap hari.';
 
 type Referensi = { judul: string; lokasi: string | null; slug: string | null; id?: string | null; cuplikan: string };
 type HasilApp = { ok?: boolean; status?: string; ringkasan?: string | null; referensi?: Referensi[]; error?: string };

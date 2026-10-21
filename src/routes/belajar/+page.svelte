@@ -13,6 +13,7 @@
 			description: 'Kelas Islam bertahap untuk pemula: rukun Islam, rukun iman, aqidah, thaharah, shalat, puasa, zakat, dan adab. Fiqih madzhab Syafi\'i, aqidah Aswaja.',
 			inLanguage: 'id-ID',
 			isAccessibleForFree: true,
+			offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR', category: 'Free' },
 			url: canonical,
 			provider: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' }
 		}).replace(/</g, '\\u003c')
@@ -23,13 +24,13 @@
 	<title>Belajar Islam dari Nol: Fondasi Muslim, {total} Pelajaran | SantriOnline</title>
 	<meta
 		name="description"
-		content="Belajar Islam dari nol secara berurutan: {total} pelajaran singkat tentang rukun Islam, rukun iman, thaharah, shalat, puasa, zakat, dan adab. Video, bacaan berdalil, dan kuis. Gratis."
+		content="Belajar Islam dari nol secara berurutan: {total} pelajaran singkat tentang rukun Islam, rukun iman, thaharah, shalat, puasa, zakat, dan adab. Video, bacaan berdalil, dan kuis. Gratis, tidak dipungut biaya."
 	/>
 	<meta name="robots" content="index, follow, max-image-preview:large" />
 	<link rel="canonical" href={canonical} />
 	<meta property="og:type" content="website" />
 	<meta property="og:title" content="Belajar Islam dari Nol: Fondasi Muslim | SantriOnline" />
-	<meta property="og:description" content="{total} pelajaran Islam bertahap untuk pemula, mulai gratis." />
+	<meta property="og:description" content="{total} pelajaran Islam bertahap untuk pemula, gratis tanpa biaya." />
 	<meta property="og:url" content={canonical} />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
 	{@html `<script type="application/ld+json">${ld}<\/script>`}
