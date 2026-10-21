@@ -44,7 +44,7 @@
 			harga: 'Gratis',
 			catatan: 'tanpa batas jumlah santri',
 			isi: ['Semua fitur lembaga di aplikasi', 'Daftar sendiri, langsung pakai', 'Panduan tertulis di dalam aplikasi', 'Bantuan lewat grup komunitas'],
-			cta: { label: 'Daftarkan Lembaga', href: daftarUrl },
+			cta: { label: 'Daftar mandiri di aplikasi', href: daftarUrl },
 			utama: false
 		},
 		{
@@ -52,7 +52,7 @@
 			harga: 'Gratis',
 			catatan: 'masa perkenalan 2026 — tanpa biaya, tanpa kontrak',
 			isi: ['Semua yang ada di paket Mandiri', 'Kami siapkan data santri, kelas, dan guru dari awal', 'Pelatihan guru lewat WhatsApp / video call', 'Jalur bantuan langsung ke pengembang', 'Rapor semester dibantu sampai jadi'],
-			cta: { label: 'Tanya lewat WhatsApp', href: waPendampingan },
+			cta: { label: 'Konsultasi gratis via WhatsApp', href: waPendampingan },
 			utama: true
 		}
 	];
@@ -152,8 +152,8 @@
 					<h1 class="font-display mt-4 text-4xl font-bold leading-[1.1] tracking-[-0.04em] text-so-green sm:text-6xl">Rapikan lembaga Anda. Bina santrinya bersama.</h1>
 					<p class="mt-6 max-w-2xl text-lg leading-8 text-so-muted">Data santri, setoran hafalan, rapor, keuangan, dan akun wali dalam satu aplikasi yang bisa dipakai dari HP guru. Dibuat oleh guru TPQ, untuk guru TPQ.</p>
 					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
-						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-7 py-3 text-base font-bold text-white shadow-sm hover:bg-so-green-3">Konsultasi Gratis via WhatsApp</a>
-						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full border border-so-border bg-white px-7 py-3 text-base font-bold text-so-green hover:border-so-green/40">Daftar Sendiri di Aplikasi</a>
+						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-7 py-3 text-base font-bold text-white shadow-sm hover:bg-so-green-3">Konsultasi gratis via WhatsApp</a>
+						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full border border-so-border bg-white px-7 py-3 text-base font-bold text-so-green hover:border-so-green/40">Daftar mandiri di aplikasi</a>
 					</div>
 					<p class="mt-4 text-sm text-so-muted">Gratis tanpa batas santri · Tanpa iklan · Data milik lembaga</p>
 				</div>
@@ -264,8 +264,8 @@
 						<h2 class="font-display mt-3 text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Kirim nama lembaga dan kota Anda. Sisanya kami bantu.</h2>
 					</div>
 					<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-7 py-3 text-base font-bold text-so-green-3">WhatsApp Mas Yogik →</a>
-						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/25 px-7 py-3 text-base font-bold text-white hover:bg-white/10">Daftar Mandiri</a>
+						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-7 py-3 text-base font-bold text-so-green-3">Konsultasi gratis via WhatsApp →</a>
+						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/25 px-7 py-3 text-base font-bold text-white hover:bg-white/10">Daftar mandiri di aplikasi</a>
 					</div>
 				</div>
 			</div>

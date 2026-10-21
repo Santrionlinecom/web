@@ -505,7 +505,7 @@
 							<a href="/literasi/tahfidz-adalah">Apa itu tahfidz</a>
 							<a href="/lembaga">Untuk Lembaga</a>
 							<a href="/tentang">Tentang kami</a>
-							<a href={appInstitutionUrl}>Daftarkan Lembaga</a>
+							<a href={appInstitutionUrl}>Daftar mandiri di aplikasi</a>
 						</p>
 					{/if}
 				</details>
@@ -645,9 +645,10 @@
 	}
 	.m b {
 		display: block;
-		font-size: 8.5px;
+		font-size: 11px;
 		letter-spacing: -0.01em;
 		line-height: 1.2;
+		overflow-wrap: anywhere;
 		margin-top: 2px;
 	}
 	.mini {
@@ -693,7 +694,7 @@
 		font-family: 'Fraunces', serif;
 		font-size: 15px;
 		font-weight: 800;
-		color: #b88b24;
+		color: #8a6414; /* 4.9:1 di kartu putih (audit 21 Okt: #b88b24 hanya 3.1:1) */
 	}
 	.step h3 {
 		margin: 6px 0;
@@ -782,7 +783,7 @@
 		border: 1px solid rgb(255 255 255 / 0.18);
 	}
 	.lv.lock .no {
-		color: #b8bfb3;
+		color: #6b7468; /* 4.6:1; sebelumnya #b8bfb3 1.9:1 */
 	}
 	.rakhead {
 		display: flex;
@@ -1315,7 +1316,7 @@
 			padding: 28px;
 		}
 		.m b {
-			font-size: 9.5px;
+			font-size: 11px;
 		}
 		.mrow {
 			grid-template-columns: repeat(7, minmax(0, 1fr));

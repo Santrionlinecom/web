@@ -43,7 +43,7 @@
 	<a href={k.detail ?? k.href} class="kitab group" aria-label={`${k.judul}${k.penulis ? ` — ${k.penulis}` : ''}`}>
 		<div class="badan" style={`--pita:${warna(k.bidang)}`}>
 			{#if k.sampul}
-				<img src={k.sampul} alt={`Sampul ${k.judul}`} width="240" height="360" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" class="h-full w-full object-cover" />
+				<img src={k.sampul} alt={`Sampul ${k.judul}`} width="240" height="360" loading={i < 4 ? 'eager' : 'lazy'} fetchpriority={i === 0 ? 'high' : 'auto'} decoding="async" class="h-full w-full object-cover" />
 			{:else}
 				<div class="tipografi">
 					<span class="pita-atas">{k.kategori ?? 'Kitab'}</span>
@@ -59,7 +59,7 @@
 {/snippet}
 
 <div class="space-y-8">
-	{#each kelompok as g (g.id)}
+	{#each kelompok as g, gi (g.id)}
 		<section class="rak" aria-labelledby={`rak-${g.id}`} style={`--pita:${warna(g.id)}`}>
 			<div class="flex items-end justify-between gap-3 px-1">
 				<h2 id={`rak-${g.id}`} class="font-display flex items-center gap-2 text-lg font-bold text-so-green sm:text-xl">
@@ -70,7 +70,8 @@
 			</div>
 			<div class="papan">
 				<div class="baris" style="scrollbar-width:none">
-					{#each g.item.slice(0, TAMPIL) as k, i (k.slug)}{@render sampul(k, i)}{/each}
+					<!-- Hanya rak pertama yang dimuat segera (4 sampul); rak lain menunggu digulir. -->
+					{#each g.item.slice(0, TAMPIL) as k, i (k.slug)}{@render sampul(k, gi === 0 ? i : 99)}{/each}
 				</div>
 			</div>
 			{#if g.item.length > TAMPIL}

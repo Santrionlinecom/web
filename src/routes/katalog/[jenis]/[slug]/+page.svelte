@@ -89,7 +89,7 @@
 	{@html `<script type="application/ld+json">${remah}</script>`}
 </svelte:head>
 
-<main class="mx-auto w-full max-w-5xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
+<div class="mx-auto w-full max-w-5xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
 	<nav class="flex flex-wrap items-center gap-1 text-xs text-so-muted" aria-label="Remah roti">
 		<a href="/katalog/semua" class="font-bold text-so-green hover:underline">Katalog</a>
 		<span aria-hidden="true">›</span>
@@ -110,7 +110,7 @@
 		</figure>
 
 		<div class="min-w-0">
-			<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-so-gold">{labelJenis[item.jenis] ?? item.jenis}{item.kategori ? ` · ${item.kategori}` : ''}</p>
+			<p class="text-[11px] font-bold uppercase tracking-[0.2em] text-so-accent-ink">{labelJenis[item.jenis] ?? item.jenis}{item.kategori ? ` · ${item.kategori}` : ''}</p>
 			<h1 class="font-display mt-1 text-2xl font-bold leading-tight tracking-tight text-so-green sm:text-3xl lg:text-4xl">{item.judul}</h1>
 			{#if item.penulis}<p class="mt-1 text-sm font-semibold text-so-ink/80">Karya {item.penulis}</p>{/if}
 			{#if data.rating.jumlah}<a href="#rating-judul" class="mt-2 inline-block"><Bintang rata={data.rating.rata} jumlah={data.rating.jumlah} ukuran="besar" /></a>{/if}
@@ -140,8 +140,6 @@
 				<p class="mt-2 text-[11px] text-so-muted">Masuk gratis dengan akun Google di app.santrionline.com.</p>
 			{/if}
 
-			<NilaiBintang jenis={item.jenis} slug={item.slug} awal={data.rating} />
-
 			{#if paragraf.length}
 				<section class="prose-so mt-6 max-w-none text-sm leading-relaxed text-so-ink/90 sm:text-[15px]" aria-label="Deskripsi">
 					<h2 class="font-display text-lg font-bold text-so-green">Tentang {labelJenis[item.jenis]?.split(' ')[0].toLowerCase() ?? 'item'} ini</h2>
@@ -149,6 +147,8 @@
 					{#if terpotong}<p class="mt-2"><a href={ctaBaca} rel="noopener" class="font-bold text-so-green hover:underline">Lanjutkan di aplikasi →</a></p>{/if}
 				</section>
 			{/if}
+			<NilaiBintang jenis={item.jenis} slug={item.slug} awal={data.rating} />
+
 			{#if kitab}
 				<section class="mt-6 rounded-2xl border border-so-gold/30 bg-[#fffdf7] p-4 shadow-sm" aria-label="Ajakan membaca">
 					<h2 class="font-display text-base font-bold text-so-green">Teruskan membaca di aplikasi</h2>
@@ -187,4 +187,4 @@
 			</div>
 		</section>
 	{/if}
-</main>
+</div>

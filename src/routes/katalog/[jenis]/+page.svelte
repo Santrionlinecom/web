@@ -34,7 +34,7 @@
 	{#if rak}{@html `<script type="application/ld+json">${daftarLd}</script>`}{/if}
 </svelte:head>
 
-<main class="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
+<div class="mx-auto w-full max-w-6xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">
 	<a href="/" class="inline-flex items-center gap-1 text-xs font-bold text-so-green hover:underline"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg> Beranda</a>
 
 	<header class="mt-3 flex flex-wrap items-end justify-between gap-3">
@@ -45,7 +45,7 @@
 		<form method="GET" class="flex w-full items-center gap-2 sm:w-auto">
 			<label class="flex flex-1 items-center gap-2 rounded-full border border-so-border bg-white px-3 py-2 shadow-sm sm:w-72">
 				<Ikon nama="search" ukuran={18} aksen="#1f8a5b" />
-				<input name="q" value={data.q} placeholder="Cari judul…" class="w-full bg-transparent text-sm outline-none" aria-label="Cari di katalog" />
+				<input name="q" value={data.q} placeholder="Cari judul…" class="w-full bg-transparent text-sm outline-none placeholder:text-so-ink/60" aria-label="Cari di katalog" />
 			</label>
 			<button class="rounded-full bg-so-green px-4 py-2 text-sm font-bold text-white hover:bg-so-green-3">Cari</button>
 		</form>
@@ -82,4 +82,4 @@
 			Tidak ada yang cocok. <a href={`/katalog/${data.jenis}`} class="font-bold text-so-green hover:underline">Tampilkan semua</a>
 		</div>
 	{/if}
-</main>
+</div>
