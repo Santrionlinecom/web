@@ -190,3 +190,13 @@
 		padding: 0 40px;
 	}
 }
+
+/* Halaman bergaya Tailwind (katalog) yang dibungkus .sb: kembalikan warna tautan
+   dan padding section ke kelas utilitasnya (revert-layer = pakai nilai @layer). */
+.sb .sb-tw a {
+	color: revert-layer;
+	text-decoration: revert-layer;
+}
+.sb .sb-tw section {
+	padding: revert-layer;
+}

@@ -103,7 +103,7 @@
 				<img src={logo} alt="Logo SantriOnline" class="vt-logo size-10 rounded-xl object-cover" />
 				SantriOnline
 			</a>
-			<a href={daftarUrl} class="rounded-full bg-so-green px-4 py-2.5 text-sm font-bold text-white hover:bg-so-green-3">Daftarkan Lembaga</a>
+			<a href={daftarUrl} class="rounded-full bg-so-green px-4 py-2.5 text-sm font-bold text-white hover:bg-so-green-3">Daftar mandiri di aplikasi</a>
 		</div>
 	</header>
 
@@ -144,7 +144,7 @@
 				<p class="text-xs font-bold uppercase tracking-[0.18em] text-so-gold-2">Untuk pengelola TPQ &amp; rumah tahfidz</p>
 				<p class="font-display mt-3 text-2xl font-bold">Catat setoran santri per ayat dari HP — ziyadah dan murojaah terpisah, gratis.</p>
 				<div class="mt-6 flex flex-col gap-3 sm:flex-row">
-					<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-6 py-3 font-bold text-so-green-3">Daftarkan Lembaga</a>
+					<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-6 py-3 font-bold text-so-green-3">Daftar mandiri di aplikasi</a>
 					<a href="/aplikasi-hafalan-quran" class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/25 px-6 py-3 font-bold text-white hover:bg-white/10">Lihat aplikasi hafalan Quran</a>
 				</div>
 			</section>

@@ -10,10 +10,11 @@
 
 	let { children } = $props();
 
-	// Header/footer situs baru dipakai beranda + /belajar + /tipe-santri + /video.
-	// Halaman lama (lembaga, aplikasi-*, fitur, katalog, literasi, tentang, invoice)
+	// Header/footer situs baru dipakai beranda + /belajar + /tipe-santri + /video + /katalog
+	// (katalog: audit 21 Okt 2026, 206 halaman kitab sebelumnya tanpa navigasi situs).
+	// Halaman lama (lembaga, aplikasi-*, fitur, literasi, tentang, invoice)
 	// masih punya header sendiri; dibiarkan utuh supaya SEO-nya tidak berubah.
-	const RUTE_BARU = ['/belajar', '/tipe-santri', '/video'];
+	const RUTE_BARU = ['/belajar', '/tipe-santri', '/video', '/katalog'];
 	const situsBaru = $derived(
 		page.url.pathname === '/' || RUTE_BARU.some((r) => page.url.pathname === r || page.url.pathname.startsWith(r + '/'))
 	);

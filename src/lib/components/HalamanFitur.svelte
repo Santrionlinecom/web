@@ -85,7 +85,7 @@
 			</a>
 			<div class="flex items-center gap-2">
 				<a href="/lembaga" class="hidden rounded-full border border-so-border bg-white px-4 py-2 text-sm font-bold text-so-green sm:inline-flex">Semua Fitur Lembaga</a>
-				<a href={daftarUrl} class="inline-flex items-center gap-2 rounded-full bg-so-green px-4 py-2.5 text-sm font-bold text-white hover:bg-so-green-3">Daftarkan Lembaga</a>
+				<a href={daftarUrl} class="inline-flex items-center gap-2 rounded-full bg-so-green px-4 py-2.5 text-sm font-bold text-white hover:bg-so-green-3">Daftar mandiri di aplikasi</a>
 			</div>
 		</div>
 	</header>
@@ -102,8 +102,8 @@
 					<h1 class="font-display mt-4 text-3xl font-bold leading-[1.15] tracking-[-0.03em] text-so-green sm:text-5xl">{f.judul}</h1>
 					<p class="mt-6 max-w-2xl text-lg leading-8 text-so-muted">{f.intro}</p>
 					<div class="mt-8 flex flex-col gap-3 sm:flex-row">
-						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-7 py-3 text-base font-bold text-white shadow-sm hover:bg-so-green-3">Daftarkan Lembaga</a>
-						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full border border-so-border bg-white px-7 py-3 text-base font-bold text-so-green hover:border-so-green/40">Konsultasi Gratis via WhatsApp</a>
+						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-green px-7 py-3 text-base font-bold text-white shadow-sm hover:bg-so-green-3">Daftar mandiri di aplikasi</a>
+						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full border border-so-border bg-white px-7 py-3 text-base font-bold text-so-green hover:border-so-green/40">Konsultasi gratis via WhatsApp</a>
 					</div>
 					<p class="mt-4 text-sm text-so-muted">Gratis tanpa batas santri · Tanpa iklan · Data milik lembaga</p>
 				</div>
@@ -211,8 +211,8 @@
 						<h2 class="font-display mt-3 text-3xl font-bold tracking-[-0.03em] sm:text-4xl">Daftarkan lembaga Anda. Kalau perlu, kami bantu menyiapkan.</h2>
 					</div>
 					<div class="flex flex-col gap-3 sm:flex-row lg:flex-col">
-						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-7 py-3 text-base font-bold text-so-green-3">Daftarkan Lembaga →</a>
-						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/25 px-7 py-3 text-base font-bold text-white hover:bg-white/10">WhatsApp Mas Yogik</a>
+						<a href={daftarUrl} class="inline-flex min-h-12 items-center justify-center rounded-full bg-so-gold px-7 py-3 text-base font-bold text-so-green-3">Daftar mandiri di aplikasi →</a>
+						<a href={waPendampingan} rel="noopener" class="inline-flex min-h-12 items-center justify-center rounded-full border border-white/25 px-7 py-3 text-base font-bold text-white hover:bg-white/10">Konsultasi gratis via WhatsApp</a>
 					</div>
 				</div>
 			</div>

@@ -65,12 +65,17 @@
 		}
 	}
 
+	const MIN_SEBARAN = 5;
+	const tampilSebaran = $derived(jumlah >= MIN_SEBARAN);
 	const maks = $derived(Math.max(1, ...sebaran));
 	const labelBintang = ['Kurang', 'Cukup', 'Baik', 'Bagus', 'Istimewa'];
 </script>
 
 <section class="mt-6 rounded-2xl border border-so-border/80 bg-white p-4 sm:p-5" aria-labelledby="rating-judul">
-	<h2 id="rating-judul" class="font-display text-lg font-bold text-so-green">Rating pembaca</h2>
+	<h2 id="rating-judul" class="font-display text-lg font-bold text-so-green">{tampilSebaran ? 'Rating pembaca' : 'Beri nilai'}</h2>
+	<!-- Sebaran disembunyikan sampai ada MIN_SEBARAN penilaian: kotak kosong (semua 0, "–")
+	     terkesan sepi (audit 21 Okt 2026, F-006). -->
+	{#if tampilSebaran}
 	<div class="mt-3 grid gap-4 sm:grid-cols-[auto_1fr] sm:items-center">
 		<div class="text-center sm:pr-4">
 			<p class="font-display text-4xl font-bold text-so-ink">{jumlah ? rata.toFixed(1) : '–'}</p>
@@ -86,9 +91,10 @@
 			{/each}
 		</ol>
 	</div>
+	{/if}
 
-	<div class="mt-4 border-t border-so-border/70 pt-4">
-		<p class="text-sm font-bold text-so-ink">{milikku ? `Nilai Anda: ${milikku} bintang — klik untuk mengubah` : 'Beri nilai'}</p>
+	<div class={tampilSebaran ? 'mt-4 border-t border-so-border/70 pt-4' : 'mt-2'}>
+		<p class="text-sm font-bold text-so-ink">{milikku ? `Nilai Anda: ${milikku} bintang — klik untuk mengubah` : tampilSebaran ? 'Beri nilai' : 'Sudah membaca? Bantu pembaca lain dengan memberi nilai.'}</p>
 		<div class="mt-2 flex items-center gap-1" role="group" aria-label="Beri nilai 1 sampai 5 bintang" onmouseleave={() => (sorot = 0)}>
 			{#each [1, 2, 3, 4, 5] as b}
 				<button

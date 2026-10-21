@@ -262,7 +262,7 @@
 				{#each URUTAN_TIPE as t (t)}
 					<div class="m">
 						<span class="m-svg">{@html MASKOT[t].svg(90)}</span>
-						<b>Si<br />{MASKOT[t].nama.replace('Si ', '')}</b>
+						<b><small>Si</small>{MASKOT[t].nama.replace('Si ', '')}</b>
 					</div>
 				{/each}
 			</div>
@@ -505,7 +505,7 @@
 							<a href="/literasi/tahfidz-adalah">Apa itu tahfidz</a>
 							<a href="/lembaga">Untuk Lembaga</a>
 							<a href="/tentang">Tentang kami</a>
-							<a href={appInstitutionUrl}>Daftarkan Lembaga</a>
+							<a href={appInstitutionUrl}>Daftar mandiri di aplikasi</a>
 						</p>
 					{/if}
 				</details>
@@ -630,11 +630,20 @@
 	.mascot-card .tag {
 		position: relative;
 	}
+	/* 7 maskot: 4 di atas, 3 di bawah (rata tengah), semua ukuran layar,
+	   supaya nama tiap maskot muat satu baris. Kisi 8 kolom, tiap kartu
+	   2 kolom; kartu ke-5 mulai kolom 2. */
 	.mrow {
 		position: relative;
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 6px;
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+		gap: 8px;
+	}
+	.mrow > .m {
+		grid-column: span 2;
+	}
+	.mrow > .m:nth-child(5) {
+		grid-column: 2 / span 2;
 	}
 	.m {
 		background: #f6f1e3;
@@ -645,9 +654,23 @@
 	}
 	.m b {
 		display: block;
-		font-size: 8.5px;
+		font-size: 11px;
 		letter-spacing: -0.01em;
 		line-height: 1.2;
+		white-space: nowrap;
+	}
+	/* Nama ikut lebar kartu (container query) agar selalu utuh satu baris. */
+	.m {
+		container-type: inline-size;
+	}
+	.m b {
+		font-size: min(13px, calc(100cqi / 6.3));
+	}
+	.m b small {
+		display: block;
+		font-size: 0.8em;
+		font-weight: 700;
+		opacity: 0.75;
 		margin-top: 2px;
 	}
 	.mini {
@@ -693,7 +716,7 @@
 		font-family: 'Fraunces', serif;
 		font-size: 15px;
 		font-weight: 800;
-		color: #b88b24;
+		color: #8a6414; /* 4.9:1 di kartu putih (audit 21 Okt: #b88b24 hanya 3.1:1) */
 	}
 	.step h3 {
 		margin: 6px 0;
@@ -782,7 +805,7 @@
 		border: 1px solid rgb(255 255 255 / 0.18);
 	}
 	.lv.lock .no {
-		color: #b8bfb3;
+		color: #6b7468; /* 4.6:1; sebelumnya #b8bfb3 1.9:1 */
 	}
 	.rakhead {
 		display: flex;
@@ -1315,11 +1338,10 @@
 			padding: 28px;
 		}
 		.m b {
-			font-size: 9.5px;
+			font-size: min(14px, calc(100cqi / 6.3));
 		}
 		.mrow {
-			grid-template-columns: repeat(7, minmax(0, 1fr));
-			gap: 8px;
+			gap: 10px;
 		}
 		.fig64 {
 			width: 64px;

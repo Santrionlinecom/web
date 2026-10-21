@@ -25,6 +25,35 @@
 		img.src = poster;
 	});
 
+	// Data terstruktur (audit 21 Okt 2026, F-007): hanya untuk pelajaran terbit.
+	const ldPelajaran = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'LearningResource',
+			name: p.judul,
+			description: p.ringkas,
+			url: canonical,
+			inLanguage: 'id',
+			learningResourceType: 'Pelajaran',
+			educationalLevel: 'Pemula',
+			isAccessibleForFree: true,
+			position: p.no,
+			isPartOf: { '@type': 'Course', name: 'Belajar Islam dari Nol', url: 'https://santrionline.com/belajar' },
+			publisher: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com' }
+		}).replace(/</g, '\\u003c')
+	);
+	const ldRemah = $derived(
+		JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://santrionline.com/' },
+				{ '@type': 'ListItem', position: 2, name: 'Belajar', item: 'https://santrionline.com/belajar' },
+				{ '@type': 'ListItem', position: 3, name: p.judul, item: canonical }
+			]
+		}).replace(/</g, '\\u003c')
+	);
+
 	const benar = $derived(jawab.filter((j, i) => j !== null && j === p.kuis[i]?.jawaban).length);
 	const selesai = $derived(jawab.length > 0 && jawab.every((j) => j !== null));
 	const HURUF = ['A', 'B', 'C', 'D', 'E'];
@@ -58,6 +87,10 @@
 	<meta property="og:description" content={p.ringkas} />
 	<meta property="og:url" content={canonical} />
 	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+	{#if terbit}
+		{@html `<script type="application/ld+json">${ldPelajaran}</script>`}
+		{@html `<script type="application/ld+json">${ldRemah}</script>`}
+	{/if}
 	<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
