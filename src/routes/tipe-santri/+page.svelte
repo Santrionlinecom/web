@@ -1,7 +1,8 @@
 <script lang="ts">
 	// src/routes/tipe-santri/+page.svelte
-	// Tes Tipe Santri: 12 situasi, dihitung di peramban, tanpa login.
-	// SSR/prerender menampilkan pembuka + daftar 5 tipe supaya terindeks.
+	// Tes Tipe Santri (cara belajar): 10 situasi, dihitung di peramban, tanpa login.
+	// Hasil = cara utama + cara kedua (selalu tampil); bila seri di puncak, dua cara ditampilkan sama kuatnya.
+	// SSR/prerender menampilkan pembuka + daftar 7 tipe supaya terindeks.
 	import { onMount, tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import tes from '../../content/belajar/tipe-santri.json';
@@ -17,25 +18,56 @@
 		type IdTipe,
 		type Karakter
 	} from '$lib/belajar/maskot';
+	import { hitungTipe } from '$lib/belajar/skor-tipe.js';
+
+	type Cara = { label: string; href: string; ket: string };
+	type InfoTipe = {
+		nama: string;
+		emoji: string;
+		deskripsi: string;
+		titik_mulai: { pelajaran: string; alasan: string };
+		cara_belajar: Cara[];
+		jadwal?: string[];
+	};
 
 	const ASAL = 'https://santrionline.com';
 	const KUNCI = 'so:tipe-santri';
 	const KUNCI_KARAKTER = 'so:karakter';
 	const situasi = tes.situasi;
-	const TIPE = tes.tipe as Record<IdTipe, { nama: string; deskripsi: string; titik_mulai: { pelajaran: string; alasan: string } }>;
+	const TIPE = tes.tipe as Record<IdTipe, InfoTipe>;
 	const judulPelajaran = (stem: string) => modul.pelajaran.find((p) => p.file === `${stem}.md`)?.judul ?? 'Pelajaran pertama';
 	const kodePelajaran = (stem: string) => stem.split('-').slice(0, 2).join('.');
+	const luar = (href: string) => href.startsWith('http');
+
+	type Hasil = { utama: IdTipe; kedua: IdTipe; seri: boolean };
 
 	let tahap = $state<'intro' | 'kuis' | 'hasil'>('intro');
 	let idx = $state(0);
 	let pilih = $state<(number | null)[]>(situasi.map(() => null));
-	let hasil = $state<IdTipe | null>(null);
+	let hasil = $state<Hasil | null>(null);
 	let dariLink = $state(false);
-	let terakhir = $state<IdTipe | null>(null);
+	let terakhir = $state<Hasil | null>(null);
 	let pesan = $state('');
 	let panel = $state<HTMLElement>();
 	// Putra/putri dipilih sendiri oleh pengguna; null = galeri campur bawaan.
 	let karakter = $state<Karakter | null>(null);
+
+	/** Cara kedua bawaan bila tautan lama hanya membawa ?hasil=: tipe berikutnya dalam daftar. */
+	const keduaBawaan = (t: IdTipe) => URUTAN_TIPE[(URUTAN_TIPE.indexOf(t) + 1) % URUTAN_TIPE.length];
+
+	// Tautan hasil lama (versi 5 tipe) tetap terbuka: penyeimbang dibaca sebagai istiqomah, sama seperti di app.
+	const TIPE_LAMA: Record<string, IdTipe> = { penyeimbang: 'istiqomah' };
+	const tipeLama = (v: unknown) => (typeof v === 'string' && Object.prototype.hasOwnProperty.call(TIPE_LAMA, v) ? TIPE_LAMA[v] : v);
+
+	function bacaHasil(utamaMentah: unknown, kedua: unknown, seri: unknown): Hasil | null {
+		const utama = tipeLama(utamaMentah);
+		if (!adalahTipe(utama)) return null;
+		const k = adalahTipe(kedua) && kedua !== utama ? kedua : keduaBawaan(utama);
+		return { utama, kedua: k, seri: seri === true || seri === '1' };
+	}
+
+	const kueri = (h: Hasil, k: Karakter | null) =>
+		`?hasil=${h.utama}&kedua=${h.kedua}${h.seri ? '&seri=1' : ''}${k ? `&k=${k}` : ''}`;
 
 	function pilihKarakter(k: Karakter) {
 		karakter = k;
@@ -44,12 +76,11 @@
 		} catch {
 			/* abaikan */
 		}
-		if (tahap === 'hasil' && hasil) replaceState(`?hasil=${hasil}&k=${k}`, {});
+		if (tahap === 'hasil' && hasil) replaceState(kueri(hasil, k), {});
 	}
 
 	onMount(() => {
 		const cari = new URLSearchParams(location.search);
-		const q = cari.get('hasil');
 		const k = cari.get('k');
 		try {
 			const simpan = localStorage.getItem(KUNCI_KARAKTER);
@@ -60,13 +91,14 @@
 		if (adalahKarakter(k)) karakter = k;
 		try {
 			const s = JSON.parse(localStorage.getItem(KUNCI) ?? 'null');
-			if (s && adalahTipe(s.tipe)) terakhir = s.tipe;
+			if (s) terakhir = bacaHasil(s.tipe, s.kedua, s.seri);
 		} catch {
 			/* localStorage tidak tersedia */
 		}
-		if (adalahTipe(q)) {
-			hasil = q;
-			dariLink = q !== terakhir;
+		const dariUrl = bacaHasil(cari.get('hasil'), cari.get('kedua'), cari.get('seri'));
+		if (dariUrl) {
+			hasil = dariUrl;
+			dariLink = dariUrl.utama !== terakhir?.utama || dariUrl.kedua !== terakhir?.kedua;
 			tahap = 'hasil';
 		}
 	});
@@ -86,19 +118,6 @@
 		keAtas();
 	}
 
-	function hitung(): IdTipe {
-		const skor: Record<IdTipe, number> = { penanya: 0, penghafal: 0, pengamal: 0, pembaca: 0, penyeimbang: 0 };
-		situasi.forEach((s, i) => {
-			const j = pilih[i];
-			if (j === null) return;
-			for (const [t, n] of Object.entries(s.pilihan[j].skor)) if (adalahTipe(t)) skor[t] += n as number;
-		});
-		const maks = Math.max(...Object.values(skor));
-		const seri = URUTAN_TIPE.filter((t) => skor[t] === maks);
-		// Aturan skor: bila seri dan Si Penyeimbang ikut seri -> Penyeimbang; selain itu urutan daftar.
-		return seri.includes('penyeimbang') && seri.length > 1 ? 'penyeimbang' : seri[0];
-	}
-
 	function lanjut() {
 		if (pilih[idx] === null) return;
 		if (idx < situasi.length - 1) {
@@ -106,16 +125,17 @@
 			keAtas();
 			return;
 		}
-		const t = hitung();
-		hasil = t;
-		terakhir = t;
+		const { utama, kedua, seri } = hitungTipe(URUTAN_TIPE, situasi, pilih);
+		const h: Hasil = { utama, kedua, seri };
+		hasil = h;
+		terakhir = h;
 		tahap = 'hasil';
 		try {
-			localStorage.setItem(KUNCI, JSON.stringify({ tipe: t, waktu: new Date().toISOString() }));
+			localStorage.setItem(KUNCI, JSON.stringify({ tipe: utama, kedua, seri, waktu: new Date().toISOString() }));
 		} catch {
 			/* abaikan */
 		}
-		replaceState(karakter ? `?hasil=${t}&k=${karakter}` : `?hasil=${t}`, {});
+		replaceState(kueri(h, karakter), {});
 		keAtas();
 	}
 
@@ -131,14 +151,16 @@
 		hasil = terakhir;
 		dariLink = false;
 		tahap = 'hasil';
-		replaceState(`?hasil=${terakhir}`, {});
+		replaceState(kueri(terakhir, karakter), {});
 		keAtas();
 	}
 
 	async function bagikan() {
 		if (!hasil) return;
-		const url = `${ASAL}/tipe-santri?hasil=${hasil}${karakter ? `&k=${karakter}` : ''}`;
-		const teks = `Hasil tes Tipe Santri-ku: ${TIPE[hasil].nama}. Kamu tipe yang mana?`;
+		const url = `${ASAL}/tipe-santri${kueri(hasil, karakter)}`;
+		const teks = hasil.seri
+			? `Hasil tes Tipe Santri-ku: cocok dengan dua cara, ${TIPE[hasil.utama].nama} + ${TIPE[hasil.kedua].nama}. Kamu tipe yang mana?`
+			: `Hasil tes Tipe Santri-ku: ${TIPE[hasil.utama].nama} ${TIPE[hasil.utama].emoji}. Kamu tipe yang mana?`;
 		try {
 			if (navigator.share) {
 				await navigator.share({ title: 'Tipe Santri', text: teks, url });
@@ -151,26 +173,29 @@
 		}
 	}
 
-	const HURUF = ['A', 'B', 'C', 'D'];
+	const HURUF = ['A', 'B', 'C', 'D', 'E', 'F'];
 	const s = $derived(situasi[idx]);
 	const persen = $derived(((idx + 1) / situasi.length) * 100);
-	const titik = $derived(hasil ? TIPE[hasil].titik_mulai : null);
+	const utama = $derived(hasil ? TIPE[hasil.utama] : null);
+	const kedua = $derived(hasil ? TIPE[hasil.kedua] : null);
+	const titik = $derived(utama ? utama.titik_mulai : null);
+	const jadwal = $derived(hasil ? (TIPE[hasil.utama].jadwal ?? TIPE[hasil.kedua].jadwal ?? null) : null);
 	const urlApp = $derived(
-		hasil ? `https://app.santrionline.com/register?tipe=${hasil}${karakter ? `&karakter=${karakter}` : ''}` : ''
+		hasil ? `https://app.santrionline.com/register?tipe=${hasil.utama}${karakter ? `&karakter=${karakter}` : ''}` : ''
 	);
 </script>
 
 <svelte:head>
-	<title>Tes Tipe Santri: Kamu Tipe Santri yang Mana? | SantriOnline</title>
+	<title>Tes Tipe Santri: Kamu Paling Mudah Paham Lewat Cara Apa? | SantriOnline</title>
 	<meta
 		name="description"
-		content="Tes Tipe Santri gratis tanpa login: 12 situasi sehari-hari, sekitar 3 menit. Kenali gaya belajarmu (Penanya, Penghafal, Pengamal, Pembaca, Penyeimbang) dan dapatkan titik mulai belajar Islam yang cocok."
+		content="Tes Tipe Santri gratis tanpa login: 10 situasi sehari-hari, sekitar 3 menit. Kenali cara belajar yang paling mudah membuatmu paham (Pendengar, Pengamat, Pembaca, Penghafal, Penanya, Pengamal, Istiqomah) dan dapatkan titik mulai belajar Islam yang cocok."
 	/>
 	<meta name="robots" content="index, follow, max-image-preview:large" />
 	<link rel="canonical" href="{ASAL}/tipe-santri" />
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="Kamu tipe santri yang mana?" />
-	<meta property="og:description" content="12 situasi, ±3 menit, tanpa login. Hasilnya titik mulai belajar Islam yang cocok untukmu." />
+	<meta property="og:title" content="Kamu paling mudah paham lewat cara apa?" />
+	<meta property="og:description" content="10 situasi, ±3 menit, tanpa login. Hasilnya cara belajarmu, cara kedua, dan titik mulai belajar Islam yang cocok." />
 	<meta property="og:url" content="{ASAL}/tipe-santri" />
 	<meta property="og:image" content="{ASAL}/og-santrionline.png" />
 </svelte:head>
@@ -186,14 +211,30 @@
 	</div>
 {/snippet}
 
+{#snippet daftarCara(t: IdTipe, judul: string)}
+	<div class="cara" data-tipe={t}>
+		<h3>{judul}</h3>
+		<ul>
+			{#each TIPE[t].cara_belajar as c (c.href + c.label)}
+				<li>
+					<a href={c.href} rel={luar(c.href) ? 'noopener' : undefined}>
+						<b>{c.label} &rarr;</b>
+						<span>{c.ket}</span>
+					</a>
+				</li>
+			{/each}
+		</ul>
+	</div>
+{/snippet}
+
 <section class="scr">
 	<div class="wrap narrow" bind:this={panel}>
 		{#if tahap === 'intro'}
 			<div class="panel intro">
 				<span class="eyebrow"><span class="dot"></span>Level 00 · Kenali Diri</span>
-				<h1>Kamu tipe santri yang mana?</h1>
-				<p>Jawab 12 situasi sehari-hari dengan jujur. Tidak ada jawaban yang salah. Hasilnya saran dari mana sebaiknya kamu mulai belajar.</p>
-				<div class="facts"><span>12 situasi</span><span>&plusmn;3 menit</span><span>Tanpa login</span></div>
+				<h1>Kamu paling mudah paham lewat cara apa?</h1>
+				<p>Jawab {situasi.length} situasi sehari-hari dengan jujur. Tidak ada jawaban yang salah. Hasilnya cara belajar yang paling nyaman untukmu, cara kedua, dan dari mana sebaiknya kamu mulai.</p>
+				<div class="facts"><span>{situasi.length} situasi</span><span>&plusmn;3 menit</span><span>Tanpa login</span></div>
 				{@render pilihanKarakter('Karaktermu')}
 				<div class="mrow">
 					{#each URUTAN_TIPE as t (t)}
@@ -202,7 +243,7 @@
 				</div>
 				<button type="button" class="btn btn-p blk" onclick={mulai}>Mulai tes &rarr;</button>
 				{#if terakhir}
-					<button type="button" class="lagi" onclick={lihatTerakhir}>Lihat hasil terakhirmu: {TIPE[terakhir].nama}</button>
+					<button type="button" class="lagi" onclick={lihatTerakhir}>Lihat hasil terakhirmu: {TIPE[terakhir.utama].nama}{terakhir.seri ? ` + ${TIPE[terakhir.kedua].nama}` : ''}</button>
 				{/if}
 				<p class="fine">Jawabanmu hanya tersimpan di perangkat ini, kecuali kamu memilih membuat akun.</p>
 			</div>
@@ -226,13 +267,29 @@
 					</button>
 				</div>
 			</div>
-		{:else if hasil && titik}
-			<div class="panel res">
+		{:else if hasil && utama && kedua && titik}
+			<div class="panel res" data-hasil={hasil.utama} data-kedua={hasil.kedua} data-seri={hasil.seri ? '1' : '0'}>
 				<span class="badge">{dariLink ? 'Hasil Tipe Santri' : 'Hasil tesmu'}</span>
-				<div class="hero-m m-svg">{@html MASKOT[hasil].svg(140, karakter)}</div>
+				{#if hasil.seri}
+					<div class="duo">
+						<div class="hero-m m-svg">{@html MASKOT[hasil.utama].svg(120, karakter)}</div>
+						<span class="plus" aria-hidden="true">+</span>
+						<div class="hero-m m-svg">{@html MASKOT[hasil.kedua].svg(120, karakter)}</div>
+					</div>
+				{:else}
+					<div class="hero-m m-svg">{@html MASKOT[hasil.utama].svg(140, karakter)}</div>
+				{/if}
 				{@render pilihanKarakter('Tampilkan sebagai')}
-				<h1 class="rh">{dariLink ? TIPE[hasil].nama : `Kamu ${TIPE[hasil].nama}`}</h1>
-				<p class="d">{TIPE[hasil].deskripsi}</p>
+				{#if hasil.seri}
+					<h1 class="rh">{dariLink ? 'Cocok dengan dua cara' : 'Kamu cocok dengan dua cara'}: {utama.nama} {utama.emoji} + {kedua.nama} {kedua.emoji}</h1>
+					<p class="d">Skor kedua cara ini sama tinggi. Pakai keduanya bergantian; belajar dengan cara campuran justru paling kuat.</p>
+					<p class="d sm"><b>{utama.nama}:</b> {utama.deskripsi}</p>
+					<p class="d sm"><b>{kedua.nama}:</b> {kedua.deskripsi}</p>
+				{:else}
+					<h1 class="rh">{dariLink ? utama.nama : `Kamu ${utama.nama}`} <span aria-hidden="true">{utama.emoji}</span></h1>
+					<p class="d">{utama.deskripsi}</p>
+				{/if}
+				<p class="pintu">{tes.pintu_masuk}</p>
 				<div class="box">
 					<small>Titik mulai yang disarankan</small>
 					<p>Pelajaran {kodePelajaran(titik.pelajaran)}: <b>{judulPelajaran(titik.pelajaran)}</b>. {titik.alasan}</p>
@@ -243,16 +300,41 @@
 						<button type="button" class="btn btn-ghost" onclick={mulai}>Ikut tes sendiri</button>
 					{:else}
 						<button type="button" class="btn btn-ghost" onclick={bagikan}>Bagikan hasil</button>
-						<a class="btn btn-ghost" href={urlApp}>Simpan progres di aplikasi</a>
+						<a class="btn btn-ghost" href={urlApp} data-lanjut-app>Simpan progres di aplikasi</a>
 					{/if}
 				</div>
 				{#if pesan}<p class="pesan" aria-live="polite">{pesan}</p>{/if}
 				<p class="disc">{tes.catatan_penting}</p>
 			</div>
+
+			<div class="panel pk">
+				{@render daftarCara(hasil.utama, `Cara belajar yang cocok: ${utama.nama}`)}
+				{#if jadwal}
+					<div class="jadwal">
+						<h3>Jadwal murojaah kecil</h3>
+						<ol>
+							{#each jadwal as j (j)}<li>{j}</li>{/each}
+						</ol>
+					</div>
+				{/if}
+			</div>
+
+			<div class="panel pk kedua">
+				<div class="kd-top">
+					<span class="kd-m m-svg">{@html MASKOT[hasil.kedua].svg(64, karakter)}</span>
+					<div>
+						<small>{hasil.seri ? 'Cara yang sama kuatnya' : 'Cara keduamu'}</small>
+						<h2>{kedua.nama} <span aria-hidden="true">{kedua.emoji}</span></h2>
+						<p>{tes.cara_kedua}</p>
+					</div>
+				</div>
+				{@render daftarCara(hasil.kedua, `Coba juga: ${MASKOT[hasil.kedua].ciri.toLowerCase()}`)}
+			</div>
+
 			<div class="lain">
 				<h2>Tipe lainnya</h2>
 				<div class="row">
-					{#each URUTAN_TIPE.filter((t) => t !== hasil) as t (t)}
+					{#each URUTAN_TIPE.filter((t) => t !== hasil?.utama && t !== hasil?.kedua) as t (t)}
 						<div class="m alt"><span class="m-svg">{@html MASKOT[t].svg(70, karakter)}</span><b>{MASKOT[t].nama}</b></div>
 					{/each}
 				</div>
@@ -265,15 +347,15 @@
 {#if tahap !== 'kuis'}
 	<section class="tipe">
 		<div class="wrap">
-			<span class="kicker">Lima tipe santri</span>
-			<h2 class="sec">Semua tipe baik, beda titik mulainya</h2>
+			<span class="kicker">Tujuh cara belajar</span>
+			<h2 class="sec">Semua cara baik, beda pintu masuknya</h2>
 			<p class="lead">{tes.petunjuk} Hasil tes bukan penilaian iman atau amal seseorang.</p>
 			<div class="grid">
 				{#each URUTAN_TIPE as t (t)}
 					<article class="card tp">
 						<div class="av m-svg">{@html MASKOT[t].svg(70, karakter)}</div>
 						<div>
-							<h3>{TIPE[t].nama}</h3>
+							<h3>{TIPE[t].nama} <span aria-hidden="true">{TIPE[t].emoji}</span></h3>
 							<p class="ciri">{MASKOT[t].ciri}</p>
 							<p>{TIPE[t].deskripsi}</p>
 							<a href={hrefPelajaran(TIPE[t].titik_mulai.pelajaran)}>Mulai dari: {judulPelajaran(TIPE[t].titik_mulai.pelajaran)} &rarr;</a>
@@ -387,7 +469,7 @@
 	}
 	.mrow {
 		display: grid;
-		grid-template-columns: repeat(5, minmax(0, 1fr));
+		grid-template-columns: repeat(4, minmax(0, 1fr));
 		gap: 4px;
 		margin: 6px 0 20px;
 	}
@@ -533,6 +615,8 @@
 		text-align: center;
 		position: relative;
 		overflow: hidden;
+		/* clip: scrollIntoView tidak bisa menggeser isi panel ke samping. */
+		overflow: clip;
 		border: 0;
 	}
 	.res::before {
@@ -629,8 +713,137 @@
 	}
 	.lain .row {
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 8px;
+	}
+	.duo {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 6px;
+	}
+	.duo .hero-m {
+		box-sizing: border-box;
+		flex: 0 1 124px;
+		min-width: 0;
+		width: auto;
+		margin: 14px 0 4px;
+	}
+	.plus {
+		flex: none;
+		font-family: 'Fraunces', serif;
+		font-size: 30px;
+		font-weight: 800;
+		color: var(--gold2);
+	}
+	.d.sm {
+		font-size: 14px;
+		text-align: left;
+		margin-bottom: 10px;
+	}
+	.d.sm b {
+		color: #fff;
+	}
+	.pintu {
+		display: inline-block;
+		font-size: 13px;
+		font-weight: 700;
+		color: var(--gold2);
+		background: rgb(252 211 77 / 0.12);
+		border-radius: 12px;
+		padding: 8px 12px;
+		margin: 0 0 14px;
+		line-height: 1.5;
+	}
+	.pk {
+		margin-top: 14px;
+	}
+	.cara h3,
+	.jadwal h3 {
+		margin: 0 0 10px;
+		color: var(--g);
+		font-size: 16px;
+		line-height: 1.35;
+	}
+	.cara ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 8px;
+	}
+	.cara a {
+		display: block;
+		border: 1.5px solid var(--border);
+		border-radius: 14px;
+		padding: 11px 14px;
+		color: var(--ink);
+		text-decoration: none;
+		min-height: 44px;
+	}
+	.cara a:hover,
+	.cara a:focus-visible {
+		border-color: var(--g2);
+		background: #f6f7f3;
+	}
+	.cara b {
+		display: block;
+		color: var(--g);
+		font-size: 15px;
+	}
+	.cara span {
+		display: block;
+		font-size: 13px;
+		color: var(--muted);
+		line-height: 1.5;
+		margin-top: 2px;
+	}
+	.jadwal {
+		margin-top: 16px;
+		background: #f6f1e3;
+		border-radius: 16px;
+		padding: 14px 16px;
+	}
+	.jadwal ol {
+		list-style: none;
+		margin: 0;
+		padding-left: 0;
+		font-size: 14px;
+		line-height: 1.6;
+		color: var(--ink);
+	}
+	.kd-top {
+		display: grid;
+		grid-template-columns: 64px 1fr;
+		gap: 12px;
+		align-items: start;
+		margin-bottom: 12px;
+	}
+	.kd-top > div {
+		min-width: 0;
+	}
+	.kd-m {
+		background: #f6f1e3;
+		border-radius: 14px;
+		padding: 2px;
+	}
+	.kd-top small {
+		font-size: 11px;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: #b88b24;
+	}
+	.kd-top h2 {
+		margin: 2px 0 4px;
+		color: var(--g);
+		font-size: 20px;
+	}
+	.kd-top p {
+		margin: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--muted);
 	}
 	.m.alt {
 		background: #fff;
@@ -695,6 +908,14 @@
 		font-size: 14px;
 		font-weight: 800;
 		color: var(--ink2);
+	}
+	@media (min-width: 640px) {
+		.mrow {
+			grid-template-columns: repeat(7, minmax(0, 1fr));
+		}
+		.lain .row {
+			grid-template-columns: repeat(5, minmax(0, 1fr));
+		}
 	}
 	@media (min-width: 900px) {
 		.m b {

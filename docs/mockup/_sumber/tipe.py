@@ -84,7 +84,7 @@ s2 = f'''<section class="scr"><div class="wrap">
 </div></section>'''
 
 nm, _, fn = MASKOT["penanya"]
-lain = "".join(f'<div class="m">{MASKOT[k][2](70)}<b>{MASKOT[k][0]}</b></div>' for k in ["penghafal","pengamal","pembaca","penyeimbang"])
+lain = "".join(f'<div class="m">{MASKOT[k][2](70)}<b>{MASKOT[k][0]}</b></div>' for k in ["pendengar","pengamat","pembaca","penghafal","pengamal","istiqomah"])
 s3 = f'''<section class="scr" style="border:0"><div class="wrap">
  <div class="lbl"><b>Layar 3</b>Contoh hasil</div>
  <div class="panel res">

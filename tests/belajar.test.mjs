@@ -67,12 +67,12 @@ test('_modul.json: 8 modul (0-7) dan 24 slot pelajaran', () => {
 	for (const p of modul.pelajaran.filter((p) => p.file)) assert.ok(berkasMd.includes(p.file), `${p.file} ada`);
 });
 
-test('tipe-santri.json: 12 situasi, skor ke tipe yang dikenal, titik mulai menunjuk pelajaran nyata', () => {
+test('tipe-santri.json: 10 situasi, skor ke tipe yang dikenal, titik mulai menunjuk pelajaran nyata', () => {
 	const tipe = Object.keys(tes.tipe);
 	assert.deepEqual(tes.urutan_tipe, tipe);
-	assert.equal(tes.situasi.length, 12);
+	assert.equal(tes.situasi.length, 10);
 	for (const s of tes.situasi) {
-		assert.equal(s.pilihan.length, 4, `situasi ${s.no}`);
+		assert.equal(s.pilihan.length, 5, `situasi ${s.no}`);
 		for (const o of s.pilihan) for (const k of Object.keys(o.skor)) assert.ok(tipe.includes(k), `situasi ${s.no}: ${k}`);
 	}
 	for (const [id, t] of Object.entries(tes.tipe)) assert.ok(berkasMd.includes(`${t.titik_mulai.pelajaran}.md`), `${id}: titik mulai`);
