@@ -262,7 +262,7 @@
 				{#each URUTAN_TIPE as t (t)}
 					<div class="m">
 						<span class="m-svg">{@html MASKOT[t].svg(90)}</span>
-						<b>Si<br />{MASKOT[t].nama.replace('Si ', '')}</b>
+						<b>{MASKOT[t].nama}</b>
 					</div>
 				{/each}
 			</div>
@@ -630,11 +630,20 @@
 	.mascot-card .tag {
 		position: relative;
 	}
+	/* 7 maskot: 4 di atas, 3 di bawah (rata tengah), semua ukuran layar,
+	   supaya nama tiap maskot muat satu baris. Kisi 8 kolom, tiap kartu
+	   2 kolom; kartu ke-5 mulai kolom 2. */
 	.mrow {
 		position: relative;
 		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 6px;
+		grid-template-columns: repeat(8, minmax(0, 1fr));
+		gap: 8px;
+	}
+	.mrow > .m {
+		grid-column: span 2;
+	}
+	.mrow > .m:nth-child(5) {
+		grid-column: 2 / span 2;
 	}
 	.m {
 		background: #f6f1e3;
@@ -648,7 +657,7 @@
 		font-size: 11px;
 		letter-spacing: -0.01em;
 		line-height: 1.2;
-		overflow-wrap: anywhere;
+		white-space: nowrap;
 		margin-top: 2px;
 	}
 	.mini {
@@ -1316,11 +1325,10 @@
 			padding: 28px;
 		}
 		.m b {
-			font-size: 11px;
+			font-size: 13px;
 		}
 		.mrow {
-			grid-template-columns: repeat(7, minmax(0, 1fr));
-			gap: 8px;
+			gap: 10px;
 		}
 		.fig64 {
 			width: 64px;
