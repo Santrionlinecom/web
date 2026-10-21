@@ -659,10 +659,12 @@
 		line-height: 1.2;
 		white-space: nowrap;
 	}
-	@media (max-width: 345px) {
-		.m b {
-			font-size: 10px;
-		}
+	/* Nama ikut lebar kartu (container query) agar selalu utuh satu baris. */
+	.m {
+		container-type: inline-size;
+	}
+	.m b {
+		font-size: min(13px, calc(100cqi / 6.3));
 	}
 	.m b small {
 		display: block;
@@ -1336,7 +1338,7 @@
 			padding: 28px;
 		}
 		.m b {
-			font-size: 13px;
+			font-size: min(14px, calc(100cqi / 6.3));
 		}
 		.mrow {
 			gap: 10px;
