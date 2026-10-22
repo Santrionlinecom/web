@@ -1,4 +1,6 @@
 <script lang="ts">
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	// src/routes/belajar/+page.svelte: daftar modul Level 01 Fondasi Muslim (8 modul, 24 slot).
 	let { data } = $props();
 	const total = $derived(data.modul.reduce((t, m) => t + m.pelajaran.length, 0));
@@ -32,7 +34,7 @@
 	<meta property="og:title" content="Belajar Islam dari Nol: Fondasi Muslim | SantriOnline" />
 	<meta property="og:description" content="{total} pelajaran Islam bertahap untuk pemula, gratis tanpa biaya." />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+	<MetaGambar src={ogWeb('/belajar')} alt={'Belajar Islam dari nol bersama SantriOnline'} />
 	{@html `<script type="application/ld+json">${ld}<\/script>`}
 </svelte:head>
 

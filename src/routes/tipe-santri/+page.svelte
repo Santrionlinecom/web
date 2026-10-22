@@ -3,6 +3,8 @@
 	// Tes Tipe Santri (cara belajar): 10 situasi, dihitung di peramban, tanpa login.
 	// Hasil = cara utama + cara kedua (selalu tampil); bila seri di puncak, dua cara ditampilkan sama kuatnya.
 	// SSR/prerender menampilkan pembuka + daftar 7 tipe supaya terindeks.
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import { onMount, tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import tes from '../../content/belajar/tipe-santri.json';
@@ -197,7 +199,7 @@
 	<meta property="og:title" content="Kamu paling mudah paham lewat cara apa?" />
 	<meta property="og:description" content="10 situasi, ±3 menit, tanpa login. Hasilnya cara belajarmu, cara kedua, dan titik mulai belajar Islam yang cocok." />
 	<meta property="og:url" content="{ASAL}/tipe-santri" />
-	<meta property="og:image" content="{ASAL}/og-santrionline.png" />
+	<MetaGambar src={ogWeb('/tipe-santri')} alt={'Tipe belajar santri: Si Pendengar, Si Pengamat, Si Pembaca, dan lainnya'} />
 </svelte:head>
 
 {#snippet pilihanKarakter(label: string)}

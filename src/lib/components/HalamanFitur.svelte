@@ -3,6 +3,8 @@
 	// untuk lembaga: /fitur/<slug> dan /aplikasi-<...> (SEO Tahap 3, 26 Sep 2026).
 	// Isi dari $lib/fitur-lembaga.ts / $lib/halaman-aplikasi.ts. Copy wajib jujur
 	// terhadap fitur yang benar-benar ada di aplikasi.
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import type { Snippet } from 'svelte';
 	import logo from '$lib/assets/logo.png';
 	import type { FiturLembaga } from '$lib/fitur-lembaga';
@@ -69,8 +71,7 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={f.title} />
 	<meta property="og:description" content={f.description} />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb(new URL(canonicalUrl).pathname)} alt={f.title} />
 	<meta name="twitter:title" content={f.title} />
 	<meta name="twitter:description" content={f.description} />
 	{@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}

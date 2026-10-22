@@ -2,6 +2,8 @@
 	// src/routes/kebijakan-privasi/+page.svelte — kebijakan privasi situs publik santrionline.com.
 	// Situs tanpa iklan pihak ketiga (AdSense dicopot 20 Okt 2026).
 	// Kebijakan aplikasi (app.santrionline.com) tetap di app.santrionline.com/privacy.
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import logo from '$lib/assets/logo.png';
 	const email = 'masyogik@santrionline.com';
 	const diperbarui = '20 Oktober 2026';
@@ -18,7 +20,7 @@
 	<meta property="og:url" content="https://santrionline.com/kebijakan-privasi" />
 	<meta property="og:title" content="Kebijakan Privasi | SantriOnline" />
 	<meta property="og:description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami." />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+	<MetaGambar src={ogWeb('/kebijakan-privasi')} alt={'Kebijakan privasi SantriOnline'} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

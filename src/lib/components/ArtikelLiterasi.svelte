@@ -2,6 +2,8 @@
 	// src/lib/components/ArtikelLiterasi.svelte — kerangka panduan /literasi/*
 	// (SEO Tahap 3). Setiap panduan: H1 = kata kunci, paragraf pertama menjawab,
 	// kotak peninjau manusia, sumber tertaut, CTA "Daftarkan Lembaga".
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import type { Snippet } from 'svelte';
 	import logo from '$lib/assets/logo.png';
 
@@ -46,7 +48,7 @@
 				'@type': 'Article',
 				headline: judul,
 				description,
-				image: 'https://santrionline.com/og-santrionline.png',
+				image: ogWeb(path),
 				datePublished: terbit,
 				dateModified: diperbarui,
 				author: { '@type': 'Person', name: 'Yogik Pratama Aprilian', url: 'https://masyogik.santrionline.com/' },
@@ -89,8 +91,7 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content={title} />
 	<meta property="og:description" content={description} />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb(path)} alt={judul} />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
 	{@html `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`}

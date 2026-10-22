@@ -1,4 +1,6 @@
 <script lang="ts">
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// src/routes/+page.svelte
 	// Beranda "Belajar Islam dari nol sampai paham" sesuai mockup yang disetujui
@@ -220,15 +222,9 @@
 	<meta property="og:url" content="https://santrionline.com/" />
 	<meta property="og:title" content="SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis" />
 	<meta property="og:description" content="Belajar Islam bertahap dari nol, gratis: video singkat, bacaan berdalil, kuis. Plus aplikasi gratis untuk pondok, TPQ, dan rumah tahfidz." />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta property="og:image:width" content="1200" />
-	<meta property="og:image:height" content="630" />
-	<meta property="og:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb('/')} alt={'SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis'} />
 	<meta name="twitter:title" content="SantriOnline | Belajar Islam dari Nol" />
 	<meta name="twitter:description" content="Belajar Islam bertahap dari nol secara gratis, plus aplikasi gratis untuk pondok pesantren dan TPQ." />
-	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:image:alt" content="SantriOnline, belajar Islam dari nol dan aplikasi pesantren gratis" />
 	<link rel="canonical" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="id-ID" href="https://santrionline.com/" />
 	<link rel="alternate" hreflang="x-default" href="https://santrionline.com/" />
