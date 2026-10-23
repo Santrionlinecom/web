@@ -252,6 +252,22 @@
 				<a class="btn btn-s" href="/tipe-santri">Cek Tipe Santri kamu</a>
 			</div>
 			<p class="gratis-note"><b aria-hidden="true">&#10003;</b>Belajar di SantriOnline gratis, tidak dipungut biaya.</p>
+			<div class="salam-maskot">
+				<img
+					src="{F}/maskot/maskot-duo-salam-480.webp"
+					srcset="{F}/maskot/maskot-duo-salam-480.webp 418w, {F}/maskot/maskot-duo-salam-960.webp 835w"
+					sizes="(min-width: 900px) 148px, 122px"
+					alt="Maskot SantriOnline: santri putra berpeci dan santriwati berkhimar melambai salam"
+					width="418"
+					height="480"
+					decoding="async"
+				/>
+				<div class="salam-teks">
+					<p class="salam-h">Assalamu'alaikum!</p>
+					<p>Kami teman belajarmu. Simpan progres, ikuti kelas, dan tonton video di aplikasi.</p>
+					<a href={appBaseUrl}>Buka aplikasi SantriOnline&nbsp;<span aria-hidden="true">&rarr;</span></a>
+				</div>
+			</div>
 			<div class="trust">
 				<span><b aria-hidden="true">&#10003;</b>Pelajaran 1 tanpa daftar</span>
 				<span><b aria-hidden="true">&#10003;</b>{jumlahKitab} kitab di perpustakaan</span>
@@ -597,6 +613,46 @@
 		background: var(--g);
 		color: #fff;
 		font-size: 12px;
+	}
+	.salam-maskot {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-top: 14px;
+		padding: 14px 16px 14px 10px;
+		border: 1px solid #cfe3d6;
+		border-radius: 18px;
+		background: #fff;
+	}
+	.salam-maskot img {
+		flex: none;
+		width: 122px;
+		height: auto;
+		aspect-ratio: 418 / 480;
+	}
+	.salam-teks {
+		min-width: 0;
+		font-size: 14px;
+		line-height: 1.55;
+		color: var(--muted);
+	}
+	.salam-teks p {
+		margin: 0 0 8px;
+	}
+	.salam-teks .salam-h {
+		margin: 0 0 4px;
+		color: var(--g);
+		font-size: 17px;
+		font-weight: 800;
+	}
+	.salam-teks a {
+		display: inline-block;
+		padding: 10px 0;
+		line-height: 1.4;
+		color: var(--g);
+		font-weight: 800;
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	.trust {
 		display: flex;
@@ -1364,6 +1420,9 @@
 		}
 		.mascot-card {
 			padding: 28px;
+		}
+		.salam-maskot img {
+			width: 148px;
 		}
 		.m b {
 			font-size: min(14px, calc(100cqi / 6.3));
