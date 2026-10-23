@@ -1,4 +1,6 @@
 <script lang="ts">
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// /katalog/[jenis] — halaman "Lihat semua" satu jenis (atau semua), grid sampul
 	// + saringan teks (GET ?q=, tanpa JS). Memakai KartuKatalog yang sama dengan rak.
@@ -31,6 +33,12 @@
 	<title>{data.judul} — Katalog | SantriOnline</title>
 	<meta name="description" content={data.keterangan} />
 	<link rel="canonical" href={`https://santrionline.com/katalog/${data.jenis}`} />
+	<meta property="og:type" content="website" />
+	<meta property="og:site_name" content="SantriOnline" />
+	<meta property="og:title" content={`${data.judul} — Katalog SantriOnline`} />
+	<meta property="og:description" content={data.keterangan} />
+	<meta property="og:url" content={`https://santrionline.com/katalog/${data.jenis}`} />
+	<MetaGambar src={ogWeb(`/katalog/${data.jenis}`)} alt={`${data.judul} — Katalog SantriOnline`} />
 	{#if rak}{@html `<script type="application/ld+json">${daftarLd}</script>`}{/if}
 </svelte:head>
 

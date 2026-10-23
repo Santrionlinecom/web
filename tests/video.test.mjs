@@ -108,7 +108,8 @@ test('halaman /video: iframe sematan, tombol, keadaan kosong, OG per video', () 
 	assert.match(page, /Tonton di aplikasi/);
 	assert.match(page, /href="\{data\.app\}\/video">Tonton di aplikasi/);
 	assert.match(page, /rel="canonical"/);
-	assert.match(page, /property="og:image" content=\{gambar\}/);
+	assert.match(page, /<MetaGambar src=\{gambar\}/);
+	assert.match(page, /ogWeb\('\/video', awal\?\.poster\)/);
 	assert.match(page, /href="\/video\?v=\{v\.slug\}"/);
 	assert.match(page, /<h1>Video SantriOnline<\/h1>/);
 	// Gagal ambil = daftar kosong, tidak pernah melempar error/500.

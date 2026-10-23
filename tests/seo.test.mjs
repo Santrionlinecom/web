@@ -15,15 +15,15 @@ test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => 
 	assert.doesNotMatch(source, /<title>SantriOnline \| Platform Pembinaan Santri Indonesia<\/title>/);
 	assert.match(source, /aplikasi keuangan pondok pesantren gratis/);
 	assert.match(source, /rel="canonical" href="https:\/\/santrionline\.com\/"/);
-	assert.match(source, /property="og:image" content="https:\/\/santrionline\.com\/og-santrionline\.png"/);
-	assert.match(source, /name="twitter:card" content="summary_large_image"/);
+	// Pratinjau tautan: kartu beranda (bukan logo) lewat MetaGambar + ogWeb('/').
+	assert.match(source, /<MetaGambar src=\{ogWeb\('\/'\)\}/);
+	assert.doesNotMatch(source, /og-santrionline\.png/);
 	assert.match(source, /'@type': 'Organization'/);
 	assert.match(source, /'@type': 'SoftwareApplication'/);
 	assert.match(source, /'@type': 'FAQPage'/);
 	assert.match(source, /const appBaseUrl = 'https:\/\/app\.santrionline\.com'/);
 	assert.match(source, /const appRegisterUrl = `\$\{appBaseUrl\}\/register`/);
 	assert.match(source, /const appInstitutionUrl = `\$\{appBaseUrl\}\/lembaga\/tambah`/);
-	assert.match(source, /name="twitter:image:alt"/);
 	assert.match(source, /href=\{appInstitutionUrl\}>Daftarkan Lembaga/);
 });
 

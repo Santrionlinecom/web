@@ -2,6 +2,8 @@
 	// src/routes/tentang/+page.svelte — halaman Tentang SantriOnline.
 	// Identitas usaha (NIB/KBLI/alamat) sengaja ditulis apa adanya; tanpa nomor pajak
 	// dan tanpa nomor telepon. Jangan tambahkan angka atau testimoni karangan.
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import logo from '$lib/assets/logo.png';
 	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
 
@@ -111,11 +113,9 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content="Tentang SantriOnline" />
 	<meta property="og:description" content="Misi SantriOnline, pendiri, dan identitas usaha resmi." />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb('/tentang')} alt={'Tentang SantriOnline'} />
 	<meta name="twitter:title" content="Tentang SantriOnline" />
 	<meta name="twitter:description" content="Misi SantriOnline, pendiri, dan identitas usaha resmi." />
-	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
 	{@html `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 

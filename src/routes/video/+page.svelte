@@ -2,6 +2,8 @@
 	// src/routes/video/+page.svelte
 	// Galeri video SantriOnline. Video diputar dari aplikasi lewat iframe
 	// (pemutar sematan), situs hanya memasang bingkainya.
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import { tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import { formatDurasi, jsonLdVideo, kategoriDari, ldAman, srcPemutar } from '$lib/video.js';
@@ -30,7 +32,7 @@
 			'Kumpulan video pendek SantriOnline: kajian fikih dan adab, kisah santri, sejarah Islam, dan panduan aplikasi. Tonton gratis tanpa daftar.'
 	);
 	const canonical = $derived(awal ? `${halaman}?v=${awal.slug}` : halaman);
-	const gambar = $derived(awal?.poster ?? `${ASAL}/og-santrionline.png`);
+	const gambar = $derived(ogWeb('/video', awal?.poster));
 	const ld = $derived(ldAman(jsonLdVideo(data.daftar, halaman)));
 
 	async function buka(slug: string, e?: MouseEvent) {
@@ -64,11 +66,9 @@
 	<meta property="og:title" content={awal ? awal.judul : 'Video SantriOnline'} />
 	<meta property="og:description" content={deskripsi} />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content={gambar} />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={gambar} alt={judulHalaman} />
 	<meta name="twitter:title" content={awal ? awal.judul : 'Video SantriOnline'} />
 	<meta name="twitter:description" content={deskripsi} />
-	<meta name="twitter:image" content={gambar} />
 	{#if data.daftar.length}
 		{@html `<script type="application/ld+json">${ld}<\/script>`}
 	{/if}

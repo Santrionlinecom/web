@@ -1,4 +1,6 @@
 <script lang="ts">
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// src/routes/lembaga/+page.svelte — halaman "Untuk Lembaga": TPQ, madrasah diniyah,
 	// rumah tahfidz, pondok, masjid. Tanpa pembayaran di situs ini: jalur masuk =
@@ -119,11 +121,9 @@
 	<meta property="og:url" content={canonicalUrl} />
 	<meta property="og:title" content="SantriOnline untuk Lembaga — TPQ, Madrasah, Rumah Tahfidz" />
 	<meta property="og:description" content="Data santri, setoran hafalan, rapor, dan akun wali dalam satu aplikasi. Gratis, termasuk pendampingan." />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb('/lembaga')} alt={'SantriOnline untuk lembaga: data santri, setoran hafalan, rapor, dan keuangan'} />
 	<meta name="twitter:title" content="SantriOnline untuk Lembaga" />
 	<meta name="twitter:description" content="Rapikan TPQ, madrasah, atau rumah tahfidz Anda. Gratis, termasuk pendampingan." />
-	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
 	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 

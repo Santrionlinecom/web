@@ -1,5 +1,7 @@
 <script lang="ts">
 	// src/routes/literasi/apa-itu-santri-online/+page.svelte
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import logo from '$lib/assets/logo.png';
 	import { inview } from '$lib/actions/inview';
 
@@ -15,7 +17,7 @@
 		headline: 'Apa Itu Santri Online?',
 		description:
 			'Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan.',
-		image: 'https://santrionline.com/og-santrionline.png',
+		image: ogWeb('/literasi/apa-itu-santri-online'),
 		author: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' },
 		publisher: { '@id': 'https://santrionline.com/#organization' },
 		mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
@@ -46,11 +48,9 @@
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:locale" content="id_ID" />
 	<meta property="og:url" content={canonicalUrl} />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
-	<meta name="twitter:card" content="summary_large_image" />
+	<MetaGambar src={ogWeb('/literasi/apa-itu-santri-online')} alt={'Apa itu Santri Online?'} />
 	<meta name="twitter:title" content="Apa Itu Santri Online?" />
 	<meta name="twitter:description" content="Teknologi adalah jembatan untuk terus mengaji, bukan pengganti ulama, guru, atau pesantren." />
-	<meta name="twitter:image" content="https://santrionline.com/og-santrionline.png" />
 	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema).replace(/</g, '\\u003c')}<\/script>`}
 </svelte:head>
 

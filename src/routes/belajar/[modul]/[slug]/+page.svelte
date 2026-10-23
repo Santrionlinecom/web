@@ -1,4 +1,6 @@
 <script lang="ts">
+	import MetaGambar from '$lib/components/MetaGambar.svelte';
+	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// src/routes/belajar/[modul]/[slug]/+page.svelte
 	// Satu pelajaran: Tonton -> Baca -> Dalil -> Coba (kuis) -> Bawa pulang -> navigasi.
@@ -86,7 +88,7 @@
 	<meta property="og:title" content={p.judul} />
 	<meta property="og:description" content={p.ringkas} />
 	<meta property="og:url" content={canonical} />
-	<meta property="og:image" content="https://santrionline.com/og-santrionline.png" />
+	<MetaGambar src={ogWeb(p.href)} alt={p.judul} />
 	{#if terbit}
 		{@html `<script type="application/ld+json">${ldPelajaran}</script>`}
 		{@html `<script type="application/ld+json">${ldRemah}</script>`}
