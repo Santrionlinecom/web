@@ -265,7 +265,7 @@
 				<div class="salam-teks">
 					<p class="salam-h">Assalamu'alaikum!</p>
 					<p>Kami teman belajarmu. Simpan progres, ikuti kelas, dan tonton video di aplikasi.</p>
-					<a href={appBaseUrl}>Buka aplikasi SantriOnline <span aria-hidden="true">&rarr;</span></a>
+					<a href={appBaseUrl}>Buka aplikasi SantriOnline&nbsp;<span aria-hidden="true">&rarr;</span></a>
 				</div>
 			</div>
 			<div class="trust">
@@ -646,10 +646,9 @@
 		font-weight: 800;
 	}
 	.salam-teks a {
-		display: inline-flex;
-		align-items: center;
-		min-height: 44px;
-		gap: 6px;
+		display: inline-block;
+		padding: 10px 0;
+		line-height: 1.4;
 		color: var(--g);
 		font-weight: 800;
 		text-decoration: underline;
