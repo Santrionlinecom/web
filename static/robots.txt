@@ -3,4 +3,5 @@ Allow: /
 Disallow: /api/
 
 Sitemap: https://santrionline.com/sitemap.xml
+LLM-Guide: https://santrionline.com/llms.txt
 Host: santrionline.com
