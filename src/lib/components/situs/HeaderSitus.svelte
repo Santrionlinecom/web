@@ -16,7 +16,7 @@
 <header class="hdr">
 	<div class="wrap hdr-in">
 		<a class="brand" href="/" aria-label="SantriOnline beranda">
-			<img src="/logo-santrionline.png" alt="" width="36" height="36" />
+			<img src="/logo-santrionline-72.webp" alt="" width="36" height="36" />
 			<span class="disp">SantriOnline</span>
 		</a>
 		<nav class="nav" aria-label="Navigasi utama">

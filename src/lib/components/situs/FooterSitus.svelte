@@ -8,7 +8,7 @@
 	<div class="wrap">
 		<div class="fg">
 			<div class="fb">
-				<a class="brand" href="/"><img src="/logo-santrionline.png" width="34" height="34" alt="" /> <span class="disp">SantriOnline</span></a>
+				<a class="brand" href="/"><img src="/logo-santrionline-72.webp" width="34" height="34" alt="" /> <span class="disp">SantriOnline</span></a>
 				<p>Belajar Islam bertahap bersama kitab-kitab pesantren. Aqidah Aswaja, fiqih madzhab Syafi'i. Aplikasi gratis untuk pondok, TPQ, dan rumah tahfidz.</p>
 			</div>
 			{#each FOOTER as kol (kol.judul)}
