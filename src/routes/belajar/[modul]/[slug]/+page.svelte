@@ -93,7 +93,6 @@
 		{@html `<script type="application/ld+json">${ldPelajaran}</script>`}
 		{@html `<script type="application/ld+json">${ldRemah}</script>`}
 	{/if}
-	<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
 {#if !terbit}

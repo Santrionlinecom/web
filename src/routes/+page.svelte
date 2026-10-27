@@ -231,7 +231,6 @@
 	<meta name="language" content="id-ID" />
 	<meta name="geo.region" content="ID" />
 	<meta name="geo.placename" content="Indonesia" />
-	<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" />
 	{@html `<script type="application/ld+json">${ldJson}<\/script>`}
 </svelte:head>
 
@@ -250,8 +249,8 @@
 			<p class="gratis-note"><b aria-hidden="true">&#10003;</b>Belajar di SantriOnline gratis, tidak dipungut biaya.</p>
 			<div class="salam-maskot">
 				<img
-					src="{F}/maskot/maskot-duo-salam-480.webp"
-					srcset="{F}/maskot/maskot-duo-salam-480.webp 418w, {F}/maskot/maskot-duo-salam-960.webp 835w"
+					src="{F}/maskot/maskot-duo-salam-244.webp"
+					srcset="{F}/maskot/maskot-duo-salam-244.webp 244w, {F}/maskot/maskot-duo-salam-480.webp 418w, {F}/maskot/maskot-duo-salam-960.webp 835w"
 					sizes="(min-width: 900px) 148px, 122px"
 					alt="Maskot SantriOnline: santri putra berpeci dan santriwati berkhimar melambai salam"
 					width="418"
