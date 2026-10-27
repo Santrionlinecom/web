@@ -1,0 +1,6 @@
+/* Utilitas Tailwind untuk semua halaman KECUALI beranda. Diimpor oleh +layout.svelte
+   di tiap folder rute (lihat tests/css-beranda.test.mjs). */
+@layer properties, theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import './tema.css';
+@import 'tailwindcss/utilities.css' layer(utilities);
