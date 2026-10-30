@@ -31,7 +31,12 @@
 		awal?.ringkas ||
 			'Kumpulan video pendek SantriOnline: kajian fikih dan adab, kisah santri, sejarah Islam, dan panduan aplikasi. Tonton gratis tanpa daftar.'
 	);
-	const canonical = $derived(awal ? `${halaman}?v=${awal.slug}` : halaman);
+	// Kanonis selalu /video: isi SSR ?v=<slug> ~92% sama dengan galeri (yang beda hanya
+	// judul/OG), jadi Google menganggapnya duplikat ("Duplikat, Google memilih kanonis
+	// yang berbeda"). Sama dengan app.santrionline.com/video. og:url tetap per video
+	// supaya kartu pratinjau tautan yang dibagikan menunjuk videonya.
+	const canonical = halaman;
+	const urlBagikan = $derived(awal ? `${halaman}?v=${awal.slug}` : halaman);
 	const gambar = $derived(ogWeb('/video', awal?.poster));
 	const ld = $derived(ldAman(jsonLdVideo(data.daftar, halaman)));
 
@@ -65,7 +70,7 @@
 	<meta property="og:locale" content="id_ID" />
 	<meta property="og:title" content={awal ? awal.judul : 'Video SantriOnline'} />
 	<meta property="og:description" content={deskripsi} />
-	<meta property="og:url" content={canonical} />
+	<meta property="og:url" content={urlBagikan} />
 	<MetaGambar src={gambar} alt={judulHalaman} />
 	<meta name="twitter:title" content={awal ? awal.judul : 'Video SantriOnline'} />
 	<meta name="twitter:description" content={deskripsi} />

@@ -108,6 +108,11 @@ test('halaman /video: iframe sematan, tombol, keadaan kosong, OG per video', () 
 	assert.match(page, /Tonton di aplikasi/);
 	assert.match(page, /href="\{data\.app\}\/video">Tonton di aplikasi/);
 	assert.match(page, /rel="canonical"/);
+	// ?v=<slug> berisi SSR yang ~sama dengan galeri → kanonis selalu /video (duplikat GSC),
+	// og:url tetap per video untuk kartu tautan.
+	assert.match(page, /const canonical = halaman;/);
+	assert.doesNotMatch(page, /const canonical = \$derived\(awal/);
+	assert.match(page, /og:url" content=\{urlBagikan\}/);
 	assert.match(page, /<MetaGambar src=\{gambar\}/);
 	assert.match(page, /ogWeb\('\/video', awal\?\.poster\)/);
 	assert.match(page, /href="\/video\?v=\{v\.slug\}"/);
