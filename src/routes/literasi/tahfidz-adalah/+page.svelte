@@ -22,7 +22,7 @@
 <ArtikelLiterasi
 	judul="Tahfidz Adalah: Pengertian, Dalil, dan Metode Menghafal Al-Qur’an"
 	title="Tahfidz Adalah: Pengertian, Dalil, Hukum, dan Metode Tahfidz Al-Qur’an | SantriOnline"
-	description="Tahfidz adalah kegiatan menghafal Al-Qur’an di bawah bimbingan guru. Pengertian tahfidz, dalil, hukum menghafal, metode setoran dan murojaah, serta istilah yang dipakai di TPQ dan rumah tahfidz."
+	description="Tahfidz adalah kegiatan menghafal Al-Qur’an di bawah bimbingan guru. Pengertian, dalil, hukum menghafal, metode setoran dan murojaah di TPQ dan rumah tahfidz."
 	path="/literasi/tahfidz-adalah"
 	label="Tahfidz"
 	terbit="2026-09-26"

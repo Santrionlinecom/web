@@ -3,14 +3,18 @@
 	// Tanpa nomor telepon pribadi; email resmi saja.
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, halamanWeb, remah } from '$lib/seo.js';
 	import logo from '$lib/assets/logo.png';
 	const email = 'masyogik@santrionline.com';
 	const alamat = 'Jl Welirang No 25A, Pendem, Junrejo, Kota Batu, Jawa Timur';
+	const deskripsi = 'Hubungi SantriOnline: email resmi, alamat usaha, dan tautan bantuan untuk santri, orang tua, dan lembaga.';
+	const ld = graf(halamanWeb({ tipe: 'ContactPage', path: '/kontak', name: 'Kontak SantriOnline', description: deskripsi }), remah([{ name: 'Kontak', path: '/kontak' }]));
 </script>
 
 <svelte:head>
 	<title>Kontak | SantriOnline</title>
-	<meta name="description" content="Hubungi SantriOnline: email resmi, alamat usaha, dan tautan bantuan untuk santri, orang tua, dan lembaga." />
+	<meta name="description" content={deskripsi} />
 	<link rel="canonical" href="https://santrionline.com/kontak" />
 	<meta name="robots" content="index, follow" />
 	<meta property="og:type" content="website" />
@@ -18,8 +22,9 @@
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/kontak" />
 	<meta property="og:title" content="Kontak | SantriOnline" />
-	<meta property="og:description" content="Hubungi SantriOnline: email resmi, alamat usaha, dan tautan bantuan untuk santri, orang tua, dan lembaga." />
+	<meta property="og:description" content={deskripsi} />
 	<MetaGambar src={ogWeb('/kontak')} alt={'Kontak SantriOnline'} />
+	<JsonLd data={ld} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

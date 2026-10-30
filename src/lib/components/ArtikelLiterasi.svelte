@@ -4,6 +4,8 @@
 	// kotak peninjau manusia, sumber tertaut, CTA "Daftarkan Lembaga".
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { faqHalaman, graf, penerbit, remah } from '$lib/seo.js';
 	import type { Snippet } from 'svelte';
 	import logo from '$lib/assets/logo.png';
 
@@ -41,9 +43,8 @@
 	const tanggal = (iso: string) =>
 		new Date(`${iso}T00:00:00+07:00`).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
 
-	const schema = $derived({
-		'@context': 'https://schema.org',
-		'@graph': [
+	const schema = $derived(
+		graf(
 			{
 				'@type': 'Article',
 				headline: judul,
@@ -52,30 +53,20 @@
 				datePublished: terbit,
 				dateModified: diperbarui,
 				author: { '@type': 'Person', name: 'Yogik Pratama Aprilian', url: 'https://masyogik.santrionline.com/' },
-				publisher: { '@id': 'https://santrionline.com/#organization' },
+				publisher: penerbit(),
 				mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
 				inLanguage: 'id-ID',
 				articleSection: 'Literasi',
 				isAccessibleForFree: true
 			},
-			{
-				'@type': 'BreadcrumbList',
-				itemListElement: [
-					{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://santrionline.com/' },
-					{ '@type': 'ListItem', position: 2, name: 'Untuk Lembaga', item: 'https://santrionline.com/lembaga' },
-					{ '@type': 'ListItem', position: 3, name: judul, item: canonicalUrl }
-				]
-			},
-			...(faq.length
-				? [
-						{
-							'@type': 'FAQPage',
-							mainEntity: faq.map((q) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } }))
-						}
-					]
-				: [])
-		]
-	});
+			remah([
+				{ name: 'Untuk Lembaga', path: '/lembaga' },
+				{ name: judul, path }
+			]),
+			// FAQ hanya bila tampil di halaman (blok <details> di bawah).
+			faqHalaman(faq)
+		)
+	);
 </script>
 
 <svelte:head>
@@ -94,7 +85,7 @@
 	<MetaGambar src={ogWeb(path)} alt={judul} />
 	<meta name="twitter:title" content={title} />
 	<meta name="twitter:description" content={description} />
-	{@html `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>`}
+	<JsonLd data={schema} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

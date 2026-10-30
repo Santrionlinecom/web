@@ -5,6 +5,8 @@
 	// terhadap fitur yang benar-benar ada di aplikasi.
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { faqHalaman, graf, remah } from '$lib/seo.js';
 	import type { Snippet } from 'svelte';
 	import logo from '$lib/assets/logo.png';
 	import type { FiturLembaga } from '$lib/fitur-lembaga';
@@ -27,33 +29,26 @@
 		wa(`Assalamu’alaikum Mas Yogik. Saya pengelola [nama lembaga] di [kota]. Saya ingin dibantu memakai fitur ${f.label.toLowerCase()} SantriOnline.`)
 	);
 
-	const structuredData = $derived({
-		'@context': 'https://schema.org',
-		'@graph': [
+	const structuredData = $derived(
+		graf(
 			{
 				'@type': 'SoftwareApplication',
 				'@id': `${canonicalUrl}#app`,
 				name: `SantriOnline — ${f.label}`,
+				description: f.description,
 				applicationCategory: 'EducationalApplication',
 				operatingSystem: 'Web',
 				url: canonicalUrl,
 				offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR' },
 				provider: { '@id': 'https://santrionline.com/#organization' }
 			},
-			{
-				'@type': 'BreadcrumbList',
-				itemListElement: [
-					{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://santrionline.com/' },
-					{ '@type': 'ListItem', position: 2, name: 'Untuk Lembaga', item: 'https://santrionline.com/lembaga' },
-					{ '@type': 'ListItem', position: 3, name: f.label, item: canonicalUrl }
-				]
-			},
-			{
-				'@type': 'FAQPage',
-				mainEntity: f.faq.map((q: { q: string; a: string }) => ({ '@type': 'Question', name: q.q, acceptedAnswer: { '@type': 'Answer', text: q.a } }))
-			}
-		]
-	});
+			remah([
+				{ name: 'Untuk Lembaga', path: '/lembaga' },
+				{ name: f.label, path: new URL(canonicalUrl).pathname }
+			]),
+			faqHalaman(f.faq)
+		)
+	);
 </script>
 
 <svelte:head>
@@ -74,7 +69,7 @@
 	<MetaGambar src={ogWeb(new URL(canonicalUrl).pathname)} alt={f.title} />
 	<meta name="twitter:title" content={f.title} />
 	<meta name="twitter:description" content={f.description} />
-	{@html `<script type="application/ld+json">${JSON.stringify(structuredData)}</script>`}
+	<JsonLd data={structuredData} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

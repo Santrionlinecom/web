@@ -2,6 +2,8 @@
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, penerbit, rapikanDeskripsi, remah } from '$lib/seo.js';
 	// src/routes/belajar/[modul]/[slug]/+page.svelte
 	// Satu pelajaran: Tonton -> Baca -> Dalil -> Coba (kuis) -> Bawa pulang -> navigasi.
 	// Status selain 'terbit' = draf: noindex + banner kuning, tidak masuk sitemap.
@@ -28,32 +30,29 @@
 	});
 
 	// Data terstruktur (audit 21 Okt 2026, F-007): hanya untuk pelajaran terbit.
-	const ldPelajaran = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'LearningResource',
-			name: p.judul,
-			description: p.ringkas,
-			url: canonical,
-			inLanguage: 'id',
-			learningResourceType: 'Pelajaran',
-			educationalLevel: 'Pemula',
-			isAccessibleForFree: true,
-			position: p.no,
-			isPartOf: { '@type': 'Course', name: 'Belajar Islam dari Nol', url: 'https://santrionline.com/belajar' },
-			publisher: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com' }
-		}).replace(/</g, '\\u003c')
-	);
-	const ldRemah = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: [
-				{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://santrionline.com/' },
-				{ '@type': 'ListItem', position: 2, name: 'Belajar', item: 'https://santrionline.com/belajar' },
-				{ '@type': 'ListItem', position: 3, name: p.judul, item: canonical }
-			]
-		}).replace(/</g, '\\u003c')
+	// Meta description 70 sampai 160 karakter dari ringkasan; ringkasan di halaman tetap utuh.
+	const deskripsi = $derived(rapikanDeskripsi(p.ringkas, 'Pelajaran singkat Belajar Islam dari Nol di SantriOnline: video, bacaan berdalil, dan kuis. Gratis.'));
+	const ld = $derived(
+		graf(
+			{
+				'@type': 'LearningResource',
+				'@id': `${canonical}#pelajaran`,
+				name: p.judul,
+				description: deskripsi,
+				url: canonical,
+				inLanguage: 'id',
+				learningResourceType: 'Pelajaran',
+				educationalLevel: 'Pemula',
+				isAccessibleForFree: true,
+				position: p.no,
+				isPartOf: { '@type': 'Course', name: 'Belajar Islam dari Nol', url: 'https://santrionline.com/belajar' },
+				publisher: penerbit()
+			},
+			remah([
+				{ name: 'Belajar', path: '/belajar' },
+				{ name: p.judul, path: p.href }
+			])
+		)
 	);
 
 	const benar = $derived(jawab.filter((j, i) => j !== null && j === p.kuis[i]?.jawaban).length);
@@ -77,7 +76,7 @@
 
 <svelte:head>
 	<title>{p.judul} | Belajar Islam dari Nol | SantriOnline</title>
-	<meta name="description" content={p.ringkas} />
+	<meta name="description" content={deskripsi} />
 	{#if terbit}
 		<meta name="robots" content="index, follow, max-image-preview:large" />
 		<link rel="canonical" href={canonical} />
@@ -86,12 +85,11 @@
 	{/if}
 	<meta property="og:type" content="article" />
 	<meta property="og:title" content={p.judul} />
-	<meta property="og:description" content={p.ringkas} />
+	<meta property="og:description" content={deskripsi} />
 	<meta property="og:url" content={canonical} />
 	<MetaGambar src={ogWeb(p.href)} alt={p.judul} />
 	{#if terbit}
-		{@html `<script type="application/ld+json">${ldPelajaran}</script>`}
-		{@html `<script type="application/ld+json">${ldRemah}</script>`}
+		<JsonLd data={ld} />
 	{/if}
 </svelte:head>
 

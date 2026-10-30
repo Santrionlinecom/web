@@ -2,6 +2,7 @@
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	// src/routes/+page.svelte
 	// Beranda "Belajar Islam dari nol sampai paham" sesuai mockup yang disetujui
 	// (docs/mockup/beranda.html). Rak kitab/buku/aplikasi memakai data D1 bila ada.
@@ -204,14 +205,13 @@
 			}
 		]
 	};
-	const ldJson = JSON.stringify(structuredData).replace(/</g, '\\u003c');
 </script>
 
 <svelte:head>
 	<title>SantriOnline | Belajar Islam dari Nol & Aplikasi Pesantren, TPQ Gratis</title>
 	<meta
 		name="description"
-		content="Belajar Islam dari nol secara bertahap: video singkat, bacaan berdalil, dan kuis ringan. Belajar gratis, tidak dipungut biaya. Plus aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis untuk lembaga."
+		content="Belajar Islam dari nol, bertahap dan gratis: video singkat, bacaan berdalil, kuis ringan. Plus aplikasi gratis untuk pondok pesantren, TPQ, dan rumah tahfidz."
 	/>
 	<meta name="keywords" content="belajar islam dari nol, belajar agama islam online gratis, tes tipe santri, santri online, aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, kitab kuning digital" />
 	<meta name="author" content="SantriOnline" />
@@ -231,7 +231,7 @@
 	<meta name="language" content="id-ID" />
 	<meta name="geo.region" content="ID" />
 	<meta name="geo.placename" content="Indonesia" />
-	{@html `<script type="application/ld+json">${ldJson}<\/script>`}
+	<JsonLd data={structuredData} />
 </svelte:head>
 
 <section class="hero">

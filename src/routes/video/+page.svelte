@@ -6,7 +6,9 @@
 	import { ogWeb } from '$lib/og-gambar.js';
 	import { tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
-	import { formatDurasi, jsonLdVideo, kategoriDari, ldAman, srcPemutar } from '$lib/video.js';
+	import { formatDurasi, jsonLdVideo, kategoriDari, srcPemutar } from '$lib/video.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, halamanWeb, rapikanDeskripsi, remah } from '$lib/seo.js';
 
 	let { data } = $props();
 
@@ -27,10 +29,10 @@
 	// Meta mengikuti video dari tautan ?v= (SSR), supaya pratinjau saat dibagikan pas.
 	const awal = $derived(data.daftar.find((v) => v.slug === data.dipilih) ?? null);
 	const judulHalaman = $derived(awal ? `${awal.judul} | Video SantriOnline` : 'Video SantriOnline: Kajian, Kisah, dan Sejarah Islam');
-	const deskripsi = $derived(
-		awal?.ringkas ||
-			'Kumpulan video pendek SantriOnline: kajian fikih dan adab, kisah santri, sejarah Islam, dan panduan aplikasi. Tonton gratis tanpa daftar.'
-	);
+	const DESKRIPSI_GALERI =
+		'Kumpulan video pendek SantriOnline: kajian fikih dan adab, kisah santri, sejarah Islam, dan panduan aplikasi. Tonton gratis tanpa daftar.';
+	// Ringkasan video bisa terlalu pendek/panjang untuk meta: dirapikan ke 70–160 karakter.
+	const deskripsi = $derived(awal?.ringkas ? rapikanDeskripsi(awal.ringkas, `Tonton “${awal.judul}” dan video kajian, kisah, serta sejarah Islam lainnya di SantriOnline, gratis tanpa daftar.`) : DESKRIPSI_GALERI);
 	// Kanonis selalu /video: isi SSR ?v=<slug> ~92% sama dengan galeri (yang beda hanya
 	// judul/OG), jadi Google menganggapnya duplikat ("Duplikat, Google memilih kanonis
 	// yang berbeda"). Sama dengan app.santrionline.com/video. og:url tetap per video
@@ -38,7 +40,13 @@
 	const canonical = halaman;
 	const urlBagikan = $derived(awal ? `${halaman}?v=${awal.slug}` : halaman);
 	const gambar = $derived(ogWeb('/video', awal?.poster));
-	const ld = $derived(ldAman(jsonLdVideo(data.daftar, halaman)));
+	const ld = $derived(
+		graf(
+			halamanWeb({ tipe: 'CollectionPage', path: '/video', name: 'Video SantriOnline: Kajian, Kisah, dan Sejarah Islam', description: DESKRIPSI_GALERI }),
+			data.daftar.length ? { ...jsonLdVideo(data.daftar, halaman), '@context': undefined } : null,
+			remah([{ name: 'Video', path: '/video' }])
+		)
+	);
 
 	async function buka(slug: string, e?: MouseEvent) {
 		if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1)) return;
@@ -74,9 +82,7 @@
 	<MetaGambar src={gambar} alt={judulHalaman} />
 	<meta name="twitter:title" content={awal ? awal.judul : 'Video SantriOnline'} />
 	<meta name="twitter:description" content={deskripsi} />
-	{#if data.daftar.length}
-		{@html `<script type="application/ld+json">${ld}<\/script>`}
-	{/if}
+	<JsonLd data={ld} />
 </svelte:head>
 
 <section class="top">
