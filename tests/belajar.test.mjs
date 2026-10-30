@@ -170,15 +170,26 @@ function cariHtml(dir, akhir) {
 	return null;
 }
 
-test('hasil build: pelajaran draf noindex, satu h1, menu ter-render di HTML', (t) => {
+test('hasil build: pelajaran draf noindex, terbit terindeks, satu h1, menu ter-render di HTML', (t) => {
 	const out = join(root, '.svelte-kit/cloudflare');
-	const les = cariHtml(out, `${'islam-iman-ihsan'}.html`);
 	const bel = cariHtml(out, 'belajar.html');
-	if (!les || !bel) return t.skip('belum ada hasil build');
-	const html = readFileSync(les, 'utf8');
-	assert.match(html, /<meta name="robots" content="noindex, follow"/);
-	assert.match(html, /Draf: belum diperiksa ustadz/);
-	assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1);
+	if (!bel) return t.skip('belum ada hasil build');
+	// Status dibaca dari frontmatter (semua pelajaran pilot kini 'terbit'; draf baru ikut teruji).
+	for (const f of berkasMd) {
+		const { data } = frontmatter(read(`${KONTEN}/${f}`));
+		const les = cariHtml(out, `${data.slug}.html`);
+		assert.ok(les, `${data.slug}.html ada di hasil build`);
+		const html = readFileSync(les, 'utf8');
+		if (data.status === 'terbit') {
+			assert.match(html, /<meta name="robots" content="index, follow/, data.slug);
+			assert.match(html, new RegExp(`<link rel="canonical" href="https://santrionline\\.com/belajar/${data.modul}/${data.slug}"`), data.slug);
+			assert.doesNotMatch(html, /Draf: belum diperiksa ustadz/, data.slug);
+		} else {
+			assert.match(html, /<meta name="robots" content="noindex, follow"/, data.slug);
+			assert.match(html, /Draf: belum diperiksa ustadz/, data.slug);
+		}
+		assert.equal((html.match(/<h1[\s>]/g) ?? []).length, 1, data.slug);
+	}
 	const daftar = readFileSync(bel, 'utf8');
 	assert.equal((daftar.match(/<h1[\s>]/g) ?? []).length, 1);
 	for (const h of ['/katalog/kursus', '/aplikasi-raport-tpq', '/fitur/administrasi-pesantren', '/tentang']) {

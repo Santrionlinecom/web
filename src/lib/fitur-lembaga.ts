@@ -29,7 +29,7 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi keuangan pondok pesantren gratis',
 		title: 'Aplikasi Keuangan Pondok Pesantren Gratis — SantriOnline',
 		description:
-			'Catat kas masuk dan keluar pondok pesantren, TPQ, dan madrasah dari HP. Rekap otomatis per bulan, bisa dipertanggungjawabkan ke pengurus dan wali. Gratis, tanpa batas santri, tanpa iklan.',
+			'Catat kas masuk dan keluar pondok pesantren, TPQ, dan madrasah dari HP. Rekap otomatis per bulan untuk pengurus dan wali. Gratis, tanpa batas santri.',
 		label: 'Keuangan lembaga',
 		judul: 'Aplikasi keuangan pondok pesantren gratis, sederhana, bisa dipertanggungjawabkan.',
 		intro:
@@ -71,7 +71,7 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi administrasi pondok pesantren gratis',
 		title: 'Aplikasi Administrasi Pondok Pesantren Gratis — SantriOnline',
 		description:
-			'Data santri, kelas, guru, halaqah, dan akun wali dalam satu aplikasi berbasis web. Untuk pondok pesantren, madrasah diniyah, TPQ, dan rumah tahfidz. Gratis, tanpa batas santri.',
+			'Data santri, kelas, guru, halaqah, dan akun wali dalam satu aplikasi web untuk pondok pesantren, madrasah diniyah, TPQ, dan rumah tahfidz. Gratis.',
 		label: 'Administrasi lembaga',
 		judul: 'Aplikasi administrasi pondok pesantren gratis: data santri, kelas, guru, dan wali di satu tempat.',
 		intro:
@@ -116,7 +116,7 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi raport madrasah diniyah',
 		title: 'Aplikasi Raport Madrasah Diniyah & Pondok Pesantren — Gratis',
 		description:
-			'Rapor hafalan dan capaian santri tersusun dari catatan setoran harian guru. Terbitkan per periode dan bagikan lewat tautan. Untuk madrasah diniyah, TPQ, dan rumah tahfidz. Gratis.',
+			'Rapor hafalan dan capaian santri tersusun dari catatan setoran harian guru. Terbitkan per periode, bagikan lewat tautan. Untuk diniyah, TPQ, dan tahfidz.',
 		label: 'Rapor santri',
 		judul: 'Aplikasi raport madrasah diniyah yang tersusun sendiri dari catatan harian guru.',
 		intro:
@@ -161,7 +161,7 @@ export const FITUR_LEMBAGA: FiturLembaga[] = [
 		kataKunci: 'aplikasi ujian tahfidz',
 		title: 'Aplikasi Ujian Tahfidz & Setoran Hafalan untuk Pesantren — Gratis',
 		description:
-			'Catat hasil ujian tahfidz santri dari HP penguji: surat, ayat, nilai 0–100, catatan. Riwayat tersimpan per santri; bagian yang belum lancar dari setoran harian ikut ditandai. Gratis.',
+			'Catat hasil ujian tahfidz dari HP penguji: surat, ayat, nilai 0–100, dan catatan. Riwayat tersimpan per santri, bagian belum lancar ikut ditandai. Gratis.',
 		label: 'Ujian tahfidz',
 		judul: 'Aplikasi ujian tahfidz: catat hasil di tempat, riwayat tersimpan per santri.',
 		intro:

@@ -4,6 +4,7 @@
 	// dan tanpa nomor telepon. Jangan tambahkan angka atau testimoni karangan.
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
 	import logo from '$lib/assets/logo.png';
 	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
 
@@ -116,7 +117,7 @@
 	<MetaGambar src={ogWeb('/tentang')} alt={'Tentang SantriOnline'} />
 	<meta name="twitter:title" content="Tentang SantriOnline" />
 	<meta name="twitter:description" content="Misi SantriOnline, pendiri, dan identitas usaha resmi." />
-	{@html `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}<\/script>`}
+	<JsonLd data={schema} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

@@ -2,6 +2,8 @@
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { faqHalaman, graf, remah } from '$lib/seo.js';
 	// src/routes/lembaga/+page.svelte — halaman "Untuk Lembaga": TPQ, madrasah diniyah,
 	// rumah tahfidz, pondok, masjid. Tanpa pembayaran di situs ini: jalur masuk =
 	// WhatsApp (pendampingan) atau daftar mandiri di aplikasi.
@@ -74,40 +76,28 @@
 		{ q: 'Lembaga apa saja yang cocok?', a: 'TPQ/TPA, madrasah diniyah, rumah tahfidz, pondok pesantren, dan majelis taklim masjid atau musholla yang memiliki santri.' }
 	];
 
-	const structuredData = {
-		'@context': 'https://schema.org',
-		'@graph': [
-			{
-				'@type': 'Service',
-				'@id': `${canonicalUrl}#layanan`,
-				name: 'SantriOnline untuk Lembaga',
-				serviceType: 'Pengelolaan dan pembinaan santri untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok pesantren',
-				provider: { '@id': 'https://santrionline.com/#organization' },
-				areaServed: { '@type': 'Country', name: 'Indonesia' },
-				url: canonicalUrl,
-				offers: [
-					{ '@type': 'Offer', name: 'Mandiri', price: '0', priceCurrency: 'IDR', url: daftarUrl },
-					{ '@type': 'Offer', name: 'Pendampingan', price: '0', priceCurrency: 'IDR', url: canonicalUrl }
-				]
-			},
-			{
-				'@type': 'BreadcrumbList',
-				itemListElement: [
-					{ '@type': 'ListItem', position: 1, name: 'Beranda', item: 'https://santrionline.com/' },
-					{ '@type': 'ListItem', position: 2, name: 'Untuk Lembaga', item: canonicalUrl }
-				]
-			},
-			{
-				'@type': 'FAQPage',
-				mainEntity: faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } }))
-			}
-		]
-	};
+	const structuredData = graf(
+		{
+			'@type': 'Service',
+			'@id': `${canonicalUrl}#layanan`,
+			name: 'SantriOnline untuk Lembaga',
+			serviceType: 'Pengelolaan dan pembinaan santri untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok pesantren',
+			provider: { '@id': 'https://santrionline.com/#organization' },
+			areaServed: { '@type': 'Country', name: 'Indonesia' },
+			url: canonicalUrl,
+			offers: [
+				{ '@type': 'Offer', name: 'Mandiri', price: '0', priceCurrency: 'IDR', url: daftarUrl },
+				{ '@type': 'Offer', name: 'Pendampingan', price: '0', priceCurrency: 'IDR', url: canonicalUrl }
+			]
+		},
+		remah([{ name: 'Untuk Lembaga', path: '/lembaga' }]),
+		faqHalaman(faq)
+	);
 </script>
 
 <svelte:head>
 	<title>Aplikasi Pondok Pesantren, TPQ & Tahfidz Gratis Berbasis Web | SantriOnline</title>
-	<meta name="description" content="Aplikasi manajemen pondok pesantren gratis berbasis web: keuangan, administrasi, data santri, setoran hafalan, rapor madrasah diniyah, ujian tahfidz, asrama, dan akun wali. Untuk TPQ, madrasah diniyah, rumah tahfidz, dan pondok. Termasuk pendampingan 2026." />
+	<meta name="description" content="Aplikasi pondok pesantren, TPQ, dan rumah tahfidz gratis berbasis web: data santri, keuangan, setoran hafalan, rapor diniyah, ujian tahfidz, dan akun wali." />
 	<meta name="keywords" content="aplikasi pondok pesantren gratis, aplikasi keuangan pondok pesantren gratis, aplikasi administrasi pondok pesantren, aplikasi TPQ, aplikasi tahfidz, aplikasi raport madrasah diniyah, sistem informasi pondok pesantren, aplikasi wali santri" />
 	<link rel="canonical" href={canonicalUrl} />
 	<link rel="alternate" hreflang="id-ID" href={canonicalUrl} />
@@ -124,7 +114,7 @@
 	<MetaGambar src={ogWeb('/lembaga')} alt={'SantriOnline untuk lembaga: data santri, setoran hafalan, rapor, dan keuangan'} />
 	<meta name="twitter:title" content="SantriOnline untuk Lembaga" />
 	<meta name="twitter:description" content="Rapikan TPQ, madrasah, atau rumah tahfidz Anda. Gratis, termasuk pendampingan." />
-	{@html `<script type="application/ld+json">${JSON.stringify(structuredData).replace(/</g, '\\u003c')}<\/script>`}
+	<JsonLd data={structuredData} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">
