@@ -1,5 +1,6 @@
-// Kolam pertanyaan siap-klik (jawaban disiapkan dari Tanya Kitab, diperiksa
-// manusia sebelum masuk). Lihat src/lib/pertanyaan-siap.js untuk rotasi.
+// Kolam pertanyaan siap-klik: salinan statis soal bank Cari Isi Kitab app yang
+// berstatus 'sah' (D1 kitab_bank_soal), dibangun ulang dengan
+// scripts/siap-dari-bank.mjs. Lihat src/lib/pertanyaan-siap.js untuk rotasi.
 import data from './pertanyaan-siap.json';
 import vektor from './pertanyaan-siap-vektor.json';
 import { bacaVektor, cariIndeksMirip } from './pertanyaan-mirip';
