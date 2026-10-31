@@ -46,6 +46,7 @@ export interface RakKatalog {
 const APP = 'https://app.santrionline.com';
 
 import { muatSemuaRating, type RingkasRating } from './rating';
+import { hargaKursusKatalog } from '../harga-kursus.js';
 
 /** Label ramah untuk kolom kitab_catalog.category. */
 export const LABEL_BIDANG: Record<string, string> = {
@@ -64,6 +65,7 @@ export const LABEL_BIDANG: Record<string, string> = {
 export const labelBidang = (k: string | null) => (k ? (LABEL_BIDANG[k] ?? k.replace(/-/g, ' ').replace(/^\w/, (h) => h.toUpperCase())) : null);
 
 const rupiah = (n: number) => 'Rp ' + n.toLocaleString('id-ID');
+
 
 /** Kartu tetap — produk yang bukan baris tabel. */
 export const KARTU_TETAP: ItemKatalog[] = [
@@ -225,9 +227,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		judul: String(r.judul),
 		ringkasan: s(r.ringkasan) ?? 'Kursus bertahap dengan materi dan latihan.',
 		sampul: s(r.sampul_url),
-		// Belajar di SantriOnline gratis (keputusan 21 Okt 2026): kursus selalu tampil Gratis.
-		harga: 'Gratis',
-		gratis: true,
+		...hargaKursusKatalog(r.harga_koin, r.kategori),
 		href: `${APP}/kursus/${r.slug}`,
 		detail: `/katalog/kursus/${r.slug}`,
 		aksi: 'Ikuti',
