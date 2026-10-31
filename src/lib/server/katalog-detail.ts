@@ -2,6 +2,7 @@
 // Hanya kolom publik (judul, deskripsi, sampul, harga, daftar judul bab/materi);
 // isi bab/materi TIDAK dibaca — baca/ikuti tetap di app (login).
 import { KARTU_TETAP, labelBidang, type ItemKatalog, type JenisKatalog } from './katalog';
+import { hargaKursusKatalog } from '../harga-kursus.js';
 
 export interface DetailKatalog extends ItemKatalog {
 	deskripsi: string | null;
@@ -168,9 +169,7 @@ export async function muatDetail(
 			ringkasan: s(r.ringkasan) ?? '',
 			deskripsi: s(r.deskripsi),
 			sampul: s(r.sampul_url),
-			// Belajar di SantriOnline gratis (keputusan 21 Okt 2026): kursus selalu tampil Gratis.
-			harga: 'Gratis',
-			gratis: true,
+			...hargaKursusKatalog(r.harga_koin, r.kategori),
 			href: `${APP}/kursus/${slug}`,
 			aksi: 'Ikuti',
 			kategori: s(r.kategori),
