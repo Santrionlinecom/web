@@ -47,7 +47,7 @@
 				<h2 class="text-xl font-extrabold text-so-green">Data yang kami kumpulkan</h2>
 				<ul class="mt-2 list-disc space-y-1 pl-5">
 					<li>Data teknis kunjungan: alamat IP, jenis peramban dan perangkat, halaman yang dibuka, dan waktu kunjungan. Data ini dipakai untuk keamanan, mencegah penyalahgunaan, dan memperbaiki situs.</li>
-					<li>Pertanyaan yang Anda ketik di fitur Tanya Kitab, untuk menjawab pertanyaan tersebut.</li>
+					<li>Pertanyaan yang Anda ketik di fitur Cari Isi Kitab, untuk menjawab pertanyaan tersebut.</li>
 					<li>Data yang Anda kirim sendiri lewat email atau formulir, misalnya nama dan alamat email.</li>
 				</ul>
 				<p class="mt-2">Untuk membaca halaman di situs ini Anda tidak perlu membuat akun. Pendaftaran dan data akun diatur oleh <a class="font-semibold text-so-green underline" href="https://app.santrionline.com/privacy">kebijakan privasi aplikasi SantriOnline</a>.</p>

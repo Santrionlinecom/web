@@ -93,7 +93,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 			return kuotaHabis('Batas tanya per jam tercapai. Coba lagi nanti, atau daftar gratis di app.santrionline.com.');
 		}
 		if (!res.ok || !hasil.ok) {
-			console.error('Tanya kitab publik gagal', { status: res.status, error: hasil.error });
+			console.error('Cari Isi Kitab publik gagal', { status: res.status, error: hasil.error });
 			return json({ message: 'Maaf, coba lagi sebentar.' }, { status: 502 });
 		}
 
@@ -110,7 +110,7 @@ export const POST: RequestHandler = async ({ request, cookies, fetch, platform, 
 		);
 		return json({ ...balasan, remaining: Math.max(CHAT_LIMIT - nextCount, 0) });
 	} catch (error) {
-		console.error('Tanya kitab publik error', error);
+		console.error('Cari Isi Kitab publik error', error);
 		return json({ message: 'Maaf, coba lagi sebentar.' }, { status: 500 });
 	}
 };
