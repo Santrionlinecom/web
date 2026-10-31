@@ -57,7 +57,7 @@ export async function muatDetail(
 		const r = await satu(
 			db,
 			`SELECT slug, title, summary, description, cover_url, category, page_count, updated_at, author, author_latin, author_died_h
-			 FROM kitab_catalog WHERE status='published' AND slug=?`,
+			 FROM kitab_catalog WHERE status='published' AND lisensi IN ('turats', 'milik-sendiri', 'izin') AND slug=?`,
 			slug
 		);
 		if (!r) return null;
