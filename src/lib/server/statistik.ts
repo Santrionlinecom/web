@@ -1,12 +1,12 @@
 // src/lib/server/statistik.ts — angka traksi beranda, hanya COUNT (tanpa data pribadi).
 // Nilai status/role diverifikasi dengan SELECT DISTINCT ke db-app:
-//   kitab_catalog.status = 'published'
+//   kitab_catalog.status = 'published' + lisensi sah (gerbang hak cipta app, migrasi 0124)
 //   organizations.status = 'active' (sama dengan direktori lembaga di app)
 //   users.role = 'santri'
 // Gagal apa pun -> null, sehingga blok statistik disembunyikan (tidak pernah tampil 0).
 import type { StatistikPublik } from '$lib/statistik';
 
-const SQL_KITAB = "SELECT COUNT(*) AS n FROM kitab_catalog WHERE status = 'published'";
+const SQL_KITAB = "SELECT COUNT(*) AS n FROM kitab_catalog WHERE status = 'published' AND lisensi IN ('turats', 'milik-sendiri', 'izin')";
 const SQL_LEMBAGA = "SELECT COUNT(*) AS n FROM organizations WHERE status = 'active'";
 const SQL_SANTRI = "SELECT COUNT(*) AS n FROM users WHERE role = 'santri'";
 

@@ -150,7 +150,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		tanya(
 			db,
 			`SELECT slug, title, summary, cover_url, category, author, author_latin FROM kitab_catalog
-			 WHERE status='published' ORDER BY updated_at DESC, title LIMIT ${batas}`
+			 WHERE status='published' AND lisensi IN ('turats', 'milik-sendiri', 'izin') ORDER BY updated_at DESC, title LIMIT ${batas}`
 		),
 		tanya(
 			db,
@@ -259,10 +259,10 @@ export async function muatKitabPerBidang(db: D1Database | undefined, perBidang =
 			`SELECT slug, title, summary, cover_url, category FROM (
 			   SELECT slug, title, summary, cover_url, category,
 			          ROW_NUMBER() OVER (PARTITION BY category ORDER BY updated_at DESC, title) AS rn
-			   FROM kitab_catalog WHERE status='published'
+			   FROM kitab_catalog WHERE status='published' AND lisensi IN ('turats', 'milik-sendiri', 'izin')
 			 ) WHERE rn <= ${Math.max(1, Math.min(20, perBidang))}`
 		),
-		tanya(db, `SELECT category, COUNT(*) AS n FROM kitab_catalog WHERE status='published' GROUP BY category ORDER BY n DESC`),
+		tanya(db, `SELECT category, COUNT(*) AS n FROM kitab_catalog WHERE status='published' AND lisensi IN ('turats', 'milik-sendiri', 'izin') GROUP BY category ORDER BY n DESC`),
 		muatSemuaRating(db)
 	]);
 	return jumlah
