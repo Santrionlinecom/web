@@ -27,7 +27,7 @@
 
 	const produk = [
 		{
-			judul: 'Tanya Kitab AI',
+			judul: 'Cari Isi Kitab',
 			isi: 'Asisten tanya jawab agama yang menjawab berdasarkan kutipan kitab Aswaja dan selalu menunjukkan sumbernya, supaya jawaban bisa diperiksa ulang.',
 			href: '/#tanya',
 			tautan: 'Coba bertanya'
@@ -59,7 +59,7 @@
 	];
 
 	const prinsip = [
-		{ judul: 'AI menunjukkan sumbernya', isi: 'Jawaban Tanya Kitab disertai kutipan kitab yang dipakai. AI adalah alat bantu belajar, bukan pengganti ulama dan guru; untuk perkara yang membutuhkan fatwa, pengguna kami arahkan bertanya langsung kepada ahlinya.' },
+		{ judul: 'AI menunjukkan sumbernya', isi: 'Jawaban Cari Isi Kitab disertai kutipan kitab yang dipakai. AI adalah alat bantu belajar, bukan pengganti ulama dan guru; untuk perkara yang membutuhkan fatwa, pengguna kami arahkan bertanya langsung kepada ahlinya.' },
 		{ judul: 'Data bukan barang dagangan', isi: 'Data dipakai untuk menjalankan layanan, bukan diperjualbelikan. Kami tidak memasang iklan pihak ketiga, dan pengguna bisa menghapus akunnya sendiri kapan saja.' },
 		{ judul: 'Belajar gratis, gratis untuk lembaga', isi: 'Belajar di SantriOnline gratis, tidak dipungut biaya, dan aplikasi pengelolaan lembaga juga gratis. Keberlanjutan SantriOnline ditopang oleh produk digital berbayar dan jasa pengembangan, sehingga misi pembinaan tidak bergantung pada iklan.' }
 	];
@@ -230,7 +230,7 @@
 				<p class="text-lg font-bold text-so-green">Ingin mencoba bersama lembaga Anda?</p>
 				<div class="flex flex-wrap gap-3">
 					<a class="rounded-full bg-so-green px-6 py-3 text-sm font-bold text-white hover:bg-so-green-3" href="/lembaga">Untuk Lembaga</a>
-					<a class="rounded-full border border-so-border bg-white px-6 py-3 text-sm font-bold text-so-green" href="/#tanya">Coba Tanya Kitab</a>
+					<a class="rounded-full border border-so-border bg-white px-6 py-3 text-sm font-bold text-so-green" href="/#tanya">Coba Cari Isi Kitab</a>
 				</div>
 			</div>
 		</section>

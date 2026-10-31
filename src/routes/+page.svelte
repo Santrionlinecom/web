@@ -350,7 +350,7 @@
 				<div class="no">04</div>
 				<div>
 					<h3>Kajian Lanjut <span class="tag t-free">Gratis · akun gratis</span></h3>
-					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Tanya Kitab.</p>
+					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Cari Isi Kitab.</p>
 				</div>
 			</div>
 		</div>
@@ -454,7 +454,7 @@
 		<p class="lead">Ilmu lebih mudah dijaga bila ada teman dan ada guru tempat bertanya.</p>
 		<div class="kom">
 			<div class="kc"><div class="em" aria-hidden="true">&#128172;</div><h3>Grup belajar</h3><p>Tempat saling menyemangati dan bertanya sesama peserta lewat grup Telegram atau WhatsApp. Segera dibuka.</p></div>
-			<a class="kc" href="{appBaseUrl}/tanya"><div class="em" aria-hidden="true">&#128218;</div><h3>Tanya Kitab</h3><p>Ajukan pertanyaan dan dapatkan jawaban yang menunjuk ke halaman kitab di perpustakaan kami. Untuk perkara penting, tetap tanyakan ke guru.</p></a>
+			<a class="kc" href="{appBaseUrl}/tanya"><div class="em" aria-hidden="true">&#128218;</div><h3>Cari Isi Kitab</h3><p>Ajukan pertanyaan dan dapatkan jawaban yang menunjuk ke halaman kitab di perpustakaan kami. Untuk perkara penting, tetap tanyakan ke guru.</p></a>
 			<div class="kc"><div class="em" aria-hidden="true">&#129309;</div><h3>Bersama guru</h3><p>Materi melewati pemeriksaan ustadz sebelum terbit. Di level lanjut ada kajian langsung dua kali sebulan.</p></div>
 		</div>
 	</div>
@@ -485,7 +485,7 @@
 					<li>Ngaji Kitab Dasar per bab</li>
 					<li>Hafalan Matan dengan setoran</li>
 					<li>Kajian Lanjut dan kajian langsung 2x sebulan</li>
-					<li>Tanya Kitab, dengan batas harian yang wajar</li>
+					<li>Cari Isi Kitab, dengan batas harian yang wajar</li>
 				</ul>
 				<a class="btn btn-s" href={appRegisterUrl}>Daftar akun gratis</a>
 			</div>

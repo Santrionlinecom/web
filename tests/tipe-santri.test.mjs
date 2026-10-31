@@ -17,7 +17,7 @@ const PELAJARAN_TERBIT = ['0-1-kenapa-belajar-agama-sekarang', '1-1-islam-iman-i
 
 // Tautan "cara belajar yang cocok" hanya boleh menunjuk halaman yang sudah dicek 200 (curl, 21 Okt 2026).
 // santrionline.com/video belum ada di main (PR #33), jadi video memakai app. /tanya di app butuh login (302),
-// jadi Tanya Kitab diarahkan ke halaman daftar.
+// jadi Cari Isi Kitab diarahkan ke halaman daftar.
 const TAUTAN_NYATA = new Set([
 	'/belajar',
 	'/belajar/3/wudhu',

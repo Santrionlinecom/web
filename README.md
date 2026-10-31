@@ -49,7 +49,7 @@ Repo ini adalah **santrionline.com** — pintu masuk publik untuk belajar Islam 
 | 🧭 | **Tes Tipe Santri** | 10 situasi sehari-hari, ±3 menit, tanpa login → 7 cara belajar (pendengar, pengamat, pembaca, penghafal, penanya, pengamal, istiqomah). |
 | 📖 | **Belajar bertahap** | Tiap pelajaran: video singkat, bacaan berdalil, kuis ringan. Pelajaran pertama tanpa daftar. |
 | 📚 | **Katalog kitab & buku** | Perpustakaan yang sinkron otomatis dengan aplikasi, halaman detail ramah SEO. |
-| 🤖 | **Tanya Kitab** | Jawaban yang menunjuk halaman kitab di perpustakaan, dengan bank pertanyaan siap dan pencarian pertanyaan mirip. |
+| 🤖 | **Cari Isi Kitab** | Jawaban yang menunjuk halaman kitab di perpustakaan, dengan bank pertanyaan siap dan pencarian pertanyaan mirip. |
 | 🎬 | **Video** | Video pembelajaran pendek yang diputar langsung di situs. |
 | 🏫 | **Untuk lembaga** | Aplikasi gratis untuk pondok pesantren, TPQ, dan rumah tahfidz: data santri, hafalan, rapor, keuangan. |
 | 🔎 | **SEO** | Meta & Open Graph per halaman, gambar OG relevan, `sitemap.xml`, semuanya dijaga lewat tes SEO otomatis. |
@@ -78,7 +78,7 @@ npm run dev          # http://localhost:5173
 | `npm run build` | Build produksi |
 | `npm run preview` | Pratinjau hasil build secara lokal |
 
-> Beberapa fitur (katalog, Tanya Kitab) membutuhkan binding data produksi; tanpa itu halaman tetap tampil dengan data kosong.
+> Beberapa fitur (katalog, Cari Isi Kitab) membutuhkan binding data produksi; tanpa itu halaman tetap tampil dengan data kosong.
 
 ## 🗂️ Struktur proyek
 
@@ -91,14 +91,14 @@ src/
 │   ├── video/            # video pembelajaran
 │   ├── lembaga/          # aplikasi untuk pesantren, TPQ, rumah tahfidz
 │   ├── literasi/         # artikel pengantar (tahfidz, munaqosah, dll.)
-│   ├── api/              # chat Tanya Kitab, rating, webhook
+│   ├── api/              # chat Cari Isi Kitab, rating, webhook
 │   └── sitemap.xml/      # sitemap dinamis
 ├── lib/
 │   ├── components/       # komponen UI
 │   ├── belajar/          # data pelajaran
 │   └── server/           # katalog, pertanyaan siap, statistik
 static/                   # logo, ikon, gambar katalog
-tests/                    # tes SEO, salinan publik, Tanya Kitab, video, dll.
+tests/                    # tes SEO, salinan publik, Cari Isi Kitab, video, dll.
 docs/                     # catatan desain & audit
 ```
 
