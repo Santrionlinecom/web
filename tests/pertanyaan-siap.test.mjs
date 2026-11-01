@@ -2,6 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { pilihUntukSlot, slotSaatIni, sisaSlotMs, SLOT_MS, kunciPertanyaan } from '../src/lib/pertanyaan-siap.js';
+import {
+	KITAB_DIKELUARKAN,
+	KITAB_DITAHAN,
+	alasanKitabTerlarang,
+	judulTerlarang,
+	slugDariTautan
+} from '../src/lib/kitab-dikeluarkan.js';
 
 const kolam = Array.from({ length: 30 }, (_, i) => 'q' + i);
 
@@ -35,4 +42,36 @@ test('data siap: tiap item berjawaban dengan rujukan kitab', () => {
 		assert.ok(Array.isArray(d.rujukan) && d.rujukan.length > 0, d.q);
 		assert.doesNotMatch(d.reply, /Belum ada kutipan/, d.q);
 	}
+});
+
+const bacaKolam = () => JSON.parse(readFileSync(new URL('../src/lib/server/pertanyaan-siap.json', import.meta.url), 'utf8'));
+
+test('data siap: tidak merujuk kitab yang dikeluarkan karena hak cipta atau sedang ditahan', () => {
+	const teks = readFileSync(new URL('../src/lib/server/pertanyaan-siap.json', import.meta.url), 'utf8');
+	for (const slug of [...Object.keys(KITAB_DIKELUARKAN), ...Object.keys(KITAB_DITAHAN)]) {
+		assert.ok(!teks.includes(`/kitab/${slug}/`), slug);
+		// id kutipan memuat slug yang dipotong 20 huruf: kitab:<slug>[-bNN]:<hash>:<hash>
+		assert.doesNotMatch(teks, new RegExp(`kitab%3A${slug.slice(0, 20)}(-b\\d{2})?%3A`), slug);
+	}
+	for (const d of bacaKolam()) {
+		for (const r of d.rujukan) {
+			assert.equal(judulTerlarang(r.judul), false, `${d.q}: ${r.judul}`);
+			assert.equal(alasanKitabTerlarang(slugDariTautan(r.url)), null, `${d.q}: ${r.url}`);
+		}
+	}
+});
+
+test('data siap: setiap sitasi [n] menunjuk rujukan yang ada', () => {
+	for (const d of bacaKolam()) {
+		const nomor = new Set(d.rujukan.map((/** @type {{no: number}} */ r) => r.no));
+		assert.deepEqual([...nomor], d.rujukan.map((/** @type {unknown} */ _, /** @type {number} */ i) => i + 1), d.q);
+		for (const m of d.reply.matchAll(/\[(\d+)\]/g)) assert.ok(nomor.has(Number(m[1])), `${d.q}: [${m[1]}]`);
+	}
+});
+
+test('vektor siap selaras dengan kolam (kalau tidak, pencocokan makna mati diam-diam)', () => {
+	const vektor = JSON.parse(readFileSync(new URL('../src/lib/server/pertanyaan-siap-vektor.json', import.meta.url), 'utf8'));
+	assert.equal(vektor.model, '@cf/google/embeddinggemma-300m');
+	assert.equal(vektor.v.length, bacaKolam().length);
+	for (const v of vektor.v) assert.equal(Buffer.from(v, 'base64').length, vektor.dim);
 });
