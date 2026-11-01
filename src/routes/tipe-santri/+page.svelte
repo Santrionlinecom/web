@@ -5,6 +5,8 @@
 	// SSR/prerender menampilkan pembuka + daftar 7 tipe supaya terindeks.
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, halamanWeb, remah } from '$lib/seo.js';
 	import { onMount, tick } from 'svelte';
 	import { replaceState } from '$app/navigation';
 	import tes from '../../content/belajar/tipe-santri.json';
@@ -33,6 +35,12 @@
 	};
 
 	const ASAL = 'https://santrionline.com';
+	const DESKRIPSI =
+		'Tes Tipe Santri gratis tanpa login: 10 situasi, sekitar 3 menit. Kenali cara belajar yang paling mudah membuatmu paham dan titik mulai belajar Islam yang cocok.';
+	const ld = graf(
+		halamanWeb({ path: '/tipe-santri', name: 'Tes Tipe Santri: Kamu Paling Mudah Paham Lewat Cara Apa?', description: DESKRIPSI }),
+		remah([{ name: 'Tes Tipe Santri', path: '/tipe-santri' }])
+	);
 	const KUNCI = 'so:tipe-santri';
 	const KUNCI_KARAKTER = 'so:karakter';
 	const situasi = tes.situasi;
@@ -191,7 +199,7 @@
 	<title>Tes Tipe Santri: Kamu Paling Mudah Paham Lewat Cara Apa? | SantriOnline</title>
 	<meta
 		name="description"
-		content="Tes Tipe Santri gratis tanpa login: 10 situasi sehari-hari, sekitar 3 menit. Kenali cara belajar yang paling mudah membuatmu paham (Pendengar, Pengamat, Pembaca, Penghafal, Penanya, Pengamal, Istiqomah) dan dapatkan titik mulai belajar Islam yang cocok."
+		content={DESKRIPSI}
 	/>
 	<meta name="robots" content="index, follow, max-image-preview:large" />
 	<link rel="canonical" href="{ASAL}/tipe-santri" />
@@ -200,6 +208,7 @@
 	<meta property="og:description" content="10 situasi, ±3 menit, tanpa login. Hasilnya cara belajarmu, cara kedua, dan titik mulai belajar Islam yang cocok." />
 	<meta property="og:url" content="{ASAL}/tipe-santri" />
 	<MetaGambar src={ogWeb('/tipe-santri')} alt={'Tipe belajar santri: Si Pendengar, Si Pengamat, Si Pembaca, dan lainnya'} />
+	<JsonLd data={ld} />
 </svelte:head>
 
 {#snippet pilihanKarakter(label: string)}

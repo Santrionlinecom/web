@@ -1,6 +1,8 @@
 <script lang="ts">
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, penerbit, remah } from '$lib/seo.js';
 	// src/routes/belajar/+page.svelte: daftar modul Level 01 Fondasi Muslim (8 modul, 24 slot).
 	let { data } = $props();
 	const total = $derived(data.modul.reduce((t, m) => t + m.pelajaran.length, 0));
@@ -8,17 +10,20 @@
 	const pertama = $derived(tersedia[0]?.href ?? '/tipe-santri');
 	const canonical = 'https://santrionline.com/belajar';
 	const ld = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'Course',
-			name: `Level ${data.level.kode} ${data.level.nama}: Belajar Islam dari Nol`,
-			description: 'Kelas Islam bertahap untuk pemula: rukun Islam, rukun iman, aqidah, thaharah, shalat, puasa, zakat, dan adab. Fiqih madzhab Syafi\'i, aqidah Aswaja.',
-			inLanguage: 'id-ID',
-			isAccessibleForFree: true,
-			offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR', category: 'Free' },
-			url: canonical,
-			provider: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' }
-		}).replace(/</g, '\\u003c')
+		graf(
+			{
+				'@type': 'Course',
+				'@id': `${canonical}#kursus`,
+				name: `Level ${data.level.kode} ${data.level.nama}: Belajar Islam dari Nol`,
+				description: 'Kelas Islam bertahap untuk pemula: rukun Islam, rukun iman, aqidah, thaharah, shalat, puasa, zakat, dan adab. Fiqih madzhab Syafi\'i, aqidah Aswaja.',
+				inLanguage: 'id-ID',
+				isAccessibleForFree: true,
+				offers: { '@type': 'Offer', price: '0', priceCurrency: 'IDR', category: 'Free' },
+				url: canonical,
+				provider: penerbit()
+			},
+			remah([{ name: 'Belajar', path: '/belajar' }])
+		)
 	);
 </script>
 
@@ -26,7 +31,7 @@
 	<title>Belajar Islam dari Nol: Fondasi Muslim, {total} Pelajaran | SantriOnline</title>
 	<meta
 		name="description"
-		content="Belajar Islam dari nol secara berurutan: {total} pelajaran singkat tentang rukun Islam, rukun iman, thaharah, shalat, puasa, zakat, dan adab. Video, bacaan berdalil, dan kuis. Gratis, tidak dipungut biaya."
+		content="Belajar Islam dari nol secara berurutan: {total} pelajaran singkat tentang rukun Islam, rukun iman, thaharah, shalat, puasa, zakat, dan adab. Gratis."
 	/>
 	<meta name="robots" content="index, follow, max-image-preview:large" />
 	<link rel="canonical" href={canonical} />
@@ -35,7 +40,7 @@
 	<meta property="og:description" content="{total} pelajaran Islam bertahap untuk pemula, gratis tanpa biaya." />
 	<meta property="og:url" content={canonical} />
 	<MetaGambar src={ogWeb('/belajar')} alt={'Belajar Islam dari nol bersama SantriOnline'} />
-	{@html `<script type="application/ld+json">${ld}<\/script>`}
+	<JsonLd data={ld} />
 </svelte:head>
 
 <section class="top">

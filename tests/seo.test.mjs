@@ -24,7 +24,8 @@ test('homepage memiliki fondasi SEO nasional dan social preview lengkap', () => 
 	assert.match(source, /const appBaseUrl = 'https:\/\/app\.santrionline\.com'/);
 	assert.match(source, /const appRegisterUrl = `\$\{appBaseUrl\}\/register`/);
 	assert.match(source, /const appInstitutionUrl = `\$\{appBaseUrl\}\/lembaga\/tambah`/);
-	assert.match(source, /href=\{appInstitutionUrl\}>Daftarkan Lembaga/);
+	// Label CTA lembaga diseragamkan menjadi "Daftar mandiri di aplikasi" (audit Stardust, #37).
+	assert.match(source, /href=\{appInstitutionUrl\}>Daftar mandiri di aplikasi/);
 });
 
 test('halaman /lembaga: SEO, WhatsApp resmi, dan harga tersinkron dengan JSON-LD', () => {
@@ -35,8 +36,10 @@ test('halaman /lembaga: SEO, WhatsApp resmi, dan harga tersinkron dengan JSON-LD
 	assert.match(source, /const canonicalUrl = 'https:\/\/santrionline\.com\/lembaga'/);
 	assert.match(source, /const WA = '6287854545274'/);
 	assert.match(source, /'@type': 'Service'/);
-	assert.match(source, /'@type': 'FAQPage'/);
-	assert.match(source, /'@type': 'BreadcrumbList'/);
+	// FAQPage & BreadcrumbList lewat helper bersama $lib/seo.js (audit schema Okt 2026);
+	// isi render-nya dikunci tests/seo-halaman.test.mjs.
+	assert.match(source, /faqHalaman\(faq\)/);
+	assert.match(source, /remah\(\[\{ name: 'Untuk Lembaga', path: '\/lembaga' \}\]\)/);
 	// Keputusan 04 Sep 2026: semua gratis (termasuk pendampingan) — tidak boleh ada nominal rupiah.
 	assert.match(source, /const GRATIS_PENDAMPINGAN = true/);
 	assert.doesNotMatch(source, /Rp ?\d/);

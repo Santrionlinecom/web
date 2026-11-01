@@ -6,15 +6,19 @@
 	import Bintang from '$lib/components/etalase/Bintang.svelte';
 	import NilaiBintang from '$lib/components/etalase/NilaiBintang.svelte';
 	import { urlBacaKitab, urlDaftarKitab } from '$lib/kitab-cta.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, penerbit, rapikanDeskripsi, remah } from '$lib/seo.js';
 
 	let { data } = $props();
 	const item = $derived(data.item);
 	const ASAL = 'https://santrionline.com';
 	const kanonik = $derived(`${ASAL}/katalog/${item.jenis}/${item.slug}`);
 	const labelJenis: Record<string, string> = {
-		kitab: 'Kitab Digital', buku: 'Novel & Buku', kursus: 'Kursus', produk: 'Aplikasi & Produk Digital', game: 'Game', belajar: 'Ruang Belajar'
+		kitab: 'Kitab Digital', buku: 'Novel & Buku', kursus: 'Kursus', produk: 'Aplikasi & Produk Digital', game: 'Game', belajar: 'Ruang Belajar', alat: 'Alat Bantu'
 	};
-	const tabJenis = $derived(['game', 'belajar'].includes(item.jenis) ? 'semua' : item.jenis);
+	// Tab daftar yang memuat item ini. Hanya /katalog/{semua,kitab,buku,kursus,produk} yang ada;
+	// alat tampil di rak produk, game & ruang belajar di "semua" (jangan menautkan URL 404).
+	const tabJenis = $derived(item.jenis === 'alat' ? 'produk' : ['kitab', 'buku', 'kursus', 'produk'].includes(item.jenis) ? item.jenis : 'semua');
 	const kitab = $derived(item.jenis === 'kitab');
 	const ctaBaca = $derived(urlBacaKitab(item.slug));
 	const ctaDaftar = $derived(urlDaftarKitab(item.slug));
@@ -34,43 +38,51 @@
 	const terpotong = $derived(kitab && paragraf.join('').length < paragrafPenuh.join('').length);
 	const inisial = $derived(item.judul.split(/\s+/).slice(0, 2).map((k: string) => k[0]?.toUpperCase() ?? '').join(''));
 	const sampulAbs = $derived(item.sampul ? (item.sampul.startsWith('http') ? item.sampul : ASAL + item.sampul) : `${ASAL}/katalog/kampung-hero.webp`);
-	const deskripsiMeta = $derived((item.ringkasan || item.deskripsi || item.judul).replace(/\s+/g, ' ').slice(0, 155));
+	const label = $derived(labelJenis[item.jenis] ?? 'Katalog');
+	// Ringkasan dari DB bisa kosong/pendek/panjang: meta dirapikan ke 70–160 karakter.
+	const deskripsiMeta = $derived(
+		rapikanDeskripsi(
+			item.ringkasan || item.deskripsi,
+			`${label} “${item.judul}” di katalog SantriOnline${item.gratis ? ', gratis' : ''}. ${item.aksi} langsung di aplikasi.`
+		)
+	);
+	const TIPE: Record<string, string> = { kitab: 'Book', buku: 'Book', kursus: 'Course', produk: 'SoftwareApplication', alat: 'SoftwareApplication', game: 'VideoGame' };
+	// Offer hanya bila harganya jelas dalam rupiah (gratis = 0); harga koin/bab tidak punya padanan IDR.
+	const hargaIdr = $derived(item.gratis ? '0' : /^Rp\s?[\d.]+$/.test(item.harga) ? item.harga.replace(/\D/g, '') : null);
 
 	const jsonLd = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': item.jenis === 'kursus' ? 'Course' : item.jenis === 'produk' ? 'SoftwareApplication' : item.jenis === 'game' ? 'VideoGame' : 'Book',
-			name: item.judul,
-			description: deskripsiMeta,
-			image: sampulAbs,
-			url: kanonik,
-			inLanguage: 'id',
-			...(item.jenis === 'kursus' ? { provider: { '@type': 'Organization', name: 'SantriOnline', url: ASAL }, isAccessibleForFree: true } : {}),
-			...(item.jenis === 'produk' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
-			...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: { '@type': 'Organization', name: 'SantriOnline' } } : {}),
-			...(item.penulis ? { author: { '@type': 'Person', name: item.penulis } } : {}),
-			...(data.rating.jumlah > 0
-				? { aggregateRating: { '@type': 'AggregateRating', ratingValue: data.rating.rata, ratingCount: data.rating.jumlah, bestRating: 5, worstRating: 1 } }
-				: {}),
-			offers: { '@type': 'Offer', price: item.gratis ? '0' : undefined, priceCurrency: 'IDR', availability: 'https://schema.org/InStock', url: item.href },
-			contentLocation: { '@type': 'Place', name: 'Indonesia', address: { '@type': 'PostalAddress', addressCountry: 'ID' } }
-		})
-	);
-	const remah = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'BreadcrumbList',
-			itemListElement: [
-				{ '@type': 'ListItem', position: 1, name: 'Katalog', item: `${ASAL}/katalog/semua` },
-				{ '@type': 'ListItem', position: 2, name: labelJenis[item.jenis] ?? item.jenis, item: `${ASAL}/katalog/${tabJenis}` },
-				{ '@type': 'ListItem', position: 3, name: item.judul, item: kanonik }
-			]
-		})
+		graf(
+			{
+				'@type': TIPE[item.jenis] ?? 'CreativeWork',
+				'@id': `${kanonik}#karya`,
+				name: item.judul,
+				description: deskripsiMeta,
+				image: sampulAbs,
+				url: kanonik,
+				inLanguage: 'id',
+				...(item.jenis === 'kursus' ? { provider: penerbit(), isAccessibleForFree: true } : {}),
+				...(item.jenis === 'produk' || item.jenis === 'alat' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
+				...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: penerbit() } : {}),
+				...(item.penulis ? { author: { '@type': 'Person', name: item.penulis } } : {}),
+				...(data.rating.jumlah > 0
+					? { aggregateRating: { '@type': 'AggregateRating', ratingValue: data.rating.rata, ratingCount: data.rating.jumlah, bestRating: 5, worstRating: 1 } }
+					: {}),
+				...(hargaIdr !== null
+					? { offers: { '@type': 'Offer', price: hargaIdr, priceCurrency: 'IDR', availability: 'https://schema.org/InStock', url: item.href } }
+					: {}),
+				contentLocation: { '@type': 'Place', name: 'Indonesia', address: { '@type': 'PostalAddress', addressCountry: 'ID' } }
+			},
+			remah([
+				{ name: 'Katalog', path: '/katalog/semua' },
+				...(tabJenis === 'semua' ? [] : [{ name: labelJenis[tabJenis], path: `/katalog/${tabJenis}` }]),
+				{ name: item.judul, path: `/katalog/${item.jenis}/${item.slug}` }
+			])
+		)
 	);
 </script>
 
 <svelte:head>
-	<title>{item.judul} — {labelJenis[item.jenis] ?? 'Katalog'} | SantriOnline</title>
+	<title>{item.judul} — {label} | SantriOnline</title>
 	<meta name="description" content={deskripsiMeta} />
 	<link rel="canonical" href={kanonik} />
 	<meta name="language" content="id" />
@@ -84,9 +96,12 @@
 	<meta property="og:image" content={sampulAbs} />
 	<meta property="og:url" content={kanonik} />
 	<meta property="og:locale" content="id_ID" />
+	<meta property="og:site_name" content="SantriOnline" />
 	<meta name="twitter:card" content="summary_large_image" />
-	{@html `<script type="application/ld+json">${jsonLd}</script>`}
-	{@html `<script type="application/ld+json">${remah}</script>`}
+	<meta name="twitter:title" content={item.judul} />
+	<meta name="twitter:description" content={deskripsiMeta} />
+	<meta name="twitter:image" content={sampulAbs} />
+	<JsonLd data={jsonLd} />
 </svelte:head>
 
 <div class="sb-tw mx-auto w-full max-w-5xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">

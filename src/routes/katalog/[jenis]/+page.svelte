@@ -1,6 +1,8 @@
 <script lang="ts">
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { daftarItem, graf, halamanWeb, rapikanDeskripsi, remah } from '$lib/seo.js';
 	import Ikon from '$lib/components/ui/Ikon.svelte';
 	// /katalog/[jenis] — halaman "Lihat semua" satu jenis (atau semua), grid sampul
 	// + saringan teks (GET ?q=, tanpa JS). Memakai KartuKatalog yang sama dengan rak.
@@ -18,28 +20,41 @@
 	] as const;
 	// /katalog/kitab tanpa pencarian → tampilan rak sampul per bidang.
 	const rak = $derived(data.jenis === 'kitab' && !data.q);
+	const path = $derived(`/katalog/${data.jenis}`);
+	const kanonik = $derived(`https://santrionline.com${path}`);
+	// Keterangan rak (tampil di halaman) terlalu pendek untuk meta; deskripsi meta per jenis.
+	const DESKRIPSI: Record<string, string> = {
+		semua: 'Katalog SantriOnline: kitab digital, novel dan buku, kursus, aplikasi, dan game Islami dalam satu tempat. Pilih, lalu baca atau ikuti di aplikasi.',
+		kitab: 'Kitab digital pilihan: fiqih, aqidah, hadits, nahwu, tasawuf, dan sirah, dengan penjelasan yang mudah dipelajari. Baca gratis di aplikasi SantriOnline.',
+		buku: 'Novel dan buku karya penulis SantriOnline: cerita yang menumbuhkan adab dan cita-cita. Lihat daftar bab, lalu mulai membaca di aplikasi.',
+		kursus: 'Kursus bertahap di SantriOnline: belajar terarah dan selesai per modul, lengkap dengan materi dan latihan. Gratis diikuti lewat aplikasi.',
+		produk: 'Aplikasi dan produk digital SantriOnline: alat bantu untuk santri, guru, dan lembaga. Lihat fiturnya, lalu ambil langsung di aplikasi.'
+	};
+	const deskripsi = $derived(rapikanDeskripsi(DESKRIPSI[data.jenis] ?? data.keterangan, 'Katalog SantriOnline: kitab, buku, kursus, dan aplikasi Islami.'));
 	const daftarLd = $derived(
-		JSON.stringify({
-			'@context': 'https://schema.org',
-			'@type': 'ItemList',
-			name: data.judul,
-			numberOfItems: data.item.length,
-			itemListElement: data.item.slice(0, 50).map((i, n) => ({ '@type': 'ListItem', position: n + 1, url: `https://santrionline.com${i.detail ?? ''}`, name: i.judul }))
-		})
+		graf(
+			halamanWeb({ tipe: 'CollectionPage', path, name: `${data.judul} — Katalog SantriOnline`, description: deskripsi }),
+			// Butir tanpa halaman detail (kartu tetap) memakai tautan aplikasinya, bukan beranda.
+			daftarItem({ name: data.judul, path, item: data.item.map((i) => ({ name: i.judul, url: i.detail ?? i.href })) }),
+			remah(data.jenis === 'semua' ? [{ name: 'Katalog', path }] : [{ name: 'Katalog', path: '/katalog/semua' }, { name: data.judul, path }])
+		)
 	);
 </script>
 
 <svelte:head>
 	<title>{data.judul} — Katalog | SantriOnline</title>
-	<meta name="description" content={data.keterangan} />
-	<link rel="canonical" href={`https://santrionline.com/katalog/${data.jenis}`} />
+	<meta name="description" content={deskripsi} />
+	<link rel="canonical" href={kanonik} />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="SantriOnline" />
+	<meta property="og:locale" content="id_ID" />
 	<meta property="og:title" content={`${data.judul} — Katalog SantriOnline`} />
-	<meta property="og:description" content={data.keterangan} />
-	<meta property="og:url" content={`https://santrionline.com/katalog/${data.jenis}`} />
-	<MetaGambar src={ogWeb(`/katalog/${data.jenis}`)} alt={`${data.judul} — Katalog SantriOnline`} />
-	{#if rak}{@html `<script type="application/ld+json">${daftarLd}</script>`}{/if}
+	<meta property="og:description" content={deskripsi} />
+	<meta property="og:url" content={kanonik} />
+	<MetaGambar src={ogWeb(path)} alt={`${data.judul} — Katalog SantriOnline`} />
+	<meta name="twitter:title" content={`${data.judul} — Katalog SantriOnline`} />
+	<meta name="twitter:description" content={deskripsi} />
+	<JsonLd data={daftarLd} />
 </svelte:head>
 
 <div class="sb-tw mx-auto w-full max-w-6xl px-4 pb-28 pt-6 text-so-ink sm:px-6 sm:pb-16">

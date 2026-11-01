@@ -3,6 +3,7 @@
 // (APP/video/daftar.json); videonya tetap diputar dari pemutar aplikasi
 // lewat iframe (APP/video/SLUG/embed). Modul ini murni (tanpa fetch) supaya
 // bisa diuji dengan node --test.
+import { escapeJsonLd } from './seo.js';
 
 export const APP_PRODUKSI = 'https://app.santrionline.com';
 
@@ -118,5 +119,5 @@ export function jsonLdVideo(daftar, halaman) {
 	};
 }
 
-/** Aman dipasang di <script type="application/ld+json">. */
-export const ldAman = (/** @type {unknown} */ obj) => JSON.stringify(obj).replace(/</g, '\\u003c');
+/** JSON aman untuk blok JSON-LD (escape bersama di $lib/seo.js). */
+export const ldAman = escapeJsonLd;

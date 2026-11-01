@@ -21,7 +21,7 @@
 <ArtikelLiterasi
 	judul="Munaqosah Tahfidz: Arti, Tahapan Ujian, Predikat, dan Syahadah"
 	title="Arti Munaqosah Tahfidz, Tahapan Ujian, Predikat & Syahadah Tahfidz | SantriOnline"
-	description="Arti munaqosah tahfidz, tahapan ujian hafalan Al-Qur’an, cara menilai, predikat Mumtaz–Jayyid Jiddan–Jayyid–Maqbul, serta isi syahadah atau sertifikat tahfidz. Panduan untuk pengelola TPQ dan rumah tahfidz."
+	description="Arti munaqosah tahfidz, tahapan ujian hafalan Al-Qur’an, cara menilai, predikat Mumtaz hingga Maqbul, dan isi syahadah. Panduan untuk TPQ dan rumah tahfidz."
 	path="/literasi/munaqosah-tahfidz"
 	label="Tahfidz"
 	terbit="2026-09-26"

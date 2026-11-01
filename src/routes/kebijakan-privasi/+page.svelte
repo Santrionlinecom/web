@@ -4,14 +4,18 @@
 	// Kebijakan aplikasi (app.santrionline.com) tetap di app.santrionline.com/privacy.
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, halamanWeb, remah } from '$lib/seo.js';
 	import logo from '$lib/assets/logo.png';
 	const email = 'masyogik@santrionline.com';
 	const diperbarui = '20 Oktober 2026';
+	const deskripsi = 'Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami.';
+	const ld = graf(halamanWeb({ tipe: 'WebPage', path: '/kebijakan-privasi', name: 'Kebijakan Privasi SantriOnline', description: deskripsi }), remah([{ name: 'Kebijakan Privasi', path: '/kebijakan-privasi' }]));
 </script>
 
 <svelte:head>
 	<title>Kebijakan Privasi | SantriOnline</title>
-	<meta name="description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami." />
+	<meta name="description" content={deskripsi} />
 	<link rel="canonical" href="https://santrionline.com/kebijakan-privasi" />
 	<meta name="robots" content="index, follow" />
 	<meta property="og:type" content="website" />
@@ -19,8 +23,9 @@
 	<meta property="og:site_name" content="SantriOnline" />
 	<meta property="og:url" content="https://santrionline.com/kebijakan-privasi" />
 	<meta property="og:title" content="Kebijakan Privasi | SantriOnline" />
-	<meta property="og:description" content="Kebijakan privasi santrionline.com: data yang dikumpulkan, cookie, layanan pihak ketiga, hak Anda, dan cara menghubungi kami." />
+	<meta property="og:description" content={deskripsi} />
 	<MetaGambar src={ogWeb('/kebijakan-privasi')} alt={'Kebijakan privasi SantriOnline'} />
+	<JsonLd data={ld} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

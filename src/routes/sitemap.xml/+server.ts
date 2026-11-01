@@ -25,9 +25,13 @@ const PAGES = [
 	{ path: '/kontak', changefreq: 'yearly', priority: '0.4' },
 	{ path: '/kebijakan-privasi', changefreq: 'yearly', priority: '0.3' },
 	...HALAMAN_APLIKASI.map((h) => ({ path: h.path, changefreq: 'monthly', priority: '0.9' })),
-	...FITUR_LEMBAGA.map((f) => ({ path: `/fitur/${f.slug}`, changefreq: 'monthly', priority: '0.8' })),
-	...['semua', 'kitab', 'buku', 'kursus', 'produk'].map((j) => ({ path: `/katalog/${j}`, changefreq: 'daily', priority: '0.8' }))
+	...FITUR_LEMBAGA.map((f) => ({ path: `/fitur/${f.slug}`, changefreq: 'monthly', priority: '0.8' }))
+	// Index /katalog, /fitur, /literasi sengaja tidak ada (404) — jangan dimasukkan.
 ];
+
+// /katalog/<jenis> 404 bila raknya kosong (lihat muatKatalogJenis), jadi hanya
+// jenis yang raknya berisi yang masuk sitemap. 'semua' selalu ada.
+const JENIS_KATALOG = ['semua', 'kitab', 'buku', 'kursus', 'produk'];
 
 const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 const url = (path: string, lastmod: string, changefreq: string, priority: string) =>
@@ -45,7 +49,10 @@ export const GET: RequestHandler = async ({ platform }) => {
 			detail.push(url(i.detail, BUILD_DATE, 'weekly', '0.7'));
 		}
 	}
-	const urls = [...PAGES.map((p) => url(p.path, BUILD_DATE, p.changefreq, p.priority)), ...detail].join('\n');
+	const katalog = JENIS_KATALOG.filter((j) => j === 'semua' || rak.some((r) => r.id === j)).map((j) =>
+		url(`/katalog/${j}`, BUILD_DATE, 'daily', '0.8')
+	);
+	const urls = [...PAGES.map((p) => url(p.path, BUILD_DATE, p.changefreq, p.priority)), ...katalog, ...detail].join('\n');
 	const body = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 	return new Response(body, {
 		headers: {

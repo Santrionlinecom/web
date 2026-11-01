@@ -2,6 +2,8 @@
 	// src/routes/literasi/apa-itu-santri-online/+page.svelte
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
+	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { graf, penerbit, remah } from '$lib/seo.js';
 	import logo from '$lib/assets/logo.png';
 	import { inview } from '$lib/actions/inview';
 
@@ -11,25 +13,28 @@
 
 	// JSON-LD Article: halaman kunci kata kunci "santri online" dinyatakan
 	// eksplisit sebagai artikel milik Organization kanonik.
-	const articleSchema = {
-		'@context': 'https://schema.org',
-		'@type': 'Article',
-		headline: 'Apa Itu Santri Online?',
-		description:
-			'Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan.',
-		image: ogWeb('/literasi/apa-itu-santri-online'),
-		author: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' },
-		publisher: { '@id': 'https://santrionline.com/#organization' },
-		mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
-		inLanguage: 'id-ID',
-		articleSection: 'Literasi',
-		contentLocation: {
-			'@type': 'Place',
-			name: 'Indonesia',
-			address: { '@type': 'PostalAddress', addressCountry: 'ID' }
+	const articleSchema = graf(
+		{
+			'@type': 'Article',
+			headline: 'Apa Itu Santri Online?',
+			description:
+				'Santri Online adalah semangat untuk terus mengaji, belajar, menjaga adab, dan mengikuti bimbingan ulama dengan memanfaatkan teknologi sebagai jembatan.',
+			image: ogWeb('/literasi/apa-itu-santri-online'),
+			author: { '@type': 'Organization', name: 'SantriOnline', url: 'https://santrionline.com/' },
+			publisher: penerbit(),
+			mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+			inLanguage: 'id-ID',
+			articleSection: 'Literasi',
+			contentLocation: {
+				'@type': 'Place',
+				name: 'Indonesia',
+				address: { '@type': 'PostalAddress', addressCountry: 'ID' }
+			},
+			isAccessibleForFree: true
 		},
-		isAccessibleForFree: true
-	};
+		// Index /literasi tidak ada (404): remah langsung Beranda → artikel.
+		remah([{ name: 'Apa Itu Santri Online?', path: '/literasi/apa-itu-santri-online' }])
+	);
 </script>
 
 <svelte:head>
@@ -51,7 +56,7 @@
 	<MetaGambar src={ogWeb('/literasi/apa-itu-santri-online')} alt={'Apa itu Santri Online?'} />
 	<meta name="twitter:title" content="Apa Itu Santri Online?" />
 	<meta name="twitter:description" content="Teknologi adalah jembatan untuk terus mengaji, bukan pengganti ulama, guru, atau pesantren." />
-	{@html `<script type="application/ld+json">${JSON.stringify(articleSchema).replace(/</g, '\\u003c')}<\/script>`}
+	<JsonLd data={articleSchema} />
 </svelte:head>
 
 <div class="min-h-screen bg-so-cream text-so-ink">

@@ -19,7 +19,7 @@ export const HALAMAN_APLIKASI: HalamanAplikasi[] = [
 		kataKunci: 'aplikasi hafalan quran',
 		title: 'Aplikasi Hafalan Quran untuk TPQ & Rumah Tahfidz — Gratis | SantriOnline',
 		description:
-			'Aplikasi hafalan Quran untuk lembaga: guru mencatat setoran ziyadah dan murojaah per ayat dari HP, pengurus meninjau, capaian santri terkumpul otomatis. Gratis, tanpa batas santri.',
+			'Aplikasi hafalan Quran untuk TPQ dan rumah tahfidz: guru mencatat setoran ziyadah dan murojaah per ayat dari HP, capaian santri terkumpul otomatis. Gratis.',
 		label: 'Hafalan Al-Qur’an',
 		judul: 'Aplikasi hafalan Quran untuk TPQ dan rumah tahfidz: setoran per ayat tercatat, capaian santri terlihat.',
 		intro:
@@ -72,7 +72,7 @@ export const HALAMAN_APLIKASI: HalamanAplikasi[] = [
 		kataKunci: 'aplikasi raport tpq',
 		title: 'Aplikasi Raport TPQ Gratis + Download Templat Raport TPQ Excel | SantriOnline',
 		description:
-			'Download templat raport TPQ Excel gratis: nilai tartil, tajwid, hafalan, praktik ibadah; rata-rata dan predikat otomatis, siap cetak A4. Atau pakai aplikasi raport TPQ yang tersusun dari setoran harian.',
+			'Download templat raport TPQ Excel gratis: nilai tartil, tajwid, hafalan, dan praktik ibadah dengan predikat otomatis. Atau pakai aplikasi raport TPQ gratis.',
 		label: 'Raport TPQ',
 		judul: 'Aplikasi raport TPQ gratis — plus templat raport TPQ Excel yang bisa diunduh hari ini.',
 		intro:
@@ -123,7 +123,7 @@ export const HALAMAN_APLIKASI: HalamanAplikasi[] = [
 		kataKunci: 'aplikasi pondok pesantren',
 		title: 'Aplikasi Pondok Pesantren Gratis: Santri, Asrama, Diniyah, Kas | SantriOnline',
 		description:
-			'Aplikasi pondok pesantren berbasis web: data santri, halaqah, pembagian ustadz, kamar asrama, jadwal diniyah, dan buku kas pondok dalam satu akun lembaga. Gratis, tanpa batas santri.',
+			'Aplikasi pondok pesantren berbasis web: data santri, halaqah, ustadz, kamar asrama, jadwal diniyah, dan buku kas dalam satu akun. Gratis, tanpa batas santri.',
 		label: 'Pondok pesantren',
 		judul: 'Aplikasi pondok pesantren gratis: data santri, asrama, diniyah, dan kas pondok dalam satu akun.',
 		intro:

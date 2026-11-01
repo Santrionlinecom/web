@@ -28,11 +28,12 @@ test('tiga halaman produk ada, prerender, dan memuat kata kunci di title & judul
 	assert.match(data, /title: 'Aplikasi Pondok Pesantren Gratis/);
 });
 
-test('CTA utama "Daftarkan Lembaga" ke /lembaga/tambah di halaman produk & panduan', () => {
+test('CTA utama "Daftar mandiri di aplikasi" ke /lembaga/tambah di halaman produk & panduan', () => {
+	// Label lama "Daftarkan Lembaga" diseragamkan di audit Stardust (#37).
 	for (const f of ['src/lib/components/HalamanFitur.svelte', 'src/lib/components/ArtikelLiterasi.svelte']) {
 		const s = read(f);
 		assert.match(s, /const daftarUrl = `\$\{appUrl\}\/lembaga\/tambah`/);
-		assert.match(s, />Daftarkan Lembaga/);
+		assert.match(s, /href=\{daftarUrl\}[^>]*>Daftar mandiri di aplikasi/);
 	}
 });
 
