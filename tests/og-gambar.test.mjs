@@ -34,7 +34,7 @@ test('og gambar: urutan cadangan — gambar item → halaman → bagian → bera
 	assert.equal(ogWeb('/belajar/2/iman-hari-akhir'), 'https://files.santrionline.com/og/halaman/web-belajar-iman-hari-akhir.jpg');
 	assert.equal(ogWeb('/belajar/9/materi-baru'), 'https://files.santrionline.com/og/halaman/web-belajar.jpg');
 	assert.equal(ogWeb('/katalog/buku/novel-baru'), 'https://files.santrionline.com/og/halaman/web-katalog-buku.jpg');
-	assert.equal(ogWeb('/halaman-asing'), 'https://files.santrionline.com/og/halaman/web-beranda.jpg');
+	assert.equal(ogWeb('/halaman-asing'), 'https://files.santrionline.com/og/halaman/web-beranda-v2.jpg');
 	assert.equal(ogWeb('/tentang/'), 'https://files.santrionline.com/og/halaman/web-tentang.jpg');
 });
 

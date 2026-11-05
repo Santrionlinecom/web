@@ -14,7 +14,7 @@ export const ogHalamanUrl = (nama) => `${DASAR}/${nama}.jpg`;
 
 /** Halaman statis → nama berkas. */
 export const OG_HALAMAN = {
-	'/': 'web-beranda',
+	'/': 'web-beranda-v2',
 	'/belajar': 'web-belajar',
 	'/tipe-santri': 'web-tipe-santri',
 	'/video': 'web-video',
@@ -86,5 +86,5 @@ export function ogWeb(path, gambarItem) {
 	const bagian = Object.keys(OG_BAGIAN)
 		.filter((a) => p.startsWith(a))
 		.sort((a, b) => b.length - a.length)[0];
-	return ogHalamanUrl(bagian ? /** @type {Record<string, string>} */ (OG_BAGIAN)[bagian] : 'web-beranda');
+	return ogHalamanUrl(bagian ? /** @type {Record<string, string>} */ (OG_BAGIAN)[bagian] : 'web-beranda-v2');
 }
