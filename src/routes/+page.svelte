@@ -1043,7 +1043,7 @@
 		color: #334155;
 	}
 	.before small {
-		color: #64748b;
+		color: #475569;
 	}
 	.after {
 		background: #ecfdf3;

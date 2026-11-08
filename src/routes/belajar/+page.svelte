@@ -168,7 +168,7 @@
 		border-radius: 14px;
 		background: #f6f7f3;
 		font-size: 14.5px;
-		color: #64748b;
+		color: #475569;
 	}
 	.row.buka {
 		background: #ecfdf3;
