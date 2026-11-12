@@ -70,7 +70,7 @@
 		return hasil;
 	}
 
-	const kitab = $derived(gabung(KITAB_PILIHAN, data.kitab ?? [], 16));
+	const kitab = $derived(gabung(KITAB_PILIHAN, data.kitab ?? [], 8));
 	// Hanya item yang punya halaman detail publik; kosong -> daftar pilihan bawaan.
 	const adaDetail = (d: Kartu[] | undefined) => (d ?? []).filter((x) => x.detail);
 	const buku = $derived(adaDetail(data.buku).length ? adaDetail(data.buku).slice(0, 8) : BUKU_PILIHAN);
@@ -112,13 +112,15 @@
 	];
 
 	// Isi aplikasi (menu dashboard) yang sudah bisa dibuka hari ini (dicek ke app.santrionline.com, Nov 2026).
-	const FITUR = $derived([
+	type Fitur = { judul: string; isi: string; href: string; cta: string; ikon: string; bidang?: string[] };
+	const FITUR = $derived<Fitur[]>([
 		{
 			judul: 'Perpustakaan Kitab',
 			isi: `${jumlahKitab ? `${jumlahKitab} kitab` : 'Kitab pesantren'} berharakat dari fiqih sampai sirah. Tiap kitab mencantumkan madzhab penulisnya.`,
 			href: `${appBaseUrl}/kitab`,
 			cta: 'Buka perpustakaan',
-			ikon: IK.buku
+			ikon: IK.buku,
+			bidang: ["Al-Qur'an & Tafsir", 'Aqidah', 'Fiqih', 'Hadits', 'Adab & Tasawuf', 'Nahwu & Sharaf', 'Ushul', 'Sirah']
 		},
 		{
 			judul: 'Cari Isi Kitab',
@@ -168,17 +170,17 @@
 		{ judul: 'Data santri & presensi', isi: 'Catat hadir, izin, sakit, atau alpa setiap hari.', ikon: IK.daftar },
 		{ judul: 'Kurikulum kitab', isi: 'Pilih kitab dari perpustakaan untuk tiap kelas. Daftarnya tampil di profil publik lembaga.', ikon: IK.buku },
 		{ judul: 'Halaqah & setoran hafalan', isi: 'Kelola halaqah, terima setoran, dan pantau progres hafalan.', ikon: IK.mushaf },
-		{ judul: 'Rapor & wali santri', isi: 'Rapor santri, dan wali bisa memantau perkembangan anaknya.', ikon: IK.rapor },
+		{ judul: 'Rapor & wali santri', isi: 'Rapor santri yang bisa dipantau langsung oleh walinya.', ikon: IK.rapor },
 		{ judul: 'Jadwal & pengumuman', isi: 'Jadwal kegiatan dan kabar lembaga dalam satu tempat.', ikon: IK.kalender },
 		{ judul: 'Kas lembaga', isi: 'Catatan keuangan sederhana untuk pondok, TPQ, masjid, dan musholla.', ikon: IK.dompet }
 	];
 
 	const TAHAP = [
-		{ n: '00', judul: 'Tipe Santri', isi: 'Tes 3 menit tanpa daftar: kenali cara belajarmu dan titik mulainya.', href: '/tipe-santri' },
-		{ n: '01', judul: 'Fondasi Muslim', isi: '24 pelajaran berurutan: aqidah dasar, thaharah, shalat, puasa, adab.', href: '/belajar' },
-		{ n: '02', judul: 'Ngaji Kitab Dasar', isi: "Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab.", href: null },
-		{ n: '03', judul: 'Hafalan Matan', isi: 'Menghafal matan pendek bait demi bait, dengan setoran.', href: null },
-		{ n: '04', judul: 'Kajian Lanjut', isi: 'Fathul Qarib, Bidayatul Hidayah, sirah, dan Cari Isi Kitab.', href: null }
+		{ n: '00', judul: 'Tipe Santri', isi: 'Tes 3 menit tanpa daftar: kenali cara belajarmu dan titik mulainya.' },
+		{ n: '01', judul: 'Fondasi Muslim', isi: '24 pelajaran berurutan: aqidah dasar, thaharah, shalat, puasa, adab.' },
+		{ n: '02', judul: 'Ngaji Kitab Dasar', isi: "Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab." },
+		{ n: '03', judul: 'Hafalan Matan', isi: 'Menghafal matan pendek bait demi bait, dengan setoran.' },
+		{ n: '04', judul: 'Kajian Lanjut', isi: 'Fathul Qarib, Bidayatul Hidayah, sirah, dan Cari Isi Kitab.' }
 	];
 
 	const faqs = [
@@ -322,7 +324,7 @@
 
 			<div class="pratinjau" aria-label="Isi aplikasi SantriOnline">
 				<div class="pr-atas">
-					<span class="pr-logo" aria-hidden="true">S</span>
+					<span class="pr-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={IK.mushaf} /></svg></span>
 					<div><b>Aplikasi SantriOnline</b><span>Yang bisa kamu buka hari ini</span></div>
 				</div>
 				<ul class="pr-daftar">
@@ -349,8 +351,10 @@
 			<ul class="kisi kisi-3">
 				{#each PILAR as p (p.judul)}
 					<li class="kartu pilar">
-						<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={p.ikon} /></svg></span>
-						<h3>{p.judul}</h3>
+						<div class="pilar-kepala">
+							<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={p.ikon} /></svg></span>
+							<h3>{p.judul}</h3>
+						</div>
 						<p>{p.isi}</p>
 						<a class="tautan" href={p.href}>{p.label} <span aria-hidden="true">&rarr;</span></a>
 					</li>
@@ -365,12 +369,13 @@
 			<h2 id="judul-fitur" class="h2">Semua isi aplikasi, siap dibuka</h2>
 			<p class="lead">Daftar sekali dengan akun gratis, lalu semua fitur ini ada di satu tempat. Beberapa bisa langsung dibuka tanpa masuk.</p>
 			<ul class="kisi kisi-fitur">
-				{#each FITUR as f, i (f.judul)}
-					<li class="kartu fitur" class:utama={i === 0}>
+				{#each FITUR as f (f.judul)}
+					<li class="kartu fitur">
 						<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={f.ikon} /></svg></span>
-						<div>
+						<div class="fitur-isi">
 							<h3>{f.judul}</h3>
 							<p>{f.isi}</p>
+							{#if f.bidang}<p class="bidang">{#each f.bidang as b (b)}<span>{b}</span>{/each}</p>{/if}
 							<a class="tautan" href={f.href}>{f.cta} <span aria-hidden="true">&rarr;</span></a>
 						</div>
 					</li>
@@ -384,7 +389,7 @@
 			<div>
 				<p class="kicker">Mulai dari nol</p>
 				<h2 id="judul-mulai" class="h2">Jalur belajar yang berurutan</h2>
-				<p class="lead">Tidak ada lompatan. Kenali dirimu, pelajari dasar, lalu naik ke kitab-kitab yang biasa dikaji di pesantren. Semua tahap gratis.</p>
+				<p class="lead">Tidak ada lompatan. Kenali dirimu, pelajari dasar, lalu naik ke kitab-kitab yang biasa dikaji di pesantren. Semua tahap gratis. <a class="tautan-sisip" href="/belajar">Lihat daftar pelajaran</a></p>
 				<blockquote class="dalil">
 					<p class="ar" lang="ar" dir="rtl">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</p>
 					<p class="tr">"Barang siapa menempuh jalan untuk mencari ilmu, Allah mudahkan baginya jalan menuju surga."</p>
@@ -396,7 +401,7 @@
 					<li class="kartu">
 						<span class="no">{t.n}</span>
 						<div>
-							<h3>{#if t.href}<a href={t.href}>{t.judul}</a>{:else}{t.judul}{/if}</h3>
+							<h3>{t.judul}</h3>
 							<p>{t.isi}</p>
 						</div>
 					</li>
@@ -478,8 +483,12 @@
 
 	<section class="latar-abu" aria-labelledby="judul-faq">
 		<div class="wrap">
-			<p class="kicker">Pertanyaan</p>
-			<h2 id="judul-faq" class="h2">Yang sering ditanyakan</h2>
+			<div class="faq-g">
+			<div>
+				<p class="kicker">Pertanyaan</p>
+				<h2 id="judul-faq" class="h2">Yang sering ditanyakan</h2>
+				<p class="lead">Belum terjawab? Tulis lewat <a class="tautan-sisip" href="/kontak">halaman kontak</a>.</p>
+			</div>
 			<div class="faq">
 				{#each faqs as f, i (f.question)}
 					<details class="kartu fq" open={i === 0}>
@@ -498,6 +507,7 @@
 						{/if}
 					</details>
 				{/each}
+			</div>
 			</div>
 		</div>
 	</section>
@@ -653,7 +663,7 @@
 	.trust {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px 18px;
+		gap: 8px 14px;
 		margin: 20px 0 0;
 		padding: 0;
 		list-style: none;
@@ -691,13 +701,16 @@
 		border-radius: 12px;
 		background: var(--hijau);
 		color: #fff;
-		font-weight: 800;
+	}
+	.pr-logo svg {
+		width: 22px;
+		height: 22px;
 	}
 	.pr-atas b {
 		display: block;
 		font-size: 15px;
 	}
-	.pr-atas span {
+	.pr-atas div span {
 		font-size: 13px;
 		color: var(--muted);
 	}
@@ -750,7 +763,7 @@
 	.pr-panah {
 		width: 18px;
 		height: 18px;
-		color: #94a3b8;
+		color: #64748b;
 		flex: none;
 	}
 	.pr-semua {
@@ -776,7 +789,7 @@
 		margin: 10px 0 10px;
 		font-size: 28px;
 		line-height: 1.15;
-		letter-spacing: -0.025em;
+		letter-spacing: -0.02em;
 		font-weight: 800;
 		color: var(--ink);
 		text-wrap: balance;
@@ -810,6 +823,7 @@
 		color: var(--ink);
 	}
 	.kartu p {
+		text-wrap: pretty;
 		margin: 0;
 		font-size: 14.5px;
 		line-height: 1.6;
@@ -833,6 +847,16 @@
 		display: flex;
 		flex-direction: column;
 	}
+	.pilar-kepala {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-bottom: 10px;
+	}
+	.pilar-kepala h3 {
+		margin: 0;
+		font-size: 18px;
+	}
 	.pilar .tautan {
 		margin-top: auto;
 		padding-top: 14px;
@@ -847,9 +871,51 @@
 	.lembaga h3 {
 		margin-top: 0;
 	}
-	.fitur.utama {
-		border-color: #a7f3d0;
-		box-shadow: inset 0 0 0 1px #a7f3d0;
+	.fitur {
+		height: 100%;
+	}
+	.fitur-isi {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-width: 0;
+		height: 100%;
+	}
+	.fitur-isi .tautan {
+		margin-top: auto;
+		padding-top: 14px;
+	}
+	.bidang {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px;
+		margin-top: 12px !important;
+	}
+	.bidang span {
+		padding: 4px 10px;
+		border: 1px solid var(--garis);
+		border-radius: 999px;
+		background: var(--abu);
+		font-size: 12.5px;
+		font-weight: 700;
+		color: #334155;
+	}
+	.tautan-sisip {
+		white-space: nowrap;
+		color: var(--hijau2);
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	/* Halaman ini saja: header ikut putih, tanpa garis krem di tombol Masuk. */
+	:global(.sb:has(.bh)) {
+		background: #fff;
+	}
+	:global(.sb:has(.bh) .hdr) {
+		background: rgb(255 255 255 / 0.985);
+	}
+	:global(.sb:has(.bh) .hdr .btn-s) {
+		border-color: #cbd5e1;
 	}
 
 	/* Jalur belajar */
@@ -919,11 +985,6 @@
 		margin: 2px 0 4px;
 		font-size: 16px;
 	}
-	.tahap h3 a {
-		color: var(--hijau2);
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
 	.tahap-cta {
 		display: flex;
 		flex-direction: column;
@@ -938,7 +999,6 @@
 		margin-bottom: 8px;
 	}
 	.lembaga-kepala .tb {
-		justify-self: start;
 		margin-bottom: 24px;
 	}
 	.tautan-baris {
@@ -979,7 +1039,9 @@
 		grid-auto-columns: 128px;
 		gap: 14px;
 		overflow-x: auto;
-		padding-bottom: 8px;
+		margin-inline: -18px;
+		padding: 0 18px 8px;
+		scroll-padding-inline: 18px;
 		scroll-snap-type: x proximity;
 	}
 	.bk {
@@ -1008,12 +1070,24 @@
 		text-align: center;
 	}
 	.bk b {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: 2.6em;
 		font-size: 13px;
 		line-height: 1.3;
 		color: var(--ink);
 	}
 	.bk span {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 		font-size: 12px;
+		line-height: 1.35;
 		color: var(--muted);
 	}
 	.prod {
@@ -1056,11 +1130,16 @@
 	}
 
 	/* FAQ */
+	.faq-g {
+		display: grid;
+		gap: 8px;
+	}
+	.faq-g > * {
+		min-width: 0;
+	}
 	.faq {
 		display: grid;
 		gap: 10px;
-		max-width: 820px;
-		margin-top: 20px;
 	}
 	.fq {
 		padding: 18px 20px;
@@ -1096,25 +1175,27 @@
 
 	/* Penutup */
 	.penutup {
-		padding: 36px 22px;
-		border: 1px solid var(--garis);
+		padding: 40px 22px;
+		border: 1px solid #a7f3d0;
 		border-radius: 24px;
-		background: #fff;
+		background: var(--mint);
 		text-align: center;
 	}
 	.penutup h2 {
 		margin: 0 0 10px;
+		font-weight: 800;
 		font-size: 28px;
 		line-height: 1.15;
 		letter-spacing: -0.025em;
 		color: var(--ink);
 	}
 	.penutup p {
+		text-wrap: pretty;
 		margin: 0 auto 22px;
 		max-width: 520px;
 		font-size: 15.5px;
 		line-height: 1.6;
-		color: var(--muted);
+		color: #334155;
 	}
 	.penutup .ctas {
 		align-items: stretch;
@@ -1129,10 +1210,17 @@
 		.penutup .ctas {
 			justify-content: center;
 		}
+		.lembaga-kepala .tb {
+			justify-self: start;
+		}
 		.kisi-3,
 		.kisi-fitur,
 		.prod {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		/* 7 fitur: kartu pertama selebar dua kolom supaya kisi genap tanpa lubang. */
+		.kisi-fitur > :first-child {
+			grid-column: span 2;
 		}
 	}
 	@media (min-width: 900px) {
@@ -1143,7 +1231,7 @@
 			padding: 72px 0 88px;
 		}
 		.hero-g {
-			grid-template-columns: 1.15fr 0.85fr;
+			grid-template-columns: 1.05fr 0.95fr;
 			gap: 56px;
 			align-items: center;
 		}
@@ -1166,10 +1254,26 @@
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 		.kisi-fitur {
-			grid-template-columns: repeat(3, minmax(0, 1fr));
+			grid-template-columns: repeat(4, minmax(0, 1fr));
 		}
-		.kisi-fitur .utama {
-			grid-column: span 2;
+		.fitur {
+			flex-direction: column;
+		}
+		.kisi-fitur > :first-child {
+			flex-direction: row;
+			gap: 20px;
+		}
+		.fitur .ik-kotak {
+			margin-bottom: 2px;
+		}
+		.faq-g {
+			grid-template-columns: 0.8fr 1.2fr;
+			gap: 56px;
+			align-items: start;
+		}
+		.faq-g > :first-child {
+			position: sticky;
+			top: 96px;
 		}
 		.kartu {
 			padding: 26px;
@@ -1188,6 +1292,8 @@
 			grid-auto-flow: row;
 			grid-template-columns: repeat(8, minmax(0, 1fr));
 			overflow: visible;
+			margin-inline: 0;
+			padding: 0;
 		}
 		.prod {
 			grid-template-columns: repeat(4, minmax(0, 1fr));
