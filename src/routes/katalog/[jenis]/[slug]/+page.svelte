@@ -8,6 +8,7 @@
 	import { urlBacaKitab, urlDaftarKitab } from '$lib/kitab-cta.js';
 	import JsonLd from '$lib/components/JsonLd.svelte';
 	import { graf, penerbit, rapikanDeskripsi, remah } from '$lib/seo.js';
+	import { atributAplikasi } from '$lib/produk-platform.js';
 
 	let { data } = $props();
 	const item = $derived(data.item);
@@ -61,7 +62,8 @@
 				url: kanonik,
 				inLanguage: 'id',
 				...(item.jenis === 'kursus' ? { provider: penerbit(), isAccessibleForFree: true } : {}),
-				...(item.jenis === 'produk' || item.jenis === 'alat' ? { applicationCategory: 'UtilitiesApplication', operatingSystem: 'Windows' } : {}),
+				// Sistem operasi mengikuti berkas produk (APK = Android, EXE = Windows); paket ZIP tanpa OS.
+				...atributAplikasi(item.jenis, item.platform),
 				...(item.jenis === 'kitab' || item.jenis === 'buku' ? { publisher: penerbit() } : {}),
 				...(item.penulis ? { author: { '@type': 'Person', name: item.penulis } } : {}),
 				...(data.rating.jumlah > 0

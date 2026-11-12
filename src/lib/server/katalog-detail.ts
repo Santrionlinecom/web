@@ -3,6 +3,7 @@
 // isi bab/materi TIDAK dibaca — baca/ikuti tetap di app (login).
 import { KARTU_TETAP, labelBidang, type ItemKatalog, type JenisKatalog } from './katalog';
 import { hargaKursusKatalog } from '../harga-kursus.js';
+import { labelKategoriProduk, platformProduk } from '../produk-platform.js';
 
 export interface DetailKatalog extends ItemKatalog {
 	deskripsi: string | null;
@@ -126,11 +127,13 @@ export async function muatDetail(
 	if (jenis === 'produk') {
 		const r = await satu(
 			db,
-			`SELECT slug, title, summary, description, price, cover_url, updated_at
+			`SELECT slug, title, summary, description, price, cover_url, file_url, updated_at
 			 FROM digital_products WHERE status='published' AND slug=?`,
 			slug
 		);
 		if (!r) return null;
+		// file_url hanya dibaca ekstensinya; URL-nya sendiri tidak ikut dikembalikan.
+		const platform = platformProduk(r.file_url);
 		return {
 			jenis: 'produk',
 			slug,
@@ -142,7 +145,8 @@ export async function muatDetail(
 			gratis: n(r.price) === 0,
 			href: `${APP}/digital-store/${slug}`,
 			aksi: 'Ambil',
-			kategori: 'Aplikasi',
+			kategori: labelKategoriProduk(platform),
+			platform,
 			daftar: [],
 			meta: [],
 			diperbarui: tgl(r.updated_at)

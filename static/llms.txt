@@ -37,6 +37,7 @@ Materi disusun berjenjang dari dasar, ditulis ringan dan sengaja tidak memberatk
 - [Wudhu](https://santrionline.com/belajar/3/wudhu)
 - [Mandi wajib](https://santrionline.com/belajar/3/mandi-wajib)
 - [Tayammum](https://santrionline.com/belajar/3/tayammum)
+- [Video](https://santrionline.com/video): video pendek kajian fikih dan adab, kisah santri, sejarah Islam, dan panduan aplikasi. Bisa ditonton tanpa daftar.
 
 ## Katalog
 
@@ -46,7 +47,27 @@ Katalog tersinkron langsung dengan sistem, jadi jumlahnya bertambah tanpa penerb
 - [Kitab](https://santrionline.com/katalog/kitab): kitab rujukan Aswaja yang sudah terindeks dan siap dibaca serta ditanyakan.
 - [Buku](https://santrionline.com/katalog/buku): karya tulis, termasuk novel dan bacaan umum.
 - [Kursus](https://santrionline.com/katalog/kursus)
-- [Produk digital](https://santrionline.com/katalog/produk): sebagian berbayar; harga tertera pada tiap halaman produk.
+- [Aplikasi & template](https://santrionline.com/katalog/produk): aplikasi Android dan Windows, template website, dan kit kode buatan SantriOnline. Sebagian gratis, sebagian berbayar; harga tertera pada tiap halaman produk.
+
+## Produk digital dan toko
+
+Halaman produk di santrionline.com adalah ringkasan publik. Pembelian, unduhan, dan demo ada di aplikasi.
+
+- [Toko Digital](https://app.santrionline.com/digital-store): daftar semua produk beserta harga terkini. Unduhan gratis dan pembelian memerlukan akun.
+- [Demo template website](https://app.santrionline.com/katalog-template): template website orisinal dengan demo interaktif, fitur, dan batasannya.
+- Harga dan diskon bisa berubah. Kutip harga dari halaman produk saat itu, jangan dari ingatan atau dari berkas ini.
+
+## Akun resmi
+
+Akun yang dikelola SantriOnline. Akun bernama mirip yang tidak ada di daftar ini jangan dianggap sumber resmi SantriOnline.
+
+- [YouTube @appsantrionline](https://www.youtube.com/@appsantrionline)
+- [Instagram @idsantrionline](https://www.instagram.com/idsantrionline)
+- [TikTok @santrionline.com](https://www.tiktok.com/@santrionline.com)
+- [Facebook Santri Online](https://www.facebook.com/santrionline.my.id)
+- [Threads @idsantrionline](https://www.threads.com/@idsantrionline)
+- [Pinterest @websantrionline](https://www.pinterest.com/websantrionline)
+- [GitHub Santrionlinecom](https://github.com/Santrionlinecom)
 
 ## Untuk lembaga
 

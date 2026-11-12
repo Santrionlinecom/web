@@ -5,6 +5,7 @@
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
 	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { PROFIL_RESMI, SAME_AS_ORGANISASI } from '$lib/seo.js';
 	import logo from '$lib/assets/logo.png';
 	import StatistikTraksi from '$lib/components/ui/StatistikTraksi.svelte';
 
@@ -78,6 +79,7 @@
 			'@id': 'https://santrionline.com/#organization',
 			name: 'SantriOnline',
 			url: 'https://santrionline.com/',
+			sameAs: SAME_AS_ORGANISASI,
 			email,
 			identifier: { '@type': 'PropertyValue', propertyID: 'NIB', value: '0229010241784' },
 			address: {
@@ -221,6 +223,12 @@
 						<div><dt class="font-bold text-so-ink">Bidang usaha</dt><dd class="text-so-muted">KBLI 62199 (Aktivitas Pemrograman Komputer Lainnya)</dd></div>
 						<div><dt class="font-bold text-so-ink">Email</dt><dd><a class="font-semibold text-so-green underline" href={`mailto:${email}`}>{email}</a></dd></div>
 						<div><dt class="font-bold text-so-ink">Kode sumber</dt><dd><a class="font-semibold text-so-green underline" href={githubUrl} rel="noopener">github.com/santrionlinecom</a></dd></div>
+						<div>
+							<dt class="font-bold text-so-ink">Akun resmi</dt>
+							<dd class="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+								{#each PROFIL_RESMI as p (p.url)}<a class="font-semibold text-so-green underline" href={p.url} rel="me noopener">{p.nama}</a>{/each}
+							</dd>
+						</div>
 					</dl>
 				</div>
 			</div>

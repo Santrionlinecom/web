@@ -2,6 +2,7 @@
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
 	import JsonLd from '$lib/components/JsonLd.svelte';
+	import { SAME_AS_ORGANISASI } from '$lib/seo.js';
 	// src/routes/+page.svelte
 	// Beranda putih "pemancing" ke app.santrionline.com (rombak Nov 2026): isi mengikuti
 	// menu dashboard aplikasi yang sudah live. Tanpa gambar di hero, tanpa JS tambahan;
@@ -227,13 +228,8 @@
 				description: 'Tempat belajar Islam bertahap dari nol, gratis tanpa biaya, dan platform digital gratis untuk pondok pesantren, TPQ, dan rumah tahfidz di Indonesia.',
 				areaServed: { '@type': 'Country', name: 'Indonesia' },
 				address: { '@type': 'PostalAddress', addressLocality: 'Batu', addressRegion: 'Jawa Timur', addressCountry: 'ID' },
-				sameAs: [
-					'https://app.santrionline.com/',
-					'https://masyogik.santrionline.com/',
-					'https://www.tiktok.com/@santrionline.com',
-					'https://www.instagram.com/idsantrionline',
-					'https://www.youtube.com/@websantri'
-				],
+				// Satu sumber profil resmi yang sudah diverifikasi: $lib/seo.js
+				sameAs: SAME_AS_ORGANISASI,
 				knowsAbout: ['Pendidikan Islam', 'Aqidah Aswaja', 'Fiqih madzhab Syafi\'i', 'Pembinaan adab', 'Manajemen santri', 'TPQ', 'Pondok pesantren', 'Rumah tahfidz'],
 				founder: {
 					'@type': 'Person',
