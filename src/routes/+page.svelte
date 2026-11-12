@@ -1,12 +1,11 @@
 <script lang="ts">
 	import MetaGambar from '$lib/components/MetaGambar.svelte';
 	import { ogWeb } from '$lib/og-gambar.js';
-	import Ikon from '$lib/components/ui/Ikon.svelte';
 	import JsonLd from '$lib/components/JsonLd.svelte';
 	// src/routes/+page.svelte
-	// Beranda "Belajar Islam dari nol sampai paham" sesuai mockup yang disetujui
-	// (docs/mockup/beranda.html). Rak kitab/buku/aplikasi memakai data D1 bila ada.
-	import { MASKOT, URUTAN_TIPE, lelaki, perempuan, BUKU_BUKA } from '$lib/belajar/maskot';
+	// Beranda putih "pemancing" ke app.santrionline.com (rombak Nov 2026): isi mengikuti
+	// menu dashboard aplikasi yang sudah live. Tanpa gambar di hero, tanpa JS tambahan;
+	// ikon = SVG garis kecil. Rak kitab/buku/aplikasi tetap dari D1 (cache 5 menit).
 
 	let { data } = $props();
 
@@ -71,53 +70,117 @@
 		return hasil;
 	}
 
-	const kitab = $derived(gabung(KITAB_PILIHAN, data.kitab ?? [], 16));
+	const kitab = $derived(gabung(KITAB_PILIHAN, data.kitab ?? [], 8));
 	// Hanya item yang punya halaman detail publik; kosong -> daftar pilihan bawaan.
 	const adaDetail = (d: Kartu[] | undefined) => (d ?? []).filter((x) => x.detail);
 	const buku = $derived(adaDetail(data.buku).length ? adaDetail(data.buku).slice(0, 8) : BUKU_PILIHAN);
 	const produk = $derived(adaDetail(data.produk).length ? adaDetail(data.produk).slice(0, 8) : PRODUK_PILIHAN);
-	const jumlahKitab = $derived(data.jumlahKitab > 0 ? data.jumlahKitab : 206);
+	// Angka hanya ditampilkan bila benar-benar terbaca dari D1; tanpa angka cadangan.
+	const jumlahKitab = $derived(data.jumlahKitab > 0 ? data.jumlahKitab : 0);
 	const labelBuku = (b: Kartu) => `${b.kategori ?? 'Novel'} · ${b.harga.split(' · ')[0]}`;
 	const labelProduk = (p: Kartu) => (p.harga === 'Gratis' ? 'Aplikasi · Gratis' : `Aplikasi · ${p.harga}`);
 
-	const LANGKAH = [
-		{ n: '01', lucian: 'user', judul: 'Kenali Diri', isi: 'Ikuti tes Tipe Santri. Kamu tahu mulai dari mana, tanpa merasa dihakimi.', ikon: 'M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Zm-7 8a7 7 0 0 1 14 0' },
-		{ n: '02', lucian: 'book', judul: 'Belajar', isi: 'Tonton video singkat, lalu baca materi dengan dalil berharakat, terjemah, dan sumber bernomor.', ikon: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25' },
-		{ n: '03', lucian: 'check', judul: 'Praktik', isi: 'Jawab 3 soal, simpan kartu ringkas, dan bawa pulang satu amalan kecil untuk hari ini.', ikon: 'M9 12l2 2 4-4M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Z' },
-		{ n: '04', lucian: 'linechart', judul: 'Tumbuh', isi: 'Naik ke ngaji kitab dasar, hafalan matan, lalu kajian lanjut bersama guru.', ikon: 'M4 19V9m5 10V5m5 14v-7m5 7V7M3 19h18' }
+	// Ikon garis 24x24 (stroke), digambar langsung tanpa berkas tambahan.
+	const IK = {
+		buku: 'M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 1 4 16.5v-11ZM4 16.5A2.5 2.5 0 0 1 6.5 14H20M8 7h8',
+		cari: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14Zm5-2 4 4M8 11h6',
+		mushaf: 'M12 6.25v13m0-13C10.2 4.8 7.7 4 5 4v13c2.7 0 5.2.8 7 2.25m0-13C13.8 4.8 16.3 4 19 4v13c-2.7 0-5.2.8-7 2.25',
+		kelas: 'M3 9l9-5 9 5-9 5-9-5Zm4 2.3V16c0 1.1 2.2 3 5 3s5-1.9 5-3v-4.7',
+		video: 'M4 6h11a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm12 4 5-3v10l-5-3',
+		khutbah: 'M12 3a3 3 0 0 0-3 3v5a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3Zm-6 8a6 6 0 0 0 12 0M12 17v4M8 21h8',
+		toko: 'M4 8h16l-1.2 11.1a1 1 0 0 1-1 .9H6.2a1 1 0 0 1-1-.9L4 8Zm4 0V6a4 4 0 0 1 8 0v2',
+		hati: 'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10Z',
+		cek: 'M5 12l5 5L20 7',
+		alat: 'M14.7 6.3a4 4 0 0 0-5.4 5.2L4 16.8V20h3.2l5.3-5.3a4 4 0 0 0 5.2-5.4l-2.5 2.5-2.5-.5-.5-2.5 2.5-2.5Z',
+		orang: 'M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm-6 9a6 6 0 0 1 12 0m1-9a3 3 0 1 0 0-6m2 15h3a5 5 0 0 0-4-4.9',
+		bintang: 'M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.8 1-6.1-4.4-4.3 6.1-.9L12 3Z',
+		kalender: 'M7 3v4M17 3v4M3 9h18M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm3 9 2 2 4-4',
+		daftar: 'M9 5h10M9 12h10M9 19h10M4.5 5h.01M4.5 12h.01M4.5 19h.01',
+		rapor: 'M6 3h9l4 4v14H6V3Zm9 0v4h4M9 12h7M9 16h5',
+		dompet: 'M4 7h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7Zm0 0 1-3h11l1 3m-2 6h2',
+		panah: 'M5 12h14m-6-6 6 6-6 6'
+	};
+
+	// Enam pilar pembinaan, masing-masing menunjuk ke bagian yang sudah ada.
+	const PILAR = [
+		{ judul: 'Aqidah', isi: "Mengenal Allah dan Rasul-Nya dari dasar, berpegang pada aqidah Aswaja.", href: '/belajar', label: 'Fondasi Muslim', ikon: IK.hati },
+		{ judul: 'Adab', isi: 'Video pendek tentang adab menuntut ilmu, berteman, dan berkeluarga.', href: `${appBaseUrl}/video`, label: 'Video', ikon: IK.bintang },
+		{ judul: 'Kebiasaan', isi: 'Misi harian yang kecil dan rutin, supaya ilmu menjadi amal sehari-hari.', href: `${appBaseUrl}/habit`, label: 'Misi harian', ikon: IK.kalender },
+		{ judul: 'Ilmu', isi: "Kitab pesantren berharakat yang bisa dibaca dan dicari isinya, fiqih madzhab Syafi'i.", href: `${appBaseUrl}/kitab`, label: 'Perpustakaan Kitab', ikon: IK.buku },
+		{ judul: 'Keterampilan', isi: 'Les ngaji, bahasa Arab, dan pelajaran sekolah, daring atau tatap muka.', href: `${appBaseUrl}/les`, label: 'Les', ikon: IK.alat },
+		{ judul: 'Komunitas', isi: 'Belajar bersama lembaga: halaqah, setoran hafalan, dan pengumuman.', href: '/lembaga', label: 'Untuk Lembaga', ikon: IK.orang }
 	];
 
-	const MODUL_CHIP = ['Kenapa belajar sekarang', 'Kenalan dengan Islam', 'Aqidah dasar', 'Thaharah', 'Shalat', 'Puasa dan zakat', 'Adab dan akhlak', 'Langkah berikutnya'];
-
-	const PERSONA = [
+	// Isi aplikasi (menu dashboard) yang sudah bisa dibuka hari ini (dicek ke app.santrionline.com, Nov 2026).
+	type Fitur = { judul: string; isi: string; href: string; cta: string; ikon: string; bidang?: string[] };
+	const FITUR = $derived<Fitur[]>([
 		{
-			judul: 'Mahasiswa',
-			sub: 'Belajar di sela kuliah',
-			svg: lelaki('hold', '#c79a2e', BUKU_BUKA, 56),
-			sebelum: 'Agama dipelajari dari potongan video. Sering bingung, ini ada dalilnya atau tidak.',
-			sesudah: 'Terbiasa menanyakan sumber, tahu cara membaca keterangan hadits, dan tahu kapan harus bertanya ke guru.'
+			judul: 'Perpustakaan Kitab',
+			isi: `${jumlahKitab ? `${jumlahKitab} kitab` : 'Kitab pesantren'} berharakat dari fiqih sampai sirah. Tiap kitab mencantumkan madzhab penulisnya.`,
+			href: `${appBaseUrl}/kitab`,
+			cta: 'Buka perpustakaan',
+			ikon: IK.buku,
+			bidang: ["Al-Qur'an & Tafsir", 'Aqidah', 'Fiqih', 'Hadits', 'Adab & Tasawuf', 'Nahwu & Sharaf', 'Ushul', 'Sirah']
 		},
 		{
-			judul: 'Ibu rumah tangga',
-			sub: 'Ingin mendampingi anak',
-			svg: perempuan('down', '#7a4b2a', '#c79a2e', '', 56),
-			sebelum: 'Ingin mengajari anak wudhu dan shalat, tapi ragu bacaan dan urutannya sendiri sudah benar.',
-			sesudah: 'Paham rukun wudhu dan shalat, punya checklist sederhana untuk dipakai bersama anak di rumah.'
+			judul: 'Cari Isi Kitab',
+			isi: 'Tanyakan perkara agama. Jawabannya menunjuk ke halaman kitab rujukan, jadi bisa kamu baca sendiri.',
+			href: `${appBaseUrl}/tanya`,
+			cta: 'Masuk lalu bertanya',
+			ikon: IK.cari
 		},
 		{
-			judul: 'Pekerja',
-			sub: 'Waktunya sempit',
-			svg: lelaki('down', '#2f7a62', '', 56),
-			sebelum: 'Kajian panjang selalu tertunda. Belajar jadi loncat-loncat, tidak pernah tuntas.',
-			sesudah: 'Satu pelajaran sekitar 10 menit di perjalanan, tetap urut dari dasar, progres tersimpan.'
+			judul: "Mushaf Al-Qur'an",
+			isi: '114 surat lengkap dengan teks Arab, latin, dan artinya.',
+			href: `${appBaseUrl}/al-quran`,
+			cta: "Baca Al-Qur'an",
+			ikon: IK.mushaf
+		},
+		{
+			judul: 'Ruang Belajar',
+			isi: 'Kelas bertahap dari dasar. Progres belajarmu tersimpan di akun.',
+			href: `${appBaseUrl}/belajar`,
+			cta: 'Masuk ke kelas',
+			ikon: IK.kelas
+		},
+		{
+			judul: 'Video',
+			isi: 'Kajian fikih praktis, adab menuntut ilmu, dan kisah santri dalam video pendek.',
+			href: `${appBaseUrl}/video`,
+			cta: 'Tonton video',
+			ikon: IK.video
+		},
+		{
+			judul: 'Susun Khutbah',
+			isi: 'Menyusun draf khutbah Jumat dari kutipan kitab, lengkap dengan teks Arab rukun khutbah.',
+			href: `${appBaseUrl}/fitur/khutbah`,
+			cta: 'Coba susun khutbah',
+			ikon: IK.khutbah
+		},
+		{
+			judul: 'Store',
+			isi: 'Aplikasi pendukung, template website, serta buku dan novel digital.',
+			href: `${appBaseUrl}/digital-store`,
+			cta: 'Lihat store',
+			ikon: IK.toko
 		}
+	]);
+
+	const LEMBAGA = [
+		{ judul: 'Data santri & presensi', isi: 'Catat hadir, izin, sakit, atau alpa setiap hari.', ikon: IK.daftar },
+		{ judul: 'Kurikulum kitab', isi: 'Pilih kitab dari perpustakaan untuk tiap kelas. Daftarnya tampil di profil publik lembaga.', ikon: IK.buku },
+		{ judul: 'Halaqah & setoran hafalan', isi: 'Kelola halaqah, terima setoran, dan pantau progres hafalan.', ikon: IK.mushaf },
+		{ judul: 'Rapor & wali santri', isi: 'Rapor santri yang bisa dipantau langsung oleh walinya.', ikon: IK.rapor },
+		{ judul: 'Jadwal & pengumuman', isi: 'Jadwal kegiatan dan kabar lembaga dalam satu tempat.', ikon: IK.kalender },
+		{ judul: 'Kas lembaga', isi: 'Catatan keuangan sederhana untuk pondok, TPQ, masjid, dan musholla.', ikon: IK.dompet }
 	];
 
-	const ALUR = [
-		{ k: '1', judul: 'Tonton', isi: 'Video kurang dari 1 menit: cerita pembuka, inti, satu pelajaran.' },
-		{ k: '2', judul: 'Baca', isi: 'Materi 400 sampai 800 kata. Dalil berharakat, terjemah, dan nomor sumbernya.' },
-		{ k: '3', judul: 'Coba', isi: 'Kuis 3 soal untuk mengecek pemahaman, bukan untuk menghakimi.' },
-		{ k: '4', judul: 'Bawa pulang', isi: 'Kartu ringkas yang bisa disimpan, plus satu amalan untuk hari ini.' }
+	const TAHAP = [
+		{ n: '00', judul: 'Tipe Santri', isi: 'Tes 3 menit tanpa daftar: kenali cara belajarmu dan titik mulainya.' },
+		{ n: '01', judul: 'Fondasi Muslim', isi: '24 pelajaran berurutan: aqidah dasar, thaharah, shalat, puasa, adab.' },
+		{ n: '02', judul: 'Ngaji Kitab Dasar', isi: "Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab." },
+		{ n: '03', judul: 'Hafalan Matan', isi: 'Menghafal matan pendek bait demi bait, dengan setoran.' },
+		{ n: '04', judul: 'Kajian Lanjut', isi: 'Fathul Qarib, Bidayatul Hidayah, sirah, dan Cari Isi Kitab.' }
 	];
 
 	const faqs = [
@@ -128,6 +191,10 @@
 		{
 			question: 'Apakah harus daftar dulu?',
 			answer: 'Tidak. Tes Tipe Santri dan pelajaran pertama bisa dibuka tanpa akun. Akun gratis di app.santrionline.com dipakai untuk menyimpan progres dan membuka pelajaran berikutnya.'
+		},
+		{
+			question: 'Apa saja isi aplikasi SantriOnline?',
+			answer: "Di app.santrionline.com ada Perpustakaan Kitab yang bisa dibaca dan dicari isinya, Cari Isi Kitab dengan rujukan halaman, Mushaf Al-Qur'an, Ruang Belajar bertahap, Video, Susun Khutbah, dan Store. Lembaga juga bisa mengelola data santri, presensi, kurikulum kitab, halaqah, setoran hafalan, dan rapor."
 		},
 		{
 			question: 'Apakah belajar di SantriOnline berbayar?',
@@ -234,675 +301,736 @@
 	<JsonLd data={structuredData} />
 </svelte:head>
 
-<section class="hero">
-	<div class="wrap hero-g">
-		<div>
-			<span class="eyebrow"><span class="dot"></span>Belajar Islam bertahap · 100% gratis</span>
-			<h1>Belajar Islam dari nol sampai <em>paham</em></h1>
-			<p class="sub">
-				Mulai dari yang paling dasar, pelan dan berurutan. Setiap pelajaran berisi video singkat, bacaan yang mencantumkan dalil dan sumbernya, lalu kuis ringan. Tidak perlu malu memulai dari awal.
-			</p>
-			<div class="ctas">
-				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama <span aria-hidden="true">&rarr;</span></a>
-				<a class="btn btn-s" href="/tipe-santri">Cek Tipe Santri kamu</a>
-			</div>
-			<p class="gratis-note"><b aria-hidden="true">&#10003;</b>Belajar di SantriOnline gratis, tidak dipungut biaya.</p>
-			<div class="salam-maskot">
-				<img
-					src="{F}/maskot/maskot-duo-salam-244.webp"
-					srcset="{F}/maskot/maskot-duo-salam-244.webp 244w, {F}/maskot/maskot-duo-salam-480.webp 418w, {F}/maskot/maskot-duo-salam-960.webp 835w"
-					sizes="(min-width: 900px) 148px, 122px"
-					alt="Maskot SantriOnline: santri putra berpeci dan santriwati berkhimar melambai salam"
-					width="418"
-					height="480"
-					decoding="async"
-				/>
-				<div class="salam-teks">
-					<p class="salam-h">Assalamu'alaikum!</p>
-					<p>Kami teman belajarmu. Simpan progres, ikuti kelas, dan tonton video di aplikasi.</p>
-					<a href={appBaseUrl}>Buka aplikasi SantriOnline&nbsp;<span aria-hidden="true">&rarr;</span></a>
+<div class="bh">
+	<section class="hero" aria-labelledby="judul-beranda">
+		<div class="wrap hero-g">
+			<div class="hero-teks">
+				<p class="pil"><span class="titik" aria-hidden="true"></span>Pembinaan generasi muslim · gratis</p>
+				<h1 id="judul-beranda">Belajar Islam dari nol sampai paham</h1>
+				<p class="sub">
+					Aqidah, adab, kebiasaan baik, ilmu, keterampilan, dan teman belajar dalam satu aplikasi. Pelan, berurutan, dan bersumber dari kitab yang jelas.
+				</p>
+				<div class="ctas">
+					<a class="tb tb-utama" href={appRegisterUrl}>Daftar gratis di aplikasi <svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.panah} /></svg></a>
+					<a class="tb tb-garis" href="{appBaseUrl}/auth">Sudah punya akun? Masuk</a>
 				</div>
+				<p class="coba">Mau lihat dulu? <a href={PELAJARAN_PERTAMA}>Buka pelajaran pertama tanpa daftar</a></p>
+				<ul class="trust">
+					<li><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.cek} /></svg>Gratis, tanpa iklan</li>
+					<li><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.cek} /></svg>Aqidah Aswaja, fiqih madzhab Syafi'i</li>
+					{#if jumlahKitab}<li><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.cek} /></svg>{jumlahKitab} kitab di perpustakaan</li>{/if}
+				</ul>
 			</div>
-			<div class="trust">
-				<span><b aria-hidden="true">&#10003;</b>Pelajaran 1 tanpa daftar</span>
-				<span><b aria-hidden="true">&#10003;</b>{jumlahKitab} kitab di perpustakaan</span>
-				<span><b aria-hidden="true">&#10003;</b>Fiqih madzhab Syafi'i, aqidah Aswaja</span>
+
+			<div class="pratinjau" aria-label="Isi aplikasi SantriOnline">
+				<div class="pr-atas">
+					<span class="pr-logo" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={IK.mushaf} /></svg></span>
+					<div><b>Aplikasi SantriOnline</b><span>Yang bisa kamu buka hari ini</span></div>
+				</div>
+				<ul class="pr-daftar">
+					{#each FITUR.slice(0, 5) as f (f.judul)}
+						<li>
+							<a href={f.href}>
+								<span class="pr-ik"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={f.ikon} /></svg></span>
+								<span class="pr-teks"><b>{f.judul}</b><small>{f.cta}</small></span>
+								<svg class="pr-panah" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.panah} /></svg>
+							</a>
+						</li>
+					{/each}
+				</ul>
+				<a class="pr-semua" href="#isi-aplikasi">Lihat semua isi aplikasi</a>
 			</div>
 		</div>
-		<a class="mascot-card" href="/tipe-santri">
-			<span class="tag" style="background:rgb(252 211 77/.18);color:var(--gold2)">Tes 3 menit · tanpa login</span>
-			<h2 class="mc-h">Kamu tipe santri yang mana?</h2>
-			<p class="s">10 situasi sehari-hari. Hasilnya cara belajar yang paling mudah membuatmu paham, plus titik mulainya.</p>
-			<div class="mrow">
-				{#each URUTAN_TIPE as t (t)}
-					<div class="m">
-						<span class="m-svg">{@html MASKOT[t].svg(90)}</span>
-						<b><small>Si</small>{MASKOT[t].nama.replace('Si ', '')}</b>
-					</div>
+	</section>
+
+	<section class="garis-atas" aria-labelledby="judul-pilar">
+		<div class="wrap">
+			<p class="kicker">Enam pilar pembinaan</p>
+			<h2 id="judul-pilar" class="h2">Bukan sekadar tahu, tapi tumbuh</h2>
+			<p class="lead">SantriOnline membina muslim muda dari enam sisi. Setiap pilar punya tempatnya sendiri di aplikasi.</p>
+			<ul class="kisi kisi-3">
+				{#each PILAR as p (p.judul)}
+					<li class="kartu pilar">
+						<div class="pilar-kepala">
+							<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={p.ikon} /></svg></span>
+							<h3>{p.judul}</h3>
+						</div>
+						<p>{p.isi}</p>
+						<a class="tautan" href={p.href}>{p.label} <span aria-hidden="true">&rarr;</span></a>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</section>
+
+	<section id="isi-aplikasi" class="latar-abu" aria-labelledby="judul-fitur">
+		<div class="wrap">
+			<p class="kicker">Isi aplikasi</p>
+			<h2 id="judul-fitur" class="h2">Semua isi aplikasi, siap dibuka</h2>
+			<p class="lead">Daftar sekali dengan akun gratis, lalu semua fitur ini ada di satu tempat. Beberapa bisa langsung dibuka tanpa masuk.</p>
+			<ul class="kisi kisi-fitur">
+				{#each FITUR as f (f.judul)}
+					<li class="kartu fitur">
+						<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={f.ikon} /></svg></span>
+						<div class="fitur-isi">
+							<h3>{f.judul}</h3>
+							<p>{f.isi}</p>
+							{#if f.bidang}<p class="bidang">{#each f.bidang as b (b)}<span>{b}</span>{/each}</p>{/if}
+							<a class="tautan" href={f.href}>{f.cta} <span aria-hidden="true">&rarr;</span></a>
+						</div>
+					</li>
+				{/each}
+			</ul>
+		</div>
+	</section>
+
+	<section aria-labelledby="judul-mulai">
+		<div class="wrap mulai-g">
+			<div>
+				<p class="kicker">Mulai dari nol</p>
+				<h2 id="judul-mulai" class="h2">Jalur belajar yang berurutan</h2>
+				<p class="lead">Tidak ada lompatan. Kenali dirimu, pelajari dasar, lalu naik ke kitab-kitab yang biasa dikaji di pesantren. Semua tahap gratis. <a class="tautan-sisip" href="/belajar">Lihat daftar pelajaran</a></p>
+				<blockquote class="dalil">
+					<p class="ar" lang="ar" dir="rtl">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</p>
+					<p class="tr">"Barang siapa menempuh jalan untuk mencari ilmu, Allah mudahkan baginya jalan menuju surga."</p>
+					<cite>HR. Muslim no. 2699</cite>
+				</blockquote>
+			</div>
+			<ol class="tahap">
+				{#each TAHAP as t (t.n)}
+					<li class="kartu">
+						<span class="no">{t.n}</span>
+						<div>
+							<h3>{t.judul}</h3>
+							<p>{t.isi}</p>
+						</div>
+					</li>
+				{/each}
+				<li class="tahap-cta">
+					<a class="tb tb-utama" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama</a>
+					<a class="tb tb-garis" href="/tipe-santri">Cek Tipe Santri</a>
+				</li>
+			</ol>
+		</div>
+	</section>
+
+	<section class="latar-abu" aria-labelledby="judul-lembaga">
+		<div class="wrap">
+			<div class="lembaga-kepala">
+				<div>
+					<p class="kicker">Untuk lembaga</p>
+					<h2 id="judul-lembaga" class="h2">TPQ, pondok, dan rumah tahfidz dalam satu aplikasi</h2>
+					<p class="lead">Pengurus dan ustadz mencatat kegiatan harian, santri dan wali melihat perkembangannya. Gratis untuk lembaga.</p>
+				</div>
+				<a class="tb tb-utama" href={appInstitutionUrl}>Daftar mandiri di aplikasi</a>
+			</div>
+			<ul class="kisi kisi-3">
+				{#each LEMBAGA as l (l.judul)}
+					<li class="kartu lembaga">
+						<span class="ik-kotak"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={l.ikon} /></svg></span>
+						<div><h3>{l.judul}</h3><p>{l.isi}</p></div>
+					</li>
+				{/each}
+			</ul>
+			<p class="tautan-baris">
+				Pelajari lebih dulu:
+				<a href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a>
+				<a href="/aplikasi-raport-tpq">Raport TPQ</a>
+				<a href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a>
+				<a href="/lembaga">Untuk Lembaga</a>
+			</p>
+		</div>
+	</section>
+
+	<section id="rak" aria-labelledby="judul-rak">
+		<div class="wrap">
+			<p class="kicker">Rak kitab &amp; buku</p>
+			<h2 id="judul-rak" class="h2">Perpustakaan yang bisa langsung dibaca</h2>
+			<p class="lead">{jumlahKitab ? `${jumlahKitab} kitab pesantren` : 'Kitab pesantren'} dari fiqih sampai tafsir, novel religi keluarga, dan aplikasi buatan SantriOnline.</p>
+
+			<div class="rakhead"><h3>Kitab pilihan</h3><a href="/katalog/kitab">{jumlahKitab ? `Lihat ${jumlahKitab} kitab` : 'Lihat semua kitab'} <span aria-hidden="true">&rarr;</span></a></div>
+			<div class="rak">
+				{#each kitab as k (k.slug)}
+					<a class="bk" href={k.detail ?? `/katalog/kitab/${k.slug}`}>
+						{#if k.sampul}<img src={k.sampul} alt="Sampul {k.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{k.judul}</span>{/if}
+						<b>{k.judul}</b><span>{k.kategori ?? 'Kitab'} · Gratis baca</span>
+					</a>
 				{/each}
 			</div>
-			<div class="mini">
-				<span class="ic">01</span>
-				<p>Pelajaran pertama: <b>Kenapa belajar agama sekarang?</b> Video 1 menit, bacaan 5 menit, 3 soal.</p>
+
+			<div class="rakhead"><h3>Novel SantriOnline</h3><a href="/katalog/buku">Semua buku <span aria-hidden="true">&rarr;</span></a></div>
+			<div class="rak">
+				{#each buku as b (b.slug)}
+					<a class="bk" href={b.detail ?? `/katalog/buku/${b.slug}`}>
+						{#if b.sampul}<img src={b.sampul} alt="Sampul {b.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{b.judul}</span>{/if}
+						<b>{b.judul}</b><span>{labelBuku(b)}</span>
+					</a>
+				{/each}
 			</div>
-		</a>
-	</div>
-</section>
 
-<section>
-	<div class="wrap">
-		<span class="kicker">Cara belajarnya</span>
-		<h2 class="sec">Empat langkah, satu per satu</h2>
-		<p class="lead">Tidak ada lompatan. Kamu tahu posisimu, belajar sedikit tapi rutin, mempraktikkannya, lalu naik pelan-pelan.</p>
-		<div class="steps">
-			{#each LANGKAH as l (l.n)}
-				<div class="card step">
-					<div class="ico">
-						<Ikon nama={l.lucian} ukuran={28} aksen={Number(l.n) % 2 ? '#1f8a5b' : '#b88b24'} />
-					</div>
-					<div class="n">{l.n}</div>
-					<h3>{l.judul}</h3>
-					<p>{l.isi}</p>
-				</div>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<section style="background:#eef1ea">
-	<div class="wrap">
-		<span class="kicker">Peta belajar</span>
-		<h2 class="sec">Dari kenal diri sampai kajian kitab</h2>
-		<p class="lead">Semua tahap belajar gratis, tidak dipungut biaya. Tahap berikutnya menyambung ke kitab-kitab yang biasa dikaji di pesantren.</p>
-		<div class="ladder">
-			<a class="card lv" href="/tipe-santri">
-				<div class="no">00</div>
-				<div>
-					<h3>Tipe Santri <span class="tag t-free">Gratis · tanpa login</span></h3>
-					<p>10 situasi, sekitar 3 menit. Hasilnya cara belajarmu dari 7 tipe, cara kedua, dan saran titik mulai.</p>
-				</div>
-			</a>
-			<a class="card lv hi" href="/belajar">
-				<div class="no">01</div>
-				<div>
-					<h3>Fondasi Muslim <span class="tag" style="background:var(--gold);color:var(--g3)">Gratis · akun gratis</span></h3>
-					<p>24 pelajaran berurutan. Pelajaran pertama terbuka untuk siapa saja; sisanya cukup dengan akun gratis.</p>
-					<div class="chips">
-						{#each MODUL_CHIP as c (c)}<span class="chip">{c}</span>{/each}
-					</div>
-				</div>
-			</a>
-			<div class="card lv lock">
-				<div class="no">02</div>
-				<div>
-					<h3>Ngaji Kitab Dasar <span class="tag t-free">Gratis · akun gratis</span></h3>
-					<p>Safinatun Najah, 'Aqidatul 'Awam, dan Jurumiyah per bab: video, teks Arab, makna, kuis.</p>
-				</div>
+			<div class="rakhead"><h3>Aplikasi</h3><a href="/katalog/produk">Semua aplikasi <span aria-hidden="true">&rarr;</span></a></div>
+			<div class="prod">
+				{#each produk as p (p.slug)}
+					<a class="pd" href={p.detail ?? `/katalog/produk/${p.slug}`}>
+						{#if p.sampul}<img src={p.sampul} alt={p.judul} width="52" height="52" loading="lazy" decoding="async" />{/if}
+						<div><b>{p.judul}</b><span>{labelProduk(p)}</span></div>
+					</a>
+				{/each}
 			</div>
-			<div class="card lv lock">
-				<div class="no">03</div>
-				<div>
-					<h3>Hafalan Matan <span class="tag t-free">Gratis · akun gratis</span></h3>
-					<p>Menghafal matan pendek bait demi bait, dengan setoran dan pengulangan terjadwal.</p>
-				</div>
-			</div>
-			<div class="card lv lock wide">
-				<div class="no">04</div>
-				<div>
-					<h3>Kajian Lanjut <span class="tag t-free">Gratis · akun gratis</span></h3>
-					<p>Fathul Qarib, Bidayatul Hidayah, dan sirah. Kajian langsung dua kali sebulan dan Cari Isi Kitab.</p>
-				</div>
-			</div>
+			<p class="semua"><a href="/katalog/semua">Buka semua katalog</a> · <a href="/katalog/kursus">Kursus</a></p>
 		</div>
-	</div>
-</section>
+	</section>
 
-<section id="rak">
-	<div class="wrap">
-		<span class="kicker">Rak Kitab &amp; Buku</span>
-		<h2 class="sec">Perpustakaan yang bisa langsung dibaca</h2>
-		<p class="lead">{jumlahKitab} kitab pesantren dari fiqih sampai tafsir, novel religi keluarga, dan aplikasi buatan SantriOnline. Semua bisa dibuka dari sini.</p>
-
-		<div class="rakhead"><h3>Kitab pilihan</h3><a href="/katalog/kitab">Lihat {jumlahKitab} kitab &rarr;</a></div>
-		<div class="rak">
-			{#each kitab as k (k.slug)}
-				<a class="bk" href={k.detail ?? `/katalog/kitab/${k.slug}`}>
-					{#if k.sampul}<img src={k.sampul} alt="Sampul {k.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{k.judul}</span>{/if}
-					<b>{k.judul}</b><span>{k.kategori ?? 'Kitab'} · Gratis baca</span>
-				</a>
-			{/each}
-		</div>
-
-		<div class="rakhead"><h3>Novel SantriOnline</h3><a href="/katalog/buku">Semua buku &rarr;</a></div>
-		<div class="rak">
-			{#each buku as b (b.slug)}
-				<a class="bk" href={b.detail ?? `/katalog/buku/${b.slug}`}>
-					{#if b.sampul}<img src={b.sampul} alt="Sampul {b.judul}" width="128" height="192" loading="lazy" decoding="async" />{:else}<span class="ph" aria-hidden="true">{b.judul}</span>{/if}
-					<b>{b.judul}</b><span>{labelBuku(b)}</span>
-				</a>
-			{/each}
-		</div>
-
-		<div class="rakhead"><h3>Aplikasi</h3><a href="/katalog/produk">Semua aplikasi &rarr;</a></div>
-		<div class="prod">
-			{#each produk as p (p.slug)}
-				<a class="pd" href={p.detail ?? `/katalog/produk/${p.slug}`}>
-					{#if p.sampul}<img src={p.sampul} alt={p.judul} width="52" height="52" loading="lazy" decoding="async" />{/if}
-					<div><b>{p.judul}</b><span>{labelProduk(p)}</span></div>
-				</a>
-			{/each}
-		</div>
-		<p class="semua"><a href="/katalog/semua">Buka semua katalog</a> · <a href="/katalog/kursus">Kursus</a></p>
-	</div>
-</section>
-
-<section>
-	<div class="wrap">
-		<span class="kicker">Sebelum dan sesudah</span>
-		<h2 class="sec">Siapa pun bisa mulai dari tempatnya</h2>
-		<p class="lead">Tiga gambaran tujuan belajar untuk orang dengan kesibukan berbeda.</p>
-		<div class="persona">
-			{#each PERSONA as p (p.judul)}
-				<div class="card pc">
-					<div class="pc-h">
-						<div class="av m-svg">{@html p.svg}</div>
-						<div><h3>{p.judul}</h3><span>{p.sub}</span></div>
-					</div>
-					<div class="ba before"><small>Sebelum</small>{p.sebelum}</div>
-					<div class="ba after"><small>Setelah Fondasi Muslim</small>{p.sesudah}</div>
-				</div>
-			{/each}
-		</div>
-		<p class="note">Ilustrasi tujuan belajar, bukan testimoni peserta.</p>
-	</div>
-</section>
-
-<section style="background:#eef1ea">
-	<div class="wrap">
-		<div class="vid-g">
-			<a class="phone" href={PELAJARAN_PERTAMA} aria-label="Buka cuplikan pelajaran pertama">
-				<div class="screen">
-					<div class="top"><span>Pelajaran 1 dari 24</span><span>0:48</span></div>
-					<div class="prog"><i></i></div>
-					<div class="board">
-						<div class="ar" lang="ar">مَنْ سَلَكَ طَرِيقًا يَلْتَمِسُ فِيهِ عِلْمًا سَهَّلَ اللَّهُ لَهُ بِهِ طَرِيقًا إِلَى الْجَنَّةِ</div>
-						<div class="tr">"Barang siapa menempuh jalan untuk mencari ilmu, Allah mudahkan baginya jalan menuju surga."<br />HR. Muslim no. 2699</div>
-					</div>
-					<div class="fig m-svg">{@html lelaki('hold', '#c79a2e', BUKU_BUKA, 120)}</div>
-					<div class="play" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" fill="#0c2c25" /></svg></div>
-					<div class="cap">Ilmu agama bukan hanya untuk santri pondok. Kita mulai dari sini.</div>
-				</div>
-			</a>
+	<section class="latar-abu" aria-labelledby="judul-faq">
+		<div class="wrap">
+			<div class="faq-g">
 			<div>
-				<span class="kicker">Cuplikan pelajaran</span>
-				<h2 class="sec">Satu pelajaran, empat langkah kecil</h2>
-				<p class="lead">Video tegak 9:16 dengan tokoh stickman sederhana, nyaman ditonton di HP. Setelah itu kamu membaca, mencoba, dan membawa pulang satu hal.</p>
-				<div class="flow">
-					{#each ALUR as a (a.k)}
-						<div class="card fl"><span class="k">{a.k}</span><div><h3>{a.judul}</h3><p>{a.isi}</p></div></div>
-					{/each}
+				<p class="kicker">Pertanyaan</p>
+				<h2 id="judul-faq" class="h2">Yang sering ditanyakan</h2>
+				<p class="lead">Belum terjawab? Tulis lewat <a class="tautan-sisip" href="/kontak">halaman kontak</a>.</p>
+			</div>
+			<div class="faq">
+				{#each faqs as f, i (f.question)}
+					<details class="kartu fq" open={i === 0}>
+						<summary><h3>{f.question}</h3><span class="pm" aria-hidden="true"></span></summary>
+						<p>{f.answer}</p>
+						{#if i === faqs.length - 1}
+							<p class="tautan-baris">
+								<a href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a>
+								<a href="/aplikasi-raport-tpq">Raport TPQ</a>
+								<a href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a>
+								<a href="/literasi/tahfidz-adalah">Apa itu tahfidz</a>
+								<a href="/lembaga">Untuk Lembaga</a>
+								<a href="/tentang">Tentang kami</a>
+								<a href={appInstitutionUrl}>Daftar mandiri di aplikasi</a>
+							</p>
+						{/if}
+					</details>
+				{/each}
+			</div>
+			</div>
+		</div>
+	</section>
+
+	<section aria-labelledby="judul-penutup">
+		<div class="wrap">
+			<div class="penutup">
+				<h2 id="judul-penutup">Mulai hari ini, satu pelajaran saja</h2>
+				<p>Sepuluh menit cukup untuk pelajaran pertama. Buat akun gratis supaya progresmu tersimpan dan bisa dilanjutkan besok.</p>
+				<div class="ctas">
+					<a class="tb tb-utama" href={appRegisterUrl}>Daftar gratis</a>
+					<a class="tb tb-garis" href="{appBaseUrl}/auth">Masuk ke aplikasi</a>
 				</div>
 			</div>
 		</div>
-	</div>
-</section>
-
-<section class="dark">
-	<div class="wrap">
-		<span class="kicker">Komunitas</span>
-		<h2 class="sec">Belajar tidak sendirian</h2>
-		<p class="lead">Ilmu lebih mudah dijaga bila ada teman dan ada guru tempat bertanya.</p>
-		<div class="kom">
-			<div class="kc"><div class="em" aria-hidden="true">&#128172;</div><h3>Grup belajar</h3><p>Tempat saling menyemangati dan bertanya sesama peserta lewat grup Telegram atau WhatsApp. Segera dibuka.</p></div>
-			<a class="kc" href="{appBaseUrl}/tanya"><div class="em" aria-hidden="true">&#128218;</div><h3>Cari Isi Kitab</h3><p>Ajukan pertanyaan dan dapatkan jawaban yang menunjuk ke halaman kitab di perpustakaan kami. Untuk perkara penting, tetap tanyakan ke guru.</p></a>
-			<div class="kc"><div class="em" aria-hidden="true">&#129309;</div><h3>Bersama guru</h3><p>Materi melewati pemeriksaan ustadz sebelum terbit. Di level lanjut ada kajian langsung dua kali sebulan.</p></div>
-		</div>
-	</div>
-</section>
-
-<section>
-	<div class="wrap">
-		<span class="kicker">Biaya</span>
-		<h2 class="sec">Belajar gratis, tidak dipungut biaya</h2>
-		<p class="lead">Semua tahap belajar, dari Tipe Santri sampai Kajian Lanjut, gratis. Cukup akun gratis untuk menyimpan progres. Yang berbayar hanya beberapa aplikasi pendukung.</p>
-		<div class="pk">
-			<div class="card pkc">
-				<span class="tag t-free">Mulai di sini</span>
-				<h3>Level 00 + 01</h3>
-				<div class="pr">Rp0 <small>gratis</small></div>
-				<ul>
-					<li>Tes Tipe Santri</li>
-					<li>Fondasi Muslim: 24 pelajaran</li>
-					<li>5 contekan PDF: jadwal 30 hari, checklist wudhu dan shalat, doa harian, dan lainnya</li>
-				</ul>
-				<a class="btn btn-p" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama</a>
-			</div>
-			<div class="card pkc feat">
-				<span class="tag t-free">Level 02 + 03 + 04</span>
-				<h3>Kitab, hafalan, kajian</h3>
-				<div class="pr">Rp0 <small>gratis</small></div>
-				<ul>
-					<li>Ngaji Kitab Dasar per bab</li>
-					<li>Hafalan Matan dengan setoran</li>
-					<li>Kajian Lanjut dan kajian langsung 2x sebulan</li>
-					<li>Cari Isi Kitab, dengan batas harian yang wajar</li>
-				</ul>
-				<a class="btn btn-s" href={appRegisterUrl}>Daftar akun gratis</a>
-			</div>
-			<div class="card pkc">
-				<span class="tag t-soon">Aplikasi</span>
-				<h3>Aplikasi pendukung</h3>
-				<div class="pr">Gratis &amp; Pro <small>sesuai aplikasi</small></div>
-				<ul>
-					<li>Aplikasi lembaga untuk pondok, TPQ, dan rumah tahfidz: gratis</li>
-					<li>Versi Pro aplikasi kerja seperti SantriPrint: berbayar, dibeli sekali</li>
-					<li>Biaya ini tidak menyangkut materi belajar</li>
-				</ul>
-				<a class="btn btn-s" href="/katalog/produk">Lihat aplikasi</a>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section style="padding-top:0">
-	<div class="wrap">
-		<span class="kicker">Pertanyaan</span>
-		<h2 class="sec">Yang sering ditanyakan</h2>
-		<div class="faq">
-			{#each faqs as f, i (f.question)}
-				<details class="card fq" open={i === 0}>
-					<summary><h3>{f.question}</h3><span class="pm" aria-hidden="true"></span></summary>
-					<p>{f.answer}</p>
-					{#if i === faqs.length - 1}
-						<p class="lembaga-links">
-							<a href="/aplikasi-pondok-pesantren">Aplikasi Pondok Pesantren</a>
-							<a href="/aplikasi-raport-tpq">Raport TPQ</a>
-							<a href="/aplikasi-hafalan-quran">Aplikasi Hafalan Quran</a>
-							<a href="/literasi/tahfidz-adalah">Apa itu tahfidz</a>
-							<a href="/lembaga">Untuk Lembaga</a>
-							<a href="/tentang">Tentang kami</a>
-							<a href={appInstitutionUrl}>Daftar mandiri di aplikasi</a>
-						</p>
-					{/if}
-				</details>
-			{/each}
-		</div>
-	</div>
-</section>
-
-<section style="padding-top:0">
-	<div class="wrap">
-		<div class="closing">
-			<div class="figs">
-				{#each URUTAN_TIPE as t (t)}<span class="m-svg fig64">{@html MASKOT[t].svg(64)}</span>{/each}
-			</div>
-			<h2>Mulai hari ini, satu pelajaran saja</h2>
-			<p>Sepuluh menit cukup untuk pelajaran pertama. Sisanya bisa kamu lanjutkan besok, dan lusa.</p>
-			<div class="ctas">
-				<a class="btn btn-gold" href={PELAJARAN_PERTAMA}>Buka pelajaran pertama &rarr;</a>
-				<a class="btn btn-ghost" href="/tipe-santri">Cek Tipe Santri</a>
-				<a class="btn btn-ghost" href={appRegisterUrl}>Daftar gratis</a>
-			</div>
-		</div>
-	</div>
-</section>
+	</section>
+</div>
 
 <style>
-	.hero {
-		padding: 34px 0 40px;
-		background:
-			radial-gradient(900px 420px at 85% 0%, rgb(252 211 77 / 0.18), transparent 60%),
-			radial-gradient(700px 400px at 0% 100%, rgb(27 85 70 / 0.1), transparent 60%);
+	.bh {
+		--hijau: #123f34;
+		--hijau2: #065f46;
+		--mint: #ecfdf5;
+		--garis: #e5e7eb;
+		--abu: #f8fafc;
+		background: #fff;
+		color: var(--ink);
+	}
+	.bh :global(a:focus-visible),
+	.bh :global(summary:focus-visible) {
+		outline: 3px solid var(--hijau2);
+		outline-offset: 2px;
+	}
+	.bh section {
+		padding: 56px 0;
+	}
+	.latar-abu {
+		background: var(--abu);
+		border-top: 1px solid var(--garis);
+		border-bottom: 1px solid var(--garis);
+	}
+	.garis-atas {
+		border-top: 1px solid var(--garis);
+	}
+	svg {
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+	.ik-s {
+		width: 18px;
+		height: 18px;
+		flex: none;
+	}
+
+	/* Hero */
+	.bh .hero {
+		padding: 36px 0 48px;
 	}
 	.hero-g {
 		display: grid;
-		gap: 28px;
+		gap: 32px;
 	}
 	.hero-g > * {
 		min-width: 0;
 	}
-	h1 {
-		font-family: 'Fraunces', Georgia, serif;
-		color: var(--g);
-		font-size: 40px;
-		line-height: 1.06;
-		letter-spacing: -0.035em;
-		margin: 16px 0 14px;
+	.pil {
+		display: inline-flex;
+		align-items: center;
+		gap: 8px;
+		margin: 0;
+		padding: 6px 14px;
+		border: 1px solid var(--garis);
+		border-radius: 999px;
+		font-size: 13px;
+		font-weight: 700;
+		color: var(--hijau2);
+		background: #fff;
 	}
-	h1 em {
-		font-style: normal;
-		background: linear-gradient(transparent 62%, rgb(252 211 77 / 0.65) 62%);
-		padding: 0 4px;
+	.titik {
+		width: 8px;
+		height: 8px;
+		border-radius: 99px;
+		background: #10b981;
+	}
+	h1 {
+		margin: 18px 0 14px;
+		font-size: 38px;
+		line-height: 1.08;
+		letter-spacing: -0.035em;
+		font-weight: 800;
+		color: var(--ink);
+		text-wrap: balance;
 	}
 	.sub {
+		margin: 0 0 24px;
+		max-width: 560px;
 		font-size: 16px;
 		line-height: 1.65;
 		color: var(--muted);
-		margin: 0 0 22px;
-		max-width: 560px;
 	}
 	.ctas {
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
 	}
-	.gratis-note {
-		display: flex;
+	.tb {
+		display: inline-flex;
 		align-items: center;
+		justify-content: center;
 		gap: 8px;
-		margin: 14px 0 0;
-		padding: 10px 14px;
+		min-height: 50px;
+		padding: 12px 22px;
 		border-radius: 14px;
-		background: #dcfce7;
-		color: var(--g3);
 		font-size: 15px;
 		font-weight: 800;
+		text-align: center;
 	}
-	.gratis-note b {
-		display: inline-grid;
-		place-items: center;
-		width: 22px;
-		height: 22px;
-		flex: none;
-		border-radius: 99px;
-		background: var(--g);
+	.tb-utama {
+		background: var(--hijau);
 		color: #fff;
-		font-size: 12px;
 	}
-	.salam-maskot {
-		display: flex;
-		align-items: center;
-		gap: 14px;
-		margin-top: 14px;
-		padding: 14px 16px 14px 10px;
-		border: 1px solid #cfe3d6;
-		border-radius: 18px;
+	.tb-utama:hover {
+		background: #0c2c25;
+	}
+	.tb-garis {
 		background: #fff;
+		color: var(--ink);
+		border: 1px solid #cbd5e1;
 	}
-	.salam-maskot img {
-		flex: none;
-		width: 122px;
-		height: auto;
-		aspect-ratio: 418 / 480;
+	.tb-garis:hover {
+		border-color: var(--hijau);
 	}
-	.salam-teks {
-		min-width: 0;
+	.coba {
+		margin: 14px 0 0;
 		font-size: 14px;
-		line-height: 1.55;
 		color: var(--muted);
 	}
-	.salam-teks p {
-		margin: 0 0 8px;
-	}
-	.salam-teks .salam-h {
-		margin: 0 0 4px;
-		color: var(--g);
-		font-size: 17px;
-		font-weight: 800;
-	}
-	.salam-teks a {
-		display: inline-block;
-		padding: 10px 0;
-		line-height: 1.4;
-		color: var(--g);
-		font-weight: 800;
+	.coba a,
+	.tautan-baris a,
+	.semua a {
+		color: var(--hijau2);
+		font-weight: 700;
 		text-decoration: underline;
 		text-underline-offset: 3px;
+	}
+	.coba a {
+		display: inline-block;
+		padding: 6px 0;
 	}
 	.trust {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px 16px;
-		margin-top: 18px;
-		font-size: 13px;
+		gap: 8px 14px;
+		margin: 20px 0 0;
+		padding: 0;
+		list-style: none;
+		font-size: 13.5px;
 		font-weight: 700;
-		color: var(--g);
+		color: #334155;
 	}
-	.trust span {
+	.trust li {
 		display: inline-flex;
 		align-items: center;
 		gap: 6px;
 	}
-	.trust b {
-		display: inline-grid;
-		place-items: center;
-		width: 20px;
-		height: 20px;
-		border-radius: 99px;
-		background: #dcfce7;
-		color: var(--ink2);
-		font-size: 12px;
+	.trust svg {
+		color: #059669;
 	}
-	.mascot-card {
-		position: relative;
-		display: block;
-		padding: 20px 16px 18px;
-		border-radius: 26px;
-		background: var(--g3);
-		color: #fff;
-		overflow: hidden;
-		box-shadow: var(--sh2);
+	.pratinjau {
+		border: 1px solid var(--garis);
+		border-radius: 22px;
+		background: #fff;
+		padding: 18px;
+		box-shadow: 0 1px 2px rgb(15 23 42 / 0.04), 0 16px 40px rgb(15 23 42 / 0.06);
 	}
-	.mascot-card::before {
-		content: '';
-		position: absolute;
-		right: -60px;
-		top: -60px;
-		width: 220px;
-		height: 220px;
-		border-radius: 999px;
-		background: rgb(27 85 70 / 0.6);
-		filter: blur(30px);
-	}
-	.mc-h {
-		position: relative;
-		font-family: 'Fraunces', serif;
-		font-size: 21px;
-		margin: 8px 0 4px;
-	}
-	.mascot-card .s {
-		position: relative;
-		color: #cfe3da;
-		font-size: 13px;
-		margin: 0 0 14px;
-	}
-	.mascot-card .tag {
-		position: relative;
-	}
-	/* 7 maskot: 4 di atas, 3 di bawah (rata tengah), semua ukuran layar,
-	   supaya nama tiap maskot muat satu baris. Kisi 8 kolom, tiap kartu
-	   2 kolom; kartu ke-5 mulai kolom 2. */
-	.mrow {
-		position: relative;
-		display: grid;
-		grid-template-columns: repeat(8, minmax(0, 1fr));
-		gap: 8px;
-	}
-	.mrow > .m {
-		grid-column: span 2;
-	}
-	.mrow > .m:nth-child(5) {
-		grid-column: 2 / span 2;
-	}
-	.m {
-		background: #f6f1e3;
-		border-radius: 16px;
-		padding: 8px 2px 6px;
-		text-align: center;
-		color: var(--g);
-	}
-	.m b {
-		display: block;
-		font-size: 11px;
-		letter-spacing: -0.01em;
-		line-height: 1.2;
-		white-space: nowrap;
-	}
-	/* Nama ikut lebar kartu (container query) agar selalu utuh satu baris. */
-	.m {
-		container-type: inline-size;
-	}
-	.m b {
-		font-size: min(13px, calc(100cqi / 6.3));
-	}
-	.m b small {
-		display: block;
-		font-size: 0.8em;
-		font-weight: 700;
-		opacity: 0.75;
-		margin-top: 2px;
-	}
-	.mini {
-		position: relative;
-		margin-top: 14px;
+	.pr-atas {
 		display: flex;
 		align-items: center;
 		gap: 12px;
-		background: rgb(255 255 255 / 0.08);
-		border: 1px solid rgb(255 255 255 / 0.14);
-		border-radius: 16px;
-		padding: 12px;
+		padding: 4px 4px 14px;
+		border-bottom: 1px solid var(--garis);
 	}
-	.mini .ic {
-		flex: none;
+	.pr-logo {
+		display: grid;
+		place-items: center;
 		width: 40px;
 		height: 40px;
 		border-radius: 12px;
-		background: var(--gold);
-		display: grid;
-		place-items: center;
-		color: var(--g3);
-		font-weight: 900;
-	}
-	.mini p {
-		margin: 0;
-		font-size: 13px;
-		line-height: 1.45;
-		color: #e6efe9;
-	}
-	.mini p b {
-		color: var(--gold2);
-	}
-	.steps {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 12px;
-	}
-	.step {
-		padding: 16px;
-	}
-	.step .n {
-		font-family: 'Fraunces', serif;
-		font-size: 15px;
-		font-weight: 800;
-		color: #8a6414; /* 4.9:1 di kartu putih (audit 21 Okt: #b88b24 hanya 3.1:1) */
-	}
-	.step h3 {
-		margin: 6px 0;
-		font-size: 19px;
-		color: var(--g);
-	}
-	.step p {
-		margin: 0;
-		color: var(--muted);
-		font-size: 13px;
-		line-height: 1.55;
-	}
-	.step .ico {
-		width: 46px;
-		height: 46px;
-		border-radius: 14px;
-		display: grid;
-		place-items: center;
-		background: #eef6f0;
-		border: 1px solid #cfe5d7;
-		color: #12633f;
-		margin-bottom: 12px;
-	}
-	.step:nth-child(even) .ico {
-		background: #fbf4e2;
-		border-color: #eedcae;
-		color: #7a5a12;
-	}
-	.ladder {
-		display: grid;
-		gap: 12px;
-	}
-	.lv {
-		display: grid;
-		grid-template-columns: 58px 1fr;
-		gap: 14px;
-		padding: 18px;
-		align-items: start;
-	}
-	.lv .no {
-		font-family: 'Fraunces', serif;
-		font-size: 30px;
-		font-weight: 800;
-		color: var(--g);
-		line-height: 1;
-	}
-	.lv h3 {
-		margin: 0 0 4px;
-		font-size: 18px;
-		color: var(--g);
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		align-items: center;
-	}
-	.lv p {
-		margin: 4px 0 0;
-		font-size: 14px;
-		line-height: 1.55;
-		color: var(--muted);
-	}
-	.lv.hi {
-		background: var(--g);
-		border-color: var(--g);
-	}
-	.lv.hi .no,
-	.lv.hi h3 {
+		background: var(--hijau);
 		color: #fff;
 	}
-	.lv.hi p {
-		color: #cfe3da;
+	.pr-logo svg {
+		width: 22px;
+		height: 22px;
 	}
-	.chips {
+	.pr-atas b {
+		display: block;
+		font-size: 15px;
+	}
+	.pr-atas div span {
+		font-size: 13px;
+		color: var(--muted);
+	}
+	.pr-daftar {
+		margin: 10px 0 6px;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 4px;
+	}
+	.pr-daftar a {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 10px;
+		border-radius: 14px;
+	}
+	.pr-daftar a:hover {
+		background: var(--abu);
+	}
+	.pr-ik,
+	.ik-kotak {
+		display: grid;
+		place-items: center;
+		flex: none;
+		width: 42px;
+		height: 42px;
+		border-radius: 12px;
+		background: var(--mint);
+		color: var(--hijau2);
+		border: 1px solid #d1fae5;
+	}
+	.pr-ik svg,
+	.ik-kotak svg {
+		width: 22px;
+		height: 22px;
+	}
+	.pr-teks {
+		flex: 1;
+		min-width: 0;
+	}
+	.pr-teks b {
+		display: block;
+		font-size: 14.5px;
+	}
+	.pr-teks small {
+		font-size: 12.5px;
+		color: var(--muted);
+	}
+	.pr-panah {
+		width: 18px;
+		height: 18px;
+		color: #64748b;
+		flex: none;
+	}
+	.pr-semua {
+		display: block;
+		padding: 12px;
+		border-top: 1px solid var(--garis);
+		text-align: center;
+		font-size: 14px;
+		font-weight: 800;
+		color: var(--hijau2);
+	}
+
+	/* Judul bagian */
+	.kicker {
+		margin: 0;
+		font-size: 12.5px;
+		font-weight: 800;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--hijau2);
+	}
+	.h2 {
+		margin: 10px 0 10px;
+		font-size: 28px;
+		line-height: 1.15;
+		letter-spacing: -0.02em;
+		font-weight: 800;
+		color: var(--ink);
+		text-wrap: balance;
+	}
+	.lead {
+		margin: 0 0 28px;
+		max-width: 640px;
+		font-size: 15.5px;
+		line-height: 1.65;
+		color: var(--muted);
+	}
+
+	/* Kartu */
+	.kisi {
+		display: grid;
+		gap: 14px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.kartu {
+		background: #fff;
+		border: 1px solid var(--garis);
+		border-radius: 18px;
+		padding: 22px;
+	}
+	.kartu h3 {
+		margin: 14px 0 6px;
+		font-size: 17px;
+		line-height: 1.3;
+		color: var(--ink);
+	}
+	.kartu p {
+		text-wrap: pretty;
+		margin: 0;
+		font-size: 14.5px;
+		line-height: 1.6;
+		color: var(--muted);
+	}
+	.tautan {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		margin-top: 12px;
+		padding: 4px 0;
+		font-size: 14.5px;
+		font-weight: 800;
+		color: var(--hijau2);
+	}
+	.tautan:hover {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.pilar {
+		display: flex;
+		flex-direction: column;
+	}
+	.pilar-kepala {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin-bottom: 10px;
+	}
+	.pilar-kepala h3 {
+		margin: 0;
+		font-size: 18px;
+	}
+	.pilar .tautan {
+		margin-top: auto;
+		padding-top: 14px;
+	}
+	.fitur,
+	.lembaga {
+		display: flex;
+		gap: 16px;
+		align-items: flex-start;
+	}
+	.fitur h3,
+	.lembaga h3 {
+		margin-top: 0;
+	}
+	.fitur {
+		height: 100%;
+	}
+	.fitur-isi {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		min-width: 0;
+		height: 100%;
+	}
+	.fitur-isi .tautan {
+		margin-top: auto;
+		padding-top: 14px;
+	}
+	.bidang {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 6px;
-		margin-top: 10px;
+		margin-top: 12px !important;
 	}
-	.chip {
-		font-size: 12px;
+	.bidang span {
+		padding: 4px 10px;
+		border: 1px solid var(--garis);
+		border-radius: 999px;
+		background: var(--abu);
+		font-size: 12.5px;
 		font-weight: 700;
-		padding: 5px 10px;
-		border-radius: 99px;
-		background: rgb(255 255 255 / 0.12);
-		color: #fff;
-		border: 1px solid rgb(255 255 255 / 0.18);
+		color: #334155;
 	}
-	.lv.lock .no {
-		color: #6b7468; /* 4.6:1; sebelumnya #b8bfb3 1.9:1 */
+	.tautan-sisip {
+		white-space: nowrap;
+		color: var(--hijau2);
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
+	/* Halaman ini saja: header ikut putih, tanpa garis krem di tombol Masuk. */
+	:global(.sb:has(.bh)) {
+		background: #fff;
+	}
+	:global(.sb:has(.bh) .hdr) {
+		background: rgb(255 255 255 / 0.985);
+	}
+	:global(.sb:has(.bh) .hdr .btn-s) {
+		border-color: #cbd5e1;
+	}
+
+	/* Jalur belajar */
+	.mulai-g {
+		display: grid;
+		gap: 28px;
+	}
+	.mulai-g > * {
+		min-width: 0;
+	}
+	.dalil {
+		margin: 0;
+		padding: 20px 22px;
+		border: 1px solid var(--garis);
+		border-left: 4px solid #10b981;
+		border-radius: 16px;
+		background: #fff;
+	}
+	.dalil .ar {
+		margin: 0 0 10px;
+		font-family: 'Amiri', serif;
+		font-size: 24px;
+		line-height: 1.8;
+		color: var(--ink);
+	}
+	.dalil .tr {
+		margin: 0;
+		font-size: 14.5px;
+		line-height: 1.6;
+		color: #334155;
+	}
+	.dalil cite {
+		display: block;
+		margin-top: 8px;
+		font-size: 13px;
+		font-style: normal;
+		font-weight: 700;
+		color: var(--muted);
+	}
+	.tahap {
+		display: grid;
+		gap: 10px;
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.tahap .kartu {
+		display: flex;
+		gap: 16px;
+		align-items: flex-start;
+		padding: 18px 20px;
+	}
+	.tahap .no {
+		flex: none;
+		display: grid;
+		place-items: center;
+		width: 44px;
+		height: 44px;
+		border-radius: 12px;
+		border: 1px solid var(--garis);
+		background: var(--abu);
+		font-weight: 800;
+		font-size: 14px;
+		color: var(--hijau2);
+	}
+	.tahap h3 {
+		margin: 2px 0 4px;
+		font-size: 16px;
+	}
+	.tahap-cta {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		margin-top: 6px;
+	}
+
+	/* Lembaga */
+	.lembaga-kepala {
+		display: grid;
+		gap: 4px;
+		margin-bottom: 8px;
+	}
+	.lembaga-kepala .tb {
+		margin-bottom: 24px;
+	}
+	.tautan-baris {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 6px 16px;
+		margin: 22px 0 0;
+		font-size: 14px;
+		color: var(--muted);
+	}
+	.tautan-baris a {
+		display: inline-block;
+		padding: 4px 0;
+	}
+
+	/* Rak */
 	.rakhead {
 		display: flex;
 		justify-content: space-between;
 		align-items: baseline;
 		gap: 12px;
-		margin: 26px 0 12px;
+		margin: 30px 0 12px;
 	}
 	.rakhead h3 {
-		font-family: 'Fraunces', Georgia, serif;
-		color: var(--g);
-		font-size: 20px;
 		margin: 0;
+		font-size: 18px;
+		color: var(--ink);
 	}
 	.rakhead a {
 		font-weight: 800;
 		font-size: 14px;
-		color: var(--ink2);
+		color: var(--hijau2);
 		white-space: nowrap;
 	}
 	.rak {
@@ -911,7 +1039,9 @@
 		grid-auto-columns: 128px;
 		gap: 14px;
 		overflow-x: auto;
-		padding-bottom: 6px;
+		margin-inline: -18px;
+		padding: 0 18px 8px;
+		scroll-padding-inline: 18px;
 		scroll-snap-type: x proximity;
 	}
 	.bk {
@@ -927,41 +1057,53 @@
 		aspect-ratio: 2/3;
 		object-fit: cover;
 		border-radius: 12px;
-		box-shadow: var(--sh);
-		background: #e9ece4;
+		border: 1px solid var(--garis);
+		background: var(--abu);
 	}
 	.bk .ph {
 		display: grid;
 		place-items: center;
 		padding: 10px;
-		font-family: 'Fraunces', serif;
 		font-size: 13px;
-		color: var(--g);
+		font-weight: 700;
+		color: var(--hijau2);
 		text-align: center;
 	}
 	.bk b {
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		min-height: 2.6em;
 		font-size: 13px;
 		line-height: 1.3;
 		color: var(--ink);
 	}
 	.bk span {
-		font-size: 11.5px;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+		font-size: 12px;
+		line-height: 1.35;
 		color: var(--muted);
 	}
 	.prod {
 		display: grid;
-		grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+		grid-template-columns: minmax(0, 1fr);
 		gap: 12px;
 	}
 	.pd {
 		display: flex;
 		gap: 12px;
 		align-items: center;
-		background: #fff;
-		border: 1px solid var(--border);
-		border-radius: 18px;
-		padding: 10px;
 		min-width: 0;
+		padding: 12px;
+		border: 1px solid var(--garis);
+		border-radius: 16px;
+		background: #fff;
 	}
 	.pd img {
 		flex: none;
@@ -975,338 +1117,38 @@
 	}
 	.pd b {
 		display: block;
-		font-size: 14px;
+		font-size: 14.5px;
 	}
 	.pd span {
-		font-size: 12px;
+		font-size: 12.5px;
 		color: var(--muted);
 	}
 	.semua {
-		margin: 18px 0 0;
+		margin: 20px 0 0;
 		font-size: 14px;
 		color: var(--muted);
 	}
-	.semua a {
-		font-weight: 800;
-		color: var(--ink2);
-	}
-	.persona {
+
+	/* FAQ */
+	.faq-g {
 		display: grid;
-		gap: 14px;
+		gap: 8px;
 	}
-	.pc {
-		padding: 20px;
-		display: grid;
-		gap: 12px;
-	}
-	.pc-h {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-	}
-	.pc-h .av {
-		flex: none;
-		width: 62px;
-		height: 72px;
-		background: #f6f1e3;
-		border-radius: 16px;
-		display: grid;
-		place-items: center;
-		overflow: hidden;
-		padding: 4px 6px;
-	}
-	.pc-h h3 {
-		margin: 0;
-		font-size: 17px;
-		color: var(--g);
-	}
-	.pc-h span {
-		font-size: 13px;
-		color: var(--muted);
-	}
-	.ba {
-		border-radius: 14px;
-		padding: 12px 14px;
-		font-size: 14px;
-		line-height: 1.55;
-	}
-	.ba small {
-		display: block;
-		font-size: 11px;
-		font-weight: 800;
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-		margin-bottom: 4px;
-	}
-	.before {
-		background: #f3f4f1;
-		color: #334155;
-	}
-	.before small {
-		color: #475569;
-	}
-	.after {
-		background: #ecfdf3;
-		color: #064e3b;
-		border: 1px solid #c9f0d9;
-	}
-	.after small {
-		color: var(--ink2);
-	}
-	.note {
-		font-size: 12px;
-		color: var(--muted);
-		margin-top: 14px;
-		font-style: italic;
-	}
-	.vid-g {
-		display: grid;
-		gap: 26px;
-		align-items: center;
-	}
-	.vid-g > * {
+	.faq-g > * {
 		min-width: 0;
-	}
-	.phone {
-		display: block;
-		width: 250px;
-		margin: 0 auto;
-		aspect-ratio: 9/16;
-		border-radius: 30px;
-		background: #0c2c25;
-		padding: 10px;
-		box-shadow: var(--sh2);
-		position: relative;
-	}
-	.screen {
-		position: relative;
-		height: 100%;
-		border-radius: 22px;
-		overflow: hidden;
-		background: linear-gradient(180deg, #f6f1e3, #efe6cd);
-	}
-	.screen .top {
-		position: absolute;
-		left: 12px;
-		right: 12px;
-		top: 12px;
-		display: flex;
-		justify-content: space-between;
-		font-size: 10px;
-		font-weight: 800;
-		color: var(--g);
-	}
-	.board {
-		position: absolute;
-		left: 18px;
-		right: 18px;
-		top: 46px;
-		background: #123f34;
-		border-radius: 10px;
-		padding: 10px;
-		color: #fff;
-		text-align: center;
-	}
-	.board .ar {
-		font-family: 'Amiri', serif;
-		font-size: 19px;
-		color: var(--gold2);
-		direction: rtl;
-		line-height: 1.5;
-	}
-	.board .tr {
-		font-size: 10px;
-		line-height: 1.4;
-		color: #d7e7df;
-		margin-top: 2px;
-	}
-	.fig {
-		position: absolute;
-		left: 18%;
-		bottom: 70px;
-		width: 110px;
-	}
-	.cap {
-		position: absolute;
-		left: 10px;
-		right: 10px;
-		bottom: 16px;
-		background: rgb(12 44 37 / 0.88);
-		color: #fff;
-		font-size: 11px;
-		font-weight: 700;
-		line-height: 1.35;
-		border-radius: 10px;
-		padding: 7px 9px;
-		text-align: center;
-	}
-	.play {
-		position: absolute;
-		right: 22px;
-		top: 46%;
-		width: 52px;
-		height: 52px;
-		border-radius: 99px;
-		background: rgb(252 211 77 / 0.95);
-		display: grid;
-		place-items: center;
-		box-shadow: 0 10px 24px rgb(0 0 0 / 0.25);
-	}
-	.prog {
-		position: absolute;
-		left: 12px;
-		right: 12px;
-		top: 30px;
-		height: 3px;
-		background: rgb(18 63 52 / 0.15);
-		border-radius: 3px;
-	}
-	.prog i {
-		display: block;
-		width: 34%;
-		height: 100%;
-		background: var(--g);
-		border-radius: 3px;
-	}
-	.flow {
-		display: grid;
-		gap: 10px;
-	}
-	.fl {
-		display: flex;
-		gap: 14px;
-		align-items: flex-start;
-		padding: 14px 16px;
-	}
-	.fl .k {
-		flex: none;
-		width: 34px;
-		height: 34px;
-		border-radius: 10px;
-		background: var(--g);
-		color: #fff;
-		font-weight: 900;
-		display: grid;
-		place-items: center;
-		font-size: 14px;
-	}
-	.fl h3 {
-		margin: 0 0 2px;
-		font-size: 15px;
-		color: var(--g);
-	}
-	.fl p {
-		margin: 0;
-		font-size: 13.5px;
-		line-height: 1.5;
-		color: var(--muted);
-	}
-	.dark {
-		background: var(--g3);
-		color: #fff;
-	}
-	.dark .sec {
-		color: #fff;
-	}
-	.dark .lead {
-		color: #cfe3da;
-	}
-	.dark .kicker {
-		color: var(--gold);
-	}
-	.kom {
-		display: grid;
-		gap: 14px;
-	}
-	.kc {
-		display: block;
-		padding: 20px;
-		border-radius: 20px;
-		background: rgb(255 255 255 / 0.06);
-		border: 1px solid rgb(255 255 255 / 0.14);
-	}
-	.kc h3 {
-		margin: 8px 0 6px;
-		font-size: 17px;
-		color: var(--gold2);
-	}
-	.kc p {
-		margin: 0;
-		font-size: 14px;
-		line-height: 1.6;
-		color: #d7e7df;
-	}
-	.kc .em {
-		font-size: 22px;
-	}
-	.pk {
-		display: grid;
-		gap: 14px;
-	}
-	.pkc {
-		padding: 24px;
-		display: flex;
-		flex-direction: column;
-		gap: 10px;
-	}
-	.pkc .tag {
-		align-self: flex-start;
-	}
-	.pkc h3 {
-		margin: 0;
-		font-size: 20px;
-		color: var(--g);
-	}
-	.pkc .pr {
-		font-family: 'Fraunces', serif;
-		font-size: 30px;
-		font-weight: 800;
-		color: var(--g);
-	}
-	.pkc .pr small {
-		font-family: 'Plus Jakarta Sans', sans-serif;
-		font-size: 13px;
-		color: var(--muted);
-		font-weight: 600;
-	}
-	.pkc ul {
-		margin: 4px 0 8px;
-		padding: 0;
-		list-style: none;
-		display: grid;
-		gap: 8px;
-		font-size: 14px;
-		color: #334155;
-	}
-	.pkc li {
-		display: flex;
-		gap: 8px;
-		line-height: 1.45;
-	}
-	.pkc li::before {
-		content: '\2713';
-		color: var(--ink2);
-		font-weight: 900;
-	}
-	.pkc.feat {
-		border: 2px solid var(--g);
-	}
-	.pkc .btn {
-		margin-top: auto;
 	}
 	.faq {
 		display: grid;
 		gap: 10px;
-		max-width: 820px;
-		margin-top: 18px;
 	}
 	.fq {
-		padding: 16px 18px;
+		padding: 18px 20px;
 	}
 	.fq summary {
 		list-style: none;
 		display: flex;
 		justify-content: space-between;
+		align-items: center;
 		gap: 12px;
 		cursor: pointer;
 	}
@@ -1316,166 +1158,158 @@
 	.fq h3 {
 		margin: 0;
 		font-size: 15.5px;
-		color: var(--g);
 	}
 	.pm::before {
 		content: '+';
-		color: #b88b24;
-		font-size: 20px;
+		color: var(--hijau2);
+		font-size: 22px;
 		line-height: 1;
-		font-weight: 800;
+		font-weight: 700;
 	}
 	.fq[open] .pm::before {
 		content: '\2212';
 	}
 	.fq p {
-		margin: 10px 0 0;
-		font-size: 14px;
-		line-height: 1.65;
-		color: var(--muted);
+		margin-top: 10px;
 	}
-	.lembaga-links {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 6px 14px;
-	}
-	.lembaga-links a {
-		font-weight: 800;
-		color: var(--ink2);
-		text-decoration: underline;
-		text-underline-offset: 3px;
-	}
-	.closing {
-		position: relative;
-		overflow: hidden;
-		border-radius: 28px;
-		background: var(--g3);
-		color: #fff;
-		padding: 34px 22px;
+
+	/* Penutup */
+	.penutup {
+		padding: 40px 22px;
+		border: 1px solid #a7f3d0;
+		border-radius: 24px;
+		background: var(--mint);
 		text-align: center;
 	}
-	.closing::before {
-		content: '';
-		position: absolute;
-		left: -80px;
-		bottom: -120px;
-		width: 300px;
-		height: 300px;
-		border-radius: 999px;
-		background: rgb(252 211 77 / 0.14);
-		filter: blur(30px);
-	}
-	.closing h2 {
-		position: relative;
-		font-family: 'Fraunces', serif;
-		font-size: 30px;
-		line-height: 1.15;
+	.penutup h2 {
 		margin: 0 0 10px;
+		font-weight: 800;
+		font-size: 28px;
+		line-height: 1.15;
+		letter-spacing: -0.025em;
+		color: var(--ink);
 	}
-	.closing p {
-		position: relative;
-		color: #cfe3da;
-		margin: 0 auto 20px;
+	.penutup p {
+		text-wrap: pretty;
+		margin: 0 auto 22px;
 		max-width: 520px;
-		font-size: 15px;
+		font-size: 15.5px;
 		line-height: 1.6;
+		color: #334155;
 	}
-	.closing .ctas {
-		position: relative;
-		align-items: center;
+	.penutup .ctas {
+		align-items: stretch;
 	}
-	.figs {
-		position: relative;
-		display: flex;
-		flex-wrap: wrap;
-		justify-content: center;
-		gap: 4px;
-		margin-bottom: 6px;
-	}
-	.fig64 {
-		width: 44px;
+
+	@media (min-width: 640px) {
+		.ctas,
+		.tahap-cta {
+			flex-direction: row;
+			flex-wrap: wrap;
+		}
+		.penutup .ctas {
+			justify-content: center;
+		}
+		.lembaga-kepala .tb {
+			justify-self: start;
+		}
+		.kisi-3,
+		.kisi-fitur,
+		.prod {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+		/* 7 fitur: kartu pertama selebar dua kolom supaya kisi genap tanpa lubang. */
+		.kisi-fitur > :first-child {
+			grid-column: span 2;
+		}
 	}
 	@media (min-width: 900px) {
-		.hero {
-			padding: 64px 0 72px;
+		.bh section {
+			padding: 88px 0;
+		}
+		.bh .hero {
+			padding: 72px 0 88px;
 		}
 		.hero-g {
-			grid-template-columns: 1.1fr 0.9fr;
-			gap: 48px;
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: 56px;
 			align-items: center;
 		}
 		h1 {
-			font-size: 64px;
+			font-size: 60px;
 		}
 		.sub {
 			font-size: 18px;
 		}
-		.ctas {
-			flex-direction: row;
-		}
-		.mascot-card {
-			padding: 28px;
-		}
-		.salam-maskot img {
-			width: 148px;
-		}
-		.m b {
-			font-size: min(14px, calc(100cqi / 6.3));
-		}
-		.mrow {
-			gap: 10px;
-		}
-		.fig64 {
-			width: 64px;
-		}
-		.steps {
-			grid-template-columns: repeat(4, 1fr);
-		}
-		.step {
+		.pratinjau {
 			padding: 22px;
 		}
-		.step p {
-			font-size: 14px;
+		.h2 {
+			font-size: 40px;
 		}
-		.ladder {
-			grid-template-columns: repeat(2, 1fr);
+		.lead {
+			font-size: 17px;
 		}
-		.lv.hi {
-			grid-row: span 2;
+		.kisi-3 {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
-		.lv:first-child,
-		.lv.wide {
-			grid-column: 1/-1;
+		.kisi-fitur {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+		.fitur {
+			flex-direction: column;
+		}
+		.kisi-fitur > :first-child {
+			flex-direction: row;
+			gap: 20px;
+		}
+		.fitur .ik-kotak {
+			margin-bottom: 2px;
+		}
+		.faq-g {
+			grid-template-columns: 0.8fr 1.2fr;
+			gap: 56px;
+			align-items: start;
+		}
+		.faq-g > :first-child {
+			position: sticky;
+			top: 96px;
+		}
+		.kartu {
+			padding: 26px;
+		}
+		.mulai-g {
+			grid-template-columns: 0.9fr 1.1fr;
+			gap: 56px;
+			align-items: start;
+		}
+		.lembaga-kepala {
+			grid-template-columns: 1fr auto;
+			align-items: end;
+			gap: 32px;
 		}
 		.rak {
 			grid-auto-flow: row;
 			grid-template-columns: repeat(8, minmax(0, 1fr));
 			overflow: visible;
+			margin-inline: 0;
+			padding: 0;
 		}
 		.prod {
 			grid-template-columns: repeat(4, minmax(0, 1fr));
 		}
-		.persona {
-			grid-template-columns: repeat(3, 1fr);
+		.penutup {
+			padding: 64px 48px;
 		}
-		.vid-g {
-			grid-template-columns: auto 1fr;
-			gap: 56px;
+		.penutup h2 {
+			font-size: 42px;
 		}
-		.phone {
-			width: 300px;
-		}
-		.kom {
-			grid-template-columns: repeat(3, 1fr);
-		}
-		.pk {
-			grid-template-columns: repeat(3, 1fr);
-		}
-		.closing {
-			padding: 56px;
-		}
-		.closing h2 {
-			font-size: 44px;
+	}
+	@media (prefers-reduced-motion: no-preference) {
+		.tb,
+		.pr-daftar a,
+		.tb-garis {
+			transition: background-color 0.15s ease, border-color 0.15s ease;
 		}
 	}
 </style>
