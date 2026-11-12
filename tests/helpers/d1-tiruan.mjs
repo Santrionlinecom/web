@@ -82,7 +82,30 @@ export const FIKSUR = {
 			description: 'SantriPrint membantu lembaga mencetak dokumen santri.',
 			price: 49000,
 			cover_url: 'https://files.santrionline.com/digital-products/santriprint/cover.jpg',
+			file_url: 'digital-products/santriprint/SantriPrint-Setup-1.21.0.exe',
 			featured: 1,
+			updated_at: T
+		},
+		{
+			slug: 'fokus',
+			title: 'Fokus',
+			summary: 'Timer Pomodoro dan pengingat tugas bersuara untuk Android: gratis, offline, tanpa iklan.',
+			description: 'Fokus membantu mengatur waktu belajar.',
+			price: 0,
+			cover_url: null,
+			file_url: 'digital-products/fokus/fokus-1.1.0.apk?v=2',
+			featured: 0,
+			updated_at: T
+		},
+		{
+			slug: 'template-halaqah',
+			title: 'Template Halaqah',
+			summary: 'Dashboard TPQ/madrasah: santri, kelas, absensi, SPP, dan capaian belajar.',
+			description: 'Template dashboard lembaga dengan demo login.',
+			price: 249000,
+			cover_url: null,
+			file_url: 'digital-products/template-halaqah/halaqah-1.0.0.zip',
+			featured: 0,
 			updated_at: T
 		}
 	],

@@ -30,6 +30,8 @@ export interface ItemKatalog {
 	rating?: RingkasRating;
 	/** jumlah bab dibaca (khusus buku) — untuk rak "Paling Banyak Dibaca" */
 	dibaca?: number;
+	/** khusus produk: platform dari ekstensi berkas (URL berkasnya sendiri tidak dikirim) */
+	platform?: PlatformProduk;
 	/** khusus kitab: nama pengarang (Latin bila ada) dan id bidang (kitab_catalog.category) */
 	penulis?: string | null;
 	bidang?: string | null;
@@ -47,6 +49,7 @@ const APP = 'https://app.santrionline.com';
 
 import { muatSemuaRating, type RingkasRating } from './rating';
 import { hargaKursusKatalog } from '../harga-kursus.js';
+import { labelKategoriProduk, platformProduk, type PlatformProduk } from '../produk-platform.js';
 
 /** Label ramah untuk kolom kitab_catalog.category. */
 export const LABEL_BIDANG: Record<string, string> = {
@@ -161,7 +164,7 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		),
 		tanya(
 			db,
-			`SELECT slug, title, summary, cover_url, price, featured FROM digital_products
+			`SELECT slug, title, summary, cover_url, price, featured, file_url FROM digital_products
 			 WHERE status='published' ORDER BY featured DESC, updated_at DESC LIMIT ${batas}`
 		),
 		tanya(
@@ -206,20 +209,24 @@ export async function muatKatalog(db: D1Database | undefined, batas = 24): Promi
 		};
 	});
 
-	const itemProduk: ItemKatalog[] = produk.map((r) => ({
-		jenis: 'produk',
-		slug: String(r.slug),
-		judul: String(r.title),
-		ringkasan: s(r.summary) ?? 'Produk digital SantriOnline.',
-		sampul: s(r.cover_url),
-		harga: n(r.price) > 0 ? rupiah(n(r.price)) : 'Gratis',
-		gratis: n(r.price) === 0,
-		href: `${APP}/digital-store/${r.slug}`,
-		detail: `/katalog/produk/${r.slug}`,
-		aksi: 'Ambil',
-		kategori: 'Aplikasi',
-		unggulan: n(r.featured) === 1
-	}));
+	const itemProduk: ItemKatalog[] = produk.map((r) => {
+		const platform = platformProduk(r.file_url);
+		return {
+			jenis: 'produk',
+			slug: String(r.slug),
+			judul: String(r.title),
+			ringkasan: s(r.summary) ?? 'Produk digital SantriOnline.',
+			sampul: s(r.cover_url),
+			harga: n(r.price) > 0 ? rupiah(n(r.price)) : 'Gratis',
+			gratis: n(r.price) === 0,
+			href: `${APP}/digital-store/${r.slug}`,
+			detail: `/katalog/produk/${r.slug}`,
+			aksi: 'Ambil',
+			kategori: labelKategoriProduk(platform),
+			platform,
+			unggulan: n(r.featured) === 1
+		};
+	});
 
 	const itemKursus: ItemKatalog[] = kursus.map((r) => ({
 		jenis: 'kursus',

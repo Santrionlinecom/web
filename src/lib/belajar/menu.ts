@@ -10,7 +10,7 @@ export const MENU_KATALOG: Tautan[] = [
 	{ href: '/katalog/semua', label: 'Semua Katalog', ket: 'Kitab, buku, kursus, dan aplikasi' },
 	{ href: '/katalog/kitab', label: 'Kitab', ket: 'Kitab pesantren per bidang ilmu' },
 	{ href: '/katalog/buku', label: 'Buku', ket: 'Novel religi dan bacaan keluarga' },
-	{ href: '/katalog/produk', label: 'Aplikasi', ket: 'Aplikasi buatan SantriOnline' },
+	{ href: '/katalog/produk', label: 'Aplikasi & Template', ket: 'Aplikasi, template website, dan kit siap pakai' },
 	{ href: '/katalog/kursus', label: 'Kursus', ket: 'Belajar bertahap bersama pengajar' }
 ];
 
@@ -54,8 +54,10 @@ export const FOOTER: { judul: string; lembaga?: boolean; tautan: Tautan[] }[] = 
 			{ href: '/katalog/semua', label: 'Semua Katalog' },
 			{ href: '/katalog/kitab', label: 'Kitab' },
 			{ href: '/katalog/buku', label: 'Buku' },
-			{ href: '/katalog/produk', label: 'Aplikasi' },
-			{ href: '/katalog/kursus', label: 'Kursus' }
+			{ href: '/katalog/produk', label: 'Aplikasi & Template' },
+			{ href: '/katalog/kursus', label: 'Kursus' },
+			{ href: `${APP}/katalog-template`, label: 'Demo Template Website' },
+			{ href: `${APP}/digital-store`, label: 'Toko Digital' }
 		]
 	},
 	{

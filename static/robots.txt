@@ -3,5 +3,6 @@ Allow: /
 Disallow: /api/
 
 Sitemap: https://santrionline.com/sitemap.xml
-LLM-Guide: https://santrionline.com/llms.txt
+# Panduan ringkas untuk agen AI (konvensi llms.txt, bukan direktif robots):
+# https://santrionline.com/llms.txt
 Host: santrionline.com

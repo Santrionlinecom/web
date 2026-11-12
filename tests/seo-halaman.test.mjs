@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 import { cocokkanRute, muatModul, renderHalaman, tutup } from './helpers/render-halaman.mjs';
 import { d1Tiruan, FIKSUR } from './helpers/d1-tiruan.mjs';
 import { auditHtml, ambilJsonLd, INDEX_404, nodeSchema } from '../src/lib/seo-audit.js';
-import { ASAL, DESKRIPSI_MAKS, DESKRIPSI_MIN, escapeJsonLd, rapikanDeskripsi, remah } from '../src/lib/seo.js';
+import { ASAL, DESKRIPSI_MAKS, DESKRIPSI_MIN, escapeJsonLd, PROFIL_RESMI, rapikanDeskripsi, remah } from '../src/lib/seo.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const read = (p) => readFileSync(join(root, p), 'utf8');
@@ -166,6 +166,30 @@ test('detail katalog: Book untuk kitab/buku, harga & rating hanya bila jelas', (
 	// Remah detail tidak menunjuk /katalog/<jenis> yang tidak ada (game/belajar/alat).
 	const remahAlat = cari('/katalog/alat/desain-santri', 'BreadcrumbList').itemListElement.map((e) => e.item);
 	assert.ok(remahAlat.includes(`${ASAL}/katalog/produk`), remahAlat.join());
+});
+
+test('Organization.sameAs di beranda & /tentang memuat profil resmi terverifikasi', () => {
+	const beranda = cari('/', 'Organization').sameAs;
+	for (const p of PROFIL_RESMI) assert.ok(beranda.includes(p.url), p.url);
+	assert.ok(!beranda.some((u) => u.includes('@websantri')));
+	// /tentang: node Organization yang sama (@id kanonik) membawa sameAs yang sama.
+	const tentang = ambilJsonLd(hasil.get('/tentang').html).map((b) => b.data).find((d) => d.mainEntity)?.mainEntity;
+	assert.equal(tentang['@id'], `${ASAL}/#organization`);
+	assert.deepEqual(tentang.sameAs, beranda);
+	// Tautan profil juga terlihat di halaman /tentang (bukan hanya di schema).
+	for (const p of PROFIL_RESMI) assert.ok(hasil.get('/tentang').html.includes(`href="${p.url}"`), p.url);
+});
+
+test('detail produk: sistem operasi mengikuti berkas, URL berkas tidak bocor ke HTML', () => {
+	const exe = cari('/katalog/produk/santriprint', 'SoftwareApplication');
+	assert.equal(exe.operatingSystem, 'Windows');
+	assert.equal(cari('/katalog/produk/fokus', 'SoftwareApplication').operatingSystem, 'Android');
+	const zip = cari('/katalog/produk/template-halaqah', 'SoftwareApplication');
+	assert.equal(zip.operatingSystem, undefined, 'template ZIP bukan aplikasi Windows');
+	assert.equal(zip.offers.price, '249000');
+	assert.equal(cari('/katalog/alat/desain-santri', 'SoftwareApplication').operatingSystem, 'Web');
+	assert.match(hasil.get('/katalog/produk/template-halaqah').html, /Paket ZIP/);
+	for (const [p, h] of hasil) assert.doesNotMatch(h.html, /digital-products\/[^"\s]*\.(exe|apk|zip)/, p);
 });
 
 test('detail katalog: teks DB berbahaya tidak bisa keluar dari blok JSON-LD', () => {

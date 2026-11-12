@@ -10,6 +10,30 @@ export const ID_ORGANISASI = `${ASAL}/#organization`;
 export const ID_SITUS = `${ASAL}/#website`;
 export const LOGO = `${ASAL}/logo-santrionline.png`;
 
+/**
+ * Profil resmi SantriOnline di luar domain sendiri, untuk Organization.sameAs.
+ * Hanya akun milik SantriOnline yang sudah dicek terbuka (HTTP 200, nama SantriOnline,
+ * tautan balik ke santrionline.com), dicek 12 Nov 2026. Jangan menambah akun yang belum
+ * diperiksa; tebakan handle yang salah membuat mesin pencari mengaitkan merek ke akun orang lain.
+ * (@websantri di YouTube sudah 404; kanal merek yang benar @appsantrionline.)
+ */
+export const PROFIL_RESMI = [
+	{ nama: 'YouTube', url: 'https://www.youtube.com/@appsantrionline' },
+	{ nama: 'Instagram', url: 'https://www.instagram.com/idsantrionline' },
+	{ nama: 'TikTok', url: 'https://www.tiktok.com/@santrionline.com' },
+	{ nama: 'Facebook', url: 'https://www.facebook.com/santrionline.my.id' },
+	{ nama: 'Threads', url: 'https://www.threads.com/@idsantrionline' },
+	{ nama: 'Pinterest', url: 'https://www.pinterest.com/websantrionline' },
+	{ nama: 'GitHub', url: 'https://github.com/Santrionlinecom' }
+];
+
+/** sameAs Organization: properti saudara + profil resmi di atas. */
+export const SAME_AS_ORGANISASI = [
+	'https://app.santrionline.com/',
+	'https://masyogik.santrionline.com/',
+	...PROFIL_RESMI.map((p) => p.url)
+];
+
 /** Batas panjang meta description (karakter) yang dikunci tes. */
 export const DESKRIPSI_MIN = 70;
 export const DESKRIPSI_MAKS = 160;
