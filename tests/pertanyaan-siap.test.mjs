@@ -9,6 +9,7 @@ import {
 	judulTerlarang,
 	slugDariTautan
 } from '../src/lib/kitab-dikeluarkan.js';
+import { MODEL_EMBEDDING } from '../src/lib/server/pertanyaan-mirip.ts';
 
 const kolam = Array.from({ length: 30 }, (_, i) => 'q' + i);
 
@@ -71,7 +72,7 @@ test('data siap: setiap sitasi [n] menunjuk rujukan yang ada', () => {
 
 test('vektor siap selaras dengan kolam (kalau tidak, pencocokan makna mati diam-diam)', () => {
 	const vektor = JSON.parse(readFileSync(new URL('../src/lib/server/pertanyaan-siap-vektor.json', import.meta.url), 'utf8'));
-	assert.equal(vektor.model, '@cf/google/embeddinggemma-300m');
+	assert.equal(vektor.model, MODEL_EMBEDDING);
 	assert.equal(vektor.v.length, bacaKolam().length);
 	for (const v of vektor.v) assert.equal(Buffer.from(v, 'base64').length, vektor.dim);
 });
