@@ -3,6 +3,9 @@
 // (dropdown dibuka dengan CSS :hover/:focus-within), supaya crawler melihat semuanya.
 export const APP = 'https://app.santrionline.com';
 
+// Tautan menu ke produk di aplikasi membawa UTM agar kunjungan dari situs ini terukur.
+export const utmMenu = (kampanye: 'tutor-website' | 'kursus') => `utm_source=santrionline&utm_medium=menu&utm_campaign=${kampanye}`;
+
 export type Tautan = { href: string; label: string; ket?: string };
 export type GrupMenu = { label: string; href: string; aktif?: string; anak?: Tautan[] };
 
@@ -11,7 +14,8 @@ export const MENU_KATALOG: Tautan[] = [
 	{ href: '/katalog/kitab', label: 'Kitab', ket: 'Kitab pesantren per bidang ilmu' },
 	{ href: '/katalog/buku', label: 'Buku', ket: 'Novel religi dan bacaan keluarga' },
 	{ href: '/katalog/produk', label: 'Aplikasi & Template', ket: 'Aplikasi, template website, dan kit siap pakai' },
-	{ href: '/katalog/kursus', label: 'Kursus', ket: 'Belajar bertahap bersama pengajar' }
+	{ href: '/katalog/kursus', label: 'Kursus', ket: 'Belajar bertahap bersama pengajar' },
+	{ href: `${APP}/tutor?${utmMenu('tutor-website')}`, label: 'Tutor Video', ket: 'Video pendek: bikin website sendiri' }
 ];
 
 export const MENU_LEMBAGA: Tautan[] = [
@@ -40,6 +44,8 @@ export const FOOTER: { judul: string; lembaga?: boolean; tautan: Tautan[] }[] = 
 			{ href: '/belajar', label: 'Fondasi Muslim' },
 			{ href: '/tipe-santri', label: 'Tipe Santri' },
 			{ href: '/video', label: 'Video' },
+			{ href: `${APP}/tutor?${utmMenu('tutor-website')}`, label: 'Tutor Video' },
+			{ href: `${APP}/kursus?${utmMenu('kursus')}`, label: 'Kursus Gratis' },
 			{ href: `${APP}/tanya`, label: 'Cari Isi Kitab' },
 			{ href: `${APP}/al-quran`, label: "Al-Qur'an" },
 			{ href: `${APP}/al-quran/yasin`, label: 'Surah Yasin' },
