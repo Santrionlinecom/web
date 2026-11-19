@@ -15,6 +15,16 @@
 	const appInstitutionUrl = `${appBaseUrl}/lembaga/tambah`;
 	const PELAJARAN_PERTAMA = '/belajar/0/kenapa-belajar-agama-sekarang';
 
+	// Pintu ke produk belajar di aplikasi (Nov 2026): tutor video berbayar per episode + kursus gratis.
+	// Semua tautan baru membawa UTM supaya kunjungan dari beranda terbaca di analitik aplikasi.
+	const utm = (kampanye: 'tutor-website' | 'kursus') => `utm_source=santrionline&utm_medium=beranda&utm_campaign=${kampanye}`;
+	const TUTOR_SERI = `${appBaseUrl}/tutor/website-gratis-tanpa-hosting`;
+	const tutorUrl = `${TUTOR_SERI}?${utm('tutor-website')}`;
+	const tutorEp1Url = `${TUTOR_SERI}/1?${utm('tutor-website')}`;
+	const tutorPoster = 'https://files.santrionline.com/tutor/website-gratis-tanpa-hosting/ep01.jpg';
+	const kursusProgrammerUrl = `${appBaseUrl}/kursus/santri-programmer-1-apps-script?${utm('kursus')}`;
+	const kursusSemuaUrl = `${appBaseUrl}/kursus?${utm('kursus')}`;
+
 	type Kartu = { slug: string; judul: string; sampul: string | null; harga: string; kategori: string | null; detail: string | null };
 	const F = 'https://files.santrionline.com';
 
@@ -99,7 +109,9 @@
 		daftar: 'M9 5h10M9 12h10M9 19h10M4.5 5h.01M4.5 12h.01M4.5 19h.01',
 		rapor: 'M6 3h9l4 4v14H6V3Zm9 0v4h4M9 12h7M9 16h5',
 		dompet: 'M4 7h15a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7Zm0 0 1-3h11l1 3m-2 6h2',
-		panah: 'M5 12h14m-6-6 6 6-6 6'
+		panah: 'M5 12h14m-6-6 6 6-6 6',
+		kode: 'M8 8l-4 4 4 4m8-8 4 4-4 4M14 5l-4 14',
+		putar: 'M8 5.5v13l10-6.5-10-6.5Z'
 	};
 
 	// Enam pilar pembinaan, masing-masing menunjuk ke bagian yang sudah ada.
@@ -199,7 +211,7 @@
 		},
 		{
 			question: 'Apakah belajar di SantriOnline berbayar?',
-			answer: 'Tidak. Belajar di SantriOnline gratis, tidak dipungut biaya: Tes Tipe Santri, Fondasi Muslim, Ngaji Kitab Dasar, Hafalan Matan, sampai Kajian Lanjut. Yang berbayar hanya beberapa aplikasi pendukung, misalnya versi Pro SantriPrint.'
+			answer: 'Tidak. Belajar di SantriOnline gratis, tidak dipungut biaya: Tes Tipe Santri, Fondasi Muslim, Ngaji Kitab Dasar, Hafalan Matan, sampai Kajian Lanjut. Yang berbayar hanya beberapa aplikasi pendukung, misalnya versi Pro SantriPrint, dan episode lanjutan tutor video Website Gratis Tanpa Hosting (episode 1 dan 2 tetap gratis).'
 		},
 		{
 			question: 'Siapa yang memeriksa materinya?',
@@ -336,6 +348,51 @@
 				</ul>
 				<a class="pr-semua" href="#isi-aplikasi">Lihat semua isi aplikasi</a>
 			</div>
+		</div>
+	</section>
+
+	<section id="bikin-sendiri" class="garis-atas" aria-labelledby="judul-bikin">
+		<div class="wrap">
+			<p class="kicker">Belajar bikin sendiri</p>
+			<h2 id="judul-bikin" class="h2">Bikin website dan aplikasi sendiri, mulai dari nol</h2>
+			<p class="lead">Untuk yang ingin bisa membuat, bukan hanya memakai. Pilih tutor video pendek atau kursus tertulis, keduanya dijelaskan pelan dengan bahasa sehari-hari.</p>
+			<ul class="kisi kisi-2">
+				<li class="kartu bikin">
+					<div class="bikin-kepala ada-poster">
+						<a class="poster" href={tutorUrl}>
+							<img src={tutorPoster} alt="Poster tutor video Website Gratis Tanpa Hosting" width="1080" height="1920" loading="lazy" decoding="async" />
+							<span class="poster-main" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={IK.putar} /></svg></span>
+						</a>
+						<div class="bikin-teks">
+							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.video} /></svg>Tutor video</p>
+							<h3><a href={tutorUrl}>Website Gratis Tanpa Hosting</a></h3>
+							<p class="meta"><span>7 video pendek</span> · <span>2 episode gratis</span></p>
+						</div>
+						<p class="desk">Pasang website sendiri sampai bisa dibuka orang, tanpa sewa hosting bulanan. Satu langkah di tiap video, kira-kira satu menit.</p>
+					</div>
+					<p class="catatan">Episode 1 dan 2 bisa ditonton tanpa daftar. Episode 3 sampai 7 Rp1.500 per episode.</p>
+					<div class="bikin-aksi">
+						<a class="tb tb-utama" href={tutorEp1Url}>Tonton episode 1 gratis</a>
+						<a class="tautan" href={tutorUrl}>Lihat daftar 7 episode <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</li>
+				<li class="kartu bikin">
+					<div class="bikin-kepala">
+						<span class="ik-kotak ik-besar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kode} /></svg></span>
+						<div class="bikin-teks">
+							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kelas} /></svg>Kursus</p>
+							<h3><a href={kursusProgrammerUrl}>Santri Programmer 1: Bikin Aplikasi Gratis dengan Google Apps Script</a></h3>
+							<p class="meta"><span>Gratis</span> · <span>11 materi</span></p>
+						</div>
+						<p class="desk">Belajar ngoding dari nol sambil membuat aplikasi catatan setoran hafalan untuk TPQ, memakai Google Sheet. Tiap materi berisi penjelasan dan contoh kode yang bisa langsung dicoba.</p>
+					</div>
+					<p class="catatan">Gratis, cukup buat akun. Ada juga kursus gratis lain: Adab Santri di Dunia Digital, Fondasi Aqidah Aswaja, Kelas Menulis Santri, dan Tahsin Tajwid Dasar Guru TPQ.</p>
+					<div class="bikin-aksi">
+						<a class="tb tb-utama" href={kursusProgrammerUrl}>Mulai kursus gratis</a>
+						<a class="tautan" href={kursusSemuaUrl}>Lihat semua kursus <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</section>
 
@@ -914,6 +971,115 @@
 		border-color: #cbd5e1;
 	}
 
+	/* Belajar bikin sendiri */
+	.bikin {
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		height: 100%;
+	}
+	.bikin-kepala {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		gap: 14px 16px;
+		align-items: start;
+	}
+	/* HP: deskripsi selebar kartu di bawah baris gambar + judul, supaya kolom teks tidak sempit. */
+	.bikin-kepala .desk {
+		grid-column: 1 / -1;
+	}
+	.bikin-teks {
+		min-width: 0;
+	}
+	.bikin .label {
+		display: inline-flex;
+		align-items: center;
+		gap: 6px;
+		font-size: 12.5px;
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+		color: var(--hijau2);
+	}
+	.bikin h3 {
+		margin: 6px 0 4px;
+		font-size: 18px;
+		font-weight: 800;
+		text-wrap: balance;
+	}
+	.bikin h3 a:hover {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.bikin .meta {
+		margin-bottom: 8px;
+		font-size: 14px;
+		font-weight: 700;
+		color: #334155;
+	}
+	.bikin .meta span {
+		white-space: nowrap;
+	}
+	.bikin .catatan {
+		margin-top: auto;
+		padding: 12px 14px;
+		border: 1px solid var(--garis);
+		border-radius: 12px;
+		background: var(--abu);
+		font-size: 13.5px;
+		color: #334155;
+	}
+	.poster {
+		position: relative;
+		flex: none;
+		width: 92px;
+		border-radius: 14px;
+		overflow: hidden;
+		border: 1px solid var(--garis);
+		background: var(--abu);
+	}
+	.poster img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 9/16;
+		object-fit: cover;
+	}
+	.poster-main {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+	}
+	.poster-main svg {
+		width: 40px;
+		height: 40px;
+		padding: 10px;
+		border-radius: 999px;
+		background: rgb(255 255 255 / 0.92);
+		color: var(--hijau);
+		fill: currentColor;
+	}
+	.ik-besar {
+		width: 52px;
+		height: 52px;
+		border-radius: 14px;
+	}
+	.ik-besar svg {
+		width: 26px;
+		height: 26px;
+	}
+	.bikin-aksi {
+		display: flex;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 4px;
+	}
+	.bikin-aksi .tautan {
+		align-self: center;
+		margin-top: 4px;
+	}
+
 	/* Jalur belajar */
 	.mulai-g {
 		display: grid;
@@ -1214,6 +1380,19 @@
 		.prod {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
+		.bikin-aksi {
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+			gap: 8px 20px;
+		}
+		.bikin-aksi .tautan {
+			align-self: auto;
+			margin-top: 0;
+		}
+		.poster {
+			width: 112px;
+		}
 		/* 7 fitur: kartu pertama selebar dua kolom supaya kisi genap tanpa lubang. */
 		.kisi-fitur > :first-child {
 			grid-column: span 2;
@@ -1248,6 +1427,26 @@
 		}
 		.kisi-3 {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+		.kisi-2 {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 20px;
+		}
+		.bikin h3 {
+			font-size: 20px;
+		}
+		.poster {
+			width: 128px;
+		}
+		/* Laptop: poster setinggi judul + deskripsi, deskripsi pindah ke kolom kanan. */
+		.ada-poster {
+			grid-template-rows: auto 1fr;
+		}
+		.ada-poster .poster {
+			grid-row: span 2;
+		}
+		.ada-poster .desk {
+			grid-column: 2;
 		}
 		.kisi-fitur {
 			grid-template-columns: repeat(4, minmax(0, 1fr));
