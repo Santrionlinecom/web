@@ -20,13 +20,13 @@
 		"@sveltejs/vite-plugin-svelte": "^7.3.1",
 		"@tailwindcss/vite": "^4.3.5",
 		"@types/node": "^25.9.9",
-		"marked": "^18.2.0",
-		"svelte": "^5.57.3",
+		"marked": "^18.2.1",
+		"svelte": "^5.58.0",
 		"svelte-check": "^4.7.8",
 		"tailwindcss": "^4.3.3",
 		"typescript": "^6.0.2",
 		"vite": "^8.3.8",
-		"wrangler": "^4.161.0",
+		"wrangler": "^4.165.0",
 		"yaml": "^2.9.1"
 	}
 }
