@@ -351,51 +351,6 @@
 		</div>
 	</section>
 
-	<section id="bikin-sendiri" class="garis-atas" aria-labelledby="judul-bikin">
-		<div class="wrap">
-			<p class="kicker">Belajar bikin sendiri</p>
-			<h2 id="judul-bikin" class="h2">Bikin website dan aplikasi sendiri, mulai dari nol</h2>
-			<p class="lead">Untuk yang ingin bisa membuat, bukan hanya memakai. Pilih tutor video pendek atau kursus tertulis, keduanya dijelaskan pelan dengan bahasa sehari-hari.</p>
-			<ul class="kisi kisi-2">
-				<li class="kartu bikin">
-					<div class="bikin-kepala ada-poster">
-						<a class="poster" href={tutorUrl}>
-							<img src={tutorPoster} alt="Poster tutor video Website Gratis Tanpa Hosting" width="1080" height="1920" loading="lazy" decoding="async" />
-							<span class="poster-main" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={IK.putar} /></svg></span>
-						</a>
-						<div class="bikin-teks">
-							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.video} /></svg>Tutor video</p>
-							<h3><a href={tutorUrl}>Website Gratis Tanpa Hosting</a></h3>
-							<p class="meta"><span>7 video pendek</span> · <span>2 episode gratis</span></p>
-						</div>
-						<p class="desk">Pasang website sendiri sampai bisa dibuka orang, tanpa sewa hosting bulanan. Satu langkah di tiap video, kira-kira satu menit.</p>
-					</div>
-					<p class="catatan">Episode 1 dan 2 bisa ditonton tanpa daftar. Episode 3 sampai 7 Rp1.500 per episode.</p>
-					<div class="bikin-aksi">
-						<a class="tb tb-utama" href={tutorEp1Url}>Tonton episode 1 gratis</a>
-						<a class="tautan" href={tutorUrl}>Lihat daftar 7 episode <span aria-hidden="true">&rarr;</span></a>
-					</div>
-				</li>
-				<li class="kartu bikin">
-					<div class="bikin-kepala">
-						<span class="ik-kotak ik-besar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kode} /></svg></span>
-						<div class="bikin-teks">
-							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kelas} /></svg>Kursus</p>
-							<h3><a href={kursusProgrammerUrl}>Santri Programmer 1: Bikin Aplikasi Gratis dengan Google Apps Script</a></h3>
-							<p class="meta"><span>Gratis</span> · <span>11 materi</span></p>
-						</div>
-						<p class="desk">Belajar ngoding dari nol sambil membuat aplikasi catatan setoran hafalan untuk TPQ, memakai Google Sheet. Tiap materi berisi penjelasan dan contoh kode yang bisa langsung dicoba.</p>
-					</div>
-					<p class="catatan">Gratis, cukup buat akun. Ada juga kursus gratis lain: Adab Santri di Dunia Digital, Fondasi Aqidah Aswaja, Kelas Menulis Santri, dan Tahsin Tajwid Dasar Guru TPQ.</p>
-					<div class="bikin-aksi">
-						<a class="tb tb-utama" href={kursusProgrammerUrl}>Mulai kursus gratis</a>
-						<a class="tautan" href={kursusSemuaUrl}>Lihat semua kursus <span aria-hidden="true">&rarr;</span></a>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</section>
-
 	<section class="garis-atas" aria-labelledby="judul-pilar">
 		<div class="wrap">
 			<p class="kicker">Enam pilar pembinaan</p>
@@ -531,6 +486,51 @@
 				{/each}
 			</div>
 			<p class="semua"><a href="/katalog/semua">Buka semua katalog</a> · <a href="/katalog/kursus">Kursus</a></p>
+		</div>
+	</section>
+
+	<section id="bikin-sendiri" class="garis-atas" aria-labelledby="judul-bikin">
+		<div class="wrap">
+			<p class="kicker">Keterampilan dunia nyata</p>
+			<h2 id="judul-bikin" class="h2">Keterampilan digital untuk santri dan pengurus</h2>
+			<p class="lead">Pelengkap ilmu agama: untuk santri, guru TPQ, dan pengurus yang ingin bisa membuat sendiri, bukan hanya memakai. Pilih tutor video pendek atau kursus tertulis, keduanya dijelaskan pelan dengan bahasa sehari-hari.</p>
+			<ul class="kisi kisi-2">
+				<li class="kartu bikin">
+					<div class="bikin-kepala ada-poster">
+						<a class="poster" href={tutorUrl}>
+							<img src={tutorPoster} alt="Poster tutor video Website Gratis Tanpa Hosting" width="1080" height="1920" loading="lazy" decoding="async" />
+							<span class="poster-main" aria-hidden="true"><svg viewBox="0 0 24 24"><path d={IK.putar} /></svg></span>
+						</a>
+						<div class="bikin-teks">
+							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.video} /></svg>Tutor video</p>
+							<h3><a href={tutorUrl}>Website Gratis Tanpa Hosting</a></h3>
+							<p class="meta"><span>7 video pendek</span> · <span>2 episode gratis</span></p>
+						</div>
+						<p class="desk">Pasang website sendiri sampai bisa dibuka orang, tanpa sewa hosting bulanan. Satu langkah di tiap video, kira-kira satu menit.</p>
+					</div>
+					<p class="catatan">Episode 1 dan 2 bisa ditonton tanpa daftar. Episode 3 sampai 7 Rp1.500 per episode.</p>
+					<div class="bikin-aksi">
+						<a class="tb tb-utama" href={tutorEp1Url}>Tonton episode 1 gratis</a>
+						<a class="tautan" href={tutorUrl}>Lihat daftar 7 episode <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</li>
+				<li class="kartu bikin">
+					<div class="bikin-kepala">
+						<span class="ik-kotak ik-besar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kode} /></svg></span>
+						<div class="bikin-teks">
+							<p class="label"><svg class="ik-s" viewBox="0 0 24 24" aria-hidden="true"><path d={IK.kelas} /></svg>Kursus</p>
+							<h3><a href={kursusProgrammerUrl}>Santri Programmer 1: Bikin Aplikasi Gratis dengan Google Apps Script</a></h3>
+							<p class="meta"><span>Gratis</span> · <span>11 materi</span></p>
+						</div>
+						<p class="desk">Belajar ngoding dari nol sambil membuat aplikasi catatan setoran hafalan untuk TPQ, memakai Google Sheet. Tiap materi berisi penjelasan dan contoh kode yang bisa langsung dicoba.</p>
+					</div>
+					<p class="catatan">Gratis, cukup buat akun. Ada juga kursus gratis lain: Adab Santri di Dunia Digital, Fondasi Aqidah Aswaja, Kelas Menulis Santri, dan Tahsin Tajwid Dasar Guru TPQ.</p>
+					<div class="bikin-aksi">
+						<a class="tb tb-utama" href={kursusProgrammerUrl}>Mulai kursus gratis</a>
+						<a class="tautan" href={kursusSemuaUrl}>Lihat semua kursus <span aria-hidden="true">&rarr;</span></a>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</section>
 
