@@ -7,11 +7,13 @@ const read = (p) => readFileSync(new URL(`../${p}`, import.meta.url), 'utf8');
 const home = read('src/routes/+page.svelte');
 const menu = read('src/lib/belajar/menu.ts');
 
-test('beranda: bagian Belajar bikin sendiri tepat setelah hero', () => {
+test('beranda: konten keislaman di depan, keterampilan digital setelah rak kitab sebelum FAQ', () => {
 	const hero = home.indexOf('aria-labelledby="judul-beranda"');
-	const bikin = home.indexOf('aria-labelledby="judul-bikin"');
 	const pilar = home.indexOf('aria-labelledby="judul-pilar"');
-	assert.ok(hero > 0 && hero < bikin && bikin < pilar, 'urutan hero -> bikin sendiri -> pilar');
+	const rak = home.indexOf('aria-labelledby="judul-rak"');
+	const bikin = home.indexOf('aria-labelledby="judul-bikin"');
+	const faq = home.indexOf('aria-labelledby="judul-faq"');
+	assert.ok(hero > 0 && hero < pilar && pilar < rak && rak < bikin && bikin < faq, 'urutan hero -> pilar -> ... -> rak -> keterampilan digital -> FAQ');
 	assert.match(home, /Tonton episode 1 gratis/);
 	assert.match(home, /Mulai kursus gratis/);
 	assert.match(home, /Lihat semua kursus/);
