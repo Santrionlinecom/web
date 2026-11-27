@@ -113,7 +113,8 @@ export function jsonLdVideo(daftar, halaman) {
 			};
 			if (v.berkas) obj.contentUrl = v.berkas;
 			if (v.durasi) obj.duration = durasiIso(v.durasi);
-			if (v.tanggal) obj.uploadDate = v.tanggal;
+			// Google menolak tanggal saja ("tidak memiliki zona waktu"); dianggap 08.00 WIB.
+			if (v.tanggal) obj.uploadDate = `${v.tanggal}T08:00:00+07:00`;
 			return { '@type': 'ListItem', position: i + 1, item: obj };
 		})
 	};

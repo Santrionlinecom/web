@@ -90,7 +90,7 @@ test('JSON-LD: VideoObject lengkap, uploadDate hanya bila tanggal diketahui', ()
 	for (const k of ['name', 'description', 'thumbnailUrl', 'embedUrl', 'contentUrl']) assert.ok(a[k], k);
 	assert.equal(a.embedUrl, `${APP}/video/a/embed`);
 	assert.equal(a.contentUrl, 'https://files.santrionline.com/video/a.mp4');
-	assert.equal(a.uploadDate, '2026-10-21');
+	assert.equal(a.uploadDate, '2026-10-21T08:00:00+07:00'); // GSC: wajib berzona waktu
 	assert.equal(a.duration, 'PT1M17S');
 	assert.equal('uploadDate' in b, false);
 	assert.doesNotMatch(ldAman({ x: '</script>' }), /<\/script>/);
